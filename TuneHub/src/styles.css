@@ -1,0 +1,9 @@
+body {
+  /* הגדרת הרקע הכחול-כהה לכל הדף */
+  background-color: #1D2A3B; 
+  
+  /* חשוב מאוד: הגדרת צבע טקסט בהיר כדי שיבלוט על הרקע הכהה */
+  /* color: #FFFFFF;  */
+}
+html, body { height: 100%; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
