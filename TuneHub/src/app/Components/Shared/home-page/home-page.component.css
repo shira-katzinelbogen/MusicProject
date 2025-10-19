@@ -1,0 +1,193 @@
+/* --- Reset --- */
+body, html {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  width: 100%;
+  overflow-x: hidden;
+  font-family: Arial, sans-serif;
+}
+
+/* --- Background Image Slider --- */
+.image-slider {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+.image-slider img {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  object-fit: cover;
+  animation: slideAnimation 16s infinite;
+  opacity: 0;
+  transition: opacity 2s;
+}
+
+.image-slider img:nth-child(1) { animation-delay: 0s; }
+.image-slider img:nth-child(2) { animation-delay: 4s; }
+.image-slider img:nth-child(3) { animation-delay: 8s; }
+.image-slider img:nth-child(4) { animation-delay: 12s; }
+
+@keyframes slideAnimation {
+  0%, 35%, 100% { opacity: 0; }
+  10%, 25% { opacity: 1; }
+}
+
+
+
+/* --- Main Content Centered --- */
+.main-content {
+  position: relative;
+  z-index: 10;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;  /* מרכז אנכי */
+  align-items: center;      /* מרכז אופקי */
+  text-align: center;
+  color: white;
+  padding: 20px;
+}
+
+/* --- Live Indicator --- */
+#live {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0px 20px;
+  background: #1D2838;
+  color: #3CFF6E;
+  font-size: 18px;
+  height: 40px;
+  border-radius: 30px;
+  border: 1.5px solid #5301ab;
+  /* margin-bottom: 20px; */
+}
+
+#live-dot {
+  display: inline-block;
+  font-size: 40px;
+  margin-right: 8px;
+  color: #3CFF6E;
+  animation: blink 2s infinite ease-in-out;
+}
+
+@keyframes blink {
+  0%, 50%, 100% { opacity: 0.9; }
+  25%, 75% { opacity: 0.5; }
+}
+
+/* --- Title --- */
+#title {
+  font-size: 4vw;
+  font-weight: 600;
+}
+
+:host ::ng-deep #musicians {
+  font-size: clamp(2rem, 4vw, 5rem);
+  font-weight: 800;
+  background: linear-gradient(90deg, #a653fe 0%, #599afd 100%);
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+  -webkit-text-fill-color: transparent;
+  /* text-transform: uppercase; */
+  display: inline-block;
+  line-height: 1.1;
+  letter-spacing: 1px;
+  text-shadow: 0 0 20px rgba(166, 83, 254, 0.3);
+}
+
+
+/* --- Slogan --- */
+.slogan {
+  font-size: 2.3vw;
+  font-weight: bold;
+  margin-top: 1.5vw;
+}
+
+/* --- Paragraphs --- */
+#p1, #p2 {
+  width: 70%;
+  font-size: 1.45vw;
+  line-height: 1.6;
+  text-align: center;
+  margin-top: 0.5vw;
+}
+
+#p2 {
+  font-size: 1.3vw;
+  color: rgb(160,160,160);
+}
+
+/* --- Button --- */
+.button {
+  margin-top: 2.5vw;
+  /* background: linear-gradient(90deg, #a653fe 0%, #599afd 100%);
+  color: white;
+  
+  font-weight: bold;
+  cursor: pointer;
+  transition: opacity 0.3s ease; */ 
+  font-size: 18px;
+border-radius: 15px; 
+
+  padding: 15px 40px;
+}
+/* 
+.button:hover {
+  opacity: 0.85;
+} */
+/* 
+.button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 2rem;
+  margin: 0.5rem;
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+} */
+
+.button:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 5px 15px rgba(89, 154, 253, 0.4);
+}
+
+/* עוטף את הכפתורים כך שיישבו בשורה */
+.buttons-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+  flex-wrap: wrap; /* כדי שירד שורה במסך קטן */
+}
+
+#b2 {
+  background: transparent;
+  color: #a653fe;
+  border: 2px solid #a653fe;
+}
+
+#b2:hover {
+  background: rgba(166, 83, 254, 0.15);
+  box-shadow: 0 5px 15px rgba(166, 83, 254, 0.3);
+  transform: translateY(-3px);
+}
+
+/* --- Container for both buttons --- */
+.buttons-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 2rem;
+  flex-wrap: wrap;
+}
