@@ -1,4 +1,4 @@
-/* navbar.component.css */
+
 
 .tunehub-header {
   background-color: #1D2A3B; /* הרקע הכהה שלך */
@@ -25,4 +25,8 @@
   color: white;
   border-radius: 20px;
   padding: 8px 18px;
+}
+
+body {
+    background-color: #1D2A3B; /* הרקע הכהה שלך */
 }
