@@ -1,10 +1,73 @@
+<<<<<<< HEAD
 <!-- Overlay -->
 <div class="overlay" [class.active]="isMenuOpen" (click)="closeMenu()"></div>
+=======
+<mat-sidenav-container class="sidebar-container">
+  <mat-sidenav #sidenav="matSidenav" mode="side" opened class="sidebar">
+    <div class="sidebar-header">
+      <div class="logo-and-title">
+        <mat-icon class="logo-icon">music_note</mat-icon>
+        <div class="title-text">
+          <h2>TuneHub Pro</h2>
+          <p>Navigation Menu</p>
+        </div>
+      </div>
+      <mat-icon class="close-icon" (click)="closeSidebar()">close</mat-icon>
+    </div>
+>>>>>>> 35b7a2fb90870dfb5dd081af2bade7c52cc80355
 
+    <mat-nav-list class="mat-nav-list">  <!-- שנה ל-mat-nav-list אם עדיין לא -->
+      <a mat-list-item routerLink="/home" routerLinkActive="active" #rlaHome="routerLinkActive" [activated]="rlaHome.isActive">
+        <mat-icon matListItemIcon>home</mat-icon>
+        <span>Home</span>
+      </a>
 
-<img src="../assets/icons/menu.png" class="menu-icon" (click)="openMenu()">
+      <a mat-list-item routerLink="/musicians" routerLinkActive="active" #rlaMusicians="routerLinkActive" [activated]="rlaMusicians.isActive">
+        <mat-icon matListItemIcon>person_add</mat-icon>
+        <span>Find Musicians</span>
+      </a>
+      
+      <a mat-list-item routerLink="/posts" routerLinkActive="active" #rlaPosts="routerLinkActive" [activated]="rlaPosts.isActive">
+        <mat-icon matListItemIcon>description</mat-icon>
+        <span>Posts</span>
+      </a>
+      
+      <a mat-list-item routerLink="/challenges" routerLinkActive="active" #rlaChallenges="routerLinkActive" [activated]="rlaChallenges.isActive">
+        <mat-icon matListItemIcon>emoji_events</mat-icon>
+        <span>Challenges</span>
+      </a>
+      
+      <a mat-list-item routerLink="/sheet-music" routerLinkActive="active" #rlaSheet="routerLinkActive" [activated]="rlaSheet.isActive">
+        <mat-icon matListItemIcon>music_note</mat-icon>
+        <span>Sheet Music</span>
+      </a>
+      
+      <a mat-list-item routerLink="/teachers" routerLinkActive="active" #rlaTeachers="routerLinkActive" [activated]="rlaTeachers.isActive">
+        <mat-icon matListItemIcon>menu_book</mat-icon>
+        <span>Teachers & Lessons</span>
+      </a>
+      
+      <a mat-list-item routerLink="/communities" routerLinkActive="active" #rlaCommunities="routerLinkActive" [activated]="rlaCommunities.isActive">
+        <mat-icon matListItemIcon>people_outline</mat-icon>
+        <span>Communities</span>
+      </a>
+      
+      <a mat-list-item routerLink="/marketplace" routerLinkActive="active" #rlaMarket="routerLinkActive" [activated]="rlaMarket.isActive">
+        <mat-icon matListItemIcon>shopping_bag</mat-icon>
+        <span>Marketplace</span>
+      </a>
+      
+      <a mat-list-item routerLink="/messages" routerLinkActive="active" #rlaMessages="routerLinkActive" [activated]="rlaMessages.isActive">
+        <mat-icon matListItemIcon>chat_bubble_outline</mat-icon>
+        <span>Messages</span>
+      </a>
 
+      <!-- 🔑 חדש: הפוטר כפריטים בתוך הרשימה – כמו קישורים, אבל בלי routerLink ואייקון -->
+      <mat-list-item class="footer-item">
+        <span>&copy; 2025 TuneHub Professional</span>
+      </mat-list-item>
 
+<<<<<<< HEAD
 <nav class="side-menu" [class.open]="isMenuOpen">
   <button class="close-menu" (click)="closeMenu()">
     <img src="../assets/icons/X.png" alt="Close">
@@ -24,3 +87,18 @@
     <img class="iconM" src="../assets/icons/T.png">
   </div>
 </nav>  
+=======
+      <mat-list-item class="footer-item">
+        <span>Version 2.0</span>
+      </mat-list-item>
+    </mat-nav-list>
+
+    <!-- 🔑: הסרתי את <div class="sidebar-footer"> – עכשיו הוא חלק מהרשימה -->
+  </mat-sidenav>
+
+  <!-- תוכן העמוד הראשי – ודא שהוא כאן בתוך <mat-sidenav-content> כדי שיופיע כשהסיידבר סגור -->
+  <mat-sidenav-content>
+    <router-outlet></router-outlet> <!-- או התוכן הרלוונטי שלך -->
+  </mat-sidenav-content>
+</mat-sidenav-container>
+>>>>>>> 35b7a2fb90870dfb5dd081af2bade7c52cc80355

@@ -1,112 +1,247 @@
-/* .overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0,0,0,0);
-  transition: background-color 0.5s ease;
-  pointer-events: none;
-  z-index: 999;
+/* בסיס – ללא שינוי */
+.sidebar-container {
+  height: 100vh !important;
 }
 
-.overlay.active {
-  background-color: rgba(0,0,0,0.5);
-  pointer-events: auto;
+.sidebar {
+  background-color: #1D2B3C !important;
+  color: #fff;
+  width: 320px !important; /* 🔑 חדש: רוחב צר יותר (260px, טיפה צר מ-280px כמו בתמונה) */
+  height: 100vh !important; /* גובה מלא למסך כדי לאפשר חיתוך וגלילה */
+  padding-bottom: 0 !important; /* 🔑 חדש: הסרתי את 80px – עכשיו ללא רווח גדול ריק */
+  box-shadow: none !important;
+  position: relative;
+  overflow-y: auto !important; /* מאפשר גלילה אם הרשימה ארוכה */
+  overflow-x: hidden !important; /* מונע גלילה אופקית */
 }
 
-/* Side Menu */
-/* .side-menu {
-  position: fixed;
-  top: 0;
-  right: -400px;
-  width: 300px;
-  height: 100%;
-  background: #B0DDEB;
-  padding: 30px;
-  opacity: 0;
-  transition: right 0.5s ease, opacity 0.5s ease;
-  z-index: 1000;
+/* 🔑 דריסת CSS Variables – מקבעים סגול כ-primary ומאפסים את הרקע הסלקטד ל-gradient */
+.mat-nav-list a.mat-mdc-list-item {
+  --mdc-theme-primary: #A03FFB !important; /* 🔑 מעודכן: primary חדש */
+  --mdc-list-list-item-hover-state-layer-color: rgba(255, 255, 255, 0.08) !important;
+  --mdc-list-list-item-hover-state-layer-opacity: 1 !important;
+  --mdc-list-list-item-label-text-color: #ffffff !important;
+  --mdc-list-list-item-leading-graphic-color: #ffffff !important; /* לבן תמיד לאייקונים */
+  display: flex !important; /* מבטיח align של אייקון וטקסט, מונע תזוזה */
+  align-items: center !important; /* מיישר אנכית, האייקון נשאר במקום */
+  justify-content: flex-start !important; /* שומר על התחלה שמאלית */
+  padding: 0 16px !important; /* פדינג 16px כמו בתמונה */
+  height: 48px !important; /* גובה פריט נמוך יותר כמו בתמונה (48px) */
+  margin-bottom: 12px !important; /* 🔑 חדש: מרווח תחתון גדול יותר (12px) כדי להתאים לצל ולמרווחים בתמונה */
+  border-radius: 0 !important; /* מאפס radius רגיל */
+  transition: background-color 0.2s ease-in-out, border-radius 0.2s ease-in-out !important; /* transition חלק על רקע ו-radius בלבד, מונע הבהוב */
 }
 
-.side-menu.open {
-  right: 0;
-  opacity: 1;
-} */
+/* 🔑 ACTIVE: סגול gradient – דריסה ישירה על selected-container-var + background !important */
+.mat-nav-list a.mat-mdc-list-item--activated,
+.mat-nav-list a.mat-mdc-list-item.mat-mdc-list-item-active,
+.mat-nav-list a.mat-mdc-list-item[activated="true"],
+.mat-nav-list a.mat-mdc-list-item.active,
+.mat-nav-list a.mat-mdc-list-item.mdc-list-item--selected {
+  --mdc-list-list-item-selected-container-color: linear-gradient(90deg, #A03FFB 0%, #5271FF 100%) !important; /* gradient חדש */
+  --mdc-list-list-item-selected-label-text-color: #ffffff !important;
+  --mdc-list-list-item-selected-leading-graphic-color: #ffffff !important; /* לבן באקטיבי */
+  --mdc-list-list-item-selected-state-layer-color: transparent !important;
+  --mdc-theme-primary: #A03FFB !important; /* primary חדש */
+  background: var(--mdc-list-list-item-selected-container-color) !important;
+  background-color: linear-gradient(90deg, #A03FFB 0%, #5271FF 100%) !important; /* gradient חדש */
+  border-radius: 0 8px 8px 0 !important; /* radius כמו בהובר, חלק */
+    position: relative !important;
 
-/* Close Button */
-.close-menu {
-  width: 45px;
+  box-shadow: none !important; /* מאפס shadow באקטיבי כדי למנע שינוי צורה */
+  z-index: 10 !important;
+  padding: 0 16px !important; /* פדינג כמו בתמונה גם באקטיבי */
+  color: #ffffff !important;
+  display: flex !important; /* מבטיח align גם באקטיבי */
+  align-items: center !important; /* מיישר אנכית גם באקטיבי */
+  justify-content: flex-start !important; /* שומר על מיקום */
+  height: 48px !important; /* גובה גם באקטיבי */
+  margin-bottom: 12px !important; /* 🔑 חדש: מרווח גדול יותר גם באקטיבי */
+  transition: background-color 0.2s ease-in-out, border-radius 0.2s ease-in-out !important; /* transition חלק רק על רקע ו-radius */
+ 
+}
+
+/* איפוס מלא של state-layer באקטיבי – מונע דליפת תכלת */
+.mat-nav-list a.mat-mdc-list-item--activated .mat-mdc-list-item-state-layer,
+.mat-nav-list a.mat-mdc-list-item.mat-mdc-list-item-active .mat-mdc-list-item-state-layer,
+.mat-nav-list a.mat-mdc-list-item[activated="true"] .mat-mdc-list-item-state-layer,
+.mat-nav-list a.mat-mdc-list-item.active .mat-mdc-list-item-state-layer,
+.mat-nav-list a.mat-mdc-list-item.mdc-list-item--selected .mat-mdc-list-item-state-layer,
+.mat-nav-list a.mat-mdc-list-item--activated .mdc-list-item__state-layer,
+.mat-nav-list a.mat-mdc-list-item.mat-mdc-list-item-active .mdc-list-item__state-layer,
+.mat-nav-list a.mat-mdc-list-item[activated="true"] .mdc-list-item__state-layer,
+.mat-nav-list a.mat-mdc-list-item.active .mdc-list-item__state-layer,
+.mat-nav-list a.mat-mdc-list-item.mdc-list-item--selected .mdc-list-item__state-layer {
+  background: transparent !important;
+  opacity: 0 !important;
+  display: none !important;
+  visibility: hidden !important;
+}
+
+/* 🔑 HOVER: אפור שקוף – דריסה על state-layer, כמו בתמונה: לא מלא, רק רקע שקוף עם radius ימני */
+.mat-nav-list a.mat-mdc-list-item:hover .mat-mdc-list-item-state-layer,
+.mat-nav-list a.mat-mdc-list-item:hover .mdc-list-item__state-layer {
+  background: rgba(255, 255, 255, 0.08) !important;
+  border-radius: 0 8px 8px 0 !important; /* radius ימני חלק כמו בתמונה */
+  opacity: 1 !important;
+  transition: background-color 0.2s ease-in-out !important; /* transition רק על רקע */
+}
+
+.mat-nav-list a.mat-mdc-list-item:hover {
+  border-radius: 0 8px 8px 0 !important; /* radius ימני, לא מלא רוחב */
+  box-shadow: none !important; /* ללא shadow בהובר, רק רקע */
+  display: flex !important; /* מבטיח align גם בהובר */
+  align-items: center !important;
+  justify-content: flex-start !important;
+  padding: 0 16px !important; /* פדינג כמו בתמונה בהובר */
+  height: 48px !important; /* גובה גם בהובר */
+  margin-bottom: 12px !important; /* 🔑 חדש: מרווח גדול יותר גם בהובר */
+  transition: background-color 0.2s ease-in-out, border-radius 0.2s ease-in-out !important; /* transition חלק */
+}
+
+/* 🔑 אייקונים לבנים תמיד – דריסה ישירה על mat-icon */
+.mat-nav-list a.mat-mdc-list-item mat-icon {
+  color: #ffffff !important; /* לבן תמיד, דריסה חזקה */
+  width: 24px !important; /* 🔑 חדש: גודל אייקון גדול יותר (24px) כדי למנע חיתוך, כמו בתמונה */
+  height: 24px !important;
+  margin-right: 8px !important; /* 🔑 חדש: מרווח קטן יותר בין אייקון לטקסט, כדי להזיז שמאלה יותר */
+  flex-shrink: 0 !important; /* מונע כיווץ אייקון */
+  transition: none !important; /* איפוס transition על אייקון כדי למנע הבהוב */
+  line-height: 1 !important; /* מיישר אייקון אנכית */
+}
+
+/* Header – ללא שינוי */
+.sidebar-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  padding: 30px 30px 30px 16px !important; /* פדינג כמו בתמונה */
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.logo-and-title {
+  display: flex;
+  align-items: center;
+}
+
+.logo-icon {
+  font-size: 28px !important; /* גודל לוגו קצת קטן יותר כמו בתמונה */
+  height: 28px;
+  width: 28px;
+  color: #A03FFB !important; /* לוגו ראשי בגוון הסגול החדש */
+  margin-right: 12px !important; /* מרווח קטן יותר */
+}
+
+.title-text h2 {
+  font-size: 1.1rem !important; /* גופן קצת קטן יותר */
+  font-weight: 500;
+  margin: 0;
+  line-height: 1.2;
+  color: #ffffff;
+}
+
+.title-text p {
+  font-size: 0.8rem !important; /* גופן קטן יותר */
+  color: #a0a4a9;
+  margin: 0;
+}
+
+.close-icon {
+  font-size: 18px !important; /* קטן יותר */
+  color: #a0a4a9;
   cursor: pointer;
-  border: none;
-  background: none;
-  margin-bottom: 20px;
+  margin-top: 5px;
 }
 
-.close-menu img {
-  width: 100%;
-  transition: transform 0.1s ease;
+/* רשימה – מאפסים defaults */
+.mat-nav-list {
+  padding: 0 0 20px 0 !important; /* 🔑 חדש: פדינג תחתון קטן (20px) למרווח נחמד בתחתית הרשימה + פוטר, במקום הרווח הגדול */
+  margin-top: 16px !important; /* מרווח עליון קטן יותר */
 }
 
-.close-menu:hover img {
-  transform: scale(0.9);
-}
-/* 
-/* Menu Items */
-/* .side-menu ul {
-  list-style: none;
-  padding: 0;
-} */
-
-/* .side-menu a {
-  color: #000;
-  font-size: 35px;
-  font-weight: bold;
-  display: block;
-  line-height: 27px;
-  text-decoration: none;
-  margin-bottom: 15px;
-} */
-
-/* .side-menu a span {
-  font-weight: normal;
-  font-size: 25px;
-  display: block;
+.mat-nav-list a.mat-list-item {
+  height: 48px !important; /* גובה כמו בתמונה – דריסה חזקה יותר */
+  padding: 0 16px !important; /* פדינג כמו בתמונה – דריסה חזקה יותר */
+  font-size: 0.95rem !important; /* גופן קצת קטן */
+  font-weight: 500 !important;
+  transition: background-color 0.2s ease-in-out, border-radius 0.2s ease-in-out !important; /* transition חלק */
+  color: #ffffff !important;
+  margin-bottom: 12px !important; /* 🔑 חדש: מרווח גדול יותר כמו בתמונה */
+  background-color: transparent !important;
+  border-radius: 0 !important;
+  display: flex !important; /* מבטיח align בסיסי */
+  align-items: center !important;
+  justify-content: flex-start !important;
+  line-height: 1.4 !important; /* line-height כדי שהטקסט יתאים לגובה 48px */
 }
 
-.animated-div {
-  transition: transform 0.5s ease, opacity 0.5s ease;
+/* דריסה ספציפית על הטקסט הפנימי (span) – לבן תמיד */
+.mat-nav-list a.mat-mdc-list-item .mdc-list-item__primary-text,
+.mat-nav-list a.mat-mdc-list-item span {
+  color: #ffffff !important;
+  font-size: 0.95rem !important; /* גופן כמו בתמונה */
+  font-weight: 500 !important;
+  transition: none !important; /* איפוס transition על טקסט כדי למנוע הבהוב */
+  line-height: 1.4 !important; /* line-height להתאמה */
 }
 
-.animated-div:hover {
-  transform: translateX(10px);
-} */
+/* 🔑 חדש: סטיילים לפוטר כפריטים ברשימה – אפור, ממורכז, גופן קטן, ללא הובר/אקטיב */
+/* 🔑 הסרתי את כל הסטיילים של .sidebar-footer (כי הוא כבר לא קיים) */
+.mat-nav-list .footer-item {
+  --mdc-list-list-item-label-text-color: #a0a4a9 !important; /* צבע אפור כמו בפוטר המקורי */
+  --mdc-list-list-item-leading-graphic-color: transparent !important; /* בלי אייקון */
+  background-color: transparent !important; /* ללא רקע */
+  border-radius: 0 !important; /* ללא radius */
+  padding: 0 16px !important; /* פדינג כמו פריטים רגילים */
+  height: 32px !important; /* גובה נמוך יותר, כמו טקסט פוטר */
+  margin-bottom: 8px !important; /* מרווח קטן בין שורות הפוטר */
+  justify-content: center !important; /* ממורכז אופקית */
+  align-items: center !important; /* ממורכז אנכית */
+  transition: none !important; /* ללא אנימציה, כדי שייראה סטטי */
 
-/* Menu Icon */
-/* .menu-icon {
-  position: absolute;
-  top: 10px;
-  right: 10px;
-  width: 50px;
-  cursor: pointer;
-  transition: transform 0.1s ease;
-} */
-
-/* Social Icons */
-/* .iconsM {
-  position: fixed;
-  bottom: 35px;
-  left: 65px;
-} */
-
-/* .iconM {
-  cursor: pointer;
-  width: 50px;
-  height: 50px;
-  margin-right: 10px;
-  transition: transform 0.1s ease;
+  /* איפוס state-layer – ללא הובר */
+  .mat-mdc-list-item-state-layer,
+  .mdc-list-item__state-layer {
+    display: none !important;
+  }
 }
 
-.iconM:hover {
-  transform: scale(1.1);
-}  */
+.mat-nav-list .footer-item span {
+  font-size: 0.75rem !important; /* גופן קטן כמו בפוטר */
+  font-weight: 400 !important; /* לא בולט */
+  text-align: center !important; /* ממורכז */
+  line-height: 1.2 !important;
+  margin: 0 !important;
+}
+
+/* 🔑 דריסה גלובלית חזקה יותר עם ::ng-deep – לדרוס את כל התכלת באנגולר 19 */
+::ng-deep .mat-mdc-list-item--activated,
+::ng-deep .mat-mdc-list-item-active,
+::ng-deep .mdc-list-item--selected {
+  --mdc-list-list-item-selected-container-color: linear-gradient(90deg, #A03FFB 0%, #5271FF 100%) !important; /* gradient חדש */
+  background: linear-gradient(90deg, #A03FFB 0%, #5271FF 100%) !important; /* gradient חדש */
+  background-color: linear-gradient(90deg, #A03FFB 0%, #5271FF 100%) !important; /* gradient חדש */
+  transition: background-color 0.2s ease-in-out, border-radius 0.2s ease-in-out !important; /* transition חלק */
+  height: 48px !important; /* דריסה גלובלית על גובה */
+  padding: 0 16px !important; /* דריסה גלובלית על padding */
+  border-radius: 0 8px 8px 0 !important; /* radius ימני חלק */
+  box-shadow: none !important; /* מאפס shadow */
+  margin-bottom: 12px !important; /* 🔑 חדש: מרווח גלובלי גדול יותר */
+}
+
+::ng-deep .mat-mdc-list-item--activated .mat-mdc-list-item-state-layer,
+::ng-deep .mat-mdc-list-item-active .mat-mdc-list-item-state-layer,
+::ng-deep .mdc-list-item--selected .mdc-list-item__state-layer {
+  opacity: 0 !important;
+  background: transparent !important;
+  display: none !important;
+}
+
+/* 🔑 דריסה נוספת על MDC internals כדי למנע חיתוך אייקונים */
+::ng-deep .mdc-list-item__primary-text {
+  padding-left: 0 !important; /* מאפס padding שמאל פנימי שחותך אייקונים */
+}
+
+::ng-deep .mat-mdc-list-item {
+  overflow: visible !important; /* מונע חיתוך אייקונים מהצדדים */
+}
