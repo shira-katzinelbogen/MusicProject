@@ -1,19 +1,25 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
+import { MatSidenavModule } from '@angular/material/sidenav';
 import { HeaderComponent } from './Components/Shared/header/header.component';
-
-// import { MatSidenavModule } from '@angular/material/sidenav'; 
 import { FooterComponent } from './Components/Shared/footer/footer.component';
 import { SidebarComponent } from './Components/Shared/sidebar/sidebar.component';
+import { SidebarService } from './Services/sidebar.service';
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet,FooterComponent,HeaderComponent,SidebarComponent],
+  standalone: true,
+  imports: [
+    RouterOutlet,
+    MatSidenavModule,
+    HeaderComponent,
+    FooterComponent,
+    SidebarComponent
+  ],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css'
 })
-
 export class AppComponent {
-  title = 'TuneHub';
+  title = "TuneHub"
+  sidebarService = inject(SidebarService);
 }
-// MatSidenavModule

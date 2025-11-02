@@ -1,7 +1,7 @@
 <header>
-  <!-- לוגו + תפריט -->
+
   <div class="logo" (click)="goToHomePage()">
-    <mat-icon  (click)="openSidebar()">>menu</mat-icon>
+    <mat-icon (click)="sidebarService.toggle(); $event.stopPropagation()">menu</mat-icon>
 
     <img src="assets/images/logo.jpg" alt="Logo" />
     <div id="logo-name">
@@ -26,11 +26,9 @@
 
 
 
-
     <div class="search-container" onclick="document.getElementById('q').focus()">
       <!-- אייקון SVG של זכוכית מגדלת -->
       <mat-icon>search</mat-icon>
-
 
       <!-- שדה החיפוש -->
       <input id="q" class="search-input" type="search" placeholder="Search musicians, tracks, lessons..."
@@ -40,7 +38,6 @@
       <!-- <div class="kbd-hint" aria-hidden="true">⌘K</div> -->
     </div>
 
-
     <div id=get-started class=button (click)="goToFindMusicians()">
       Find Musicans <mat-icon>group</mat-icon>
     </div>
@@ -48,9 +45,8 @@
 
 
 
-
   </div>
-      <!-- <mat-icon>notifications</mat-icon> -->
+  <!-- <mat-icon>notifications</mat-icon> -->
 
   <div id=get-started class=button (click)="goToLoginWindow()">
     Get Started
@@ -58,13 +54,5 @@
 </header>
 
 <!-- Overlay -->
-<div class="overlay" [class.show]="isSidebarOpen" (click)="closeSidebar()"></div>
-
-<!-- Sidebar -->
-<div class="sidebar" [class.open]="isSidebarOpen">
-  <button class="close-btn" (click)="closeSidebar()">✕</button>
-  <a routerLink="/" (click)="closeSidebar()">Home</a>
-  <a routerLink="/dashboard" (click)="closeSidebar()">Dashboard</a>
-  <a routerLink="/reports" (click)="closeSidebar()">Reports</a>
-  <a routerLink="/settings" (click)="closeSidebar()">Settings</a>
-</div>
+<!-- <div ngIf="!isSidebarOpen" class="overlay"
+  (click)="closeSidebar()"></div> -->

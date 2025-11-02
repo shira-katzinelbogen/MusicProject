@@ -96,7 +96,7 @@ html {
 }
 
 #live-dot {
-  display: inline-block;
+  /* display: inline-block; */
   font-size: 40px;
   margin-right: 8px;
   color: #3CFF6E;

@@ -34,41 +34,20 @@
 //   }
   
 // }
-
-import { Component, ViewChild, AfterViewInit, ViewEncapsulation } from '@angular/core';
-import { AsyncPipe } from '@angular/common';
-import { MatSidenavModule, MatSidenav } from '@angular/material/sidenav';
-import { MatIconModule } from '@angular/material/icon';
+import { Component, inject } from '@angular/core';
 import { MatListModule } from '@angular/material/list';
+import { MatIconModule } from '@angular/material/icon';
 import { RouterModule } from '@angular/router';
 import { SidebarService } from '../../../Services/sidebar.service';
-import { Observable } from 'rxjs';
-
+import { ViewEncapsulation } from '@angular/core';
 @Component({
   selector: 'app-sidebar',
   standalone: true,
-  imports: [
-    AsyncPipe,
-    MatSidenavModule,
-    MatIconModule,
-    MatListModule,
-    RouterModule
-  ],
+  imports: [MatListModule, MatIconModule, RouterModule],
   templateUrl: './sidebar.component.html',
-  styleUrls: ['./sidebar.component.css'],
+  styleUrl: './sidebar.component.css',
   // encapsulation: ViewEncapsulation.None
 })
-export class SidebarComponent implements AfterViewInit {
-  @ViewChild('sidenav') sidenav!: MatSidenav;
-  isOpen$!: Observable<boolean>;
-
-  constructor(public sidebarService: SidebarService) {
-    this.isOpen$ = this.sidebarService.isOpen$;
-  }
-
-  ngAfterViewInit(): void {
-    this.isOpen$.subscribe(isOpen => {
-      isOpen ? this.sidenav.open() : this.sidenav.close();
-    });
-  }
+export class SidebarComponent {
+  sidebarService = inject(SidebarService);
 }

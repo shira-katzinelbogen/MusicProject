@@ -89,75 +89,86 @@
 </mat-sidenav-container> -->
 
 
-
+<!-- 
 
 @if (isOpen$ | async) {
   <div class="overlay" (click)="sidebarService.close()"></div>
-}
+} -->
+<!-- 
 
-<mat-sidenav-container class="sidebar-container">
-  <mat-sidenav #sidenav="matSidenav" mode="over" [opened]="isOpen$ | async" class="sidebar">
-    <button class="close-btn" (click)="sidebarService.close()">
+-->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- sidebar-content.component.html -->
+<div class="p-4">
+  <div class="flex justify-end mb-2">
+    <button mat-icon-button (click)="sidebarService.close()">
       <mat-icon>close</mat-icon>
     </button>
-    <div class="sidebar-header">
-      <div class="logo-and-title">
-        <mat-icon class="logo-icon">music_note</mat-icon>
-        <div class="title-text">
-          <h2 id="app-name">TuneHub Pro</h2>
-          <p id="app-slogan">Navigation Menu</p>
-        </div>
-      </div>
+  </div>
+
+  <div class="flex items-center gap-3 mb-6 px-4">
+    <mat-icon class="text-purple-400 text-3xl">music_note</mat-icon>
+    <div>
+      <h2 class="text-xl font-bold">TuneHub Pro</h2>
+      <p class="text-xs text-gray-400">Navigation Menu</p>
     </div>
+  </div>
 
-    <mat-nav-list>
-      <a mat-list-item routerLink="/home" routerLinkActive="active" #rlaHome="routerLinkActive" [activated]="rlaHome.isActive" (click)="sidebarService.close()">
-        <mat-icon matListItemIcon>home</mat-icon>
-        <span>Home</span>
-      </a>
-      <a mat-list-item routerLink="/musicians" routerLinkActive="active" #rlaMusicians="routerLinkActive" [activated]="rlaMusicians.isActive" (click)="sidebarService.close()">
-        <mat-icon matListItemIcon>person_add</mat-icon>
-        <span>Find Musicians</span>
-      </a>
-      <a mat-list-item routerLink="/posts" routerLinkActive="active" #rlaPosts="routerLinkActive" [activated]="rlaPosts.isActive" (click)="sidebarService.close()">
-        <mat-icon matListItemIcon>description</mat-icon>
-        <span>Posts</span>
-      </a>
-      <a mat-list-item routerLink="/challenges" routerLinkActive="active" #rlaChallenges="routerLinkActive" [activated]="rlaChallenges.isActive" (click)="sidebarService.close()">
-        <mat-icon matListItemIcon>emoji_events</mat-icon>
-        <span>Challenges</span>
-      </a>
-      <a mat-list-item routerLink="/sheet-music" routerLinkActive="active" #rlaSheet="routerLinkActive" [activated]="rlaSheet.isActive" (click)="sidebarService.close()">
-        <mat-icon matListItemIcon>music_note</mat-icon>
-        <span>Sheet Music</span>
-      </a>
-      <a mat-list-item routerLink="/teachers" routerLinkActive="active" #rlaTeachers="routerLinkActive" [activated]="rlaTeachers.isActive" (click)="sidebarService.close()">
-        <mat-icon matListItemIcon>menu_book</mat-icon>
-        <span>Teachers & Lessons</span>
-      </a>
-      <a mat-list-item routerLink="/communities" routerLinkActive="active" #rlaCommunities="routerLinkActive" [activated]="rlaCommunities.isActive" (click)="sidebarService.close()">
-        <mat-icon matListItemIcon>people_outline</mat-icon>
-        <span>Communities</span>
-      </a>
-      <a mat-list-item routerLink="/marketplace" routerLinkActive="active" #rlaMarket="routerLinkActive" [activated]="rlaMarket.isActive" (click)="sidebarService.close()">
-        <mat-icon matListItemIcon>shopping_bag</mat-icon>
-        <span>Marketplace</span>
-      </a>
-      <a mat-list-item routerLink="/messages" routerLinkActive="active" #rlaMessages="routerLinkActive" [activated]="rlaMessages.isActive" (click)="sidebarService.close()">
-        <mat-icon matListItemIcon>chat_bubble_outline</mat-icon>
-        <span>Messages</span>
-      </a>
+  <mat-nav-list>
+    <a mat-list-item routerLink="/home" routerLinkActive="active" (click)="sidebarService.close()">
+      <mat-icon matListItemIcon>home</mat-icon>
+      <span matListItemTitle>Home</span>
+    </a>
+    <a mat-list-item routerLink="/musicians" routerLinkActive="active" (click)="sidebarService.close()">
+      <mat-icon matListItemIcon>person_add</mat-icon>
+      <span matListItemTitle>Find Musicians</span>
+    </a>
+    <a mat-list-item routerLink="/posts" routerLinkActive="active" (click)="sidebarService.close()">
+      <mat-icon matListItemIcon>description</mat-icon>
+      <span matListItemTitle>Posts</span>
+    </a>
+    <a mat-list-item routerLink="/challenges" routerLinkActive="active" (click)="sidebarService.close()">
+      <mat-icon matListItemIcon>emoji_events</mat-icon>
+      <span matListItemTitle>Challenges</span>
+    </a>
+    <a mat-list-item routerLink="/sheet-music" routerLinkActive="active" (click)="sidebarService.close()">
+      <mat-icon matListItemIcon>music_note</mat-icon>
+      <span matListItemTitle>Sheet Music</span>
+    </a>
+    <a mat-list-item routerLink="/teachers" routerLinkActive="active" (click)="sidebarService.close()">
+      <mat-icon matListItemIcon>menu_book</mat-icon>
+      <span matListItemTitle>Teachers & Lessons</span>
+    </a>
+    <a mat-list-item routerLink="/communities" routerLinkActive="active" (click)="sidebarService.close()">
+      <mat-icon matListItemIcon>people_outline</mat-icon>
+      <span matListItemTitle>Communities</span>
+    </a>
+    <a mat-list-item routerLink="/marketplace" routerLinkActive="active" (click)="sidebarService.close()">
+      <mat-icon matListItemIcon>shopping_bag</mat-icon>
+      <span matListItemTitle>Marketplace</span>
+    </a>
+    <a mat-list-item routerLink="/messages" routerLinkActive="active" (click)="sidebarService.close()">
+      <mat-icon matListItemIcon>chat_bubble_outline</mat-icon>
+      <span matListItemTitle>Messages</span>
+    </a>
+  </mat-nav-list>
 
-      <mat-list-item class="footer-item">
-        <span>&copy; 2025 TuneHub Professional</span>
-      </mat-list-item>
-      <mat-list-item class="footer-item">
-        <span>Version 2.0</span>
-      </mat-list-item>
-    </mat-nav-list>
-  </mat-sidenav>
-
-  <mat-sidenav-content>
-    <router-outlet></router-outlet>
-  </mat-sidenav-content>
-</mat-sidenav-container>
+  <div class="mt-auto p-4 border-t border-gray-700 text-xs text-gray-400">
+    <p>&copy; 2025 TuneHub Professional</p>
+    <p>Version 2.0</p>
+  </div>
+</div>
