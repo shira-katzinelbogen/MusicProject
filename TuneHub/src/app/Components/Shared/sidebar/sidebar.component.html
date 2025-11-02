@@ -1,8 +1,11 @@
-<<<<<<< HEAD
 <!-- Overlay -->
-<div class="overlay" [class.active]="isMenuOpen" (click)="closeMenu()"></div>
-=======
-<mat-sidenav-container class="sidebar-container">
+<!-- <div 
+  class="overlay" 
+  *ngIf="isOpen$ | async"
+  (click)="sidebarService.close()">
+</div>
+
+<mat-sidenav-container class="sidebar-container"  [class.open]="isOpen$ | async">
   <mat-sidenav #sidenav="matSidenav" mode="side" opened class="sidebar">
     <div class="sidebar-header">
       <div class="logo-and-title">
@@ -12,12 +15,14 @@
           <p>Navigation Menu</p>
         </div>
       </div>
-      <mat-icon class="close-icon" (click)="closeSidebar()">close</mat-icon>
-    </div>
->>>>>>> 35b7a2fb90870dfb5dd081af2bade7c52cc80355
+      (click)="closeSidebar()" -->
+       <!-- <button (click)="sidebarService.close()">✖</button> -->
+      <!-- <mat-icon class="close-icon"  (click)="sidebarService.close()">close</mat-icon>
+    </div> -->
 
-    <mat-nav-list class="mat-nav-list">  <!-- שנה ל-mat-nav-list אם עדיין לא -->
-      <a mat-list-item routerLink="/home" routerLinkActive="active" #rlaHome="routerLinkActive" [activated]="rlaHome.isActive">
+    <!-- <mat-nav-list class="mat-nav-list">  -->
+       <!-- שנה ל-mat-nav-list אם עדיין לא -->
+      <!-- <a mat-list-item routerLink="/home" routerLinkActive="active" #rlaHome="routerLinkActive" [activated]="rlaHome.isActive">
         <mat-icon matListItemIcon>home</mat-icon>
         <span>Home</span>
       </a>
@@ -60,45 +65,99 @@
       <a mat-list-item routerLink="/messages" routerLinkActive="active" #rlaMessages="routerLinkActive" [activated]="rlaMessages.isActive">
         <mat-icon matListItemIcon>chat_bubble_outline</mat-icon>
         <span>Messages</span>
-      </a>
+      </a> -->
 
       <!-- 🔑 חדש: הפוטר כפריטים בתוך הרשימה – כמו קישורים, אבל בלי routerLink ואייקון -->
-      <mat-list-item class="footer-item">
+      <!-- <mat-list-item class="footer-item">
         <span>&copy; 2025 TuneHub Professional</span>
       </mat-list-item>
 
-<<<<<<< HEAD
-<nav class="side-menu" [class.open]="isMenuOpen">
-  <button class="close-menu" (click)="closeMenu()">
-    <img src="../assets/icons/X.png" alt="Close">
-  </button>
-  
-  <ul>
-    <li><a routerLink="/home"><div class="animated-div">HOME<span>עמוד הבית</span></div></a></li>
-    <li><a routerLink="/products"><div class="animated-div">PRODUCTS<span>המוצרים שלנו</span></div></a></li>
-    <li><a routerLink="/our-story"><div class="animated-div">OUR STORY<span>הסיפור שלנו</span></div></a></li>
-    <li><a routerLink="/sweets-events"><div class="animated-div">SWEETS EVENTS<span>אירועים</span></div></a></li>
-    <li><a routerLink="/contact"><div class="animated-div">CONTACT<span>צור קשר</span></div></a></li>
-  </ul>
 
-  <div class="iconsM">
-    <img class="iconM" src="../assets/icons/I.png">
-    <img class="iconM" src="../assets/icons/F.png">
-    <img class="iconM" src="../assets/icons/T.png">
-  </div>
-</nav>  
-=======
+      <mat-list-item class="footer-item">
+        <span>Version 2.0</span>
+      </mat-list-item>
+    </mat-nav-list> -->
+
+    <!-- 🔑: הסרתי את <div class="sidebar-footer"> – עכשיו הוא חלק מהרשימה -->
+  <!-- </mat-sidenav> -->
+
+  <!-- תוכן העמוד הראשי – ודא שהוא כאן בתוך <mat-sidenav-content> כדי שיופיע כשהסיידבר סגור -->
+  <!-- <mat-sidenav-content>
+    <router-outlet></router-outlet>  -->
+    <!-- או התוכן הרלוונטי שלך -->
+  <!-- </mat-sidenav-content>
+</mat-sidenav-container> -->
+
+
+
+
+@if (isOpen$ | async) {
+  <div class="overlay" (click)="sidebarService.close()"></div>
+}
+
+<mat-sidenav-container class="sidebar-container">
+  <mat-sidenav #sidenav="matSidenav" mode="over" [opened]="isOpen$ | async" class="sidebar">
+    <button class="close-btn" (click)="sidebarService.close()">
+      <mat-icon>close</mat-icon>
+    </button>
+    <div class="sidebar-header">
+      <div class="logo-and-title">
+        <mat-icon class="logo-icon">music_note</mat-icon>
+        <div class="title-text">
+          <h2 id="app-name">TuneHub Pro</h2>
+          <p id="app-slogan">Navigation Menu</p>
+        </div>
+      </div>
+    </div>
+
+    <mat-nav-list>
+      <a mat-list-item routerLink="/home" routerLinkActive="active" #rlaHome="routerLinkActive" [activated]="rlaHome.isActive" (click)="sidebarService.close()">
+        <mat-icon matListItemIcon>home</mat-icon>
+        <span>Home</span>
+      </a>
+      <a mat-list-item routerLink="/musicians" routerLinkActive="active" #rlaMusicians="routerLinkActive" [activated]="rlaMusicians.isActive" (click)="sidebarService.close()">
+        <mat-icon matListItemIcon>person_add</mat-icon>
+        <span>Find Musicians</span>
+      </a>
+      <a mat-list-item routerLink="/posts" routerLinkActive="active" #rlaPosts="routerLinkActive" [activated]="rlaPosts.isActive" (click)="sidebarService.close()">
+        <mat-icon matListItemIcon>description</mat-icon>
+        <span>Posts</span>
+      </a>
+      <a mat-list-item routerLink="/challenges" routerLinkActive="active" #rlaChallenges="routerLinkActive" [activated]="rlaChallenges.isActive" (click)="sidebarService.close()">
+        <mat-icon matListItemIcon>emoji_events</mat-icon>
+        <span>Challenges</span>
+      </a>
+      <a mat-list-item routerLink="/sheet-music" routerLinkActive="active" #rlaSheet="routerLinkActive" [activated]="rlaSheet.isActive" (click)="sidebarService.close()">
+        <mat-icon matListItemIcon>music_note</mat-icon>
+        <span>Sheet Music</span>
+      </a>
+      <a mat-list-item routerLink="/teachers" routerLinkActive="active" #rlaTeachers="routerLinkActive" [activated]="rlaTeachers.isActive" (click)="sidebarService.close()">
+        <mat-icon matListItemIcon>menu_book</mat-icon>
+        <span>Teachers & Lessons</span>
+      </a>
+      <a mat-list-item routerLink="/communities" routerLinkActive="active" #rlaCommunities="routerLinkActive" [activated]="rlaCommunities.isActive" (click)="sidebarService.close()">
+        <mat-icon matListItemIcon>people_outline</mat-icon>
+        <span>Communities</span>
+      </a>
+      <a mat-list-item routerLink="/marketplace" routerLinkActive="active" #rlaMarket="routerLinkActive" [activated]="rlaMarket.isActive" (click)="sidebarService.close()">
+        <mat-icon matListItemIcon>shopping_bag</mat-icon>
+        <span>Marketplace</span>
+      </a>
+      <a mat-list-item routerLink="/messages" routerLinkActive="active" #rlaMessages="routerLinkActive" [activated]="rlaMessages.isActive" (click)="sidebarService.close()">
+        <mat-icon matListItemIcon>chat_bubble_outline</mat-icon>
+        <span>Messages</span>
+      </a>
+
+      <mat-list-item class="footer-item">
+        <span>&copy; 2025 TuneHub Professional</span>
+      </mat-list-item>
       <mat-list-item class="footer-item">
         <span>Version 2.0</span>
       </mat-list-item>
     </mat-nav-list>
-
-    <!-- 🔑: הסרתי את <div class="sidebar-footer"> – עכשיו הוא חלק מהרשימה -->
   </mat-sidenav>
 
-  <!-- תוכן העמוד הראשי – ודא שהוא כאן בתוך <mat-sidenav-content> כדי שיופיע כשהסיידבר סגור -->
   <mat-sidenav-content>
-    <router-outlet></router-outlet> <!-- או התוכן הרלוונטי שלך -->
+    <router-outlet></router-outlet>
   </mat-sidenav-content>
 </mat-sidenav-container>
->>>>>>> 35b7a2fb90870dfb5dd081af2bade7c52cc80355
