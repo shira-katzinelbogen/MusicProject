@@ -1,7 +1,5 @@
-<<<<<<< HEAD
 <!-- Overlay -->
 <div class="overlay" [class.active]="isMenuOpen" (click)="closeMenu()"></div>
-=======
 <mat-sidenav-container class="sidebar-container">
   <mat-sidenav #sidenav="matSidenav" mode="side" opened class="sidebar">
     <div class="sidebar-header">
@@ -12,9 +10,8 @@
           <p>Navigation Menu</p>
         </div>
       </div>
-      <mat-icon class="close-icon" (click)="closeSidebar()">close</mat-icon>
+      <mat-icon class="close-icon" (click)="closeMenu()">close</mat-icon>
     </div>
->>>>>>> 35b7a2fb90870dfb5dd081af2bade7c52cc80355
 
     <mat-nav-list class="mat-nav-list">  <!-- שנה ל-mat-nav-list אם עדיין לא -->
       <a mat-list-item routerLink="/home" routerLinkActive="active" #rlaHome="routerLinkActive" [activated]="rlaHome.isActive">
@@ -67,27 +64,6 @@
         <span>&copy; 2025 TuneHub Professional</span>
       </mat-list-item>
 
-<<<<<<< HEAD
-<nav class="side-menu" [class.open]="isMenuOpen">
-  <button class="close-menu" (click)="closeMenu()">
-    <img src="../assets/icons/X.png" alt="Close">
-  </button>
-  
-  <ul>
-    <li><a routerLink="/home"><div class="animated-div">HOME<span>עמוד הבית</span></div></a></li>
-    <li><a routerLink="/products"><div class="animated-div">PRODUCTS<span>המוצרים שלנו</span></div></a></li>
-    <li><a routerLink="/our-story"><div class="animated-div">OUR STORY<span>הסיפור שלנו</span></div></a></li>
-    <li><a routerLink="/sweets-events"><div class="animated-div">SWEETS EVENTS<span>אירועים</span></div></a></li>
-    <li><a routerLink="/contact"><div class="animated-div">CONTACT<span>צור קשר</span></div></a></li>
-  </ul>
-
-  <div class="iconsM">
-    <img class="iconM" src="../assets/icons/I.png">
-    <img class="iconM" src="../assets/icons/F.png">
-    <img class="iconM" src="../assets/icons/T.png">
-  </div>
-</nav>  
-=======
       <mat-list-item class="footer-item">
         <span>Version 2.0</span>
       </mat-list-item>
@@ -101,4 +77,3 @@
     <router-outlet></router-outlet> <!-- או התוכן הרלוונטי שלך -->
   </mat-sidenav-content>
 </mat-sidenav-container>
->>>>>>> 35b7a2fb90870dfb5dd081af2bade7c52cc80355

@@ -1,7 +1,9 @@
-import { Component } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 
 import { Router, RouterModule } from '@angular/router';
 import { MatIconModule } from '@angular/material/icon';
+import { MatSidenav } from '@angular/material/sidenav';
+import { SidebarService } from '../../../Services/sidebar.service';
 // import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 // 
 
@@ -11,6 +13,7 @@ import { MatIconModule } from '@angular/material/icon';
   imports: [
     RouterModule, 
     MatIconModule,
+
     // BrowserAnimationsModule
   ],
   templateUrl: './header.component.html',
@@ -20,16 +23,27 @@ import { MatIconModule } from '@angular/material/icon';
 export class HeaderComponent {
   isSidebarOpen = false;
 
-  constructor(private router: Router) {}
+  constructor(private router: Router,private sidebarService: SidebarService) {}
+
+  // toggleSidebar() {
+  //   this.isSidebarOpen = !this.isSidebarOpen;
+  // }
+
+  // closeSidebar() {
+  //   this.isSidebarOpen = false;
+  // }
 
   toggleSidebar() {
-    this.isSidebarOpen = !this.isSidebarOpen;
+    this.sidebarService.toggle();  
   }
 
   closeSidebar() {
-    this.isSidebarOpen = false;
+    this.sidebarService.close();  
   }
+    
 
+
+ 
   goToProfile() {
     this.closeSidebar();
     this.router.navigate(['/user-profile']);
@@ -50,3 +64,4 @@ export class HeaderComponent {
     this.router.navigate(['/home-page']);
   }
 }
+
