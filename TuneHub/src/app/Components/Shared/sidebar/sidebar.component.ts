@@ -32,12 +32,12 @@
 //   ngOnInit(): void {
 //     this.isOpen$ = this.sidebarService.isOpen$;
 //   }
-  
+
 // }
 import { Component, inject } from '@angular/core';
 import { MatListModule } from '@angular/material/list';
 import { MatIconModule } from '@angular/material/icon';
-import { RouterModule } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 import { SidebarService } from '../../../Services/sidebar.service';
 import { ViewEncapsulation } from '@angular/core';
 @Component({
@@ -50,4 +50,11 @@ import { ViewEncapsulation } from '@angular/core';
 })
 export class SidebarComponent {
   sidebarService = inject(SidebarService);
+  private router = inject(Router);
+
+  navigateTo(path: string) {
+    this.sidebarService.close();
+    this.router.navigate([path]);
+  }
+
 }

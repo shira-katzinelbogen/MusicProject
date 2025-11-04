@@ -16,13 +16,13 @@
         </div>
       </div>
       (click)="closeSidebar()" -->
-       <!-- <button (click)="sidebarService.close()">✖</button> -->
-      <!-- <mat-icon class="close-icon"  (click)="sidebarService.close()">close</mat-icon>
+<!-- <button (click)="sidebarService.close()">✖</button> -->
+<!-- <mat-icon class="close-icon"  (click)="sidebarService.close()">close</mat-icon>
     </div> -->
 
-    <!-- <mat-nav-list class="mat-nav-list">  -->
-       <!-- שנה ל-mat-nav-list אם עדיין לא -->
-      <!-- <a mat-list-item routerLink="/home" routerLinkActive="active" #rlaHome="routerLinkActive" [activated]="rlaHome.isActive">
+<!-- <mat-nav-list class="mat-nav-list">  -->
+<!-- שנה ל-mat-nav-list אם עדיין לא -->
+<!-- <a mat-list-item routerLink="/home" routerLinkActive="active" #rlaHome="routerLinkActive" [activated]="rlaHome.isActive">
         <mat-icon matListItemIcon>home</mat-icon>
         <span>Home</span>
       </a>
@@ -67,8 +67,8 @@
         <span>Messages</span>
       </a> -->
 
-      <!-- 🔑 חדש: הפוטר כפריטים בתוך הרשימה – כמו קישורים, אבל בלי routerLink ואייקון -->
-      <!-- <mat-list-item class="footer-item">
+<!-- 🔑 חדש: הפוטר כפריטים בתוך הרשימה – כמו קישורים, אבל בלי routerLink ואייקון -->
+<!-- <mat-list-item class="footer-item">
         <span>&copy; 2025 TuneHub Professional</span>
       </mat-list-item>
 
@@ -78,14 +78,14 @@
       </mat-list-item>
     </mat-nav-list> -->
 
-    <!-- 🔑: הסרתי את <div class="sidebar-footer"> – עכשיו הוא חלק מהרשימה -->
-  <!-- </mat-sidenav> -->
+<!-- 🔑: הסרתי את <div class="sidebar-footer"> – עכשיו הוא חלק מהרשימה -->
+<!-- </mat-sidenav> -->
 
-  <!-- תוכן העמוד הראשי – ודא שהוא כאן בתוך <mat-sidenav-content> כדי שיופיע כשהסיידבר סגור -->
-  <!-- <mat-sidenav-content>
+<!-- תוכן העמוד הראשי – ודא שהוא כאן בתוך <mat-sidenav-content> כדי שיופיע כשהסיידבר סגור -->
+<!-- <mat-sidenav-content>
     <router-outlet></router-outlet>  -->
-    <!-- או התוכן הרלוונטי שלך -->
-  <!-- </mat-sidenav-content>
+<!-- או התוכן הרלוונטי שלך -->
+<!-- </mat-sidenav-content>
 </mat-sidenav-container> -->
 
 
@@ -137,7 +137,7 @@
       <mat-icon matListItemIcon>person_add</mat-icon>
       <span matListItemTitle>Find Musicians</span>
     </a>
-    <a mat-list-item routerLink="/posts" routerLinkActive="active" (click)="sidebarService.close()">
+    <a mat-list-item (click)="navigateTo('/posts')">
       <mat-icon matListItemIcon>description</mat-icon>
       <span matListItemTitle>Posts</span>
     </a>

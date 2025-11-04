@@ -1,1 +1,31 @@
-<p>posts works!</p>
+
+
+<h1 class="title">All Your Tasks</h1>
+<p>klkl</p>
+<br><br><br><br><br>
+<br><br><br><br><br>
+<br><br><br><br><br><br><br><br><br><br><br>
+<br><br><br><br><br><br><br><br><br><br><br>
+@if(posts.length===0){
+<p class="have-no-posts"><b>There are currently no tasks to display.</b><br>
+    Add new tasks to manage your work efficiently and neatly.<br><br>
+
+    Take advantage of this tool to organize your day in the best way and achieve the goals you have set for yourself<br>
+</p>
+}
+@else{
+
+<div class="posts-container ">
+    @for(post of posts; track $index){
+    <div (click)="showDetails(post)">
+        <h1>content {{post.content}}</h1>
+        <h4>likes {{post.likes}}</h4>
+        <h4>imagesPath {{post.imagesPath}}</h4>
+
+        <!-- <button class="showDetails" >show details</button> -->
+    </div>
+
+    }
+</div>
+}
+

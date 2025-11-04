@@ -13,16 +13,21 @@ import { PostComponent } from './Components/Post/post/post.component';
 import { PostsComponent } from './Components/Post/posts/posts.component';
 
 export const routes: Routes = [
+
   { path: '', redirectTo: '/home-page', pathMatch: 'full' },
-  //Post
-  { path: 'post/{id}', component: PostComponent },
+
+  // Post
+  { path: 'post/:id', component: PostComponent },
   { path: 'posts', component: PostsComponent },
-  //Users
+
+  // Users
   { path: 'login-window', component: LoginWindowComponent },
   { path: 'musicians', component: MusiciansComponent },
 
-  //Shared
+  // Shared
   { path: 'sidebar', component: SidebarComponent },
-  { path: '**', component: HomePageComponent }
+  { path: 'home-page', component: HomePageComponent },
 
+  // Wildcard
+  { path: '**', component: HomePageComponent }
 ];
