@@ -1,5 +1,4 @@
 import Users from "./Users";
-//למחוק שדות מיותרים - למשל תמונה ושמע
 export default class Post {
     id?: number;
     user?: Users;
@@ -9,7 +8,7 @@ export default class Post {
     audio?: string;
     video?: string;
     dateUploaded?: Date;
-    comments?: Comment;
+    comments?: Comment[];
     imagesPath?: string;
     audiosPath?: string;
     usersFavorite?: Users[];

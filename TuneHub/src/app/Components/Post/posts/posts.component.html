@@ -1,0 +1,72 @@
+<!-- 
+
+<h1 class="title">All Your Tasks</h1>
+<p>klkl</p>
+<div>
+    <p>hi hello</p>
+    
+</div>
+
+@if(posts.length===0){
+<p class="have-no-posts"><b>There are currently no tasks to display.</b><br>
+    Add new tasks to manage your work efficiently and neatly.<br><br>
+
+    Take advantage of this tool to organize your day in the best way and achieve the goals you have set for yourself<br>
+</p>
+} -->
+<!-- @else{
+
+<div class="posts-container ">
+    @for(post of posts; track $index){
+    <div (click)="showDetails(post)">
+        <h1>content {{post.content}}</h1>
+        <h4>likes {{post.likes}}</h4>
+        <h4>imagesPath {{post.imagesPath}}</h4>
+        <img [src]="getImageUrl(post.imagesPath)"
+              class="profile-image">
+
+              
+    </div>
+
+    }
+</div>
+} -->
+
+@if(posts.length===0){
+    }
+@else{
+
+<div class="posts-container">
+    @for(post of posts; track $index){
+    <div class="task-card" (click)="showDetails(post)">
+        
+        <div class="card-header">
+            <h2 class="card-content-title">
+                {{post.content}}
+            </h2>
+            <div class="task-meta">
+                <img [src]="getImageUrl(post.imagesPath)" class="task-image">
+            </div>
+        </div>
+        
+        <div class="card-body">
+            <p class="description">
+                Task description goes here...
+            </p>
+        </div>
+
+        <div class="card-footer">
+            <div class="likes-info">
+                <span class="likes-icon">❤️</span>
+                <h4 class="likes-count">{{post.likes}} Likes</h4>
+            </div>
+            <button class="view-details-button">
+                View Details
+            </button>
+        </div>
+        
+    </div>
+    }
+</div>
+}
+

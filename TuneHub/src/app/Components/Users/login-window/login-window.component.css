@@ -39,7 +39,24 @@ body {
 .icon {
   font-size: 42px;
   background: linear-gradient(135deg, #a855f7, #3b82f6);
-  /* -webkit-background-clip: text; */
+
+
+  /* יוצרים מסכה על הטקסט */
+  color: black;
+  -webkit-mask-image: linear-gradient(90deg, #fff, #fff);
+  -webkit-mask-clip: text;
+  -webkit-mask-repeat: no-repeat;
+  -webkit-mask-size: 100%;
+  mask-image: linear-gradient(90deg, #fff, #fff);
+  mask-clip: text;
+  mask-repeat: no-repeat;
+  mask-size: 100%;
+
+
+ 
+
+    color: transparent;
+  
   -webkit-text-fill-color: transparent;
   margin-bottom: 20px;
 }

@@ -1,20 +1,28 @@
-import { Component } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
-import { SidebarComponent } from './Components/Shared/sidebar/sidebar.component';
+// src/app/app.component.ts
 
-// --- ייבוא חובה של Material ---
-import { MatSidenavModule } from '@angular/material/sidenav'; 
-import { FooterComponent } from './Components/Shared/footer/footer.component';
+import { Component, inject } from '@angular/core';
+import { RouterOutlet } from '@angular/router'; // נחוץ עבור <router-outlet>
+import { MatSidenavModule } from '@angular/material/sidenav'; // נחוץ עבור mat-sidenav-container
 import { HeaderComponent } from './Components/Shared/header/header.component';
-// --------------------------------
+import { FooterComponent } from './Components/Shared/footer/footer.component';
+import { SidebarComponent } from './Components/Shared/sidebar/sidebar.component';
+import { SidebarService } from './Services/sidebar.service'; // הנתיב לפי התמונה
 
-// ודא שגם הקומפוננטות שלך מיובאות אם הן Standalone:
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet,SidebarComponent,MatSidenavModule,FooterComponent,HeaderComponent],
+  standalone: true,
+  imports: [
+    RouterOutlet,
+    MatSidenavModule,
+    HeaderComponent,
+    FooterComponent,
+    SidebarComponent,
+  ],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css'
 })
 export class AppComponent {
   title = 'TuneHub';
+  // sidebarService חייב להיות מוגדר כדי שה-HTML יקרא ל-isOpen()
+  sidebarService = inject(SidebarService); 
 }

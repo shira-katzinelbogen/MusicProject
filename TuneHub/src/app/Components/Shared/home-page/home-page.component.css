@@ -1,20 +1,22 @@
 /* --- Reset --- */
-body, html {
+body,
+html {
   margin: 0;
   padding: 0;
   height: 100%;
   width: 100%;
   overflow-x: hidden;
+
   font-family: Arial, sans-serif;
 }
 
 /* --- Background Image Slider --- */
 .image-slider {
-  position: fixed;
+  position: absolute;
   top: 0;
   left: 0;
   width: 100%;
-  height: 100%;
+  height: 100vh;
   overflow: hidden;
 }
 
@@ -30,14 +32,34 @@ body, html {
   transition: opacity 2s;
 }
 
-.image-slider img:nth-child(1) { animation-delay: 0s; }
-.image-slider img:nth-child(2) { animation-delay: 4s; }
-.image-slider img:nth-child(3) { animation-delay: 8s; }
-.image-slider img:nth-child(4) { animation-delay: 12s; }
+.image-slider img:nth-child(1) {
+  animation-delay: 0s;
+}
+
+.image-slider img:nth-child(2) {
+  animation-delay: 4s;
+}
+
+.image-slider img:nth-child(3) {
+  animation-delay: 8s;
+}
+
+.image-slider img:nth-child(4) {
+  animation-delay: 12s;
+}
 
 @keyframes slideAnimation {
-  0%, 35%, 100% { opacity: 0; }
-  10%, 25% { opacity: 1; }
+
+  0%,
+  35%,
+  100% {
+    opacity: 0;
+  }
+
+  10%,
+  25% {
+    opacity: 1;
+  }
 }
 
 
@@ -49,8 +71,10 @@ body, html {
   height: 100vh;
   display: flex;
   flex-direction: column;
-  justify-content: center;  /* מרכז אנכי */
-  align-items: center;      /* מרכז אופקי */
+  justify-content: center;
+  /* מרכז אנכי */
+  align-items: center;
+  /* מרכז אופקי */
   text-align: center;
   color: white;
   padding: 20px;
@@ -72,7 +96,7 @@ body, html {
 }
 
 #live-dot {
-  display: inline-block;
+  /* display: inline-block; */
   font-size: 40px;
   margin-right: 8px;
   color: #3CFF6E;
@@ -80,8 +104,17 @@ body, html {
 }
 
 @keyframes blink {
-  0%, 50%, 100% { opacity: 0.9; }
-  25%, 75% { opacity: 0.5; }
+
+  0%,
+  50%,
+  100% {
+    opacity: 0.9;
+  }
+
+  25%,
+  75% {
+    opacity: 0.5;
+  }
 }
 
 /* --- Title --- */
@@ -94,11 +127,21 @@ body, html {
   font-size: clamp(2rem, 4vw, 5rem);
   font-weight: 800;
   background: linear-gradient(90deg, #a653fe 0%, #599afd 100%);
-  background-clip: text;
-  -webkit-background-clip: text;
+
+  color: black;
+  -webkit-mask-image: linear-gradient(90deg, #fff, #fff);
+  -webkit-mask-clip: text;
+  -webkit-mask-repeat: no-repeat;
+  -webkit-mask-size: 100%;
+  mask-image: linear-gradient(90deg, #fff, #fff);
+  mask-clip: text;
+  mask-repeat: no-repeat;
+  mask-size: 100%;
+  color: transparent;
+
   color: transparent;
   -webkit-text-fill-color: transparent;
-  /* text-transform: uppercase; */
+
   display: inline-block;
   line-height: 1.1;
   letter-spacing: 1px;
@@ -114,7 +157,8 @@ body, html {
 }
 
 /* --- Paragraphs --- */
-#p1, #p2 {
+#p1,
+#p2 {
   width: 70%;
   font-size: 1.45vw;
   line-height: 1.6;
@@ -124,7 +168,7 @@ body, html {
 
 #p2 {
   font-size: 1.3vw;
-  color: rgb(160,160,160);
+  color: rgb(160, 160, 160);
 }
 
 /* --- Button --- */
@@ -135,12 +179,12 @@ body, html {
   
   font-weight: bold;
   cursor: pointer;
-  transition: opacity 0.3s ease; */ 
+  transition: opacity 0.3s ease; */
   font-size: 18px;
-border-radius: 15px; 
-
+  border-radius: 15px;
   padding: 15px 40px;
 }
+
 /* 
 .button:hover {
   opacity: 0.85;
@@ -168,7 +212,8 @@ border-radius: 15px;
   justify-content: center;
   align-items: center;
   gap: 1rem;
-  flex-wrap: wrap; /* כדי שירד שורה במסך קטן */
+  flex-wrap: wrap;
+  /* כדי שירד שורה במסך קטן */
 }
 
 #b2 {

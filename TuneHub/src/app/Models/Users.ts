@@ -11,8 +11,11 @@ export enum UserType {
 }
 
 export default class Users {
-    id?: number;
-    name?: string
+    profile?: {
+        name?: string;
+        imageProfilePath?: string;
+        id?: number;
+    };
     password?: string;
     email?: string;
     description?: string;

@@ -1,8 +1,23 @@
+<app-header></app-header>
 
+<!-- Material Sidenav Container -->
+<mat-sidenav-container class="sidenav-container">
+  <mat-sidenav
+    #sidenav
+    mode="over"
+    [opened]="sidebarService.isOpen()"
+    class="w-72 bg-gray-900 text-white"
+  >
+  
+  
+    <app-sidebar></app-sidebar>
+  </mat-sidenav>
 
-
-    <app-header></app-header>
-        <app-footer></app-footer>
-    <router-outlet></router-outlet>
-
-
+  <mat-sidenav-content>
+    <main class="pt-16 min-h-screen bg-gray-50">
+      <router-outlet></router-outlet>
+    </main>
+    <app-footer></app-footer>
+    
+  </mat-sidenav-content>
+</mat-sidenav-container>

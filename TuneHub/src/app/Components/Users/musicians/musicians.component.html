@@ -1,1 +1,57 @@
-<p>musicians works!</p>
+<div>
+    <h3>
+        Find Musicians 🎤
+        Connect with talented professionals for your next project
+    </h3>
+    <p class="join-network">
+        <button class="contact-btn">
+            👥 Join Network
+        </button>
+    </p>
+</div>
+
+---
+
+@if(users.length === 0){
+<p class="have-no-users">
+    <b>There are currently no users to display.</b><br>
+    Add new users to manage your work efficiently and neatly.<br><br>
+    Take advantage of this tool to organize your day in the best way and achieve the goals you have set for yourself
+</p>
+} @else {
+
+<div class="musicians-container">
+    @for(u of users; track $index){
+    <div class="producer-card" (click)="showDetails(u)">
+        
+        <div class="header">
+            <div class="profile-pic" [style.backgroundImage]="'url(' + getImageUrl(u.profile!.imageProfilePath) + ')'">
+            </div>
+            
+            <div class="info">
+                <h3>{{ u.profile!.name }}</h3>
+                
+                <div class="rating-location">
+                    <span>{{ u.description }}</span>
+                </div>
+                
+                <div class="rating-location">
+                    📍 {{ u.city }}, {{ u.country }}
+                </div>
+            </div>
+        </div>
+        
+     
+
+        <div class="buttons-row">
+            <button class="contact-btn">
+                💬 Contact
+            </button>
+            <button class="icon-btn">
+                👥
+            </button>
+        </div>
+    </div>
+    }
+</div>
+}

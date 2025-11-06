@@ -1,24 +1,11 @@
-import { Injectable } from '@angular/core';
-import { BehaviorSubject } from 'rxjs';
+import { Injectable, signal } from '@angular/core';
 
-@Injectable({
-  providedIn: 'root'  // זמין בכל האפליקציה
-})
+@Injectable({ providedIn: 'root' })
 export class SidebarService {
-  private isOpenSubject = new BehaviorSubject<boolean>(false);
-  public isOpen$ = this.isOpenSubject.asObservable();  //הזרקה-לצפיה בשינויים
+  private _isOpen = signal(false);
+  isOpen = this._isOpen.asReadonly();
 
-  constructor() { }
-
-  toggle(): void {
-    this.isOpenSubject.next(!this.isOpenSubject.value);  //פונקציה שהופכת את המצצב הנוכחי
-  }
-
-  open(): void {
-    this.isOpenSubject.next(true); 
-  }
-
-  close(): void {
-    this.isOpenSubject.next(false);
-  }
+  toggle() { this._isOpen.update(v => !v); }
+  open() { this._isOpen.set(true); }
+  close() { this._isOpen.set(false); }
 }
