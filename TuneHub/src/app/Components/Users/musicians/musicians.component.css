@@ -1,0 +1,113 @@
+/* --- פריסה גלובלית וכותרת --- */
+.page-header {
+    padding: 20px;
+    text-align: center;
+    border-bottom: 2px solid #e0e0e0;
+    margin-bottom: 20px;
+}
+
+.page-header h3 {
+    margin: 5px 0;
+    font-size: 1.8em;
+    color: #333;
+    font-weight: 700;
+}
+
+/* --- מיכל הכרטיסים (Grid) --- */
+.musicians-container {
+    display: grid;
+    /* מציג 3 עמודות אוטומטיות, ניתן לשנות */
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); 
+    gap: 30px;
+    padding: 0 20px 40px;
+}
+
+/* --- עיצוב הכרטיס היחיד (ה-div שבתוך ה-@for) --- */
+.musicians-container > div {
+    /* הופך את ה-div הזה לכרטיס הראשי */
+    background-color: #fff;
+    border-radius: 12px;
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* ממקם את הטקסט והתמונה במרכז */
+    text-align: center;
+    border: 1px solid #e2e8f0;
+}
+
+.musicians-container > div:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+}
+
+/* --- עיצוב מיכל התמונה (.image-p) --- */
+.image-p {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%; /* הופך את ה-div לעיגול */
+    overflow: hidden; /* חותך את התמונה לגבולות העיגול */
+    margin-bottom: 15px;
+    margin-top: 10px;
+    /* מסגרת בולטת ומעוצבת */
+    border: 4px solid #4a90e2; 
+    box-shadow: 0 0 0 2px #fff; /* יוצר אפקט של גבול כפול */
+}
+
+/* --- עיצוב תג ה-<img> (.profile-image) --- */
+.profile-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* חותך את התמונה כדי למלא את המיכל (ללא מתיחה) */
+    display: block;
+}
+
+/* --- עיצוב הטקסט בתוך הכרטיס --- */
+.musicians-container h3 {
+    margin: 4px 0;
+    font-size: 1em; /* מקטין את הכותרות מכיוון שהן חוזרות על עצמן */
+    color: #444;
+    font-weight: 400;
+}
+
+.musicians-container h3:first-child {
+    /* נותן דגש לשם המשתמש */
+    font-size: 1.4em;
+    font-weight: 700;
+    color: #2d3748;
+    margin-bottom: 8px;
+}
+
+/* --- עיצוב שדות ספציפיים --- */
+.musicians-container h3:nth-of-type(2) {
+    /* תיאור (description) */
+    color: #007bff;
+    font-style: italic;
+    font-size: 0.95em;
+    margin-bottom: 10px;
+}
+
+.musicians-container h3:last-of-type {
+    /* מדינה (country) */
+    font-size: 0.9em;
+    color: #718096;
+    margin-top: 8px;
+    border-top: 1px dashed #eee;
+    padding-top: 8px;
+    width: 100%; /* להדגיש הפרדה */
+}
+
+/* --- הודעה כשאין משתמשים --- */
+.have-no-users {
+    padding: 30px;
+    margin: 20px auto;
+    max-width: 600px;
+    background-color: #f7fafc;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    color: #2d3748;
+    line-height: 1.6;
+    text-align: center;
+}

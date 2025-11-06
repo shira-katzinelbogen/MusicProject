@@ -27,9 +27,11 @@ export class MusiciansComponent {
     this._usersService.getMusicians().subscribe({
       next: (res) => {
         this.users = res;
+        console.log('נתונים הגיעו בהצלחה:', this.users); // הדפיסי לוודא
       },
       error: (err) => {
         console.log(err);
+        alert('שגיאה בהבאת נתונים');
       }
     });
 
