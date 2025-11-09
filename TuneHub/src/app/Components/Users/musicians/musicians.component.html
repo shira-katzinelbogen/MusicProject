@@ -19,7 +19,7 @@
     @for(u of users; track $index){
     <div (click)="showDetails(u)">
         <h3>name {{u.profile!.name}}</h3>  
-        <h3>description {{u.description}}</h3>
+        <h3>description {{u.description!}}</h3>
         <h3>city {{u.city}}</h3>
         <h3>country {{u.country}}</h3>
         <div class="image-p">

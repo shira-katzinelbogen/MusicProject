@@ -14,13 +14,12 @@ import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
 })
 
 export class PostsComponent {
-
+  
   public posts: Post[] = [];
   public isShowDetails: boolean = false;
   public selectedPost!: Post;
 
   public user!: Users;
-
 
   constructor(private router: Router, private _postService: PostService,private sanitizer: DomSanitizer) { }
 
