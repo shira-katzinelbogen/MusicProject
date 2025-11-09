@@ -29,7 +29,7 @@ body.sidebar-open {
   left: 0;
   width: 100%;
   height: 100vh;
-  background: rgba(0, 0, 0, 0.5);
+  background: rgba(0, 0, 0, 0.242);
   z-index: 1000001; /* גבוה מה-header, נמוך מהסיידבר */
   animation: fadeIn 0.3s ease-in-out;
   pointer-events: all;

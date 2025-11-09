@@ -1,12 +1,11 @@
-// src/app/app.component.ts
-
 import { Component, inject } from '@angular/core';
-import { RouterOutlet } from '@angular/router'; // נחוץ עבור <router-outlet>
-import { MatSidenavModule } from '@angular/material/sidenav'; // נחוץ עבור mat-sidenav-container
+import { RouterOutlet } from '@angular/router'; 
+import { MatSidenavModule } from '@angular/material/sidenav'; 
 import { HeaderComponent } from './Components/Shared/header/header.component';
 import { FooterComponent } from './Components/Shared/footer/footer.component';
 import { SidebarComponent } from './Components/Shared/sidebar/sidebar.component';
-import { SidebarService } from './Services/sidebar.service'; // הנתיב לפי התמונה
+import { SidebarService } from './Services/sidebar.service'; 
+import { LoginWindowComponent } from './Components/Users/login-window/login-window.component';
 
 @Component({
   selector: 'app-root',
@@ -17,7 +16,8 @@ import { SidebarService } from './Services/sidebar.service'; // הנתיב לפ�
     HeaderComponent,
     FooterComponent,
     SidebarComponent,
-  ],
+    LoginWindowComponent
+],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css'
 })

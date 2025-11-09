@@ -17,7 +17,7 @@ export class MusiciansComponent {
   public users: Users[] = [];
   public isShowDetails: boolean = false;
   public selectedUser!: Users;
-
+showFilters: boolean = false; // אפשר להתחיל עם false אם רוצים שיהיה מקופל בהתחלה
   public user!: Users;
 
     
@@ -37,10 +37,15 @@ export class MusiciansComponent {
 
   }
 
-      showDetails(u: Users) {
-        this.router.navigate(['/user-profile', u.profile!.id])
-      }
-
+     goToProfile(u: Users) {
+  // בודק אם u.profile קיים ואם u.profile.id קיים
+  if (u.profile?.id) { 
+    this.router.navigate(['/user-profile', u.profile.id]);
+  } else {
+    // אופציונלי: לטפל במקרה שאין פרופיל (לדוגמה, להציג הודעת שגיאה)
+    console.error('Profile ID is missing for this user.', u);
+  }
+}
        getImageUrl(base64?: string): SafeUrl {
         if (base64 && base64.trim()) {
             const imageUrl = `data:image/png;base64,${base64}`;
@@ -48,4 +53,9 @@ export class MusiciansComponent {
         }
         return 'assets/images/2.jpg'; 
     }
+
+    // פונקציה להחלפת המצב (toggle) בלחיצה על כפתור הפילטרים
+  toggleFilters(): void {
+    this.showFilters = !this.showFilters;
+  }
 }

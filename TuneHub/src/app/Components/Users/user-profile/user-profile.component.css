@@ -1,0 +1,149 @@
+/* --- מיכל הפרופיל הראשי (User Profile) --- */
+.profile-container {
+    padding: 0;
+    margin: 0;
+    background-color: #1D2838; /* רקע הדף הכללי */
+    color: #f0f0f0;
+    font-family: Arial, sans-serif;
+}
+
+/* --- כותרת וניווט (Header) --- */
+.profile-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 30px;
+    background-color: #141d2a; /* כהה יותר מהרקע הכללי להפרדה */
+}
+
+.back-arrow {
+    cursor: pointer;
+    color: #cccccc;
+    font-size: 1em;
+}
+
+.edit-profile-btn {
+    background: linear-gradient(to right, #8a2be2, #4169e1); /* שיפוע סגול-כחול */
+    color: white;
+    border: none;
+    border-radius: 20px;
+    padding: 10px 20px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+/* --- כרטיס הפרופיל הראשי (עם הקאבר) --- */
+.profile-card {
+    position: relative;
+    padding-bottom: 50px; /* מרווח כדי שהתוכן לא יכסה את תמונת הפרופיל */
+}
+
+/* --- תמונת הקאבר --- */
+.cover-image-wrapper {
+    height: 250px;
+    overflow: hidden;
+    background-color: #333; /* צבע גיבוי */
+}
+
+.cover-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* מכסה את כל המיכל */
+}
+
+/* --- סקשן המידע האישי והכפתורים --- */
+.profile-info-section {
+    display: flex;
+    align-items: flex-end; /* ממקם את האלמנטים בחלק התחתון של השורה */
+    justify-content: space-between;
+    padding: 0 30px 20px;
+    transform: translateY(-50px); /* מזיז את הסקשן למעלה כדי לחפוף את הקאבר */
+}
+
+/* --- תמונת הפרופיל --- */
+.profile-picture-wrapper {
+    position: relative;
+    width: 130px;
+    height: 130px;
+    margin-right: 20px;
+    /* המסגרת לבנה סביב התמונה הכהה */
+    border: 5px solid #1D2838; 
+    border-radius: 50%;
+    background-color: #fff;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+    z-index: 10;
+}
+
+.profile-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 50%;
+    display: block;
+}
+
+.rating-star {
+    position: absolute;
+    top: 5px;
+    left: 5px;
+    font-size: 24px;
+    background-color: rgba(0, 0, 0, 0.6);
+    border-radius: 50%;
+    padding: 2px;
+}
+
+/* --- פרטי המשתמש (שם, האנדל, מיקום) --- */
+.user-details {
+    flex-grow: 1; /* תופס את רוב המקום הפנוי */
+    margin-bottom: 10px;
+    text-align: left;
+}
+
+.user-details h2 {
+    font-size: 2em;
+    margin: 0;
+    line-height: 1;
+}
+
+.handle {
+    color: #aaaaaa;
+    font-size: 1.1em;
+    margin-top: 5px;
+}
+
+.contact-details {
+    display: flex;
+    gap: 15px;
+    margin-top: 10px;
+    color: #cccccc;
+}
+
+.contact-details a {
+    color: #00bcd4;
+    text-decoration: none;
+}
+
+/* --- כפתורי פעולה --- */
+.action-buttons {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 10px;
+}
+
+.message-btn, .follow-btn {
+    padding: 10px 20px;
+    border-radius: 20px;
+    font-weight: bold;
+    cursor: pointer;
+    border: none;
+    color: white;
+}
+
+.message-btn {
+    background: linear-gradient(to right, #8a2be2, #4169e1); /* סגול-כחול */
+}
+
+.follow-btn {
+    background-color: #364960; /* כפתור כהה יותר */
+    border: 1px solid #4a617a;
+}

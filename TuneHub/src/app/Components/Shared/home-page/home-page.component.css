@@ -72,9 +72,7 @@ html {
   display: flex;
   flex-direction: column;
   justify-content: center;
-  /* מרכז אנכי */
   align-items: center;
-  /* מרכז אופקי */
   text-align: center;
   color: white;
   padding: 20px;
@@ -96,7 +94,7 @@ html {
 }
 
 #live-dot {
-  /* display: inline-block; */
+  display: inline-block;
   font-size: 40px;
   margin-right: 8px;
   color: #3CFF6E;

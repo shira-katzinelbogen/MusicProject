@@ -1,24 +1,32 @@
 body {
   /* הגדרת הרקע הכחול-כהה לכל הדף */
-  background-color: #1D2A3B; 
-  
+  background-color: #1D2A3B;
+
   /* חשוב מאוד: הגדרת צבע טקסט בהיר כדי שיבלוט על הרקע הכהה */
   /* color: #FFFFFF;  */
 }
-html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
-
-
-
 
 html,
+body {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+}
+
+
+
+
+
 body {
   margin: 0;
   padding: 0;
   height: 100%;
   /* overflow: hidden; */
   background: linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 40%, #2b2b2b 100%);
-  background: #1D2838;
+  background-color: #1D2838;
   font-family: 'Inter', 'Roboto', 'Open Sans', sans-serif;
   color: white;
 }
@@ -31,11 +39,15 @@ body {
 }  */
 
 .button {
-  display: inline-flex;           /* שימוש ב-Flexbox */
-  align-items: center;            /* מרכזים אנכית */
-  justify-content: center;        /* מרכזים אופקית */
-  gap: 8px;                       /* מרווח בין האייקון לטקסט */
-  
+  display: inline-flex;
+  /* שימוש ב-Flexbox */
+  align-items: center;
+  /* מרכזים אנכית */
+  justify-content: center;
+  /* מרכזים אופקית */
+  gap: 8px;
+  /* מרווח בין האייקון לטקסט */
+
   background: linear-gradient(90deg, #A03FFB 0%, #5271FF 100%);
   border-radius: 10px;
   padding: 12px 18px;
@@ -43,12 +55,15 @@ body {
   font-family: 'Inter', 'Roboto', 'Open Sans', sans-serif;
   font-weight: 500;
   font-size: 18px;
-  color: white;                   /* צבע הטקסט */
-  border: none;                   /* להסיר גבול אם קיים */
+  color: white;
+  /* צבע הטקסט */
+  border: none;
+  /* להסיר גבול אם קיים */
 }
 
 .button mat-icon {
-  font-size: 25px;                /* אפשר להתאים את גודל האייקון */
+  font-size: 25px;
+  /* אפשר להתאים את גודל האייקון */
 }
 
 .button {
@@ -58,41 +73,51 @@ body {
 
 .button:hover {
   transform: scale(1.05);
-  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
 }
 
 .button::after {
   content: "";
   position: absolute;
-  top: 0; left: 0;
-  width: 100%; height: 100%;
-  background: rgba(0,0,0,0.2); /* השכבה הכהה */
-  opacity: 0;                  /* מתחיל שקוף */
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.2);
+  /* השכבה הכהה */
+  opacity: 0;
+  /* מתחיל שקוף */
   transition: opacity 0.2s ease;
   border-radius: inherit;
-  pointer-events: none;        /* לא חוסם לחיצות */
+  pointer-events: none;
+  /* לא חוסם לחיצות */
 }
 
 .button:active::after {
-  opacity: 1;                  /* מופיע בזמן לחיצה */
+  opacity: 1;
+  /* מופיע בזמן לחיצה */
 }
 
 .button:active {
-  transform: scale(0.95);      /* הקטנה בזמן לחיצה */
-  box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+  transform: scale(0.95);
+  /* הקטנה בזמן לחיצה */
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
 }
 
 .play {
-  color: #B97FFF; /* סגול */
+  color: #B97FFF;
+  /* סגול */
 }
 
 .share {
-  color: #3BB2FF; /* כחול */
+  color: #3BB2FF;
+  /* כחול */
   margin: 0 10px;
 }
 
 .grow {
-  color: #3CFF6E; /* ירוק */
+  color: #3CFF6E;
+  /* ירוק */
 }
 
 /* --- Dark Overlay --- */
@@ -102,6 +127,128 @@ body {
   left: 0;
   width: 100%;
   height: 100%;
-  background: rgba(0,0,0,0.8);
+  background: rgba(0, 0, 0, 0.892);
   z-index: 2;
+}
+
+
+
+
+/* הגדרות גלובליות ומימדים */
+html,
+body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  min-height: 100vh;
+  /* ודא שיש גובה מינימלי למקרה שהתוכן קצר */
+  width: 100%;
+
+  /* הגדרת הרקע הכהה והטקסט הכללי */
+  background-color: #1D2838;
+  font-family: 'Inter', 'Roboto', 'Open Sans', sans-serif;
+  color: white;
+  /* ודא שצבע הטקסט הכללי הוא לבן */
+}
+
+app-root {
+  display: block;
+  height: 100%;
+  width: 100%;
+}
+
+
+.musicians {
+  font-size: clamp(2rem, 4vw, 5rem);
+  font-weight: 800;
+  background: linear-gradient(90deg, #a653fe 0%, #599afd 100%);
+
+  color: black;
+  -webkit-mask-image: linear-gradient(90deg, #fff, #fff);
+  -webkit-mask-clip: text;
+  -webkit-mask-repeat: no-repeat;
+  -webkit-mask-size: 100%;
+  mask-image: linear-gradient(90deg, #fff, #fff);
+  mask-clip: text;
+  mask-repeat: no-repeat;
+  mask-size: 100%;
+  color: transparent;
+
+  color: transparent;
+  -webkit-text-fill-color: transparent;
+  font-family: 'Inter', 'Roboto', 'Open Sans', sans-serif;
+  display: inline-block;
+  line-height: 1.1;
+  letter-spacing: 1px;
+  text-shadow: 0 0 20px rgba(166, 83, 254, 0.3);
+}
+
+/* .logo-pic {
+
+  border-radius: 13.5px;
+
+  padding-bottom: 14px;
+} */
+
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  cursor: pointer;
+}
+
+.logo img {
+  height: 50px;
+  width: auto;
+  /* border-radius: 13.5px; */
+margin-left: -150px;
+  margin-right: 100px;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* מוחל על האלמנט הגולל (לרוב <body> או <div> ספציפי) */
+
+/* 1. הגדרת רוחב הפס */
+body::-webkit-scrollbar {
+  width: 12px; 
+ 
+}
+
+/* 2. *** שליטה על המסלול (החלק הלבן/הריק) *** */
+body::-webkit-scrollbar-track {
+  /* שינוי הרקע מצבע לבן (ברירת מחדל) לצבע אפור כהה */
+  background: #1D2838; 
+  border-radius: 10px;
+}
+
+/* 3. עיצוב הידית (החלק הנע, הסגול) */
+body::-webkit-scrollbar-thumb {
+ background: linear-gradient(to bottom,  #9430ff 0%, #3888ff 100%);
+  border-radius: 10px; 
+  /* חשוב: הגבול כאן צריך להתאים לצבע הרקע החדש של המסלול (#2c3e50) */
+  border: 3px solid #2c3e50; 
+}
+
+/* 4. אפקט Hover (אופציונלי) */
+body::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(
+    to bottom,
+    #8413fe 0%, #1b76ff
+  );
 }
