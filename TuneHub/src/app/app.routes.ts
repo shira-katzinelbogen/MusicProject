@@ -3,6 +3,7 @@ import { Routes } from '@angular/router';
 //Users
 import { LoginWindowComponent } from './Components/Users/login-window/login-window.component';
 import { MusiciansComponent } from './Components/Users/musicians/musicians.component';
+import { UserProfileComponent } from './Components/Users/user-profile/user-profile.component';
 
 //Shared
 import { HomePageComponent } from './Components/Shared/home-page/home-page.component';
@@ -11,11 +12,12 @@ import { SidebarComponent } from './Components/Shared/sidebar/sidebar.component'
 //Post
 import { PostComponent } from './Components/Post/post/post.component';
 import { PostsComponent } from './Components/Post/posts/posts.component';
-import { SheetMusicComponent } from './sheet-music/sheet-music.component';
+import { SheetMusicComponent } from './Components/SheetMusic/sheet-music/sheet-music.component';
 import { TeacherListComponent } from './Components/Teachers/teacher-list/teacher-list.component';
 import { ChallengeCardComponent } from './Components/Community/challenge-card/challenge-card.component';
 import { CommunityGroupsComponent } from './Components/Community/community-groups/community-groups.component';
 import { ChatMeesageComponent } from './Components/Chat/chat-meesage/chat-meesage.component';
+
 
 export const routes: Routes = [
 
@@ -28,6 +30,7 @@ export const routes: Routes = [
   // Users
   { path: 'login-window', component: LoginWindowComponent },
   { path: 'musicians', component: MusiciansComponent },
+  { path: 'user-profile/:id', component: UserProfileComponent },
 
   // Shared
   { path: 'sidebar', component: SidebarComponent },
@@ -39,6 +42,7 @@ export const routes: Routes = [
   { path: 'challenge-card', component: ChallengeCardComponent },
   { path: 'community-group', component: CommunityGroupsComponent },
   { path: 'chat-meesage', component: ChatMeesageComponent },
+  
   // Wildcard
   { path: '**', component: HomePageComponent }
 ];

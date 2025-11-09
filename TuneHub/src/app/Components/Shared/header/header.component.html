@@ -1,17 +1,17 @@
 <header>
 
-  <div class="logo" (click)="goToHomePage()">
-    <mat-icon (click)="sidebarService.toggle(); $event.stopPropagation()">menu</mat-icon>
 
-    <img src="assets/images/logo.jpg" alt="Logo" />
-    <div id="logo-name">
+    <mat-icon (click)="sidebarService.toggle(); $event.stopPropagation()" style="color: rgb(43, 218, 23);">menu</mat-icon>
+  <div class="logo" (click)="goToHomePage()">
+    <img class="logo-pic" src="./assets/images/LOGO.png" alt="Logo" />
+    <!-- <div id="logo-name">
       <p id="app-name">TuneHub</p>
       <div class="app-slogan">
         <span class="play">Play.</span>
         <span class="share">Share.</span>
         <span class="grow">Grow.</span>
       </div>
-    </div>
+    </div> -->
 
   </div>
 
@@ -38,8 +38,8 @@
       <!-- <div class="kbd-hint" aria-hidden="true">⌘K</div> -->
     </div>
 
-    <div id=get-started class=button (click)="goToFindMusicians()">
-      Find Musicans <mat-icon>group</mat-icon>
+    <div id="musicans" class="button" (click)="goToFindMusicians()">
+      Find Musicians <mat-icon>group</mat-icon>
     </div>
 
 
@@ -48,9 +48,9 @@
   </div>
   <!-- <mat-icon>notifications</mat-icon> -->
 
-  <div id=get-started class=button (click)="goToLoginWindow()">
-    Get Started
-  </div>
+<div id="get-started" class="button" (click)="loginwindowService.open()">
+  Get Started
+</div>
 </header>
 
 <!-- Overlay -->

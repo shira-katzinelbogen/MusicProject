@@ -1,32 +1,107 @@
-<div>
+<!-- <div>
     <h3>
         Find Musicians
         Connect with talented professionals for your next project
         Join Network
     </h3>
+</div> -->
+<!-- <br><br><br><br> -->
+
+
+<div class="musician-finder-container">
+    <!-- <br>
+
+    <br>
+    <br> -->
+    <header class="header">
+        <div class="cover-wrapper">
+    <img src="./assets/images/musicians.png" class="cover-image" />
+
+    <div class="overlay-content">
+        <div class="title-section">
+            <h1 class="musicians" style="font-size: 60px;">Find Musicians</h1>
+            <p style="font-size: 25px;color: #ffffff;">Connect with talented professionals for your next project</p>
+        </div>
+        <button class="join-network-btn">
+            <span class="icon">🧑‍🤝‍🧑</span>
+            Join Network
+        </button>
+    </div>
 </div>
 
-@if(users.length===0){
-<p class="have-no-users"><b>There are currently no users to display.</b><br>
-    Add new users to manage your work efficiently and neatly.<br><br>
 
-    Take advantage of this tool to organize your day in the best way and achieve the goals you have set for yourself<br>
-</p>
-} 
- @else{
+    </header>
 
-<div class="musicians-container">
-    @for(u of users; track $index){
-    <div (click)="showDetails(u)">
-        <h3>name {{u.profile!.name}}</h3>  
-        <h3>description {{u.description!}}</h3>
-        <h3>city {{u.city}}</h3>
-        <h3>country {{u.country}}</h3>
-        <div class="image-p">
-        <img [src]="getImageUrl(u.profile!.imageProfilePath)"
-              class="profile-image">
-              </div>
+    <section class="search-bar">
+        <div class="search-input-group">
+            <span class="search-icon">🔍</span>
+            <input type="text" placeholder="Search musicians by name, instrument, or skills..." />
+        </div>
+        <select class="dropdown">
+            <option>All</option>
+        </select>
+        <select class="dropdown">
+            <option>All</option>
+        </select>
+
+        <button class="filters-btn" (click)="toggleFilters()">
+            Filters <span class="arrow-icon">{{ showFilters ? '∧' : '∨' }}</span>
+        </button>
+    </section>
+    @if (showFilters) {
+    <section class="additional-filters">
+        <div class="filter-group">
+            <label>Experience</label>
+            <select class="dropdown">
+                <option>Any Experience</option>
+            </select>
+        </div>
+
+        <div class="filter-group">
+            <label>Rating</label>
+            <select class="dropdown">
+                <option>Any Rating</option>
+            </select>
+        </div>
+
+        <div class="filter-group">
+            <label>Availability</label>
+            <select class="dropdown">
+                <option>Any Availability</option>
+            </select>
+        </div>
+
+        <div class="filter-group">
+            <label>Price Range</label>
+            <select class="dropdown">
+                <option>Any Price</option>
+            </select>
+        </div>
+    </section>
+    }
+
+    @if(users.length===0){
+    <p class="have-no-users"><b>There are currently no users to display.</b><br>
+        Add new users to manage your work efficiently and neatly.<br><br>
+
+        Take advantage of this tool to organize your day in the best way and achieve the goals you have set for
+        yourself<br>
+    </p>
+    }
+
+    @else{
+    <br><br>
+    <div class="musicians-container">
+        @for(u of users; track $index){
+        <div (click)="goToProfile(u)">
+            <h3>name {{u.profile!.name}}</h3>
+            <h3>description {{u.description}}</h3>
+            <h3>city {{u.city}}</h3>
+            <h3>country {{u.country}}</h3>
+            <div class="image-p">
+                <img [src]="getImageUrl(u.profile!.imageProfilePath)" class="profile-image">
+            </div>
+        </div>
+        }
     </div>
     }
-</div>
-} 

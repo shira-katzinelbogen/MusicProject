@@ -1,141 +1,472 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap');
+/* משתני צבעים (כדי לשמור על עקביות) */
+:root {
+  --background-dark: #0f0a1f; /* רקע כהה מאוד */
+  --panel-background: #1c1437; /* רקע פאנל כהה */
+  --primary-color-start: #6a11cb; /* סגול כהה לתחילת מעבר צבע */
+  --primary-color-end: #2575fc; /* כחול בהיר לסוף מעבר צבע */
+  --text-light: #e0e0e0; /* טקסט בהיר */
+  --text-faded: #a0a0a0; /* טקסט מעומעם */
+  --input-background: #2b224d; /* רקע שדה קלט */
+  --social-btn-bg: #3c326b; /* רקע כפתור חברתי */
+}
 
-body {
-  margin: 0;
-  font-family: 'Inter', sans-serif;
-  background: radial-gradient(circle at top, #0b0c2a, #050516);
-  height: 100vh;
-  color: white;
-  position: relative;
+/* ------------------------------------------- */
+/* סגנונות המודאל (הוספות עבור אוברליי ומרכוז) */
+/* ------------------------------------------- */
+
+/* אוברליי (שכבה שחורה שקופה שמכסה את כל המסך) */
+.modal-overlay {
+    position: fixed; /* נשאר קבוע גם בגלילה */
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.7); /* שחור עם שקיפות */
+    display: flex;
+    justify-content: center; /* מרכוז אופקי */
+    align-items: center; /* מרכוז אנכי */
+    z-index: 1000; /* ודא שהוא מעל כל שאר האלמנטים */
+    /* אנימציה קלה לכניסה */
+    opacity: 1;
+    transition: opacity 0.3s ease;
+}
+
+/* מעטפת תוכן האימות בתוך האוברליי */
+.auth-modal-content {
+    position: relative;
+    max-height: 90vh; /* מונע גלילה אנכית מיותרת */
+   
+}
+
+/* כפתור סגירה */
+.close-button {
+    position: absolute;
+    top: 15px;
+    right: 20px;
+    background: none;
+    border: none;
+    color: var(--text-faded);
+    cursor: pointer;
+    z-index: 1001; /* ודא שהוא מעל כל רכיבי החלון */
+    padding: 5px;
+    border-radius: 50%;
+    transition: color 0.2s;
+}
+
+.close-button:hover {
+    color: white;
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+/* ------------------------------------------- */
+/* סגנונות הטופס (משתמשים כעת בתוך ה-modal-content) */
+/* ------------------------------------------- */
+
+/* הערה: הסגנון של body הוסר כיוון שהמודאל הוא מרכז הבקרה כעת */
+/* body { ... } */
+
+/* הקונטיינר הראשי של האימות (מועתק מ-CSS הקודם) */
+.auth-container {
+  display: flex;
+  width: 900px; /* רוחב החלונית כולה */
+  max-width: 90%;
+  border-radius: 20px;
   overflow: hidden;
+  box-shadow: 0 15px 50px rgba(0, 0, 0, 0.5);
+  background: var(--panel-background);
+  transition: all 0.3s ease;
+   background-color: #1D2838;
 }
 
-/* שכבת הרקע */
-.overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  /* background: radial-gradient(circle at top, #0b0c2a, #050516); */
-  z-index: 1000;
+/* --- פאנל צדדי (Side Panel) --- */
+.side-panel {
+  flex: 1;
+  background: linear-gradient(135deg, var(--primary-color-start), var(--primary-color-end));
+  padding: 40px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  color: white; /* כל הטקסט על הרקע הזה יהיה לבן */
+  position: relative;
 }
 
-/* כרטיס הכניסה */
-.card {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  background: rgba(20, 22, 50, 0.9);
-  padding: 40px 60px;
-  border-radius: 16px;
-  text-align: center;
-  box-shadow: 0 0 30px rgba(80, 0, 255, 0.2);
-  width: 320px;
-  z-index: 2000;
-}
-
-.icon {
-  font-size: 42px;
-  background: linear-gradient(135deg, #a855f7, #3b82f6);
-
-
-  /* יוצרים מסכה על הטקסט */
-  color: black;
-  -webkit-mask-image: linear-gradient(90deg, #fff, #fff);
-  -webkit-mask-clip: text;
-  -webkit-mask-repeat: no-repeat;
-  -webkit-mask-size: 100%;
-  mask-image: linear-gradient(90deg, #fff, #fff);
-  mask-clip: text;
-  mask-repeat: no-repeat;
-  mask-size: 100%;
-
-
- 
-
-    color: transparent;
-  
-  -webkit-text-fill-color: transparent;
-  margin-bottom: 20px;
-}
-
-h1 {
-  margin: 0;
-  font-size: 1.5em;
-  font-weight: 700;
-}
-
-.subtitle {
-  color: #a78bfa;
-  font-weight: 600;
-  margin-top: 8px;
-  margin-bottom: 4px;
-}
-
-.text {
-  color: #94a3b8;
-  font-size: 0.9em;
+.logo {
   margin-bottom: 30px;
 }
 
-.btn {
-  display: block;
-  width: 100%;
-  padding: 12px;
-  border: none;
-  border-radius: 10px;
-  font-size: 1em;
-  font-weight: 600;
-  cursor: pointer;
-  margin-bottom: 16px;
-  transition: 0.3s;
+.app-icon {
+  width: 40px;
+  height: 40px;
+  fill: white;
+  margin-right: 10px;
+  vertical-align: middle;
 }
 
-.login {
-  background: linear-gradient(90deg, #ec4899, #3b82f6);
-  color: white;
+.app-name {
+  display: inline;
+  font-size: 1.8em;
+  font-weight: 700;
+  vertical-align: middle;
 }
 
-.login:hover {
+.slogan {
+  font-size: 0.9em;
+  opacity: 0.8;
+  margin-top: 5px;
+}
+
+.welcome-text, .intro-text {
+  margin-top: 0;
+}
+
+.welcome-text {
+  font-size: 2.2em;
+  font-weight: 700;
+  margin-bottom: 10px;
+}
+
+.intro-text {
+  font-size: 1.1em;
+  line-height: 1.5;
+  margin-bottom: 30px;
   opacity: 0.9;
 }
 
-.signup {
-  background: transparent;
-  border: 2px solid #a855f7;
+.features-list {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 50px 0;
+}
+
+.features-list li {
+  font-size: 1em;
+  margin-bottom: 15px;
+  display: flex;
+  align-items: flex-start;
+  line-height: 1.4;
+}
+
+.features-list li::before {
+  content: '★'; /* סמל כללי */
+  color: #fff;
+  font-weight: 900;
+  display: inline-block;
+  width: 1.2em;
+  margin-right: 10px;
+  font-size: 1.2em;
+  transform: translateY(-2px);
+}
+/* התאמה לאייקונים ספציפיים בתמונה אם רוצים דיוק רב יותר */
+.features-list li:nth-child(1)::before { content: '👥'; /* Global Network */ }
+.features-list li:nth-child(2)::before { content: '⭐'; /* Professional Growth */ }
+.features-list li:nth-child(3)::before { content: '🔒'; /* Secure Platform */ }
+
+.features-list strong {
+    font-weight: 600;
+}
+
+.terms-footer {
+  font-size: 0.85em;
+  opacity: 0.7;
+}
+
+.terms-footer a {
   color: white;
-}
-
-.signup:hover {
-  background: rgba(168, 85, 247, 0.1);
-}
-
-.guest {
-  color: #94a3b8;
-  font-size: 0.9em;
-  margin-top: 10px;
-}
-
-.terms {
-  margin-top: 20px;
-  font-size: 0.75em;
-  color: #64748b;
-}
-
-.terms a {
-  color: #a855f7;
   text-decoration: none;
+  font-weight: bold;
 }
-
-.terms a:hover {
+.terms-footer a:hover {
   text-decoration: underline;
 }
 
-/* טקסט לבדיקה */
-p {
-  text-align: center;
-  color: #94a3b8;
-  margin-top: 20px;
+/* --- פאנל טופס (Form Panel) --- */
+.form-panel {
+  flex: 1;
+  padding: 40px;
+  background-color: var(--panel-background);
 }
+
+.auth-tabs {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 30px;
+}
+
+.auth-tabs button {
+  background: none;
+  border: none;
+  color: var(--text-faded);
+  font-size: 1.1em;
+  font-weight: 600;
+  padding: 10px 15px;
+  cursor: pointer;
+  border-radius: 8px;
+  transition: color 0.3s, background-color 0.3s;
+}
+
+.auth-tabs button.active {
+  color: white;
+  background: var(--primary-color-start);
+  box-shadow: 0 4px 10px rgba(106, 17, 203, 0.4);
+}
+
+.auth-form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.input-group label {
+  display: block;
+  margin-bottom: 8px;
+  font-size: 0.9em;
+  color: var(--text-faded);
+}
+
+.input-group input {
+  width: 100%;
+  padding: 15px 15px 15px 45px; /* מרווח משמאל כדי לפנות מקום לאייקון */
+  border: 1px solid #3c326b;
+  border-radius: 10px;
+  background-color: var(--input-background);
+  color: var(--text-light);
+  font-size: 1em;
+  box-sizing: border-box;
+  transition: border-color 0.3s, box-shadow 0.3s;
+}
+
+.input-group input:focus {
+  border-color: var(--primary-color-end);
+  outline: none;
+  box-shadow: 0 0 5px rgba(37, 117, 252, 0.5);
+}
+
+/* התאמה למקום האייקונים בתוך שדה הקלט */
+.input-group {
+    position: relative;
+}
+
+.input-group input[placeholder*="Doe"] {
+    background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="%23a0a0a0" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>');
+    background-repeat: no-repeat;
+    background-position: 15px center;
+    background-size: 20px;
+}
+
+.input-group input[placeholder*="@example.com"] {
+    background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="%23a0a0a0" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>');
+    background-repeat: no-repeat;
+    background-position: 15px center;
+    background-size: 20px;
+}
+
+.input-group input[type="password"] {
+    background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="%23a0a0a0" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>');
+    background-repeat: no-repeat;
+    background-position: 15px center;
+    background-size: 20px;
+}
+
+
+/* כפתור העלאת תמונה (Sign Up) */
+.upload-photo {
+  background-color: var(--input-background);
+  border: 2px dashed #4e408d;
+  border-radius: 15px;
+  padding: 25px;
+  text-align: center;
+  color: var(--text-faded);
+  font-size: 0.9em;
+  cursor: pointer;
+  transition: border-color 0.3s;
+  background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="%23a0a0a0" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" y1="3" x2="12" y2="15"></line></svg>');
+  background-repeat: no-repeat;
+  background-position: center 10px;
+  padding-top: 50px;
+}
+
+.upload-photo:hover {
+  border-color: var(--primary-color-start);
+}
+
+/* שורה של אפשרויות (Remember Me, Forgot Password) */
+.options-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.9em;
+}
+
+.forgot-link {
+  color: var(--text-faded);
+  text-decoration: none;
+}
+.forgot-link:hover {
+  color: var(--primary-color-end);
+}
+
+/* צ'קבוקסים מותאמים אישית */
+.checkbox-container {
+  display: block;
+  position: relative;
+  padding-left: 0;
+  margin-bottom: 0; /* נשלט ע"י ה-gap של הטופס */
+  cursor: pointer;
+  font-size: 0.9em;
+  user-select: none;
+  color: var(--text-faded);
+}
+
+.checkbox-container input[type="checkbox"] {
+    opacity: 1;
+    position: static;
+    margin-right: 10px;
+    width: 18px;
+    height: 18px;
+    border-radius: 4px;
+    border: 1px solid var(--text-faded);
+    background-color: var(--input-background);
+    vertical-align: middle;
+}
+.checkbox-container.terms-agree a {
+    color: var(--primary-color-end);
+    text-decoration: none;
+    font-weight: 500;
+}
+.checkbox-container.terms-agree a:hover {
+    text-decoration: underline;
+}
+
+/* כפתורי שליחה (Submit Button) */
+.submit-btn {
+  padding: 15px;
+  border: none;
+  border-radius: 10px;
+  font-size: 1.1em;
+  font-weight: 700;
+  cursor: pointer;
+  color: white;
+  transition: all 0.3s ease;
+  background: linear-gradient(to right, #6a11cb, #2575fc);
+}
+
+.submit-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  background: #3c326b;
+}
+
+.submit-btn:hover:not(:disabled) {
+  opacity: 0.9;
+  box-shadow: 0 5px 15px rgba(37, 117, 252, 0.4);
+}
+
+/* מפריד כניסה חברתית */
+.social-divider {
+  text-align: center;
+  margin: 10px 0;
+  color: var(--text-faded);
+  font-size: 0.9em;
+  position: relative;
+}
+
+.social-divider::before,
+.social-divider::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  width: 40%;
+  height: 1px;
+  background-color: #3c326b;
+}
+
+.social-divider::before {
+  left: 0;
+}
+
+.social-divider::after {
+  right: 0;
+}
+
+/* כפתורי כניסה חברתית */
+.social-login {
+  display: flex;
+  gap: 15px;
+  justify-content: space-between;
+}
+
+.social-btn {
+  flex: 1;
+  padding: 12px;
+  border: none;
+  border-radius: 10px;
+  background-color: var(--social-btn-bg);
+  color: var(--text-light);
+  font-size: 1em;
+  cursor: pointer;
+  transition: background-color 0.3s, box-shadow 0.3s;
+}
+
+.social-btn:hover {
+  background-color: #4e408d;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+/* הודעות שגיאה */
+.error-msg {
+    color: #ff6b6b;
+    font-size: 0.85em;
+    margin-top: -15px;
+    margin-bottom: -5px;
+    padding-left: 5px;
+}
+
+/* מדיה קוואריז להתאמה למסכים קטנים */
+@media (max-width: 950px) {
+  .auth-container {
+    flex-direction: column;
+    width: 450px; /* רוחב יחיד */
+  }
+
+  .side-panel {
+    padding-bottom: 20px; /* פחות רווח בתחתית */
+    border-radius: 20px 20px 0 0;
+    text-align: center;
+  }
+  
+  .logo {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 20px;
+  }
+  
+  .auth-tabs {
+    justify-content: center;
+    margin-top: 10px;
+  }
+  
+  .form-panel {
+    padding: 30px;
+  }
+
+  .terms-footer {
+    /* הסתרת הפוטר כדי לא לחזור על עצמו פעמיים (יש בטופס) */
+    display: none; 
+  }
+}
+
+/* 
+**סיכום השינויים:**
+
+1.  **HTML:**
+    * עטפנו את `auth-container` במעטפת `modal-overlay`.
+    * הגדרנו על `modal-overlay` את ה-event `(click)="onOverlayClick($event)"` לסגירת החלון בלחיצה על הרקע.
+    * הוספנו כפתור `close-button` עם הפונקציה `(click)="closeWindow()"` בתוך החלון.
+    * הוספנו ל-`auth-modal-content` את ה-event `(click)="$event.stopPropagation()"` כדי למנוע סגירה כאשר לוחצים על התוכן הפנימי של החלון.
+2.  **TypeScript:**
+    * נוספה הפונקציה `closeWindow()` שקוראת ל-`this.loginwindowService.close()`.
+    * נוספה הפונקציה `onOverlayClick(event: MouseEvent)` המשתמשת בבדיקה `event.target === event.currentTarget` כדי לוודא שרק לחיצה ישירה על האוברליי סוגרת את המודאל.
+3.  **CSS:**
+    * הגדרנו את `modal-overlay` עם `position: fixed`, `width: 100%`, `height: 100%`, `background-color: rgba(0, 0, 0, 0.7)`, ו-`display: flex` לטובת מרכוז אוטומטי.
+    * עיצבנו את `close-button` כך שימוקם בפינה העליונה-ימנית של החלון. */

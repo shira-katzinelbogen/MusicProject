@@ -1,15 +1,17 @@
 /* --- פריסה גלובלית וכותרת --- */
+/* (מותאם לצבע הרקע הכהה של ה-body) */
+
 .page-header {
     padding: 20px;
     text-align: center;
-    border-bottom: 2px solid #e0e0e0;
+    border-bottom: 2px solid #364960; /* גבול כהה יותר */
     margin-bottom: 20px;
 }
 
 .page-header h3 {
     margin: 5px 0;
     font-size: 1.8em;
-    color: #333;
+    color: #f0f0f0; /* צבע טקסט בהיר */
     font-weight: 700;
 }
 
@@ -24,66 +26,66 @@
 
 /* --- עיצוב הכרטיס היחיד (ה-div שבתוך ה-@for) --- */
 .musicians-container > div {
-    /* הופך את ה-div הזה לכרטיס הראשי */
-    background-color: #fff;
+    /* **שינוי:** רקע כהה תואם במקום לבן (#fff) */
+    background-color: #1e2e40; /* צבע כהה שונה מעט מה-body */
     border-radius: 12px;
-    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.4); /* צל כהה יותר */
     padding: 20px;
     transition: transform 0.3s ease, box-shadow 0.3s ease;
     cursor: pointer;
     display: flex;
     flex-direction: column;
-    align-items: center; /* ממקם את הטקסט והתמונה במרכז */
+    align-items: center; 
     text-align: center;
-    border: 1px solid #e2e8f0;
+    /* **שינוי:** גבול כהה תואם */
+    border: 1px solid #364960; 
 }
 
 .musicians-container > div:hover {
     transform: translateY(-5px);
-    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
 }
 
 /* --- עיצוב מיכל התמונה (.image-p) --- */
 .image-p {
     width: 100px;
     height: 100px;
-    border-radius: 50%; /* הופך את ה-div לעיגול */
-    overflow: hidden; /* חותך את התמונה לגבולות העיגול */
+    border-radius: 50%; 
+    overflow: hidden; 
     margin-bottom: 15px;
     margin-top: 10px;
-    /* מסגרת בולטת ומעוצבת */
-    border: 4px solid #4a90e2; 
-    box-shadow: 0 0 0 2px #fff; /* יוצר אפקט של גבול כפול */
+    border: 4px solid #4a90e2;  /* נשאר כחול בולט */
+    box-shadow: 0 0 0 2px #1e2e40; /* שינוי: רקע פנימי כהה */
 }
 
 /* --- עיצוב תג ה-<img> (.profile-image) --- */
 .profile-image {
     width: 100%;
     height: 100%;
-    object-fit: cover; /* חותך את התמונה כדי למלא את המיכל (ללא מתיחה) */
+    object-fit: cover; 
     display: block;
 }
 
-/* --- עיצוב הטקסט בתוך הכרטיס --- */
+/* --- עיצוב הטקסט בתוך הכרטיס (מותאם לרקע הכהה) --- */
 .musicians-container h3 {
     margin: 4px 0;
-    font-size: 1em; /* מקטין את הכותרות מכיוון שהן חוזרות על עצמן */
-    color: #444;
+    font-size: 1em; 
+    color: #cccccc; /* טקסט בהיר */
     font-weight: 400;
 }
 
 .musicians-container h3:first-child {
-    /* נותן דגש לשם המשתמש */
+    /* שם המשתמש */
     font-size: 1.4em;
     font-weight: 700;
-    color: #2d3748;
+    color: #e0e0e0; /* דגש בהיר */
     margin-bottom: 8px;
 }
 
 /* --- עיצוב שדות ספציפיים --- */
 .musicians-container h3:nth-of-type(2) {
     /* תיאור (description) */
-    color: #007bff;
+    color: #00bcd4; /* צבע בהיר ובולט */
     font-style: italic;
     font-size: 0.95em;
     margin-bottom: 10px;
@@ -92,11 +94,12 @@
 .musicians-container h3:last-of-type {
     /* מדינה (country) */
     font-size: 0.9em;
-    color: #718096;
+    color: #aaaaaa; /* אפור בהיר */
     margin-top: 8px;
-    border-top: 1px dashed #eee;
+    /* שינוי: גבול עליון כהה תואם */
+    border-top: 1px dashed #364960; 
     padding-top: 8px;
-    width: 100%; /* להדגיש הפרדה */
+    width: 100%; 
 }
 
 /* --- הודעה כשאין משתמשים --- */
@@ -104,10 +107,235 @@
     padding: 30px;
     margin: 20px auto;
     max-width: 600px;
-    background-color: #f7fafc;
-    border: 1px solid #e2e8f0;
+    /* **שינוי:** רקע כהה במקום בהיר (#f7fafc) */
+    background-color: #1e1e2d; 
+    /* **שינוי:** גבול וטקסט תואמים */
+    border: 1px solid #364960; 
     border-radius: 8px;
-    color: #2d3748;
+    color: #f0f0f0; 
     line-height: 1.6;
     text-align: center;
+}
+
+
+/* מבנה כללי ורקע כהה */
+.musician-finder-container {
+    /* **תיקון:** הוסר background-color: #12121e; כדי לקבל את הרקע של ה-body */
+    color: #f0f0f0; /* טקסט בהיר */
+    background-color: #1D2838;
+    padding: 30px;
+    min-height: 400px;
+    font-family: Arial, sans-serif;
+}
+
+/* כותרת וכפתור Join Network */
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 30px;
+}
+
+.title-section h1 {
+    font-size: 2.5em;
+    margin: 0;
+}
+
+.title-section p {
+    color: #aaaaaa;
+    margin-top: 5px;
+}
+
+.back-arrow {
+    font-size: 1.5em;
+    margin-right: 15px;
+    cursor: pointer;
+    display: inline-block;
+}
+
+.join-network-btn {
+    background: linear-gradient(to right, #8a2be2, #4169e1); 
+    color: white;
+    border: none;
+    border-radius: 20px;
+    padding: 10px 20px;
+    font-weight: bold;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+}
+
+.join-network-btn .icon {
+    margin-right: 5px;
+}
+
+/* שורת החיפוש הראשית */
+.search-bar {
+    display: grid;
+    grid-template-columns: 2fr repeat(2, 1fr) 0.5fr; 
+    gap: 10px;
+    background-color: #1e1e2d; /* רקע כהה ספציפי (לשמירה על ההפרדה מה-body) */
+    padding: 15px;
+    border-radius: 8px;
+    align-items: center;
+}
+
+.search-input-group {
+    display: flex;
+    align-items: center;
+   background-color: #2b3a52;
+    border-radius: 4px;
+    padding: 5px 10px;
+}
+
+.search-input-group input {
+    background: none;
+    border: none;
+    color: #f0f0f0;
+    padding: 5px;
+    flex-grow: 1;
+}
+
+.search-icon {
+    margin-right: 10px;
+}
+
+.dropdown, .filters-btn {
+    padding: 10px;
+    border-radius: 4px;
+    border: none;
+    background-color: #2b3a52;
+    color: #f0f0f0;
+    cursor: pointer;
+}
+
+/* כפתור הפילטרים */
+.filters-btn {
+    font-weight: bold;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+/* שורת המסננים הנוספים (השורה הנסתרת/מוצגת) */
+.additional-filters {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr); 
+    gap: 20px;
+    padding: 20px 15px;
+    margin-top: 10px;
+    background-color: #1e1e2d; /* רקע כהה ספציפי (לשמירה על ההפרדה מה-body) */
+    border-radius: 8px;
+}
+
+.filter-group label {
+    display: block;
+    margin-bottom: 5px;
+    color: #aaaaaa;
+}
+
+.filter-group .dropdown {
+    
+    width: 100%;
+}
+
+
+
+
+
+
+body{
+    padding: 0;
+    margin: 0;
+}
+.cover-image {
+    /* 1. רוחב: 80% מרוחב המסך */
+    width: 100vw; 
+    
+    /* 2. גובה: 15% מגובה המסך */
+    height: 30vh; 
+    
+    /* 3. מרכוז האלמנט בתוך האב (הנותר 20% מתחלק שווה בשווה) */
+    /* חייב להיות display: block כדי ש-margin: auto יעבוד */
+    display: block; 
+    margin-left: auto;
+    margin-right: auto;
+    
+    /* 4. מיקוד: מבטיח שמרכז התמונה ייראה */
+    object-fit: cover; 
+    
+    /* מאפיינים נוספים: */
+    border-radius: 12px;
+}
+
+.cover-wrapper {
+    /* נותן נקודת ייחוס למיקום המוחלט של הטקסט והכפתור */
+    position: relative; 
+    
+    /* הגדרת גודל יחסי למסך */
+    width: 100vw; 
+    height: 50vh;
+    top: -30px;
+    /* מרכוז ה-Wrapper על המסך (השגת 20% פדינג בצדדים) */
+    margin-left: auto;
+    margin-right: auto;
+      width: 100%; 
+    /* height: 100%;  */
+    /* הסתרת כל מה שחורג (במידת הצורך) */
+    overflow: hidden; 
+    border-radius: 12px;
+    padding: 0;
+}
+
+.cover-image {
+    /* z-index: -1; */
+    width: 100%; 
+    height: 100%; 
+    object-fit: cover; /* מבטיח שמרכז התמונה ייראה */
+    display: block; 
+}
+
+
+.overlay-content {
+    /* מיקום מוחלט מעל התמונה */
+    position: absolute; 
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    
+    /* שימוש ב-Flexbox לפיזור הטקסט והכפתור */
+    display: flex;
+    justify-content: space-between; /* הטקסט משמאל, הכפתור מימין */
+    align-items: flex-end; /* ממקם את האלמנטים בתחתית */
+    
+    /* *התיקון:* איחוד כללי ה-padding */
+    /* סדר: למעלה 0, ימין 40px, למטה 100px, שמאל 40px */
+    padding: 0 40px 100px 40px; 
+    background: linear-gradient(
+        to top, 
+        rgba(0, 0, 0, 0.803) 0%, /* שחור שקוף בולט בתחתית */
+        rgba(0, 0, 0, 0.807) 50%, /* מעבר לצבע בהיר יותר באמצע */
+        transparent 100% /* שקוף לחלוטין בחלק העליון */
+    );
+    /* ודא שהטקסט קריא */
+    color: white;
+    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.7);
+}
+
+.title-section {
+    /* מבטיח שהטקסט נשאר בצד שמאל */
+    /* נטרל שוליים שמוגדרים אוטומטית על H1/P */
+    margin: 0; 
+}
+
+.join-network-btn {
+    /* עיצוב הכפתור - ודא שצבע הרקע שלו שונה אם צריך */
+    background-color: #6a1b9a; /* סגול בולט */
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 6px;
+    font-weight: bold;
+    cursor: pointer;
 }
