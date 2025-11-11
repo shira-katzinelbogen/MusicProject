@@ -119,14 +119,7 @@
 
 
 /* מבנה כללי ורקע כהה */
-.musician-finder-container {
-    /* **תיקון:** הוסר background-color: #12121e; כדי לקבל את הרקע של ה-body */
-    color: #f0f0f0; /* טקסט בהיר */
-    background-color: #1D2838;
-    padding: 30px;
-    min-height: 400px;
-    font-family: Arial, sans-serif;
-}
+
 
 /* כותרת וכפתור Join Network */
 .header {

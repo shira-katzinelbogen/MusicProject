@@ -8,7 +8,7 @@
 <!-- <br><br><br><br> -->
 
 
-<div class="musician-finder-container">
+<div class="container">
     <!-- <br>
 
     <br>
@@ -93,13 +93,13 @@
     <br><br>
     <div class="musicians-container">
         @for(u of users; track $index){
-        <div (click)="goToProfile(u)">
+        <div (click)="navigationService.goToProfile(u)">
             <h3>name {{u.profile!.name}}</h3>
             <h3>description {{u.description}}</h3>
             <h3>city {{u.city}}</h3>
             <h3>country {{u.country}}</h3>
             <div class="image-p">
-                <img [src]="getImageUrl(u.profile!.imageProfilePath)" class="profile-image">
+                <img [src]="fileUtilsService.getImageUrl(u!.profile!.imageProfilePath!)" class="profile-image">
             </div>
         </div>
         }

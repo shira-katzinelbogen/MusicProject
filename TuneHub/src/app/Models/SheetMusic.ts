@@ -22,12 +22,18 @@ export default class sheetMusic {
     id?: number;
     name?: string;
     scale?: Scale;
-    likes?: number;
-    hearts?: number;
+    likes?: number = 0;
+    hearts?: number = 0;
     dateUploaded?: Date;
     level?: DifficultyLevel;
     user?: Users;
-    instruments?: Instrument
+    instruments?: Instrument[]
     category?: sheetMusicCategory
     usersFavorite?: Users[];
+    filePath?: string;
+    downloads?: number;
+    pages?: number;
+
+    isLiked?: boolean;
+    isFavorite?: boolean;
 }

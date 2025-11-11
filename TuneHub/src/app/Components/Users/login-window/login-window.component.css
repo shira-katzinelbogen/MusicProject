@@ -21,7 +21,7 @@
     left: 0;
     width: 100%;
     height: 100%;
-    background-color: rgba(0, 0, 0, 0.7); /* שחור עם שקיפות */
+    background-color: rgba(0, 0, 0, 0.879); /* שחור עם שקיפות */
     display: flex;
     justify-content: center; /* מרכוז אופקי */
     align-items: center; /* מרכוז אנכי */
@@ -470,3 +470,30 @@
 3.  **CSS:**
     * הגדרנו את `modal-overlay` עם `position: fixed`, `width: 100%`, `height: 100%`, `background-color: rgba(0, 0, 0, 0.7)`, ו-`display: flex` לטובת מרכוז אוטומטי.
     * עיצבנו את `close-button` כך שימוקם בפינה העליונה-ימנית של החלון. */
+
+
+    /* אם זה קובץ CSS של רכיב ספציפי */
+/* .side-panel {
+  position: relative;
+  overflow: hidden;
+  background: transparent; 
+  z-index: 0; 
+}
+
+
+.side-panel::before {
+  content: "";
+  position: absolute;
+  inset: -30px; 
+  background: linear-gradient(160deg,#71009e,#4900af,  #4215f6,#001971  );
+  filter: blur(35px); 
+  opacity: 0.85;
+  z-index: -1; 
+  transform: scale(1.2); 
+} */
+
+.auth-container{
+  
+  border: 3px solid #700aff; 
+}
+
