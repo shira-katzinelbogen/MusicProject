@@ -1,0 +1,85 @@
+
+@if(uploadSheetMusicService.isOpen){
+ <!-- <div [hidden]="!uploadSheetMusicService.isOpen()"> -->
+
+<div class="modal-backdrop" (click)="uploadSheetMusicService.close()"> 
+        
+        <div class="modal-container" (click)="$event.stopPropagation()">
+    <div class="modal-header">
+      <h2>Upload Music Sheet</h2>
+      <button class="close-btn" (click)="uploadSheetMusicService.close()">
+        <span aria-hidden="true" >&times;</span>
+      </button>
+    </div>
+
+    <form [formGroup]="uploadForm" (ngSubmit)="onSubmit()">
+      <div class="input-row">
+        <div class="input-group">
+          <label for="title">Title</label>
+          <input id="title" type="text" formControlName="title" placeholder="Sheet title..." />
+        </div>
+        <div class="input-group">
+          <label for="key">Key / Scale</label>
+          <select id="key" formControlName="key">
+            <option value="" disabled>Select key...</option>
+            <option value="C">C Major</option>
+            <option value="Am">A Minor</option>
+            <option value="G">G Major</option>
+            <option value="F">F Major</option>
+            <option value="Other">Other</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="input-row">
+        <div class="input-group">
+          <label for="category">Category</label>
+          <select id="category" formControlName="category">
+            <option value="" disabled>Select category...</option>
+            <option value="classical">Classical</option>
+            <option value="jazz">Jazz</option>
+            <option value="pop">Pop</option>
+            <option value="rock">Rock</option>
+          </select>
+        </div>
+        <div class="input-group full-width">
+          <label for="description">Description</label>
+          <input id="description" type="text" formControlName="description" placeholder="Short description of the sheet..." />
+        </div>
+      </div>
+
+      <div class="input-row">
+        <div class="input-group full-width">
+          <label for="instruments">Instruments (Multi-select)</label>
+          <select id="instruments" formControlName="instruments" multiple size="4">
+            <option value="piano">Piano</option>
+            <option value="guitar">Guitar</option>
+            <option value="bass">Bass</option>
+            <option value="drums">Drums</option>
+            <option value="flute">Flute</option>
+            <option value="violin">Violin</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="upload-section">
+        <label>Upload Files</label>
+        <div class="drop-zone" (click)="fileInput.click()" (drop)="onFileDrop($event)" (dragover)="onFileDragOver($event)">
+          <div class="drop-icon">📄</div>
+          <p>Drop PDF or image files here</p>
+          <p class="supported-formats">Supported formats: PDF, PNG, JPG</p>
+          <input type="file" #fileInput (change)="onFileSelect($event)" multiple style="display: none;" accept=".pdf, .png, .jpg, .jpeg" />
+        </div>
+      </div>
+<!--   (click)="uploadSheetMusicService.close()" -->
+      <div class="modal-footer">
+        <button type="button" class="cancel-btn"
+       
+         >Cancel</button>
+        <button type="submit" class="button" [disabled]="!uploadForm.valid">Upload Sheet</button>
+      </div>
+    </form>
+  </div>
+</div>
+}
+    <!-- </div> -->

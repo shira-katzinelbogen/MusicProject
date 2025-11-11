@@ -11,11 +11,16 @@ export enum UserType {
 }
 
 export default class Users {
-    profile?: {
-        name?: string;
-        imageProfilePath?: string;
-        id?: number;
-    };
+  
+profile?:{
+    id?: number;
+    imageProfilePath?: string;
+    name?: string;
+}
+     id?: number;
+    imageProfilePath?: string;
+    name?: string;
+
     password?: string;
     email?: string;
     description?: string;
@@ -29,12 +34,14 @@ export default class Users {
     following?: Users[];
     instrumentsUsers?: Instrument[];
     teacher?: Teacher;
-    imageProfilePath?: string;
+
     sheetsMusic?: sheetMusic[];
     posts?: Post[];
     comments?: Comment[];
     favoriteSheetsMusic?: sheetMusic[];
     favoritePosts?: Post[];
+
+   
 }
 
 

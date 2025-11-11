@@ -1,0 +1,170 @@
+<div class="container">
+
+  <header class="header">
+    <div class="cover-wrapper">
+      <img src="./assets/images/sheets_music.webp" class="cover-image" />
+
+      <div class="overlay-content">
+        <div class="title-section">
+          <h1 class="musicians" style="font-size: 60px;">Sheet Music Library</h1>
+          <p style="font-size: 25px;color: #ffffff;">Connect with talented professionals for your next project</p>
+        </div>
+        <button class="button join-network-btn" (click)="openUploadModal()">
+          <!-- <span class="icon">🧑</span> -->
+
+          <mat-icon>upload</mat-icon>
+
+
+          UploadSheetMusic
+        </button>
+        <!-- <button class="button" (click)="openUploadModal()">Upload New Sheet</button> -->
+<!-- 
+@if(uploadSheetMusicService.isOpen){
+    <app-upload-sheet-music 
+        (uploadSuccess)="loadSheets()"> </app-upload-sheet-music>
+} -->
+        
+      </div>
+    </div>
+
+
+  </header>
+  <div class="sheet-music-container">
+
+    @for (sheet of sheetMusicList; track sheet.id) {
+    <div class="music-card">
+
+      <!-- HEADER (IMAGE + TAGS) -->
+      <div class="sheet-cover-header">
+
+        <div class="cover-image">
+          <div class="pdf-preview-half">
+            @if (sheet.filePath) {
+            <iframe [src]="fileUtilsService.getPDFUrl(sheet.filePath)" class="file-preview-iframe"
+              title="תצוגה מקדימה של {{ sheet.name }}" allowfullscreen>
+            </iframe>
+            } @else {
+            <div class="no-preview-overlay">
+              אין תצוגה מקדימה
+            </div>
+            }
+          </div>
+        </div>
+
+        <!-- ONLY CATEGORY + DIFFICULTY (LIKE THE IMAGE) -->
+        <div class="badge-group">
+          <span class="badge category">
+            <mat-icon>folder</mat-icon>
+            {{ sheet.category!.name }}
+          </span>
+
+
+
+
+          <span class="badge difficulty {{ sheet.level }}">
+            <!-- <mat-icon>signal_cellular_alt</mat-icon> -->
+            {{ sheet.level }}
+          </span>
+        </div>
+      </div>
+
+      <!-- BODY -->
+      <div class="card-content">
+
+        <h3 class="title">{{ sheet.name }}</h3>
+
+        <!-- BY + profile -->
+        <p class="artist-legacy">
+
+
+          <!-- <span class="by-text">By</span> -->
+
+          <span class="artist-mini-profile" (click)="navigationService.goToProfile(sheet.user!)">
+            <img [src]="fileUtilsService.getImageUrl(sheet.user!.imageProfilePath)" class="artist-mini-img"
+              alt="Profile" />
+            <span>{{ sheet.user!.name }}</span>
+          </span>
+        </p>
+
+        <!-- TAGS -->
+        <div class="details-row">
+          <div class="primary-tags">
+
+            <span class="detail-tag">
+              <mat-icon>description</mat-icon>
+
+              <i class="fa fa-file-o"></i> {{ sheet.pages }}
+            </span>
+
+            <span class="detail-tag">
+              <mat-icon>music_note</mat-icon>
+              <i class="fa fa-music"></i> {{ sheet.scale }}
+            </span>
+
+            <span class="detail-tag">
+              <i class="fa fa-piano"></i>
+              @for (instrument of sheet.instruments; track instrument.id) {
+              {{ instrument.name }}@if (!$last) {<span>, </span>}
+              }
+            </span>
+
+          </div>
+        </div>
+
+        <!-- STATS -->
+        <div class="stats-row">
+
+          <span class="stat-item">
+            <mat-icon>download</mat-icon>
+            <i class="fa fa-download"></i> {{ sheet.downloads }}
+          </span>
+
+          <!-- <span class="stat-item like" (click)="toggleLike(sheet)">
+            <i class="fa" [class.fa-heart-o]="!sheet.isLiked" [class.fa-heart]="sheet.isLiked"></i>
+            {{ sheet.likes }}
+          </span>
+
+          <span class="stat-item favorite" (click)="toggleFavorite(sheet)">
+            <i class="fa" [class.fa-star-o]="!sheet.isFavorite" [class.fa-star]="sheet.isFavorite"></i>
+            {{ sheet.hearts }}
+          </span> -->
+
+        </div>
+
+        <span class="stat-item likes" (click)="toggleLike(sheet)">
+          <mat-icon style="color: #f0ff6c;" ngClass="sheet.isLiked ? 'liked' : 'not-liked'">
+            {{ sheet.isLiked ? 'thumb_up' : 'thumb_up_off_alt' }}
+          </mat-icon>
+
+          <span class="like-count">
+            {{ sheet.likes }}
+          </span>
+        </span>
+	
+
+
+        <span class="stat-item hearts" (click)="toggleFavorite(sheet)">
+          <mat-icon style="color: #f85e5e;" ngClass="sheet.isFavorite ? 'liked' : 'not-liked'">
+            {{ sheet.hearts  ? 'favorite' : 'favorite_border' }}
+          </mat-icon>
+
+          <span class="hearts-count">
+            {{ sheet.hearts }}
+          </span>
+        </span>
+
+        <button class="button" (click)="goToSheetMusic(sheet)">
+          VIEW
+        </button>
+
+
+      </div>
+    </div>
+    }
+
+    @empty {
+    <div class="no-results">לא נמצאו גיליונות מוזיקליים להצגה.</div>
+    }
+
+  </div>
+</div>

@@ -208,7 +208,14 @@ margin-left: -150px;
 
 
 
-
+.container {
+    /* **תיקון:** הוסר background-color: #12121e; כדי לקבל את הרקע של ה-body */
+    color: #f0f0f0; /* טקסט בהיר */
+    background-color: #1D2838;
+    /* padding: 30px; */
+    min-height: 400px;
+    font-family: Arial, sans-serif;
+}
 
 
 
@@ -226,7 +233,7 @@ margin-left: -150px;
 
 /* 1. הגדרת רוחב הפס */
 body::-webkit-scrollbar {
-  width: 12px; 
+  width: 15px; 
  
 }
 
