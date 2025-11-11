@@ -58,8 +58,8 @@
         <form *ngIf="currentMode === 'login'" [formGroup]="loginForm" (ngSubmit)="onLoginSubmit()" class="auth-form">
           
           <div class="input-group">
-            <label for="login-email">Email Address</label>
-            <input id="login-email" type="email" formControlName="email" placeholder="your.email@example.com">
+            <label for="login-name">Name</label>
+            <input id="login-name" type="name" formControlName="name" placeholder="shira">
           </div>
           
           <div class="input-group">
@@ -87,8 +87,27 @@
     
         <form *ngIf="currentMode === 'signup'" [formGroup]="signupForm" (ngSubmit)="onSignupSubmit()" class="auth-form">
           
-          <div class="upload-photo">Upload Photo</div>
-          
+<div class="upload-container">
+    <input
+        type="file"
+        id="profile-image-input"
+        accept="image/*"
+        (change)="onFileSelected($event)"
+        style="display: none"
+        #fileInput
+    />
+    <button
+        type="button"
+        class="upload-photo"
+        (click)="fileInput.click()"
+    >
+        @if (!selectedFile) {
+            <span>Upload Photo</span>
+        } @else {
+            <span>{{ selectedFile.name }} | Change</span>
+        }
+    </button>
+</div>          
           <div class="input-group">
             <label for="signup-name">Full Name</label>
             <input id="signup-name" type="text" formControlName="fullName" placeholder="John Doe">

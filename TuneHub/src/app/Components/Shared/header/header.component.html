@@ -48,9 +48,16 @@
   </div>
   <!-- <mat-icon>notifications</mat-icon> -->
 
-<div id="get-started" class="button" (click)="loginwindowService.open()">
-  Get Started
-</div>
+
+@if (isLoggedIn$ | async) {
+        <app-profile-mini-avatar></app-profile-mini-avatar>
+    } 
+    @else {
+        <div id="get-started" class="button" (click)="loginwindowService.open()">
+            Get Started
+        </div>
+    }
+
 </header>
 
 <!-- Overlay -->

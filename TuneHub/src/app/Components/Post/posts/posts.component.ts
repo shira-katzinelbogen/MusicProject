@@ -49,5 +49,4 @@ export class PostsComponent {
         return 'assets/images/2.jpg'; 
     }
 
-
 }

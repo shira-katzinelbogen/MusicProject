@@ -1,0 +1,39 @@
+<div class="profile-avatar-wrapper" (click)="toggleDropdown($event)">
+  
+  @if (currentUser$ | async; as user) {
+    
+    <div class="profile-avatar-container">
+        
+        @if (user.hasProfilePicture && user.profilePictureUrl) {
+            <img [src]="user.profilePictureUrl" alt="Profile Picture" class="profile-picture">
+        }
+        @else {
+                <div class="profile-initials">
+                                <span>{{ user.name ? user.name.charAt(0).toUpperCase() : '?' }}</span>
+            </div>
+           
+        }
+        
+        <div class="online-indicator"></div>
+    </div>
+
+    @if (isDropdownOpen) {
+        <div class="profile-dropdown">
+            
+            <a class="dropdown-item user-info" 
+               (click)="navigateToProfile(user.name)">
+              <span class="user-handle">{{ user.name }}</span>
+              <span class="view-profile">צפה בפרופיל</span>
+            </a>
+            
+            <hr class="dropdown-divider">
+            
+            <a class="dropdown-item signout-link" (click)="handleSignOut($event)">
+              התנתק (Sign Out)
+            </a>
+        </div>
+    }
+    
+  }
+  
+</div>

@@ -6,6 +6,8 @@ import { LoginService } from '../../../Services/login.service';
 import { SignupService } from '../../../Services/signup.service';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
+import { log } from 'node:console';
+import { UserProfile, UserStateService } from '../../../Services/user-state.service';
 
 type AuthMode = 'login' | 'signup';
 
@@ -18,11 +20,13 @@ type AuthMode = 'login' | 'signup';
 })
 export class LoginWindowComponent {
 
+  userStateService: UserStateService;
   loginwindowService = inject(LoginwindowService);
-  // loginService = inject(LoginService);
-  // signupService = inject(SignupService);
+   loginService = inject(LoginService);
+   signupService = inject(SignupService);
   private router = inject(Router);
-
+  signupErrorMessage: string | null = null;
+  signupSuccessMessage: string | null = null;
   navigateTo(path: string) {
     this.loginwindowService.close();
     this.router.navigate([path]);
@@ -32,13 +36,19 @@ export class LoginWindowComponent {
 
   loginForm!: FormGroup;
   signupForm!: FormGroup;
+selectedFile: File | null = null; 
 
-  constructor(private fb: FormBuilder, http: HttpClient) { }
+
+// פונקציה שמטפלת בבחירת קובץ (יש לחבר אותה לאירוע change ב-HTML)
+
+  constructor(private fb: FormBuilder, http: HttpClient) {
+    this.userStateService = inject(UserStateService);
+   }
 
   ngOnInit(): void {
     // אתחול טופס כניסה
     this.loginForm = this.fb.group({
-      email: ['', [Validators.required, Validators.email]],
+      name: ['', [Validators.required]],
       password: ['', Validators.required],
       rememberMe: [false]
     });
@@ -65,19 +75,90 @@ export class LoginWindowComponent {
     return password === confirmPassword ? null : { mismatch: true };
   }
 
-  // לוגיקה לשליחת טופס כניסה
-  onLoginSubmit(): void {
-    if (this.loginForm.valid) {
-      console.log('Login Data:', this.loginForm.value);
-      // כאן תוסיף קריאה לשירות האימות שלך
-    }
+  onFileSelected(event: any): void {
+  // בדיקה אם נבחר קובץ
+  if (event.target.files.length > 0) {
+    this.selectedFile = event.target.files[0];
+  } else {
+    this.selectedFile = null;
   }
-
+}
+  onLoginSubmit(): void {
+  if (this.loginForm.valid) {
+    // 1. הוצאת הנתונים מהטופס
+    const { name, password } = this.loginForm.value;
+    
+    // 2. קריאה לשירות ה-Login
+    this.loginService.signin({ name, password }).subscribe({
+      next: (response:any) => {
+        const userProfile: UserProfile = {
+                    name: response.username, // קיבלת 'shira' בהצלחה
+                    // השדות הבאים אינם קיימים ב-LoginResponse שראינו, לכן נשתמש בברירת מחדל
+                    hasProfilePicture: response.hasProfilePicture || false, 
+                    profilePictureUrl: response.profilePictureUrl || undefined 
+                };
+                this.userStateService.setUser(userProfile); // 👈 זה חובה!
+        this.closeWindow(); 
+        this.router.navigate(['/home']); // או נתיב אחר
+      },
+      error: (error) => {
+        // 💡 כישלון: 401, 403, 500, או בעיית רשת.
+        console.error('Login Failed:', error);
+        
+        // הצגת הודעה כללית למשתמש
+        let errorMessage = 'Login failed. Please check your email and password.';
+        if (error.status === 401 || error.status === 403) {
+            errorMessage = 'Invalid credentials. Please try again.';
+        }
+        alert(errorMessage);
+      }
+    });
+  }
+}
   // לוגיקה לשליחת טופס הרשמה
-  onSignupSubmit(): void {
+ onSignupSubmit(): void {
+    // איפוס הודעות
+    this.signupErrorMessage = null;
+    this.signupSuccessMessage = null;
+
     if (this.signupForm.valid) {
-      console.log('Signup Data:', this.signupForm.value);
-      // כאן תוסיף קריאה לשירות ההרשמה שלך
+      // 1. חילוץ נתונים
+      const formValue = this.signupForm.value;
+
+      // ⚠️ הערה חשובה: בקשת Spring Boot signUp מצפה ל-Users object.
+      // נניח שהשדות הנדרשים הם name, password, email (במקום fullName)
+      const signupData = {
+        name: formValue.fullName, // ⚠️ שיניתי fullName ל-name, כי השרת מצפה ל-name
+        password: formValue.password,
+        email: formValue.email,
+        imageProfilePath: null      };
+      // 2. קריאה לשירות ההרשמה
+      console.log('Signup Data:', signupData);
+        this.signupService.signup(signupData, this.selectedFile).subscribe({        
+          next: (response) => {
+          // 💡 הצלחה: השרת החזיר 201 Created
+          console.log('Signup Successful!', response);
+          this.signupSuccessMessage = 'Registration successful! You can now log in.';
+          
+          // אופציונלי: העברה אוטומטית למצב Login
+          this.setMode('login');
+          this.signupForm.reset();
+        },
+        error: (error) => {
+          // 💡 כישלון: 400 (שם משתמש תפוס), 500 (שגיאת שרת)
+          console.error('Signup Failed:', error);
+          
+          if (error.status === 400) {
+            // זה הסטטוס ש-Spring Boot מחזיר אם השם תפוס
+            this.signupErrorMessage = 'This username is already taken. Please choose another one.';
+          } else {
+            this.signupErrorMessage = 'Registration failed. Please try again later.';
+          }
+        }
+      });
+    } else {
+      // אם הטופס לא תקין (והמערכת לא מונעת שליחה)
+      this.signupErrorMessage = 'Please fill in all required fields and agree to the terms.';
     }
   }
 
@@ -99,14 +180,14 @@ export class LoginWindowComponent {
     }
   }
 
-  selectedFile: File | null = null;
-  data = { name: '' }; // נתונים נוספים לשליחה
+  // selectedFile: File | null = null;
+  // data = { name: '' }; // נתונים נוספים לשליחה
 
-  // constructor(private http: HttpClient) {}
+  // // constructor(private http: HttpClient) {}
 
-  onFileSelected(event: any): void {
-    this.selectedFile = event.target.files[0] as File;
-  }
+  // onFileSelected(event: any): void {
+  //   this.selectedFile = event.target.files[0] as File;
+  // }
 
   upload(): void {
     if (!this.selectedFile) {
@@ -121,12 +202,12 @@ export class LoginWindowComponent {
     formData.append('file', this.selectedFile, this.selectedFile.name);
 
     // 3. הוספת נתונים נוספים (אפשר גם להעביר נתונים מורכבים כמחרוזת JSON)
-    formData.append('name', this.data.name);
+    // formData.append('name', this.data.name);
     // או עבור אובייקט:
     // formData.append('metadata', JSON.stringify(this.data));
 
 
-    // 4. שליחת הבקשה
+   // 4. שליחת הבקשה
     // this.http.post('http://localhost:8080/api/upload', formData).subscribe(
     //   (response) => {
     //     console.log('העלאה הצליחה', response);

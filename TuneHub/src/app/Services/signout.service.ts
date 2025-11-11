@@ -13,16 +13,9 @@ export class LoginService {
   constructor(private http: HttpClient) { }
 
   //אוביקט שמכיל את השם והסיסמה
-  signin(credentials: any): Observable<any> {
-    return this.http.post(`${this.apiUrl}/signIn`, {
-      name: credentials.name, 
-      password: credentials.password
+  signOut(credentials: any): Observable<any> {
+    return this.http.post(`${this.apiUrl}/signout`, {
     },{ withCredentials: true });
-  }
-  signOut(): Observable<any> {
-    return this.http.post(`${this.apiUrl}/signOut`, {}, {
-      responseType: 'text' // שינוי חשוב: השרת מחזיר מחרוזת גולמית
-    });
   }
   toggle() { this._isOpen.update(v => !v); }
   open() { this._isOpen.set(true); }
