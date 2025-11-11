@@ -4,11 +4,12 @@ import { PostService } from '../../../Services/post.service';
 import Post from '../../../Models/Post';
 import Users from '../../../Models/Users';
 import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
+import { MatIcon, MatIconModule } from "@angular/material/icon";
 
 @Component({
   selector: 'app-posts',
   standalone: true,
-  imports: [RouterModule],
+  imports: [RouterModule, MatIconModule],
   templateUrl: './posts.component.html',
   styleUrl: './posts.component.css'
 })

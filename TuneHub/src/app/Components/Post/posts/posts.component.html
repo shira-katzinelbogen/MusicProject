@@ -32,6 +32,36 @@
 </div>
 } -->
 
+  <header class="header">
+    <div class="cover-wrapper">
+      <img src="./assets/images/posts.jpg" class="cover-image" />
+
+      <div class="overlay-content">
+        <div class="title-section">
+          <h1 class="musicians" style="font-size: 60px;">Sheet Music Library</h1>
+          <p style="font-size: 25px;color: #ffffff;">Connect with talented professionals for your next project</p>
+        </div>
+        <button class="button join-network-btn" >
+          <!-- <span class="icon">🧑</span> -->
+
+          <mat-icon>upload</mat-icon>
+
+
+          UploadSheetMusic
+        </button>
+        <!-- <button class="button" (click)="openUploadModal()">Upload New Sheet</button> -->
+<!-- 
+@if(uploadSheetMusicService.isOpen){
+    <app-upload-sheet-music 
+        (uploadSuccess)="loadSheets()"> </app-upload-sheet-music>
+} -->
+        
+      </div>
+    </div>
+
+
+  </header>
+
 @if(posts.length===0){
     }
 @else{
