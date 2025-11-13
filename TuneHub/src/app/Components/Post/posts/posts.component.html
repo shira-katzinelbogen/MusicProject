@@ -1,103 +1,112 @@
-<!-- 
+<div class="container">
 
-<h1 class="title">All Your Tasks</h1>
-<p>klkl</p>
-<div>
-    <p>hi hello</p>
-    
-</div>
+    <header class="header">
+        <div class="cover-wrapper">
+            <img src="./assets/images/posts.jpg" class="cover-image" />
+            <div class="overlay-content">
+                <div class="header-inner-content">
+                    <h1 class="musicians" style="font-size:60px;">Posts & Vibes</h1>
+                    <p style="font-size:25px;color:#fff">Create, share, and enjoy</p>
 
-@if(posts.length===0){
-<p class="have-no-posts"><b>There are currently no tasks to display.</b><br>
-    Add new tasks to manage your work efficiently and neatly.<br><br>
-
-    Take advantage of this tool to organize your day in the best way and achieve the goals you have set for yourself<br>
-</p>
-} -->
-<!-- @else{
-
-<div class="posts-container ">
-    @for(post of posts; track $index){
-    <div (click)="showDetails(post)">
-        <h1>content {{post.content}}</h1>
-        <h4>likes {{post.likes}}</h4>
-        <h4>imagesPath {{post.imagesPath}}</h4>
-        <img [src]="getImageUrl(post.imagesPath)"
-              class="profile-image">
-
-              
-    </div>
-
-    }
-</div>
-} -->
-
-  <header class="header">
-    <div class="cover-wrapper">
-      <img src="./assets/images/posts.jpg" class="cover-image" />
-
-      <div class="overlay-content">
-        <div class="title-section">
-          <h1 class="musicians" style="font-size: 60px;">Sheet Music Library</h1>
-          <p style="font-size: 25px;color: #ffffff;">Connect with talented professionals for your next project</p>
+                    <button class="button join-network-btn">
+                        Upload Post
+                        <mat-icon>upload</mat-icon>
+                    </button>
+                </div>
+            </div>
         </div>
-        <button class="button join-network-btn" >
-          <!-- <span class="icon">🧑</span> -->
+    </header>
 
-          <mat-icon>upload</mat-icon>
-
-
-          UploadSheetMusic
-        </button>
-        <!-- <button class="button" (click)="openUploadModal()">Upload New Sheet</button> -->
-<!-- 
-@if(uploadSheetMusicService.isOpen){
-    <app-upload-sheet-music 
-        (uploadSuccess)="loadSheets()"> </app-upload-sheet-music>
-} -->
-        
-      </div>
-    </div>
-
-
-  </header>
-
-@if(posts.length===0){
+    @if(posts.length===0){
+        <p class="no-posts">אין פוסטים כרגע</p>
     }
-@else{
+    @else{
 
-<div class="posts-container">
-    @for(post of posts; track $index){
-    <div class="task-card" (click)="showDetails(post)">
-        
-        <div class="card-header">
-            <h2 class="card-content-title">
-                {{post.content}}
-            </h2>
-            <div class="task-meta">
-                <img [src]="getImageUrl(post.imagesPath)" class="task-image">
+    <div class="posts-container">
+
+        @for(post of posts; track $index){
+
+        <div class="post-card">
+
+            <header class="post-header">
                 
+                <img class="avatar"
+                     [src]="fileUtils.getImageUrl(post.user?.imageProfilePath)"
+                     alt="avatar">
+
+                <div class="user-info">
+                    <span class="username">{{post.user?.name}}</span>
+                    <span class="date">{{post.dateUploaded | date:'short'}}</span>
+                </div>
+
+                <!-- כפתור דיווח למשתמש רגיל -->
+                <button *ngIf="!isAdmin"
+                        class="action-btn report-btn"
+                        (click)="onReportPost(post.id!)">
+                    <mat-icon>report</mat-icon> דווח
+                </button>
+
+                <!-- כפתורי אדמין -->
+                <div *ngIf="isAdmin" class="post-actions-wrapper">
+                    <button class="action-btn more-actions-btn"
+                            (click)="toggleAdminActions(post.id!)">
+                        <mat-icon>more_vert</mat-icon>
+                    </button>
+
+                    <div *ngIf="showAdminActions[post.id!]" class="admin-actions-dropdown">
+
+                        <button class="action-btn delete-btn"
+                                (click)="onDeletePost(post.id!)">
+                            <mat-icon>delete</mat-icon> מחיקה
+                        </button>
+
+                        <button class="action-btn report-btn"
+                                (click)="onReportPost(post.id!)">
+                            <mat-icon>report</mat-icon> דיווח
+                        </button>
+
+                    </div>
+                </div>
+
+            </header>
+
+            <div class="post-body">
+
+                <h3 class="post-title">{{post.title}}</h3>
+                <p class="post-content">{{post.content}}</p>
+
+                <div class="post-media">
+                    
+                    <div *ngFor="let image of post.imagesBase64" class="image-container">
+                        <img [src]="fileUtils.getImageUrl(image)" class="post-image">
+                    </div>
+
+                    <audio *ngIf="post.audioPath" controls
+                           [src]="getSafeMediaUrl('audio/' + post.audioPath)">
+                    </audio>
+
+                    <video *ngIf="post.videoPath" controls
+                           [src]="getSafeMediaUrl('video/' + post.videoPath)">
+                    </video>
+
+                </div>
             </div>
-        </div>
-        
-        <div class="card-body">
-            <p class="description">
-                Task description goes here...
-            </p>
+
+            <footer class="post-footer">
+                <div class="stats">
+                    <span>❤️ {{post.hearts}}</span>
+                    <span>👍 {{post.likes}}</span>
+                </div>
+            </footer>
+
+            <hr>
+
         </div>
 
-        <div class="card-footer">
-            <div class="likes-info">
-                <span class="likes-icon">❤️</span>
-                <h4 class="likes-count">{{post.likes}} Likes</h4>
-            </div>
-            <button class="view-details-button">
-                View Details
-            </button>
-        </div>
-        
+        }
+
     </div>
-    }
-</div>
-}
 
+    }
+
+</div>

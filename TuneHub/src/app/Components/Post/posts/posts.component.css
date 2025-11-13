@@ -10,26 +10,10 @@
     grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); /* יצירת רשת רספונסיבית */
     gap: 20px;
     padding: 20px;
+   
 }
 
 /* ------------------ עיצוב כרטיס הפוסט (המשימה) ------------------ */
-
-.task-card {
-    background-color: #ffffff; /* רקע לבן נקי */
-    border: 1px solid #e0e0e0;
-    border-radius: 12px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
-    transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
-    cursor: pointer;
-    overflow: hidden; /* לוודא שהתמונה לא בורחת */
-    display: flex;
-    flex-direction: column;
-}
-
-.task-card:hover {
-    transform: translateY(-5px); /* אפקט ריחוף קל בעת מעבר עכבר */
-    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
-}
 
 /* Header - כותרת ותמונה */
 .card-header {
@@ -131,4 +115,1224 @@
     height: 100%; 
     object-fit: cover; /* מבטיח שמרכז התמונה ייראה */
     display: block; 
+}
+
+
+/* מבנה כרטיס הפוסט הכללי */
+.post-card {
+    background-color: #1a1a2e; /* רקע כהה */
+    color: #ffffff;
+    border-radius: 12px;
+    padding: 15px;
+    margin: 20px 0;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5); /* צל מודגש */
+    font-family: sans-serif;
+    max-width: 600px; /* רוחב מקסימלי סביר */
+}
+
+/* כותרת הפוסט - פרטי המשתמש וכפתורי ניהול */
+.post-header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 15px;
+    position: relative;
+}
+
+.avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    margin-inline-end: 10px;
+    object-fit: cover;
+}
+
+.user-info {
+    display: flex;
+    flex-direction: column;
+}
+
+.username {
+    font-weight: bold;
+    font-size: 1.1em;
+}
+
+.date {
+    font-size: 0.8em;
+    color: #a0a0a0;
+}
+
+/* כפתורי הניהול (רק לאדמין) */
+.admin-actions {
+    margin-inline-start: auto; /* דוחף לצד השני */
+    display: flex;
+    gap: 8px;
+}
+
+.delete-btn, .report-btn {
+    background: none;
+    border: none;
+    color: #ff4d4d; /* אדום למחיקה/דיווח */
+    cursor: pointer;
+    font-size: 0.9em;
+    padding: 5px 8px;
+    border-radius: 5px;
+    transition: background-color 0.2s;
+}
+
+.delete-btn:hover, .report-btn:hover {
+    background-color: #33334d;
+}
+
+/* גוף הפוסט ותצוגת המדיה */
+.post-title {
+    font-size: 1.3em;
+    margin-top: 0;
+    margin-bottom: 10px;
+}
+
+.post-content {
+    line-height: 1.5;
+    margin-bottom: 15px;
+}
+
+.post-media {
+    margin-bottom: 15px;
+}
+
+.post-image {
+    max-width: 100%;
+    height: auto;
+    border-radius: 8px;
+    display: block;
+    margin: 5px 0;
+}
+
+/* פוטר - סטטיסטיקות ופעולות */
+.post-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-top: 10px;
+}
+
+.stats span {
+    margin-inline-end: 15px;
+    font-weight: bold;
+    color: #4d94ff; /* צבע לכפתורים / סטטיסטיקה */
+}
+
+.action-btn {
+    background: none;
+    border: 1px solid #4d94ff;
+    color: #4d94ff;
+    padding: 5px 10px;
+    border-radius: 20px;
+    cursor: pointer;
+    margin-inline-start: 5px;
+    transition: background-color 0.2s, color 0.2s;
+}
+
+.action-btn:hover {
+    background-color: #4d94ff;
+    color: #ffffff;
+}
+
+/* אזור תגובות */
+.separator {
+    border: 0;
+    height: 1px;
+    background-color: #33334d;
+    margin: 15px 0;
+}
+
+.comments-section h4 {
+    margin-top: 0;
+    font-size: 1.1em;
+}
+
+.comments-section form {
+    display: flex;
+    gap: 10px;
+}
+
+.comments-section input[type="text"] {
+    flex-grow: 1;
+    padding: 8px;
+    border: 1px solid #33334d;
+    border-radius: 20px;
+    background-color: #0f0f1a; /* רקע כהה יותר לשדה */
+    color: #ffffff;
+}
+
+.comments-section button[type="submit"] {
+    background-color: #4d94ff;
+    color: white;
+    border: none;
+    padding: 8px 15px;
+    border-radius: 20px;
+    cursor: pointer;
+}
+
+
+
+
+
+
+
+
+
+/* כל העמוד */
+body {
+    background-color: #1C2737;
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 20px;
+    display: flex;
+    justify-content: center;
+}
+
+/* מיכל הפוסטים */
+.posts-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+    width: 100%;
+    max-width: 900px; /* הפוסטים לא יתפשטו יותר מדי */
+}
+
+/* כרטיס פוסט */
+.post-card {
+    background-color: #1d2837;
+    border: 1px solid #8000ff; /* מסגרת סגולה דקה */
+    border-radius: 10px;
+    padding: 20px;
+    width: 100%;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+/* כותרת ומידע על היוזר */
+.post-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px;
+}
+
+.post-header .avatar {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.user-info {
+    display: flex;
+    flex-direction: column;
+    margin-left: 10px;
+    color: #ffffff;
+}
+
+.username {
+    font-weight: bold;
+    font-size: 16px;
+}
+
+.date {
+    font-size: 12px;
+    color: #aaa;
+}
+
+/* גוף הפוסט */
+.post-body {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.post-title {
+    font-size: 20px;
+    font-weight: bold;
+    color: #ffffff;
+    margin: 0;
+}
+
+.post-content {
+    font-size: 16px;
+    color: #ddd;
+}
+
+/* מדיה */
+.post-media {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.post-media .image-container {
+    width: 100%;
+    max-height: 400px;
+    overflow: hidden;
+    border-radius: 8px;
+}
+
+.post-media img.post-image {
+    width: 100%;
+    object-fit: cover;
+}
+
+.post-media audio,
+.post-media video {
+    width: 100%;
+    border-radius: 8px;
+}
+
+/* רגל הפוסט */
+.post-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: #fff;
+}
+
+.post-footer .stats {
+    display: flex;
+    gap: 15px;
+    font-weight: bold;
+}
+
+.post-footer .actions {
+    display: flex;
+    gap: 10px;
+}
+
+.post-footer .action-btn {
+    background-color: #2a3550;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 5px;
+    color: #fff;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.post-footer .action-btn:hover {
+    background-color: #4b2fff;
+}
+
+/* תגובות */
+.comments-section {
+    margin-top: 10px;
+    color: #fff;
+}
+
+.comments-section h4 {
+    margin-bottom: 5px;
+}
+
+
+/* כל העמוד */
+body {
+    background-color: #1C2737;
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+}
+
+/* מיכל הפוסטים */
+.posts-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+    width: 100%;
+    max-width: 900px; /* רוחב מרבי */
+}
+
+/* כרטיס פוסט */
+.post-card {
+    background-color: #213244;
+    border: 1px solid #8000ff; /* מסגרת סגולה דקה */
+    border-radius: 15px;
+    padding: 25px;
+    width: 100%;
+    max-width: 800px;
+    box-shadow: 0 6px 15px rgba(0,0,0,0.4);
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    transition: transform 0.2s;
+}
+
+.post-card:hover {
+    transform: translateY(-5px);
+}
+
+/* כותרת ומידע על היוזר */
+.post-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 15px;
+}
+
+.post-header .avatar {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.user-info {
+    display: flex;
+    flex-direction: column;
+    margin-left: 10px;
+    color: #ffffff;
+}
+
+.username {
+    font-weight: bold;
+    font-size: 18px;
+}
+
+.date {
+    font-size: 13px;
+    color: #aaa;
+}
+
+/* גוף הפוסט */
+.post-body {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.post-title {
+    font-size: 22px;
+    font-weight: bold;
+    color: #ffffff;
+    margin: 0;
+}
+
+.post-content {
+    font-size: 17px;
+    color: #ddd;
+}
+
+/* מדיה */
+.post-media {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.post-media .image-container {
+    width: 100%;
+    max-height: 500px;
+    overflow: hidden;
+    border-radius: 10px;
+}
+
+.post-media img.post-image {
+    width: 100%;
+    object-fit: cover;
+}
+
+.post-media audio,
+.post-media video {
+    width: 100%;
+    border-radius: 10px;
+}
+
+/* רגל הפוסט */
+.post-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: #fff;
+}
+
+.post-footer .stats {
+    display: flex;
+    gap: 20px;
+    font-weight: bold;
+}
+
+.post-footer .actions {
+    display: flex;
+    gap: 12px;
+}
+
+.post-footer .action-btn {
+    background-color: #2a3550;
+    border: none;
+    padding: 6px 12px;
+    border-radius: 6px;
+    color: #fff;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.post-footer .action-btn:hover {
+    background-color: #4b2fff;
+}
+
+/* תגובות */
+.comments-section {
+    margin-top: 10px;
+    color: #fff;
+}
+
+.comments-section h4 {
+    margin-bottom: 5px;
+}
+
+/* ==================== רספונסיביות ==================== */
+@media screen and (max-width: 768px) {
+    .post-card {
+        padding: 20px;
+        max-width: 95%;
+    }
+
+    .post-header .avatar {
+        width: 50px;
+        height: 50px;
+    }
+
+    .username {
+        font-size: 16px;
+    }
+
+    .post-title {
+        font-size: 20px;
+    }
+
+    .post-content {
+        font-size: 15px;
+    }
+
+    .post-footer .stats {
+        gap: 15px;
+    }
+
+    .post-footer .actions {
+        gap: 10px;
+    }
+}
+
+@media screen and (max-width: 480px) {
+    .post-card {
+        padding: 15px;
+    }
+
+    .post-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+    }
+
+    .post-body {
+        gap: 10px;
+    }
+}
+
+
+/* ==================== משתנים וקונטיינר ראשי ==================== */
+:root {
+    --player-bg: #1c152a; /* רקע כהה מאוד */
+    --player-accent: #8e2de2; /* סגול בסיסי */
+    --player-gradient: linear-gradient(135deg, #8e2de2 0%, #4a00e0 100%); /* גרדיאנט לכפתור */
+    --progress-played-color: #d3a0f5; /* צבע סגול בהיר להתקדמות */
+    --progress-buffered-color: #4a415a; /* צבע אפור כהה לטעינה */
+}
+
+.audio-player-container {
+    width: 100%;
+    max-width: 800px;
+    background-color: var(--player-bg);
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.5);
+    font-family: sans-serif;
+    color: white;
+    direction: ltr; /* נגן אודיו הוא לרוב משמאל לימין */
+}
+
+/* ==================== חלק עליון: כותרת ומטא-דאטה ==================== */
+.player-header {
+    display: flex;
+    align-items: center;
+    padding: 15px 20px;
+    gap: 15px;
+}
+
+.play-button-wrapper {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background: var(--player-gradient);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-shrink: 0; /* מונע התכווצות */
+    cursor: pointer;
+}
+
+.play-icon {
+    width: 24px;
+    height: 24px;
+    margin-left: 2px; /* הזזה קלה ימינה כדי ליצור אשליה של מרכוז */
+}
+
+.metadata-section {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.track-title {
+    font-size: 1.15rem;
+    font-weight: bold;
+    margin: 0;
+}
+
+.track-details {
+    display: flex;
+    align-items: center;
+    font-size: 0.85rem;
+    color: #a09cb4;
+    margin-top: 3px;
+}
+
+.separator {
+    margin: 0 8px;
+}
+
+.genre-tag {
+    background-color: #4a415a;
+    color: #d3a0f5;
+    padding: 2px 8px;
+    border-radius: 10px;
+    font-size: 0.75rem;
+    font-weight: 500;
+}
+
+.music-note-icon {
+    width: 20px;
+    height: 20px;
+    fill: #d3a0f5; /* צבע סגול בהיר */
+}
+
+
+/* ==================== חלק תחתון: פס התקדמות וגרפיקה ==================== */
+
+.progress-bar-wrapper {
+    position: relative;
+    width: 100%;
+    /* גובה החלק התחתון מהתמונה המקורית */
+    height: 120px; 
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end; /* ממקם את הפס למטה */
+}
+
+
+/* פס ההתקדמות עצמו */
+.progress-bar-background {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 6px;
+    background-color: rgba(255, 255, 255, 0.2); /* הרקע הכללי של הפס */
+    z-index: 5; /* לוודא שהוא מעל הרקע */
+}
+
+/* ------------------- מצב טעון (Buffered) ------------------- */
+/* מייצג כמה מהקובץ נטען כבר, אך לא נוגן */
+.progress-buffered {
+    position: absolute;
+    height: 100%;
+    background-color: var(--progress-buffered-color);
+    /* width יוגדר באמצעות JS */
+}
+
+/* ------------------- מצב נוגן (Played) ------------------- */
+/* מייצג כמה מהקובץ נוגן בפועל */
+.progress-played {
+    position: absolute;
+    height: 100%;
+    background-color: var(--progress-played-color);
+    /* width יוגדר באמצעות JS */
+}
+
+/* ------------------- סמן מיקום (Scrubber) ------------------- */
+.progress-scrubber {
+    width: 14px;
+    height: 14px;
+    background-color: white;
+    border-radius: 50%;
+    position: absolute;
+    top: 50%;
+    right: -7px; /* מיקום הסמן בקצה הימני של ה-Played */
+    transform: translateY(-50%);
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
+    cursor: pointer;
+}
+
+
+/* ==================== משתנים וקונטיינר ראשי ==================== */
+:root {
+    --player-bg: #1c152a; /* רקע כהה מאוד */
+    --player-accent: #8e2de2; /* סגול בסיסי */
+    --player-gradient: linear-gradient(135deg, #8e2de2 0%, #4a00e0 100%); /* גרדיאנט לכפתור */
+    --progress-played-color: #d3a0f5; /* צבע סגול בהיר להתקדמות */
+    --progress-buffered-color: #4a415a; /* צבע אפור כהה לטעינה */
+}
+
+.audio-player-container {
+    width: 100%;
+    /* הגדרת גודל שמתאים לגודל הסטנדרטי בפוסטים */
+    max-width: 600px; 
+    background-color: var(--player-bg);
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
+    font-family: sans-serif;
+    color: white;
+    direction: ltr; 
+}
+
+/* הסתרת רכיב האודיו המובנה */
+.hidden-audio-element {
+    display: none;
+    width: 0;
+    height: 0;
+}
+
+
+/* ==================== חלק עליון: כותרת ומטא-דאטה ==================== */
+.player-header {
+    display: flex;
+    align-items: center;
+    padding: 12px 18px; /* צמצום הפאדינג */
+    gap: 12px;
+}
+
+.play-button-wrapper {
+    width: 45px; /* גודל כפתור קטן יותר לפרופורציה */
+    height: 45px;
+    border-radius: 50%;
+    background: var(--player-gradient);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-shrink: 0; 
+    cursor: pointer;
+}
+
+.play-icon {
+    width: 20px;
+    height: 20px;
+    margin-left: 2px;
+}
+
+.track-title {
+    font-size: 1.05rem; /* גודל כותרת קטן יותר */
+    font-weight: bold;
+    margin: 0;
+}
+
+.track-details {
+    font-size: 0.8rem;
+    color: #a09cb4;
+    margin-top: 2px;
+}
+
+.separator {
+    margin: 0 6px; /* ריווח קטן יותר */
+}
+
+.genre-tag {
+    background-color: #4a415a;
+    color: #d3a0f5;
+    padding: 1px 7px; /* צמצום הפאדינג */
+    border-radius: 8px;
+    font-size: 0.7rem;
+}
+
+.music-note-icon {
+    width: 18px; /* גודל אייקון צדדי */
+    height: 18px;
+    fill: #d3a0f5;
+    margin-left: 10px; /* הוספת ריווח משמאל */
+}
+
+
+/* ==================== חלק תחתון: פס התקדמות וגרפיקה ==================== */
+
+.progress-bar-wrapper {
+    position: relative;
+    width: 100%;
+    /* גובה החלק התחתון מהתמונה המקורית. קצת פחות מ-120px */
+    height: 100px; 
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end; 
+}
+
+
+
+/* פס ההתקדמות עצמו */
+.progress-bar-background {
+    position: absolute;
+    bottom: 0; /* הצמדה לתחתית */
+    left: 0;
+    width: 100%;
+    height: 4px; /* גובה הפס */
+    background-color: rgba(255, 255, 255, 0.2);
+    z-index: 5; /* לוודא שהוא מעל הרקע */
+}
+
+/* מצב נוגן וסמן */
+.progress-played {
+    position: absolute;
+    height: 100%;
+    background-color: var(--progress-played-color);
+}
+
+.progress-buffered {
+    position: absolute;
+    height: 100%;
+    background-color: var(--progress-buffered-color);
+}
+
+.progress-scrubber {
+    width: 10px; /* סמן קטן יותר */
+    height: 10px;
+    background-color: white;
+    border: 2px solid var(--progress-played-color); /* הוספת מסגרת סגולה */
+    border-radius: 50%;
+    position: absolute;
+    top: 50%;
+    right: -5px; 
+    transform: translateY(-50%);
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
+    cursor: grab;
+}
+
+
+/* ==================== נגן אודיו: גרסה קומפקטית ==================== */
+
+:root {
+    --player-bg: #1c152a; 
+    --player-accent: #8e2de2;
+    --player-gradient: linear-gradient(135deg, #8e2de2 0%, #4a00e0 100%);
+    --progress-played-color: #d3a0f5; 
+    --progress-buffered-color: #4a415a; 
+}
+
+.audio-player-container {
+    /* הנגן יתפוס את כל רוחב ה-post-card */
+    width: 100%; 
+    /* הסרת רוחב מקסימלי כדי להתאים ל-post-card */
+    /* max-width: 600px; - הוסר */ 
+    background-color: var(--player-bg);
+    border-radius: 10px; /* מעט פחות עגול */
+    overflow: hidden;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.3);
+    font-family: sans-serif;
+    color: white;
+    direction: ltr; 
+    margin-top: 5px; /* רווח קל מתכולת הפוסט */
+}
+
+/* הסתרת רכיב האודיו המובנה */
+.hidden-audio-element {
+    display: none;
+    width: 0;
+    height: 0;
+}
+
+
+/* ------------------- כותרת ומטא-דאטה (החלק העליון) ------------------- */
+.player-header {
+    display: flex;
+    align-items: center;
+    padding: 8px 15px; /* צמצום הפאדינג לגובה קטן יותר */
+    gap: 10px;
+}
+
+.play-button-wrapper {
+    width: 40px; /* קטן יותר */
+    height: 40px; /* קטן יותר */
+    border-radius: 50%;
+    background: var(--player-gradient);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-shrink: 0; 
+    cursor: pointer;
+}
+
+.play-icon {
+    width: 18px; /* קטן יותר */
+    height: 18px; /* קטן יותר */
+    margin-left: 1px;
+}
+
+.track-title {
+    font-size: 1rem; /* גודל כותרת סטנדרטי */
+    font-weight: 600;
+    margin: 0;
+}
+
+.track-details {
+    font-size: 0.75rem; /* גודל קטן */
+    color: #a09cb4;
+    margin-top: 1px;
+}
+
+.separator {
+    margin: 0 5px; 
+}
+
+.genre-tag {
+    background-color: #4a415a;
+    color: #d3a0f5;
+    padding: 0px 6px; 
+    border-radius: 8px;
+    font-size: 0.65rem; /* קטן מאוד */
+}
+
+.music-note-icon {
+    width: 16px; /* קטן יותר */
+    height: 16px; /* קטן יותר */
+    fill: #d3a0f5;
+    margin-left: 8px; 
+}
+
+
+/* ------------------- פס התקדמות וגרפיקה (החלק התחתון) ------------------- */
+.progress-bar-wrapper {
+    position: relative;
+    width: 100%;
+    /* הגובה הכללי של החלק התחתון */
+    height: 80px; 
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end; 
+}
+
+
+
+/* פס ההתקדמות עצמו */
+.progress-bar-background {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 3px; /* פס דק יותר */
+    background-color: rgba(255, 255, 255, 0.2);
+    z-index: 5;
+}
+
+/* מצב נוגן וסמן */
+.progress-played {
+    position: absolute;
+    height: 100%;
+    background-color: var(--progress-played-color);
+}
+
+.progress-buffered {
+    position: absolute;
+    height: 100%;
+    background-color: var(--progress-buffered-color);
+}
+
+.progress-scrubber {
+    width: 8px; /* סמן דק יותר */
+    height: 8px; /* סמן דק יותר */
+    background-color: white;
+    border: 1.5px solid var(--progress-played-color); 
+    border-radius: 50%;
+    position: absolute;
+    top: 50%;
+    right: -4px; /* מיקום הסמן */
+    transform: translateY(-50%);
+    box-shadow: 0 0 3px rgba(0, 0, 0, 0.5);
+    cursor: grab;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* ----------------- Body & Global Styles for POSTS ----------------- */
+html,
+body {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    min-height: 100vh;
+    width: 100%;
+    font-family: 'Inter', 'Roboto', 'Open Sans', sans-serif;
+    color: white;
+    background-color: #1D2838; /* הרקע הכהה של הפוסטים */
+}
+
+app-root {
+    display: block;
+    height: 100%;
+    width: 100%;
+}
+
+/* ----------------- Buttons ----------------- */
+.button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    background: linear-gradient(90deg, #A03FFB 0%, #5271FF 100%);
+    border-radius: 10px;
+    padding: 12px 18px;
+    cursor: pointer;
+    font-weight: 500;
+    font-size: 18px;
+    color: white;
+    border: none;
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.button mat-icon { font-size: 25px; }
+
+.button:hover {
+    transform: scale(1.05);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.button::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.2);
+    opacity: 0;
+    transition: opacity 0.2s ease;
+    border-radius: inherit;
+    pointer-events: none;
+}
+
+.button:active::after { opacity: 1; }
+.button:active {
+    transform: scale(0.95);
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+}
+
+/* Button color variants */
+.play { color: #B97FFF; }
+.share { color: #3BB2FF; margin: 0 10px; }
+.grow { color: #3CFF6E; }
+
+/* ----------------- Overlay ----------------- */
+.overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.892);
+    z-index: 2;
+}
+
+/* ----------------- Cover Image & Wrapper ----------------- */
+.cover-wrapper {
+    position: relative;
+    width: 100%;
+    height: 50vh;
+    top: -30px;
+    overflow: hidden;
+    border-radius: 12px;
+    padding: 0;
+}
+
+.cover-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+.overlay-content {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    padding: 0px 40px 100px 40px;
+    background: linear-gradient(
+        to top,
+        rgba(0, 0, 0, 0.803) 0%,
+        rgba(0, 0, 0, 0.807) 50%,
+        transparent 100%
+    );
+    color: white;
+    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.7);
+}
+
+/* ----------------- Scrollbar ----------------- */
+body::-webkit-scrollbar { width: 15px; }
+body::-webkit-scrollbar-track {
+    background: #1D2838;
+    border-radius: 10px;
+}
+body::-webkit-scrollbar-thumb {
+    background: linear-gradient(to bottom, #9430ff 0%, #3888ff 100%);
+    border-radius: 10px;
+    border: 3px solid #2c3e50;
+}
+body::-webkit-scrollbar-thumb:hover {
+    background: linear-gradient(to bottom, #8413fe 0%, #1b76ff);
+}
+
+/* ----------------- Container ----------------- */
+.container {
+    color: #f0f0f0;
+    background-color: #1D2838;
+    min-height: 400px;
+    font-family: Arial, sans-serif;
+}
+
+/* ----------------- Musicians Gradient Text ----------------- */
+.musicians {
+    font-size: clamp(2rem, 4vw, 5rem);
+    font-weight: 800;
+    background: linear-gradient(90deg, #a653fe 0%, #599afd 100%);
+    -webkit-mask-image: linear-gradient(90deg, #fff, #fff);
+    -webkit-mask-clip: text;
+    -webkit-mask-repeat: no-repeat;
+    -webkit-mask-size: 100%;
+    mask-image: linear-gradient(90deg, #fff, #fff);
+    mask-clip: text;
+    mask-repeat: no-repeat;
+    mask-size: 100%;
+    color: transparent;
+    -webkit-text-fill-color: transparent;
+    display: inline-block;
+    line-height: 1.1;
+    letter-spacing: 1px;
+    text-shadow: 0 0 20px rgba(166, 83, 254, 0.3);
+}
+
+/* ----------------- Logo ----------------- */
+.logo {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    cursor: pointer;
+}
+
+.logo img {
+    height: 50px;
+    width: auto;
+    margin-left: -150px;
+    margin-right: 100px;
+}
+
+/* ----------------- Header ----------------- */
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 30px;
+}
+
+.title-section h1 {
+    font-size: 2.5em;
+    margin: 0;
+}
+
+.title-section p {
+    color: #aaaaaa;
+    margin-top: 5px;
+}
+
+.back-arrow {
+    font-size: 1.5em;
+    margin-right: 15px;
+    cursor: pointer;
+    display: inline-block;
+}
+
+
+
+
+
+
+
+
+
+
+
+.cover-wrapper {
+    background-color: #1D2838; /* הצבע הרצוי שלך */
+    position: relative;
+    width: 100%;
+    height: 50vh;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+/* מיכל הפוסטים - מכיל את כל ה-post-card-ים */
+.posts-container {
+    /* הגבלת הרוחב המקסימלי כדי שלא יתפוס את כל רוחב המסך */
+    max-width: 900px; 
+    width: 100%;
+    
+    /* משיג מרכוז אופקי (שמאל וימין) */
+    margin: 0 auto; 
+    padding: 20px; 
+
+    /* שימוש ב-Flexbox כדי ליישר את הפוסטים אם הם אינם ברוחב 100% */
+    display: flex;
+    flex-direction: column; 
+    align-items: center; /* ריכוז אופקי של הפריטים בתוך הקונטיינר */
+    gap: 30px; 
+}
+
+/* ודא שכרטיס הפוסט יתפוס את כל הרוחב הזמין בתוך ה-posts-container */
+.post-card {
+    width: 100%;
+    max-width: 800px; /* אופציונלי: מגביל את רוחב הפוסט הבודד גם אם הקונטיינר רחב */
+    /* שאר העיצוב... */
+    background-color: #1D2838;
 }

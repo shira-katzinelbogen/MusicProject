@@ -1,5 +1,5 @@
-import Post from "./Post";
-import Users from "./Users";
+import  Post  from "./Post";
+import  Users  from "./Users";
 
 export default class Comment {
     id?: number;

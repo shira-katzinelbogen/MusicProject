@@ -5,11 +5,12 @@ import { UsersService } from '../../../Services/users.service';
 import { FileUtilsService } from '../../../Services/fileutils.service';
 import { SafeUrl } from '@angular/platform-browser';
 import { NavigationService } from '../../../Services/navigation.service';
+import { MatIcon } from "@angular/material/icon";
 
 @Component({
   selector: 'app-musicians',
   standalone: true,
-  imports: [RouterModule],
+  imports: [RouterModule, MatIcon],
   templateUrl: './musicians.component.html',
   styleUrl: './musicians.component.css'
 })

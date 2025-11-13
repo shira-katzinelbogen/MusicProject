@@ -261,6 +261,25 @@ body{
     border-radius: 12px;
 }
 
+.title-section {
+    /* מבטיח שהטקסט נשאר בצד שמאל */
+    /* נטרל שוליים שמוגדרים אוטומטית על H1/P */
+    margin: 0; 
+}
+
+.join-network-btn {
+    /* עיצוב הכפתור - ודא שצבע הרקע שלו שונה אם צריך */
+    background-color: #6a1b9a; /* סגול בולט */
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 6px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+
+
 .cover-wrapper {
     /* נותן נקודת ייחוס למיקום המוחלט של הטקסט והכפתור */
     position: relative; 
@@ -314,21 +333,4 @@ body{
     /* ודא שהטקסט קריא */
     color: white;
     text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.7);
-}
-
-.title-section {
-    /* מבטיח שהטקסט נשאר בצד שמאל */
-    /* נטרל שוליים שמוגדרים אוטומטית על H1/P */
-    margin: 0; 
-}
-
-.join-network-btn {
-    /* עיצוב הכפתור - ודא שצבע הרקע שלו שונה אם צריך */
-    background-color: #6a1b9a; /* סגול בולט */
-    color: white;
-    padding: 10px 20px;
-    border: none;
-    border-radius: 6px;
-    font-weight: bold;
-    cursor: pointer;
 }

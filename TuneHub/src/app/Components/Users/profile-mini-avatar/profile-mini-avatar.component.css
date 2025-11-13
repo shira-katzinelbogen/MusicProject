@@ -7,17 +7,19 @@
 
 /* קונטיינר האווטאר עצמו (העיגול שמכיל את התמונה/אות) */
 .profile-avatar-container {
-    height: 32px;
-    width: 32px;
+    height: 45px;
+    width: 36px;
     border-radius: 50%;
     display: flex;
     align-items: center; /* מרכוז אנכי */
     justify-content: center; /* מרכוז אופקי */
-    background-color: lightseagreen; 
+    background-color: rgb(151, 32, 178); 
+    text-align: center;
     color: white; /* צבע הטקסט שבתוך העיגול */
     font-weight: bold;
     font-size: 1.1em;
-    border: 1px solid lightseagreen;
+    padding-right: 12px;
+    border: 1px solid rgb(88, 169, 255);
     
     position: relative;
 }
@@ -46,3 +48,14 @@
 
 
 /* ... (שאר הסגנונות כגון .profile-picture ו-profile-dropdown) ... */
+
+/* ודא שהתמונה ממלאת את קונטיינר האווטאר (העיגול) */
+.profile-avatar-container .profile-picture {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%; /* חובה כדי שהתמונה תהיה עגולה */
+    object-fit: cover; /* מוודא שהתמונה ממלאת את כל העיגול בלי להתעוות */
+    display: block; /* כדי להסיר רווחים מיותרים מתחת לתמונה */
+}
+
+

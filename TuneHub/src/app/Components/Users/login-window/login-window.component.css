@@ -497,3 +497,107 @@
   border: 3px solid #700aff; 
 }
 
+/* מעטפת הכפתור והתמונה */
+.upload-container {
+    display: flex;
+    flex-direction: column; /* מסדר את הכפתור מעל התמונה */
+    align-items: center;    /* מרכז אופקית */
+    gap: 15px;              /* רווח בין הכפתור לתמונה */
+    width: 100%;            /* מתאם לרוחב הפאנל */
+    margin-bottom: 20px;    /* רווח מתחת */
+}
+
+/* סגנון לתצוגה מקדימה של התמונה */
+.profile-preview {
+    width: 120px;           /* רוחב קבוע */
+    height: 120px;          /* גובה קבוע */
+    border-radius: 50%;     /* הופך אותה לעיגול */
+    overflow: hidden;       /* חותך כל מה שמחוץ לעיגול */
+    border: 3px solid #700aff; /* מסגרת סגולה תואמת למסגרת הכללית */
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3); /* צל קל */
+}
+
+.profile-preview img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* מוודא שהתמונה מתאימה לעיגול בלי לעוות */
+}
+
+
+
+/* מעטפת הכפתור והתמונה - לא השתנה מהותית */
+.upload-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 15px; /* אולי נרצה להוריד את זה אם אין אלמנטים מתחת לכפתור */
+    width: 100%;
+    margin-bottom: 20px;
+}
+
+/* כפתור העלאת תמונה (Sign Up) - נעדכן */
+/* כפתור העלאת תמונה (Sign Up) - נעדכן */
+.upload-photo {
+    background-color: var(--input-background);
+    border: 2px dashed #4e408d;
+    border-radius: 25px; /* הגדלה לעיגול קצת יותר */
+    padding: 10px;
+    text-align: center;
+    color: var(--text-faded);
+    font-size: 0.7em;
+    cursor: pointer;
+    transition: border-color 0.3s;
+    background-image: none; 
+    padding-top: 10px;
+    color: #848484;
+    
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    width: 90px;
+    height: 90px; /* **הקטנת הגובה ל-100px** */
+    overflow: hidden;
+}
+
+.upload-photo:hover {
+    border-color: var(--primary-color-start);
+}
+
+/* סגנון חדש לתמונה שנטענה בתוך כפתור ההעלאה */
+.uploaded-image-preview {
+    position: absolute; /* ממקם את התמונה באופן אבסולוטי בתוך הכפתור */
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* ממלא את כל שטח הכפתור תוך שמירה על יחס גובה-רוחב */
+    border-radius: 13px; /* מעט פחות מריבוע הכפתור כדי שלא ייצא החוצה */
+    z-index: 1; /* ודא שהתמונה מעל הרקע של הכפתור */
+}
+
+/* סגנון לאייקון העלאה בתוך הכפתור, שיוצג רק כשאין תמונה */
+.upload-photo .upload-icon {
+    width: 25px;
+    height: 25px;
+    color: var(--text-faded);
+    margin-bottom: 10px;
+    z-index: 2; /* ודא שהאייקון מעל התמונה אם הן חופפות בטעות */
+}
+
+/* סגנון לטקסט בתוך הכפתור, שיוצג רק כשאין תמונה */
+.upload-photo span {
+    z-index: 2; /* ודא שהטקסט מעל התמונה אם הן חופפות בטעות */
+}
+
+/* הסר את הסגנונות הקודמים של .profile-preview אם עדיין קיימים */
+/*
+.profile-preview {
+    display: none; // או למחוק לגמרי
+}
+
+.profile-preview img {
+    display: none; // או למחוק לגמרי
+}
+*/
