@@ -34,7 +34,7 @@ export class PostsComponent implements OnInit {
     private sanitizer: DomSanitizer,
     public fileUtils: FileUtilsService,
     private userState: UserStateService
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.loadCurrentUserRoles();
@@ -45,21 +45,21 @@ export class PostsComponent implements OnInit {
   // 1️⃣ טעינת משתמש שמחובר
   // ----------------------------------------------------------------
   loadCurrentUserRoles(): void {
-  const user = this.userState.getCurrentUserValue();
+    const user = this.userState.getCurrentUserValue();
 
-  // אם אין משתמש או אין רולים – נעצור
-  if (!user || !Array.isArray(user.roles)) {
-    this.currentUserRoles = [];
-    this.isAdmin = false;
-    return;
+    // אם אין משתמש או אין רולים – נעצור
+    if (!user || !Array.isArray(user.roles)) {
+      this.currentUserRoles = [];
+      this.isAdmin = false;
+      return;
+    }
+
+    this.currentUserRoles = user.roles;
+
+    this.isAdmin =
+      user.roles.includes(ERole.ROLE_ADMIN) ||
+      user.roles.includes(ERole.ROLE_SUPER_ADMIN);
   }
-
-  this.currentUserRoles = user.roles;
-
-  this.isAdmin =
-    user.roles.includes(ERole.ROLE_ADMIN) ||
-    user.roles.includes(ERole.ROLE_SUPER_ADMIN);
-}
 
 
   // ----------------------------------------------------------------
@@ -97,6 +97,7 @@ export class PostsComponent implements OnInit {
     if (confirm(`האם למחוק את הפוסט ${postId}?`)) {
       this.posts = this.posts.filter(p => p.id !== postId);
     }
+
   }
 
   onReportPost(postId: number): void {
@@ -109,6 +110,13 @@ export class PostsComponent implements OnInit {
   getSafeMediaUrl(path: string): SafeResourceUrl {
     const url = `http://localhost:8080/api/post/${path}`;
     return this.sanitizer.bypassSecurityTrustResourceUrl(url);
+
+
+  }
+  navigateToUpload() {
+    console.log('Navigating to upload...');
+
+    this.router.navigate(['/post']);
   }
 
 }

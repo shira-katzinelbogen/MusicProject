@@ -1,59 +1,75 @@
-
-import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import sheetMusic, { DifficultyLevel, Scale } from '../Models/SheetMusic';
+import Instrument from '../Models/Instrument';
+import SheetMusicCategory from '../Models/SheetMusicCategory';
+import Users from '../Models/Users';
 import { Observable } from 'rxjs';
-import SheetMusic, { DifficultyLevel } from '../Models/SheetMusic';
 
 @Injectable({
-    providedIn: 'root'
+  providedIn: 'root'
 })
-
 export class SheetMusicService {
+  private apiUrl = 'http://localhost:8080/api/sheetMusic';
 
-    public sheetMusics: SheetMusic[] = [];
-    public count = 0;
-    private apiUrl = 'http://localhost:8080/api/sheetMusic';
+  constructor(private http: HttpClient) {}
 
-    constructor(private _httpClient: HttpClient) { }
+  uploadSheetMusic(data: sheetMusic, file: File): Observable<sheetMusic> {
+    const formData = new FormData();
 
-    //Get
-    getSheetMusicById(id: number): Observable<SheetMusic> {
-        return this._httpClient.get<SheetMusic>(`${this.apiUrl}/sheetMusicById/${id}`);
-    }
+    // 1️⃣ הקובץ עצמו
+    formData.append('file', file, file.name);
 
-    getAllSheetMusics(): Observable<SheetMusic[]> {
-        return this._httpClient.get<SheetMusic[]>(`${this.apiUrl}/sheetsMusic`);
-    }
+    // 2️⃣ המרת IDs לוודא שהם מספרים
+    const categoryId = data.category?.id ? Number(data.category.id) : null;
+    const instrumentIds = data.instruments?.map(instr => ({ id: Number(instr.id) })) || [];
+    const userId = data.user?.id ? Number(data.user.id) : null;
 
-    getSheetMusicsByUserId(id: number): Observable<SheetMusic[]> {
-        return this._httpClient.get<SheetMusic[]>(`${this.apiUrl}/sheetsMusicByUserId/${id}`)
-    }
+    // 3️⃣ המרת enums ל־string כפי ש־Spring Boot מצפה (אם הוא מקבל String)
+    const levelStr = data.level !== undefined ? DifficultyLevel[data.level] : null;
+    const scaleStr = data.scale !== undefined ? Scale[data.scale] : null;
 
-    getFavoritesSheetMusicsByUserId(id: number): Observable<SheetMusic[]> {
-        return this._httpClient.get<SheetMusic[]>(`${this.apiUrl}/favoriteSheetsMusicByUserId/${id}`)
-    }
+    // 4️⃣ יצירת JSON מדויק עבור ה־DTO
+    const dto = {
+      name: data.name,
+      level: levelStr,
+      scale: scaleStr,
+      category: categoryId !== null ? { id: categoryId } : null,
+      instruments: instrumentIds,
+      user: userId !== null ? { id: userId } : null,
+      fileName: file.name
+    };
 
-    getSheetsMusicByName(name: String): Observable<SheetMusic[]> {
-        return this._httpClient.get<SheetMusic[]>(`${this.apiUrl}/sheetsMusic/${name}`)
-    }
+    // const blob = new Blob([JSON.stringify(dto)], { type: 'application/json' });
+    // formData.append('data', blob);
+    formData.append('data', JSON.stringify(dto));
 
-    getSheetsMusicByDifficultyLevel(difficulty_level: DifficultyLevel): Observable<SheetMusic[]> {
-        return this._httpClient.get<SheetMusic[]>(`${this.apiUrl}/sheetsMusicByDifficultyLevel/${difficulty_level}`)
-    }
+    // 5️⃣ שליחת POST
+    return this.http.post<sheetMusic>(`${this.apiUrl}/uploadSheetMusic`, formData);
+  }
 
-    //Post
-    // uploadSheetMusic(sheet_music: SheetMusic): Observable<SheetMusic> {
-    //     return this._httpClient.post<SheetMusic>(`${this.apiUrl}/uploadSheetMusic`,sheet_music)
-    // }
+  // פונקציות קריאה נוספות נשארות ללא שינוי
+  getSheetMusicById(id: number): Observable<sheetMusic> {
+    return this.http.get<sheetMusic>(`${this.apiUrl}/sheetMusicById/${id}`);
+  }
 
-    uploadSheetMusic(data: SheetMusic, file: File): Observable<SheetMusic> {
-        const formData = new FormData();
-        formData.append('file', file, file.name);
-        formData.append('data', JSON.stringify(data));
-        return this._httpClient.post<SheetMusic>(
-            `${this.apiUrl}/uploadSheetMusic`,
-            formData
-        );
-    }
+  getAllSheetMusics(): Observable<sheetMusic[]> {
+    return this.http.get<sheetMusic[]>(`${this.apiUrl}/sheetsMusic`);
+  }
 
+  getSheetMusicsByUserId(id: number): Observable<sheetMusic[]> {
+    return this.http.get<sheetMusic[]>(`${this.apiUrl}/sheetsMusicByUserId/${id}`);
+  }
+
+  getFavoritesSheetMusicsByUserId(id: number): Observable<sheetMusic[]> {
+    return this.http.get<sheetMusic[]>(`${this.apiUrl}/favoriteSheetsMusicByUserId/${id}`);
+  }
+
+  getSheetsMusicByName(name: string): Observable<sheetMusic[]> {
+    return this.http.get<sheetMusic[]>(`${this.apiUrl}/sheetsMusic/${name}`);
+  }
+
+  getSheetsMusicByDifficultyLevel(difficulty_level: DifficultyLevel): Observable<sheetMusic[]> {
+    return this.http.get<sheetMusic[]>(`${this.apiUrl}/sheetsMusicByDifficultyLevel/${difficulty_level}`);
+  }
 }

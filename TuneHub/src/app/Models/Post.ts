@@ -1,4 +1,6 @@
+
 import Users, { UsersProfileDTO } from "./Users";
+
 export default class Post {
     id?: number;
     user?: Users;

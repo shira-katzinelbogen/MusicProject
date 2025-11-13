@@ -21,6 +21,9 @@
     max-width: 600px;
     padding: 25px;
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+    /* חשוב לוודא שהתוכן לא חורג */
+    max-height: 90vh; 
+    overflow-y: auto;
 }
 
 /* כותרת וסגירה */
@@ -31,6 +34,8 @@
     margin-bottom: 20px;
     padding-bottom: 10px;
     border-bottom: 1px solid #444;
+    /* כדי שהכפתור יתיישב נכון */
+    flex-shrink: 0;
 }
 
 .modal-header h2 {
@@ -45,13 +50,14 @@
     font-size: 1.5rem;
     cursor: pointer;
     padding: 0;
+    transition: color 0.2s;
 }
 
 .close-btn:hover {
     color: #fff;
 }
 
-/* שדות קלט בשורה אחת */
+/* --- שדות קלט --- */
 .input-row {
     display: flex;
     gap: 20px;
@@ -59,13 +65,13 @@
 }
 
 .input-group {
-    flex: 1; /* מחלק את השורה שווה בשווה */
+    flex: 1; 
     display: flex;
     flex-direction: column;
 }
 
 .input-group.full-width {
-    flex: 2; /* נותן לשדה זה יותר מקום בשורה (לדוגמה: 2/3 מהרוחב) */
+    flex: 2; 
 }
 
 label {
@@ -79,7 +85,7 @@ select {
     padding: 10px;
     border: 1px solid #555;
     border-radius: 5px;
-    background-color: #383838; /* רקע כהה יותר לשדות */
+    background-color: #383838; 
     color: #eee;
     font-size: 1rem;
     transition: border-color 0.3s;
@@ -91,7 +97,7 @@ select {
 
 input:focus, 
 select:focus {
-    border-color: #888;
+    border-color: #007bff; /* צבע הדגשה בהיר יותר */
     outline: none;
 }
 
@@ -126,13 +132,30 @@ select:focus {
     margin-top: 5px;
 }
 
-/* כפתורי הפעולה */
+/* --- הודעות שגיאה --- */
+.error-message {
+    color: #ff5555; /* אדום ברור */
+    font-size: 0.85rem;
+    margin-top: 5px;
+    margin-bottom: 0;
+}
+.general-error {
+    text-align: center;
+    padding: 10px;
+    border: 1px solid #ff5555;
+    border-radius: 5px;
+    margin-bottom: 15px;
+}
+
+
+/* --- כפתורי הפעולה (Modal Footer) --- */
 .modal-footer {
     display: flex;
     justify-content: flex-end;
     gap: 10px;
     padding-top: 15px;
     border-top: 1px solid #444;
+    flex-shrink: 0;
 }
 
 /* עיצוב כפתור ביטול */
@@ -143,16 +166,51 @@ select:focus {
     padding: 10px 20px;
     border-radius: 5px;
     cursor: pointer;
+    transition: background-color 0.2s, color 0.2s;
+    font-weight: bold;
 }
 
-/* הקלאס button כפי שביקשת - ללא עיצוב ספציפי כאן */
+.cancel-btn:hover {
+    background-color: #444;
+    color: #fff;
+}
+
+/* --- עיצוב כפתור השליחה (Upload Sheet) - .button --- */
 .button {
-    /* נשאר ללא עיצוב ספציפי כדי לאפשר שימוש בעיצוב גלובלי או חיצוני */
+    background-color: #007bff; /* כחול בולט וברור */
+    color: white;
     padding: 10px 20px; 
     border-radius: 5px;
     cursor: pointer;
     border: none;
-    background-color: #6200EE; /* דוגמה לצבע ברירת מחדל */
-    color: white;
     font-weight: bold;
+    transition: background-color 0.2s, opacity 0.2s;
+    text-align: center;
+}
+
+.button:hover:not([disabled]) {
+    background-color: #0056b3;
+}
+
+/* --- מצב מושבת (Disabled) - הפתרון לבעיית ה"היעלמות" --- */
+.button[disabled] {
+    background-color: #555; /* צבע אפור כהה */
+    color: #aaa; /* טקסט אפור בהיר */
+    cursor: not-allowed; 
+    opacity: 0.6; /* מושבת אך גלוי */
+}
+
+/* --- התאמה למסכים קטנים --- */
+@media (max-width: 650px) {
+    .modal-container {
+        padding: 15px;
+    }
+    .input-row {
+        flex-direction: column; /* שדות אחד מתחת לשני */
+        gap: 10px;
+    }
+    .input-group,
+    .input-group.full-width {
+        flex: auto;
+    }
 }

@@ -32,6 +32,7 @@ export const routes: Routes = [
   // Post
   { path: 'post/:id', component: PostComponent },
   { path: 'posts', component: PostsComponent },
+  { path: 'post', component: PostComponent },
 
   // Users
   { path: 'login-window', component: LoginWindowComponent },

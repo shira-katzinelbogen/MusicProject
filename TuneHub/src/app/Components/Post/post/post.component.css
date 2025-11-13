@@ -1,0 +1,205 @@
+.post-card {
+  background-color: #111827;
+  border: 1px solid #374151;
+  border-radius: 12px;
+  padding: 15px;
+  color: #F9FAFB;
+  width: 100%;
+  max-width: 500px;
+  margin: auto;
+  box-shadow: 0 0 8px rgba(0, 0, 0, 0.25);
+}
+
+/* Header */
+.post-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.user-avatar {
+  background-color: #3B82F6;
+  color: white;
+  font-weight: bold;
+  border-radius: 50%;
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.9rem;
+}
+
+.user-info {
+  flex-grow: 1;
+  margin-left: 8px;
+}
+
+.verification-badge {
+  color: #60A5FA;
+  font-size: 0.8rem;
+}
+
+/* Text Fields */
+.post-text label {
+  display: block;
+  font-weight: bold;
+  color: #9CA3AF;
+  margin-bottom: 4px;
+  font-size: 0.85rem;
+}
+
+.post-text input,
+.post-text textarea {
+  width: 100%;
+  padding: 8px;
+  margin-bottom: 10px;
+  background-color: #1F2937;
+  border: 1px solid #4B5563;
+  border-radius: 6px;
+  color: #F9FAFB;
+  box-sizing: border-box;
+}
+
+.post-text input:focus,
+.post-text textarea:focus {
+  outline: none;
+  border-color: #60A5FA;
+  background-color: #111827;
+}
+
+/* Upload Section */
+.media-inputs h3 {
+  color: #E5E7EB;
+  font-weight: bold;
+  margin-bottom: 8px;
+  font-size: 0.9rem;
+}
+
+.upload-zone {
+  position: relative; /* כדי שהמדיה תופיע מעל הקווקו */
+  border: 2px dashed #6B7280;
+  border-radius: 10px;
+  padding: 15px;
+  text-align: center;
+  color: #D1D5DB;
+  background-color: #1F2937;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  margin-bottom: 12px;
+  overflow: hidden; /* חשוב למדיה */
+}
+
+.upload-zone:hover {
+  background-color: #374151;
+  border-color: #60A5FA;
+  color: #F9FAFB;
+  transform: scale(1.01);
+}
+
+.upload-zone i {
+  font-size: 24px;
+  display: block;
+  margin-bottom: 6px;
+  color: #9CA3AF;
+}
+
+.upload-zone p {
+  margin: 0;
+  font-size: 13px;
+}
+
+/* Media Preview */
+.upload-zone img,
+.upload-zone video {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 10px;
+  z-index: 1;
+}
+
+/* Button */
+.publish-btn {
+  background-color: #2563EB;
+  color: #F9FAFB;
+  border: none;
+  padding: 8px 14px;
+  border-radius: 6px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: 0.3s;
+  font-size: 0.9rem;
+}
+
+.publish-btn:hover {
+  background-color: #3B82F6;
+}
+
+.publish-btn:disabled {
+  background-color: #374151;
+  cursor: not-allowed;
+}
+
+/* Status messages */
+.upload-status p {
+  margin-top: 8px;
+  font-size: 0.85rem;
+}
+
+.success {
+  color: lightgreen;
+}
+
+.error {
+  color: salmon;
+}
+/* שינוי ה-upload-zone כדי שיתאים ל-Flex Layout (לריכוז נגני מדיה) */
+.upload-zone {
+    /* מאפשר למרכיבים בתוכו להיות ממוקמים */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 150px; /* קביעת גובה כדי שנגן הוידאו או התמונות יופיעו בגודל סביר */
+    padding: 0; /* הסרת padding פנימי כדי למקסם את שטח המדיה */
+    /* ... שאר הסגנונות הקיימים ... */
+}
+
+/* קונטיינר לתמונות מרובות */
+.image-previews-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(80px, 1fr)); /* מציג עד 3-4 תמונות בשורה */
+    gap: 8px;
+    width: 100%;
+    height: 100%;
+    overflow-y: auto; /* מאפשר גלילה אנכית אם יש הרבה תמונות */
+    padding: 10px;
+}
+
+/* סגנון התמונה המקדימה בתוך הקונטיינר */
+.preview-image {
+    width: 100%;
+    height: 100px; /* גובה קבוע לכל תמונה מקדימה */
+    object-fit: cover;
+    border-radius: 6px;
+    border: 1px solid #4B5563;
+}
+
+/* סגנון לנגן אודיו */
+.preview-audio {
+    width: 90%; 
+    height: 40px; 
+    border-radius: 4px;
+    margin: auto;
+}
+
+/* סגנון לנגן וידאו */
+.preview-video {
+    width: 100%;
+    max-height: 100%; 
+    object-fit: contain; /* מציג את הוידאו במלואו בתוך התיבה */
+    border-radius: 8px;
+}

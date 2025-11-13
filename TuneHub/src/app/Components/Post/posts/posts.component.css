@@ -32,6 +32,17 @@
     max-width: 70%; /* מקום לכותרת */
     line-height: 1.4;
 }
+.empty-posts-container {
+    /* נותן גובה מינימלי כדי למרכז את התוכן ולדחוף את הפוטר */
+    min-height: 50vh; /* חצי מגובה המסך */
+    display: flex;
+    flex-direction: column;
+    justify-content: center; /* מרכז אנכית */
+    align-items: center; /* מרכז אופקית */
+    gap: 30px;
+    padding: 50px 20px;
+    text-align: center;
+}
 
 .task-meta {
     width: 80px;
