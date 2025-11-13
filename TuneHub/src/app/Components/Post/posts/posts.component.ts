@@ -48,5 +48,10 @@ export class PostsComponent {
         // הערה: נתיב לקובץ מקומי 'assets/...' לרוב אינו דורש טיהור
         return 'assets/images/2.jpg'; 
     }
+    navigateToUpload() {
+        console.log('Navigating to upload...');
+
+    this.router.navigate(['/post']); 
+  }
 
 }

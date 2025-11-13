@@ -31,8 +31,25 @@
     }
 </div>
 } -->
+<div class="posts-toolbar">
+    <button class="upload-post-button" (click)="navigateToUpload()">
+        העלאת פוסט
+        <span style="font-size: 1.2em;">⬆️</span> 
+        </button>
+</div>
 
+<hr>
 @if(posts.length===0){
+    <div class="empty-posts-container">
+        <p class="empty-message">עדיין לא פורסמו פוסטים. התחל לשתף את המוזיקה שלך עכשיו!</p>
+        
+               <button class="upload-post-button" routerLink="/post">...</button>
+            <span style="font-size: 1.5em; margin-left: 10px;">🎶</span>
+            העלה את הפוסט הראשון שלך
+            <span style="font-size: 1.5em; margin-right: 10px;">⬆️</span>
+        
+
+    </div>
     }
 @else{
 

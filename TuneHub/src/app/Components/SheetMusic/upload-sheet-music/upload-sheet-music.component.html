@@ -1,85 +1,111 @@
-
 @if(uploadSheetMusicService.isOpen){
- <!-- <div [hidden]="!uploadSheetMusicService.isOpen()"> -->
+<div class="modal-backdrop" (click)="onCancel()"> 
+    <div class="modal-container" (click)="$event.stopPropagation()">
+      <div class="modal-header">
+        <h2>Upload Music Sheet</h2>
+        <button class="close-btn" (click)="onCancel()">
+          <span aria-hidden="true" >&times;</span>
+        </button>
+      </div>
 
-<div class="modal-backdrop" (click)="uploadSheetMusicService.close()"> 
+      <form [formGroup]="uploadForm" (ngSubmit)="onSubmit()">
+        
+                <div class="input-row">
+          <div class="input-group">
+            <label for="title">Title</label>
+            <input id="title" type="text" formControlName="title" placeholder="Sheet title..." required />
+            @if (uploadForm.get('title')?.invalid && uploadForm.get('title')?.touched) {
+                <div class="error-message">Title is required.</div>
+            }
+          </div>
+          
+          <div class="input-group">
+            <label for="key">Key / Scale</label>
+            <select id="key" formControlName="key" required>
+              <option value="" disabled>Select key...</option>
+              @for (scale of scaleOptions; track scale) {
+                <option [value]="scale">{{ scale }}</option>
+              }
+            </select>
+            @if (uploadForm.get('key')?.invalid && uploadForm.get('key')?.touched) {
+                <div class="error-message">Key/Scale is required.</div>
+            }
+          </div>
+        </div>
+
+                <div class="input-row">
+          <div class="input-group">
+            <label for="category">Category</label>
+            <select id="category" formControlName="category" required>
+              <option value="" disabled>Select category...</option>
+              @for (cat of categories; track cat.id) {
+                <option [value]="cat.id">{{ cat.name }}</option>
+              }
+            </select>
+            @if (uploadForm.get('category')?.invalid && uploadForm.get('category')?.touched) {
+                <div class="error-message">Category is required.</div>
+            }
+          </div>
+          
+          <div class="input-group">
+            <label for="level">Difficulty Level</label>
+            <select id="level" formControlName="level" required>
+              <option value="" disabled>Select level...</option>
+              @for (level of difficultyLevels; track level) {
+                <option [value]="level">{{ level }}</option>
+              }
+            </select>
+            @if (uploadForm.get('level')?.invalid && uploadForm.get('level')?.touched) {
+                <div class="error-message">Level is required.</div>
+            }
+          </div>
+        </div>
         
-        <div class="modal-container" (click)="$event.stopPropagation()">
-    <div class="modal-header">
-      <h2>Upload Music Sheet</h2>
-      <button class="close-btn" (click)="uploadSheetMusicService.close()">
-        <span aria-hidden="true" >&times;</span>
-      </button>
-    </div>
+                <div class="input-row">
+          <div class="input-group full-width">
+            <label for="description">Description (Optional)</label>
+            <input id="description" type="text" formControlName="description" placeholder="Short description of the sheet..." />
+          </div>
+        </div>
 
-    <form [formGroup]="uploadForm" (ngSubmit)="onSubmit()">
-      <div class="input-row">
-        <div class="input-group">
-          <label for="title">Title</label>
-          <input id="title" type="text" formControlName="title" placeholder="Sheet title..." />
-        </div>
-        <div class="input-group">
-          <label for="key">Key / Scale</label>
-          <select id="key" formControlName="key">
-            <option value="" disabled>Select key...</option>
-            <option value="C">C Major</option>
-            <option value="Am">A Minor</option>
-            <option value="G">G Major</option>
-            <option value="F">F Major</option>
-            <option value="Other">Other</option>
-          </select>
-        </div>
-      </div>
+                <div class="input-row">
+          <div class="input-group full-width">
+            <label for="instruments">Instruments (Multi-select)</label>
+            <select id="instruments" formControlName="instruments" multiple size="4">
+              @for (inst of instrumentsList; track inst.id) {
+                <option [value]="inst.id">{{ inst.name }}</option>
+              }
+            </select>
+          </div>
+        </div>
 
-      <div class="input-row">
-        <div class="input-group">
-          <label for="category">Category</label>
-          <select id="category" formControlName="category">
-            <option value="" disabled>Select category...</option>
-            <option value="classical">Classical</option>
-            <option value="jazz">Jazz</option>
-            <option value="pop">Pop</option>
-            <option value="rock">Rock</option>
-          </select>
-        </div>
-        <div class="input-group full-width">
-          <label for="description">Description</label>
-          <input id="description" type="text" formControlName="description" placeholder="Short description of the sheet..." />
-        </div>
-      </div>
+                <div class="upload-section">
+          <label>Upload Files</label>
+          <div class="drop-zone" (click)="fileInput.click()" (drop)="onFileDrop($event)" (dragover)="onFileDragOver($event)">
+            <div class="drop-icon">📄</div>
+            <p>{{ selectedFile ? selectedFile.name : 'Drop PDF files here' }}</p>
+            <p class="supported-formats">Supported formats: PDF</p>
+            <input type="file" #fileInput (change)="onFileSelect($event)" style="display: none;" accept=".pdf" />
+          </div>
+         @if (!selectedFile && uploadForm.touched) { 
+    <div class="error-message">A file is required for upload.</div>
+}
+          @if (uploadError) {
+            <div class="error-message general-error">{{ uploadError }}</div>
+          }
+        </div>
 
-      <div class="input-row">
-        <div class="input-group full-width">
-          <label for="instruments">Instruments (Multi-select)</label>
-          <select id="instruments" formControlName="instruments" multiple size="4">
-            <option value="piano">Piano</option>
-            <option value="guitar">Guitar</option>
-            <option value="bass">Bass</option>
-            <option value="drums">Drums</option>
-            <option value="flute">Flute</option>
-            <option value="violin">Violin</option>
-          </select>
-        </div>
-      </div>
-
-      <div class="upload-section">
-        <label>Upload Files</label>
-        <div class="drop-zone" (click)="fileInput.click()" (drop)="onFileDrop($event)" (dragover)="onFileDragOver($event)">
-          <div class="drop-icon">📄</div>
-          <p>Drop PDF or image files here</p>
-          <p class="supported-formats">Supported formats: PDF, PNG, JPG</p>
-          <input type="file" #fileInput (change)="onFileSelect($event)" multiple style="display: none;" accept=".pdf, .png, .jpg, .jpeg" />
-        </div>
-      </div>
-<!--   (click)="uploadSheetMusicService.close()" -->
-      <div class="modal-footer">
-        <button type="button" class="cancel-btn"
-       
-         >Cancel</button>
-        <button type="submit" class="button" [disabled]="!uploadForm.valid">Upload Sheet</button>
-      </div>
-    </form>
-  </div>
+                <div class="modal-footer">
+          <button type="button" class="cancel-btn" (click)="onCancel()">Cancel</button>
+          <button type="submit" class="button" [disabled]="!uploadForm.valid || !selectedFile || isLoading">
+            @if (isLoading) {
+                <span>Uploading...</span>
+            } @else {
+                <span>Upload Sheet</span>
+            }
+          </button>
+        </div>
+      </form>
+    </div>
 </div>
 }
-    <!-- </div> -->
