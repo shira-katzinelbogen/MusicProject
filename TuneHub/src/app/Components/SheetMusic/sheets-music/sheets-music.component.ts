@@ -6,11 +6,12 @@ import { Router } from '@angular/router';
 import { NavigationService } from '../../../Services/navigation.service';
 import { MatIconModule } from '@angular/material/icon';
 import { UploadSheetMusicService } from '../../../Services/uploadsheetmusic.service';
+import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 
 
 @Component({
   selector: 'app-sheets-music',
-  standalone:true,
+  standalone: true,
   imports: [MatIconModule],
   changeDetection: ChangeDetectionStrategy.OnPush, // ⬅️ הוסף את זה
   templateUrl: './sheets-music.component.html',
@@ -22,12 +23,13 @@ export class SheetsMusicComponent implements OnInit {
   sheetMusicList: SheetMusic[] = [];
 
   constructor(
-    private _sheetMusicService: SheetMusicService, 
-    public fileUtilsService: FileUtilsService, 
-    private router: Router, 
-    public navigationService: NavigationService, 
+    private _sheetMusicService: SheetMusicService,
+    public fileUtilsService: FileUtilsService,
+    private router: Router,
+    public navigationService: NavigationService,
     public uploadSheetMusicService: UploadSheetMusicService,
-    private cdr: ChangeDetectorRef
+    private cdr: ChangeDetectorRef,
+    private domSanitizer: DomSanitizer
   ) { }
 
   ngOnInit(): void {
@@ -48,11 +50,11 @@ export class SheetsMusicComponent implements OnInit {
   }
 
   openUploadModal(): void {
-        this.uploadSheetMusicService.open();
-        
-        // כפה על אנגולר לבדוק שינויים לאחר שינוי המשתנה
-        this.cdr.detectChanges(); // ⬅️ זה אמור לפתור את הבעיה
-    }
+    this.uploadSheetMusicService.open();
+
+    // כפה על אנגולר לבדוק שינויים לאחר שינוי המשתנה
+    this.cdr.detectChanges(); // ⬅️ זה אמור לפתור את הבעיה
+  }
   /**
    * מטפל בלחיצה על אייקון הלב (Like).
    * משנה את הסטטוס ומעדכן את המונה ב-UI.
@@ -84,5 +86,10 @@ export class SheetsMusicComponent implements OnInit {
     this.router.navigate(['/sheet-music', s.id]);
 
   }
+  getSafeMediaUrl(path: string): SafeResourceUrl {
+    const url = `http://localhost:8080/api/sheetMusic/documents/${path}`;
+    return this.domSanitizer.bypassSecurityTrustResourceUrl(url);
 
+
+  }
 }

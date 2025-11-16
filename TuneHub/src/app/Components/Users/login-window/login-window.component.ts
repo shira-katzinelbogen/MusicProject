@@ -172,6 +172,9 @@ export class LoginWindowComponent {
       // אם הטופס לא תקין (והמערכת לא מונעת שליחה)
       this.signupErrorMessage = 'Please fill in all required fields and agree to the terms.';
     }
+
+     this.selectedFile = null;
+        this.profilePreviewUrl = null;
   }
 
   /**

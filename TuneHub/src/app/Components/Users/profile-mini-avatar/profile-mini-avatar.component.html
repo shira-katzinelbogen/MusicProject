@@ -1,8 +1,10 @@
-<div class="profile-avatar-wrapper" (click)="toggleDropdown($event)">
+<div class="profile-avatar-wrapper" 
 
+>
+<!-- (click)="toggleDropdown($event)" -->
   @if (currentUser$ | async; as user) {
 
-  <div class="profile-avatar-container">
+  <div class="profile-avatar-container"(click)="navigationService.goToProfile(user.id)">
 
     @if (user.hasImageProfilePath&&user.imageProfilePath) {
     <!-- <img [src]="fileUtils.getImageUrl(user.imageProfilePath)" alt="Profile Picture" class="profile-picture"> -->
@@ -20,17 +22,17 @@
 
   @if (isDropdownOpen) {
   <div class="profile-dropdown">
-
-    <a class="dropdown-item user-info" (click)="navigateToProfile(user.name)">
+<!-- 
+    <a class="dropdown-item user-info" >
       <span class="user-handle">{{ user.name }}</span>
       <span class="view-profile">צפה בפרופיל</span>
-    </a>
+    </a> -->
 
-    <hr class="dropdown-divider">
+    <!-- <hr class="dropdown-divider"> -->
 
-    <a class="dropdown-item signout-link" (click)="handleSignOut($event)">
+    <!-- <a class="dropdown-item signout-link" (click)="handleSignOut($event)">
       התנתק (Sign Out)
-    </a>
+    </a> -->
   </div>
   }
 

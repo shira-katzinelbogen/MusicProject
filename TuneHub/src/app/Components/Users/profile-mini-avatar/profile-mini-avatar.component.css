@@ -4,6 +4,7 @@
   height: 50px;
   border-radius: 50%; /* עיגול */
   overflow: visible; /* חשוב - לא לחתוך את האלמנטים שמחוץ לגבול */
+  cursor: pointer;
 }
 
 .profile-picture {

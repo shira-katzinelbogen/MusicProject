@@ -101,7 +101,7 @@
     <br><br>
     <div class="musicians-container">
         @for(u of users; track $index){
-        <div (click)="navigationService.goToProfile(u)">
+        <div (click)="navigationService.goToProfile(u!.profile!.id!)">
             <h3>name {{u.profile!.name}}</h3>
             <h3>description {{u.description}}</h3>
             <h3>city {{u.city}}</h3>

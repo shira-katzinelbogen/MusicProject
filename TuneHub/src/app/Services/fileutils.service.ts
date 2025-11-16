@@ -20,14 +20,18 @@ export class FileUtilsService {
 
 
     // 2. קובצי PDF (Base64)
-    getPDFUrl(base64?: string): SafeUrl {
-        if (base64 && base64.trim()) {
-            const pdfUrl = `data:application/pdf;base64,${base64}`;
-            // שימוש ב-ResourceUrl מאפשר שימוש בכתובות URL בתוך iframe/embed
-            return this.sanitizer.bypassSecurityTrustResourceUrl(pdfUrl);
-        }
-        return '';
-    }
+    // getPDFUrl(base64?: string): SafeUrl {
+    //     if (base64 && base64.trim()) {
+    //         const pdfUrl = `data:application/pdf;base64,${base64}`;
+    //         // שימוש ב-ResourceUrl מאפשר שימוש בכתובות URL בתוך iframe/embed
+    //         return this.sanitizer.bypassSecurityTrustResourceUrl(pdfUrl);
+    //     }
+    //     return '';
+    // }
+
+    getPDFUrl(fileName: string): string {
+    return `/api/sheetMusic/docs/${fileName}`; // מחזיר את ה-URL הישיר ל-PDF
+}
 
     // 3. ✅ הוספה: טיפול בנתיבי וידאו ושמע (URL רגיל)
     // אם השרת מחזיר URL/נתיב רגיל (לא Base64), עדיין נדרשת טיהור אבטחה.
@@ -41,4 +45,5 @@ export class FileUtilsService {
         }
         return '';
     }
+    // return this.sanitizer.bypassSecurityTrustResourceUrl(`http://localhost:8080/api/sheetMusic/documents/${path}`);
 }

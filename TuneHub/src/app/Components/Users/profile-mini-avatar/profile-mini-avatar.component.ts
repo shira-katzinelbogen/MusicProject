@@ -6,6 +6,7 @@ import { LoginService } from '../../../Services/login.service';
 import { UserProfile, UserStateService } from '../../../Services/user-state.service';
 import { UsersService } from '../../../Services/users.service';
 import { FileUtilsService } from '../../../Services/fileutils.service';
+import { NavigationService } from '../../../Services/navigation.service';
 
 
 @Component({
@@ -24,7 +25,8 @@ export class ProfileMiniAvatarComponent implements OnInit, OnDestroy {
   router = inject(Router);
   elementRef = inject(ElementRef);
   public fileUtilsService = inject(FileUtilsService);
-
+  public navigationService = inject(NavigationService);
+  
   ngOnInit(): void {
     this.currentUser$ = this.userStateService.currentUser$;
   }
