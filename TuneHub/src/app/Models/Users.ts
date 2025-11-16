@@ -63,6 +63,23 @@ export interface UsersSignUpDTO {
     imageProfilePath?: string; // אופציונלי להרשמה
 }
 
+
+export interface Profile  {
+    id:number,
+    name: string;
+    email: string;
+    imageProfilePath?: string;
+    //   roles: string[] // אופציונלי להרשמה
+     
+    
+    //   handle: 'sarahjmusic',
+      city: string,
+      country: string,
+      website: string
+    
+}
+
+
 // --------------------------------------------------------------------------
 
 /**

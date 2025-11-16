@@ -40,7 +40,7 @@
         <div class="cover-image">
           <div class="pdf-preview-half">
             @if (sheet.filePath) {
-            <iframe [src]="fileUtilsService.getPDFUrl(sheet.filePath)" class="file-preview-iframe"
+            <iframe [src]="getSafeMediaUrl(sheet.filePath)" class="file-preview-iframe"
               title="תצוגה מקדימה של {{ sheet.name }}" allowfullscreen>
             </iframe>
             } @else {
@@ -55,7 +55,7 @@
         <div class="badge-group">
           <span class="badge category">
             <mat-icon>folder</mat-icon>
-            {{ sheet.category!.name }}
+            {{ sheet.category?.name }}
           </span>
 
 
@@ -79,7 +79,7 @@
 
           <!-- <span class="by-text">By</span> -->
 
-          <span class="artist-mini-profile" (click)="navigationService.goToProfile(sheet.user!)">
+          <span class="artist-mini-profile" (click)="navigationService.goToProfile(sheet.user!.id!)">
             <img [src]="fileUtilsService.getImageUrl(sheet.user!.imageProfilePath)" class="artist-mini-img"
               alt="Profile" />
             <span>{{ sheet.user!.name }}</span>
