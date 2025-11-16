@@ -30,14 +30,12 @@ export class PostService {
 
 
 uploadPost(
-    
-    dto: { title: string; content: string; userId: number },
+    dto: { title: string; content: string; },
     images: File[] | null,
     audio: File | null,
     video: File | null
 ): Observable<PostResponseDTO> {
 console.log("DTO I'm sending:", dto);
-
     const formData = new FormData();
     const blob = new Blob([JSON.stringify(dto)], { type: 'application/json' });
     formData.append('data', blob);
@@ -50,7 +48,7 @@ console.log("DTO I'm sending:", dto);
     if (audio) formData.append('audio', audio, audio.name);
     if (video) formData.append('video', video, video.name);
 
-    return this._httpClient.post<PostResponseDTO>(`${this.baseUrl}/uploadPost`, formData);
+    return this._httpClient.post<PostResponseDTO>(`${this.baseUrl}/uploadPost`, formData,  { withCredentials: true });
 }
 }
 

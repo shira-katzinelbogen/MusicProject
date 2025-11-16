@@ -1,48 +1,25 @@
-/* עוטף כללי של האווטאר */
-.profile-avatar-wrapper {
-    position: relative;
-    cursor: pointer;
-    /* ... סגנונות נוספים ... */
-}
-
-/* קונטיינר האווטאר עצמו (העיגול שמכיל את התמונה/אות) */
 .profile-avatar-container {
-    height: 32px;
-    width: 32px;
-    border-radius: 50%;
-    display: flex;
-    align-items: center; /* מרכוז אנכי */
-    justify-content: center; /* מרכוז אופקי */
-    background-color: lightseagreen; 
-    color: white; /* צבע הטקסט שבתוך העיגול */
-    font-weight: bold;
-    font-size: 1.1em;
-    border: 1px solid lightseagreen;
-    
-    position: relative;
+  position: relative; /* מאפשר למיקום מוחלט בתוך המכולה */
+  width: 50px; /* גודל התמונה */
+  height: 50px;
+  border-radius: 50%; /* עיגול */
+  overflow: visible; /* חשוב - לא לחתוך את האלמנטים שמחוץ לגבול */
 }
 
-/* סגנונות לאותיות במקום תמונה */
-.profile-initials {
-    /* ⭐️ זה מריכוז את ה-<span> שמכיל את האות בתוך ה-Div הזה. */
-    display: flex;
-    align-items: center;
-    justify-content: center;
+.profile-picture {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  object-fit: cover;
 }
-
-/* 🟢 מחוון הסטטוס (העיגול הקטן) */
 .online-indicator {
-    position: absolute; /* מיקום יחסי לקונטיינר האב */
-    bottom: -1px; /* מזיז מעט למטה */
-    right: -1px; /* מזיז מעט ימינה */
-    
-    /* הגדרת גודל וצבע ברורים */
-    width: 10px; 
-    height: 10px;
-    background-color: #28a745; /* 👈 צבע ירוק בוהק (Online) */
-    border-radius: 50%;
-    border: 2px solid white; /* גבול לבן קטן כדי להבליט אותו */
+  position: absolute;
+  bottom: 2px; /* עכשיו התרוממה מעל התחתית */
+  right: -2px;
+  width: 12px;
+  height: 12px;
+  background-color: #4CAF50;
+  border: 1px solid white;
+  border-radius: 50%;
+  box-shadow: 0 0 2px rgba(0,0,0,0.3);
 }
-
-
-/* ... (שאר הסגנונות כגון .profile-picture ו-profile-dropdown) ... */

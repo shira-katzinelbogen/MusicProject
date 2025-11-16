@@ -1,6 +1,6 @@
-import Instrument from "./Instrument";
-import sheetMusicCategory from "./SheetMusicCategory";
-import Users from "./Users";
+import  Instrument  from "./Instrument";
+import  sheetMusicCategory  from "./SheetMusicCategory";
+import  Users  from "./Users";
 
 export enum DifficultyLevel {
     EASY, MEDIUM, HARD
@@ -18,7 +18,7 @@ export enum Scale {
 }
 
 
-export default class sheetMusic {
+export default class SheetMusic {
     id?: number;
     name?: string;
     scale?: Scale;

@@ -1,261 +1,385 @@
-body {
-  /* הגדרת הרקע הכחול-כהה לכל הדף */
-  background-color: #1D2A3B;
-
-  /* חשוב מאוד: הגדרת צבע טקסט בהיר כדי שיבלוט על הרקע הכהה */
-  /* color: #FFFFFF;  */
-}
-
+/* ==============================
+   Global & Body Styles
+   ============================== */
 html,
 body {
-  height: 100%;
-}
-
-body {
-  margin: 0;
-  font-family: Roboto, "Helvetica Neue", sans-serif;
-}
-
-
-
-
-
-body {
-  margin: 0;
-  padding: 0;
-  height: 100%;
-  /* overflow: hidden; */
-  background: linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 40%, #2b2b2b 100%);
-  background-color: #1D2838;
-  font-family: 'Inter', 'Roboto', 'Open Sans', sans-serif;
-  color: white;
-}
-
-/* body{
-    height: 100vh;
-    width: 100vw;
     margin: 0;
     padding: 0;
-}  */
+    height: 100%;
+    min-height: 100vh;
+    width: 100%;
+    font-family: 'Inter', 'Roboto', 'Open Sans', sans-serif;
+    color: white;
+    background: linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 40%, #2b2b2b 100%);
+    background-color: #1D2838;
+    overflow: auto;
+}
 
+/* ==============================
+   Scrollbar
+   ============================== */
+body::-webkit-scrollbar { width: 15px; }
+body::-webkit-scrollbar-track {
+    background: #1D2838;
+    border-radius: 10px;
+}
+body::-webkit-scrollbar-thumb {
+    background: linear-gradient(to bottom, #9430ff 0%, #3888ff 100%);
+    border-radius: 10px;
+    border: 3px solid #2c3e50;
+}
+body::-webkit-scrollbar-thumb:hover {
+    background: linear-gradient(to bottom, #8413fe 0%, #1b76ff);
+}
+
+/* ==============================
+   Buttons
+   ============================== */
 .button {
-  display: inline-flex;
-  /* שימוש ב-Flexbox */
-  align-items: center;
-  /* מרכזים אנכית */
-  justify-content: center;
-  /* מרכזים אופקית */
-  gap: 8px;
-  /* מרווח בין האייקון לטקסט */
-
-  background: linear-gradient(90deg, #A03FFB 0%, #5271FF 100%);
-  border-radius: 10px;
-  padding: 12px 18px;
-  cursor: pointer;
-  font-family: 'Inter', 'Roboto', 'Open Sans', sans-serif;
-  font-weight: 500;
-  font-size: 18px;
-  color: white;
-  /* צבע הטקסט */
-  border: none;
-  /* להסיר גבול אם קיים */
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    background: linear-gradient(90deg, #A03FFB 0%, #5271FF 100%);
+    border-radius: 10px;
+    padding: 12px 18px;
+    cursor: pointer;
+    font-weight: 500;
+    font-size: 18px;
+    color: white;
+    border: none;
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
+    position: relative;
 }
 
-.button mat-icon {
-  font-size: 25px;
-  /* אפשר להתאים את גודל האייקון */
-}
-
-.button {
-  transition: transform 0.15s ease, box-shadow 0.15s ease;
-}
-
+.button mat-icon { font-size: 25px; }
 
 .button:hover {
-  transform: scale(1.05);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    transform: scale(1.05);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
 }
 
 .button::after {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(0, 0, 0, 0.2);
-  /* השכבה הכהה */
-  opacity: 0;
-  /* מתחיל שקוף */
-  transition: opacity 0.2s ease;
-  border-radius: inherit;
-  pointer-events: none;
-  /* לא חוסם לחיצות */
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.2);
+    opacity: 0;
+    transition: opacity 0.2s ease;
+    border-radius: inherit;
+    pointer-events: none;
 }
 
-.button:active::after {
-  opacity: 1;
-  /* מופיע בזמן לחיצה */
-}
-
+.button:active::after { opacity: 1; }
 .button:active {
-  transform: scale(0.95);
-  /* הקטנה בזמן לחיצה */
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+    transform: scale(0.95);
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
 }
 
-.play {
-  color: #B97FFF;
-  /* סגול */
+/* Button color variants */
+.play { color: #B97FFF; }
+.share { color: #3BB2FF; margin: 0 10px; }
+.grow { color: #3CFF6E; }
+
+/* ==============================
+   Header & Title Section
+   ============================== */
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 30px;
 }
 
-.share {
-  color: #3BB2FF;
-  /* כחול */
-  margin: 0 10px;
+.title-section h1 {
+    font-size: 2.5em;
+    margin: 0;
 }
 
-.grow {
-  color: #3CFF6E;
-  /* ירוק */
+.title-section p {
+    color: #aaaaaa;
+    margin-top: 5px;
 }
 
-/* --- Dark Overlay --- */
-.overlay {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(0, 0, 0, 0.892);
-  z-index: 2;
+.back-arrow {
+    font-size: 1.5em;
+    margin-right: 15px;
+    cursor: pointer;
+    display: inline-block;
 }
 
-
-
-
-/* הגדרות גלובליות ומימדים */
-html,
-body {
-  margin: 0;
-  padding: 0;
-  height: 100%;
-  min-height: 100vh;
-  /* ודא שיש גובה מינימלי למקרה שהתוכן קצר */
-  width: 100%;
-
-  /* הגדרת הרקע הכהה והטקסט הכללי */
-  background-color: #1D2838;
-  font-family: 'Inter', 'Roboto', 'Open Sans', sans-serif;
-  color: white;
-  /* ודא שצבע הטקסט הכללי הוא לבן */
-}
-
-app-root {
-  display: block;
-  height: 100%;
-  width: 100%;
-}
-
-
-.musicians {
-  font-size: clamp(2rem, 4vw, 5rem);
-  font-weight: 800;
-  background: linear-gradient(90deg, #a653fe 0%, #599afd 100%);
-
-  color: black;
-  -webkit-mask-image: linear-gradient(90deg, #fff, #fff);
-  -webkit-mask-clip: text;
-  -webkit-mask-repeat: no-repeat;
-  -webkit-mask-size: 100%;
-  mask-image: linear-gradient(90deg, #fff, #fff);
-  mask-clip: text;
-  mask-repeat: no-repeat;
-  mask-size: 100%;
-  color: transparent;
-
-  color: transparent;
-  -webkit-text-fill-color: transparent;
-  font-family: 'Inter', 'Roboto', 'Open Sans', sans-serif;
-  display: inline-block;
-  line-height: 1.1;
-  letter-spacing: 1px;
-  text-shadow: 0 0 20px rgba(166, 83, 254, 0.3);
-}
-
-/* .logo-pic {
-
-  border-radius: 13.5px;
-
-  padding-bottom: 14px;
-} */
-
+/* ==============================
+   Logo
+   ============================== */
 .logo {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    cursor: pointer;
 }
 
 .logo img {
-  height: 50px;
-  width: auto;
-  /* border-radius: 13.5px; */
-margin-left: -150px;
-  margin-right: 100px;
+    height: 50px;
+    width: auto;
+    margin-left: -150px;
+    margin-right: 100px;
 }
 
-
-
-
+/* ==============================
+   Container
+   ============================== */
 .container {
-    /* **תיקון:** הוסר background-color: #12121e; כדי לקבל את הרקע של ה-body */
-    color: #f0f0f0; /* טקסט בהיר */
-    background-color: #1D2838;
-    /* padding: 30px; */
     min-height: 400px;
+    color: #f0f0f0;
+    background-color:#1d2837 ;
     font-family: Arial, sans-serif;
+/* #1d2837 */
+/* #1D2838 */
+    /* padding: 30px; */
+}
+
+/* ==============================
+   Overlay
+   ============================== */
+.overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.892);
+    z-index: 2;
+}
+
+/* ==============================
+   Musicians Text
+   ============================== */
+.musicians {
+    font-size: clamp(2rem, 4vw, 5rem);
+    font-weight: 800;
+    background: linear-gradient(90deg, #a653fe 0%, #599afd 100%);
+    -webkit-mask-image: linear-gradient(90deg, #fff, #fff);
+    -webkit-mask-clip: text;
+    -webkit-mask-repeat: no-repeat;
+    -webkit-mask-size: 100%;
+    mask-image: linear-gradient(90deg, #fff, #fff);
+    mask-clip: text;
+    mask-repeat: no-repeat;
+    mask-size: 100%;
+    color: transparent;
+    -webkit-text-fill-color: transparent;
+    display: inline-block;
+    line-height: 1.1;
+    letter-spacing: 1px;
+    text-shadow: 0 0 20px rgba(166, 83, 254, 0.3);
+}
+
+/* ==============================
+   Cover Image & Wrapper
+   ============================== */
+.cover-wrapper {
+    position: relative;
+    width: 100%;
+    height: 50vh;
+    top: -30px;
+    overflow: hidden;
+    border-radius: 12px;
+    padding: 0;
+}
+
+.cover-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    border-radius: 12px;
+}
+
+/* ==============================
+   Overlay Content on Cover
+   ============================== */
+.overlay-content {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    padding: 0px 40px 100px 40px;
+    background: linear-gradient(
+        to top,
+        rgba(0, 0, 0, 0.803) 0%,
+        rgba(0, 0, 0, 0.807) 50%,
+        transparent 100%
+    );
+    color: white;
+    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.7);
+    gap: -50px;
+}
+
+
+body {
+    background-color: #1D2838 !important;
+}
+
+
+.cover-wrapper {
+    background-color: #1D2838; /* הצבע הרצוי שלך */
+    position: relative;
+    width: 100%;
+    height: 50vh;
+}
+/* ==================== 1. מבנה כללי: כיסוי ויישור לראש הקונטיינר ==================== */
+.overlay-content {
+    /* הכללים האלה נשארים: מכסה את התמונה */
+    background: rgba(29, 40, 56, 0.5); 
+    position: absolute;
+    top: 0; 
+    left: 0;
+    width: 100%; 
+    height: 100%;
+    z-index: 2;
+    
+    /* שינוי קריטי: יישור אנכי לראש הקונטיינר */
+    display: flex;
+    align-items: flex-start; /* מצמיד את התוכן לראש הקונטיינר */ 
+    
+    /* יישור אופקי: מרכז את התוכן על פני רוחב הדף */
+    justify-content: center; 
+
+    /* אפס את השוליים וודא שההגדרות נקיות */
+    margin: 0;
+    padding: 0;
+}
+
+/* ==================== 2. מיכל פנימי למרכוז התוכן ==================== */
+.header-inner-content {
+    display: flex;
+    justify-content: space-between; /* מפריד בין שמאל לימין */
+    align-items: flex-start; /* יישור אנכי של האלמנטים הפנימיים לראש הקו */
+    
+    max-width: 900px; /* רוחב המקסימלי הרצוי */
+    width: 100%;
+    
+    /* פאדינג מהצדדים ומהחלק העליון - קובע את המיקום האנכי הראשוני */
+    padding: 20px 20px 0; /* 20px למעלה, 20px בצדדים, 0 למטה */
+}
+
+/* ==================== 3. כפתור: הזזה שמאלה ==================== */
+.button.join-network-btn {
+    display: flex;
+    align-items: center;
+    gap: 5px; 
+    padding: 10px 20px;
+    background: linear-gradient(135deg, #8E2DE2 0%, #4A00E0 100%); 
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 1.1rem;
+    cursor: pointer;
+    flex-shrink: 0;
+    
+    /* הוספת שוליים שליליים כדי להזיז אותו מעט שמאלה מעבר לגבול ה-900px */
+    margin-right: -20px; 
 }
 
 
 
 
 
+/* ==================== Overlay Content: מכיל את הכל ומצמיד לתחתית ==================== */
+.overlay-content {
+    position: absolute;
+    top: 0; 
+    left: 0;
+    width: 100%; 
+    height: 100%;
+    z-index: 2;
+    
+    /* הכלל הכי חשוב: שימוש ב-Flexbox */
+    display: flex;
+    /* יישור אנכי: מצמיד את התוכן הפנימי (header-inner-content) לתחתית */
+    align-items: flex-end; 
+    /* יישור אופקי: מרכז את התוכן הפנימי על פני רוחב הדף */
+    justify-content: center; 
 
+    /* רקע כהה עם גרדיאנט שמושך צל כלפי מטה */
+    background: linear-gradient(
+        to top,
+        rgba(0, 0, 0, 0.8) 0%, /* חזק למטה */
+        rgba(0, 0, 0, 0.4) 50%, 
+        transparent 100% /* נעלם למעלה */
+    );
 
-
-
-
-
-
-
-/* מוחל על האלמנט הגולל (לרוב <body> או <div> ספציפי) */
-
-/* 1. הגדרת רוחב הפס */
-body::-webkit-scrollbar {
-  width: 15px; 
- 
+    /* פאדינג גלובלי שמבטיח ריווח אנכי מהכפתור */
+    padding-bottom: 30px; /* פאדינג מלמטה כדי להרחיק את הכפתור מהשפה התחתונה */
 }
 
-/* 2. *** שליטה על המסלול (החלק הלבן/הריק) *** */
-body::-webkit-scrollbar-track {
-  /* שינוי הרקע מצבע לבן (ברירת מחדל) לצבע אפור כהה */
-  background: #1D2838; 
-  border-radius: 10px;
+/* ==================== Wrapper פנימי: מחזיק כותרת וכפתור בשורה ==================== */
+.header-inner-content {
+    /* הופך את ה-wrapper להיות רכיב Flexbox שמפריד בין הפריטים */
+    display: flex;
+    justify-content: space-between; /* דוחף שמאל לימין */
+    align-items: center; /* מיישר אנכית את הכותרות והכפתור */
+    
+    /* מגדיר את רוחב התוכן על פני הדף */
+    max-width: 900px; 
+    width: 100%;
+
+    /* פאדינג מהצדדים כדי לוודא שיש ריווח מהקצוות של הדף */
+    padding: 0 20px; 
 }
 
-/* 3. עיצוב הידית (החלק הנע, הסגול) */
-body::-webkit-scrollbar-thumb {
- background: linear-gradient(to bottom,  #9430ff 0%, #3888ff 100%);
-  border-radius: 10px; 
-  /* חשוב: הגבול כאן צריך להתאים לצבע הרקע החדש של המסלול (#2c3e50) */
-  border: 3px solid #2c3e50; 
+/* ==================== 3. כפתור: הסרת margin שלילי ==================== */
+.button.join-network-btn {
+    /* הסר את כל ה-margin שאינו נחוץ! */
+    margin: 0; 
+    
+    /* שאר העיצוב (ה-gradient) נשאר נכון */
+    background: linear-gradient(135deg, #A03FFB 0%, #5271FF 100%); 
+    display: flex;
+    align-items: center;
+    padding: 12px 18px; 
+    /* ... שאר העיצוב מהקוד שלך ... */
+    flex-shrink: 0; 
 }
 
-/* 4. אפקט Hover (אופציונלי) */
-body::-webkit-scrollbar-thumb:hover {
-  background: linear-gradient(
-    to bottom,
-    #8413fe 0%, #1b76ff
-  );
+/* ==================== Overlay Content: מכיל את הכל ומצמיד לתחתית ==================== */
+.overlay-content {
+    position: absolute;
+    top: 0; 
+    left: 0;
+    width: 100%; 
+    height: 100%;
+    z-index: 2;
+    
+    /* הצמדה לתחתית */
+    display: flex;
+    align-items: flex-end; 
+    
+    /* מרכוז אופקי של ה-header-inner-content */
+    justify-content: center; 
+
+    /* שאר הכללים ל-background ו-padding-bottom נשארים נכונים */
+    padding-bottom: 30px; /* ריווח מהשפה התחתונה */
+    /* ... */
+}
+
+/* ==================== Wrapper פנימי: מחזיק כותרת וכפתור בשורה ==================== */
+.header-inner-content {
+    display: flex;
+    justify-content: space-between; /* דוחף שמאל לימין */
+    align-items: center; 
+    
+    /* הגבלת הרוחב המרבי וודא שהכל מרוכז */
+    max-width: 1410px; 
+    width: 100%;
+
+    /* פאדינג ששומר על ריווח מהצדדים כאשר המסך קטן מ-900px */
+    padding: 0 20px; 
 }

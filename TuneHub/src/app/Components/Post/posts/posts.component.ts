@@ -1,57 +1,120 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Router, RouterModule } from '@angular/router';
+import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
+import { MatIconModule } from "@angular/material/icon";
+import { CommonModule } from '@angular/common';
+
 import { PostService } from '../../../Services/post.service';
 import Post from '../../../Models/Post';
-import Users from '../../../Models/Users';
-import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
+import { FileUtilsService } from '../../../Services/fileutils.service';
+import { UserStateService } from '../../../Services/user-state.service';
+import { ERole } from '../../../Models/Users';
 
 @Component({
   selector: 'app-posts',
   standalone: true,
-  imports: [RouterModule],
+  imports: [RouterModule, MatIconModule, CommonModule],
   templateUrl: './posts.component.html',
   styleUrl: './posts.component.css'
 })
+export class PostsComponent implements OnInit {
 
-export class PostsComponent {
-  
-  public posts: Post[] = [];
-  public isShowDetails: boolean = false;
-  public selectedPost!: Post;
+  posts: Post[] = [];
+  newCommentTexts: { [key: number]: string } = {};
 
-  public user!: Users;
+  // רולים של המשתמש שמחובר
+  currentUserRoles: string[] = [];
+  isAdmin = false;
 
-  constructor(private router: Router, private _postService: PostService,private sanitizer: DomSanitizer) { }
+  showAdminActions: { [key: number]: boolean } = {};
+
+  constructor(
+    private router: Router,
+    private _postService: PostService,
+    private sanitizer: DomSanitizer,
+    public fileUtils: FileUtilsService,
+    private userState: UserStateService
+  ) { }
 
   ngOnInit(): void {
+    this.loadCurrentUserRoles();
+    this.loadPostsFromService();
+  }
+
+  // ----------------------------------------------------------------
+  // 1️⃣ טעינת משתמש שמחובר
+  // ----------------------------------------------------------------
+  loadCurrentUserRoles(): void {
+    const user = this.userState.getCurrentUserValue();
+
+    // אם אין משתמש או אין רולים – נעצור
+    if (!user || !Array.isArray(user.roles)) {
+      this.currentUserRoles = [];
+      this.isAdmin = false;
+      return;
+    }
+
+    this.currentUserRoles = user.roles;
+
+    this.isAdmin =
+      user.roles.includes(ERole.ROLE_ADMIN) ||
+      user.roles.includes(ERole.ROLE_SUPER_ADMIN);
+  }
+
+
+  // ----------------------------------------------------------------
+  // 2️⃣ טוען פוסטים מהשרת
+  // ----------------------------------------------------------------
+  loadPostsFromService(): void {
     this._postService.getPosts().subscribe({
-      next: (res) => {
-        this.posts = res;
+      next: (posts) => {
+        this.posts = posts;
+
+        posts.forEach(post => {
+          this.newCommentTexts[post.id!] = '';
+        });
       },
-      error: (err) => {
-        console.log(err);
-      }
+      error: (err) => console.error("שגיאה בטעינת פוסטים:", err)
+    });
+  }
+
+  // ----------------------------------------------------------------
+  // 3️⃣ פעולות אדמין
+  // ----------------------------------------------------------------
+
+  toggleAdminActions(postId: number) {
+    Object.keys(this.showAdminActions).forEach(key => {
+      const id = Number(key);
+      if (id !== postId) this.showAdminActions[id] = false;
     });
 
+    this.showAdminActions[postId] = !this.showAdminActions[postId];
   }
 
-  showDetails(post: Post) {
-    this.router.navigate(['/post', post.id])
-  }
+  onDeletePost(postId: number): void {
+    if (!this.isAdmin) return;
 
- getImageUrl(base64?: string): SafeUrl {
-        if (base64 && base64.trim()) {
-            const imageUrl = `data:image/jpg;base64,${base64}`;
-            // 👈 שימוש ב-bypassSecurityTrustUrl כדי לסמן את ה-URL כבטוח
-            return this.sanitizer.bypassSecurityTrustUrl(imageUrl);
-        }
-        // הערה: נתיב לקובץ מקומי 'assets/...' לרוב אינו דורש טיהור
-        return 'assets/images/2.jpg'; 
+    if (confirm(`האם למחוק את הפוסט ${postId}?`)) {
+      this.posts = this.posts.filter(p => p.id !== postId);
     }
-    navigateToUpload() {
-        console.log('Navigating to upload...');
 
-    this.router.navigate(['/post']); 
+  }
+
+  onReportPost(postId: number): void {
+    alert("דיווח נשלח על פוסט " + postId);
+  }
+
+  // ----------------------------------------------------------------
+  // 4️⃣ הצגת מדיה
+  // ----------------------------------------------------------------
+  getSafeMediaUrl(path: string): SafeResourceUrl {
+    const url = `http://localhost:8080/api/post/${path}`;
+    return this.sanitizer.bypassSecurityTrustResourceUrl(url);
+
+
+  }
+  navigateToUpload() {
+    this.router.navigate(['/upload-post']);
   }
 
 }

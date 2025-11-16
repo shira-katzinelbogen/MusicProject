@@ -6,8 +6,8 @@ import { LoginService } from '../../../Services/login.service';
 import { SignupService } from '../../../Services/signup.service';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
-import { log } from 'node:console';
 import { UserProfile, UserStateService } from '../../../Services/user-state.service';
+import { UsersService } from '../../../Services/users.service';
 
 type AuthMode = 'login' | 'signup';
 
@@ -22,8 +22,8 @@ export class LoginWindowComponent {
 
   userStateService: UserStateService;
   loginwindowService = inject(LoginwindowService);
-   loginService = inject(LoginService);
-   signupService = inject(SignupService);
+  usersService = inject(UsersService);
+  signupService = inject(SignupService);
   private router = inject(Router);
   signupErrorMessage: string | null = null;
   signupSuccessMessage: string | null = null;
@@ -36,14 +36,15 @@ export class LoginWindowComponent {
 
   loginForm!: FormGroup;
   signupForm!: FormGroup;
-selectedFile: File | null = null; 
+  selectedFile: File | null = null;
 
+  profilePreviewUrl: string | ArrayBuffer | null = null;
 
-// פונקציה שמטפלת בבחירת קובץ (יש לחבר אותה לאירוע change ב-HTML)
+  // פונקציה שמטפלת בבחירת קובץ (יש לחבר אותה לאירוע change ב-HTML)
 
   constructor(private fb: FormBuilder, http: HttpClient) {
     this.userStateService = inject(UserStateService);
-   }
+  }
 
   ngOnInit(): void {
     // אתחול טופס כניסה
@@ -76,47 +77,57 @@ selectedFile: File | null = null;
   }
 
   onFileSelected(event: any): void {
-  // בדיקה אם נבחר קובץ
-  if (event.target.files.length > 0) {
-    this.selectedFile = event.target.files[0];
-  } else {
-    this.selectedFile = null;
+    if (event.target.files && event.target.files[0]) {
+      this.selectedFile = event.target.files[0];
+
+      const reader = new FileReader();
+      reader.onload = e => this.profilePreviewUrl = reader.result;
+      reader.readAsDataURL(this.selectedFile!);
+    } else {
+      this.selectedFile = null;
+      this.profilePreviewUrl = null;
+    }
   }
-}
+
+
   onLoginSubmit(): void {
-  if (this.loginForm.valid) {
-    // 1. הוצאת הנתונים מהטופס
-    const { name, password } = this.loginForm.value;
-    
-    // 2. קריאה לשירות ה-Login
-    this.loginService.signin({ name, password }).subscribe({
-      next: (response:any) => {
-        const userProfile: UserProfile = {
-                    name: response.name, // קיבלת 'shira' בהצלחה
-                    // השדות הבאים אינם קיימים ב-LoginResponse שראינו, לכן נשתמש בברירת מחדל
-                    hasProfilePicture: response.hasProfilePicture || false, 
-                    profilePictureUrl: response.profilePictureUrl || undefined 
-                };
-                this.userStateService.setUser(userProfile); // 👈 זה חובה!
-        this.closeWindow(); 
-        this.router.navigate(['/home']); // או נתיב אחר
-      },
-      error: (error) => {
-        // 💡 כישלון: 401, 403, 500, או בעיית רשת.
-        console.error('Login Failed:', error);
-        
-        // הצגת הודעה כללית למשתמש
-        let errorMessage = 'Login failed. Please check your email and password.';
-        if (error.status === 401 || error.status === 403) {
+    if (this.loginForm.valid) {
+      const { name, password } = this.loginForm.value;
+
+      this.usersService.signIn({ name, password }).subscribe({
+        next: (response: any) => {
+          const userProfile: UserProfile = {
+            id: response.id,
+            name: response.name,
+            hasImageProfilePath: !!response.imageProfilePath,
+            imageProfilePath: response.imageProfilePath,
+            // ? 'http://localhost:8080/images/' + response.imageProfilePath
+            // : undefined,
+            roles: response.roles ? response.roles.map((r: any) => r.name) : []
+          };
+          console.log("PROFILE:", response.imageProfilePath);
+
+          // שמירה ב־UserStateService + sessionStorage
+          this.userStateService.setUser(userProfile);
+          console.log('After setUser:', this.userStateService.getCurrentUserValue());
+
+          this.closeWindow();
+          this.router.navigate(['/home']);
+        },
+        error: (error) => {
+          let errorMessage = 'Login failed. Please check your credentials.';
+          if (error.status === 401 || error.status === 403) {
             errorMessage = 'Invalid credentials. Please try again.';
+          }
+          alert(errorMessage);
         }
-        alert(errorMessage);
-      }
-    });
+      });
+    }
   }
-}
+
+
   // לוגיקה לשליחת טופס הרשמה
- onSignupSubmit(): void {
+  onSignupSubmit(): void {
     // איפוס הודעות
     this.signupErrorMessage = null;
     this.signupSuccessMessage = null;
@@ -131,15 +142,16 @@ selectedFile: File | null = null;
         name: formValue.fullName, // ⚠️ שיניתי fullName ל-name, כי השרת מצפה ל-name
         password: formValue.password,
         email: formValue.email,
-        imageProfilePath: null      };
+        imageProfilePath: null
+      };
       // 2. קריאה לשירות ההרשמה
       console.log('Signup Data:', signupData);
-        this.signupService.signup(signupData, this.selectedFile).subscribe({        
-          next: (response) => {
+      this.signupService.signup(signupData, this.selectedFile).subscribe({
+        next: (response) => {
           // 💡 הצלחה: השרת החזיר 201 Created
           console.log('Signup Successful!', response);
           this.signupSuccessMessage = 'Registration successful! You can now log in.';
-          
+
           // אופציונלי: העברה אוטומטית למצב Login
           this.setMode('login');
           this.signupForm.reset();
@@ -147,7 +159,7 @@ selectedFile: File | null = null;
         error: (error) => {
           // 💡 כישלון: 400 (שם משתמש תפוס), 500 (שגיאת שרת)
           console.error('Signup Failed:', error);
-          
+
           if (error.status === 400) {
             // זה הסטטוס ש-Spring Boot מחזיר אם השם תפוס
             this.signupErrorMessage = 'This username is already taken. Please choose another one.';
@@ -207,7 +219,7 @@ selectedFile: File | null = null;
     // formData.append('metadata', JSON.stringify(this.data));
 
 
-   // 4. שליחת הבקשה
+    // 4. שליחת הבקשה
     // this.http.post('http://localhost:8080/api/upload', formData).subscribe(
     //   (response) => {
     //     console.log('העלאה הצליחה', response);

@@ -7,23 +7,6 @@ export class LoginService {
   private _isOpen = signal(false);
   isOpen = this._isOpen.asReadonly();
 
-
-  private apiUrl = 'http://localhost:8080/api/users'; 
-  
-  constructor(private http: HttpClient) { }
-
-  //אוביקט שמכיל את השם והסיסמה
-  signin(credentials: any): Observable<any> {
-    return this.http.post(`${this.apiUrl}/signIn`, {
-      name: credentials.name, 
-      password: credentials.password
-    },{ withCredentials: true });
-  }
-  signOut(): Observable<any> {
-    return this.http.post(`${this.apiUrl}/signOut`, {}, {
-      responseType: 'text' // שינוי חשוב: השרת מחזיר מחרוזת גולמית
-    });
-  }
   toggle() { this._isOpen.update(v => !v); }
   open() { this._isOpen.set(true); }
   close() { this._isOpen.set(false); }

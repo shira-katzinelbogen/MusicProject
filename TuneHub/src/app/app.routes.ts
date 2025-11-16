@@ -10,7 +10,7 @@ import { HomePageComponent } from './Components/Shared/home-page/home-page.compo
 import { SidebarComponent } from './Components/Shared/sidebar/sidebar.component';
 
 // Post
-import { PostComponent } from './Components/Post/post/post.component';
+import { UploadPostComponent } from './Components/Post/upload-post/upload-post.component';
 import { PostsComponent } from './Components/Post/posts/posts.component';
 
 // Teacher
@@ -31,9 +31,9 @@ export const routes: Routes = [
   { path: '', redirectTo: '/home-page', pathMatch: 'full' },
 
   // Post
-  { path: 'post/:id', component: PostComponent },
+ // { path: 'post/:id', component: PostComponent },
   { path: 'posts', component: PostsComponent },
-  { path: 'post', component: PostComponent },
+  { path: 'upload-post', component: UploadPostComponent },
 
   // Users
   { path: 'login-window', component: LoginWindowComponent },
