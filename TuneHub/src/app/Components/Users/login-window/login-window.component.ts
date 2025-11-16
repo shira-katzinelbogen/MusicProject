@@ -92,7 +92,7 @@ selectedFile: File | null = null;
     this.loginService.signin({ name, password }).subscribe({
       next: (response:any) => {
         const userProfile: UserProfile = {
-                    name: response.username, // קיבלת 'shira' בהצלחה
+                    name: response.name, // קיבלת 'shira' בהצלחה
                     // השדות הבאים אינם קיימים ב-LoginResponse שראינו, לכן נשתמש בברירת מחדל
                     hasProfilePicture: response.hasProfilePicture || false, 
                     profilePictureUrl: response.profilePictureUrl || undefined 

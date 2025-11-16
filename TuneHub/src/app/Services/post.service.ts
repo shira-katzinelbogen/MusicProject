@@ -30,11 +30,13 @@ export class PostService {
 
 
 uploadPost(
+    
     dto: { title: string; content: string; userId: number },
     images: File[] | null,
     audio: File | null,
     video: File | null
 ): Observable<PostResponseDTO> {
+console.log("DTO I'm sending:", dto);
 
     const formData = new FormData();
     const blob = new Blob([JSON.stringify(dto)], { type: 'application/json' });

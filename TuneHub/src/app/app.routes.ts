@@ -22,6 +22,7 @@ import { ChallengeCardComponent } from './Components/Community/challenge-card/ch
 import { CommunityGroupsComponent } from './Components/Community/community-groups/community-groups.component';
 import { ChatMeesageComponent } from './Components/Chat/chat-meesage/chat-meesage.component';
 import { SheetMusicComponent } from './Components/SheetMusic/sheet-music/sheet-music.component';
+import { CommentComponent } from './comment/comment.component';
 
 
 
@@ -39,6 +40,8 @@ export const routes: Routes = [
   { path: 'musicians', component: MusiciansComponent },
   { path: 'user-profile/:id', component: UserProfileComponent },
 
+  //Comments
+  { path: 'comment', component: CommentComponent },
   // Shared
   { path: 'sidebar', component: SidebarComponent },
   { path: 'home-page', component: HomePageComponent },

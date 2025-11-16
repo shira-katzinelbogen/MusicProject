@@ -1,0 +1,9 @@
+<!-- comments.component.html -->
+
+<div @for="let c of comments">
+  <p>{{ c.content }}</p>
+  <small>{{ c.dateUploaded }}</small>
+  <hr>
+</div>
+
+<button @if="hasMore()" (click)="loadComments()">Load More</button>
