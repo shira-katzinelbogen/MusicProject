@@ -75,9 +75,10 @@ export default class Users {
         id?: number,
         name?: string,
         imageProfilePath?: string,
-        roles?: ERole[]
+        roles?: string[]
     }
-roles?: ERole[]; 
+    
+    roles?: ERole[];
     id?: number;
     imageProfilePath?: string;
     name?: string;
@@ -103,3 +104,6 @@ roles?: ERole[];
     favoriteSheetsMusic?: SheetMusic[];
     favoritePosts?: Post[];
 }
+
+
+

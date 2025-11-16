@@ -114,9 +114,7 @@ export class PostsComponent implements OnInit {
 
   }
   navigateToUpload() {
-    console.log('Navigating to upload...');
-
-    this.router.navigate(['/post']);
+    this.router.navigate(['/upload-post']);
   }
 
 }

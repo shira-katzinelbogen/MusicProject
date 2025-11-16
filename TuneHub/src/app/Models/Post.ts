@@ -34,7 +34,6 @@ export interface PostResponseDTO {
 }
 
 export interface PostUploadDTO {
-    userId: number;
     title: string;
     content: string;
 }

@@ -10,6 +10,7 @@ import Users, { UserType } from '../Models/Users';
 
 export class UsersService {
 
+    private apiUrl = 'http://localhost:8080/api/users';
     public users: Users[] = [];
     public count = 0;
 
@@ -38,21 +39,30 @@ export class UsersService {
         return this._httpClient.get<Users[]>(`http://localhost:8080/api/users/usersByTeacherId/${teacher_id}`)
     }
 
-     getUsersByUserType(user_type: UserType): Observable<Users[]> {
+    getUsersByUserType(user_type: UserType): Observable<Users[]> {
         return this._httpClient.get<Users[]>(`http://localhost:8080/api/users/usersByUserType/${user_type}`)
     }
-    
+
     getUserByName(name: String): Observable<Users> {
         return this._httpClient.get<Users>(`http://localhost:8080/api/users/userByName/${name}`)
     }
 
-    getUsersProfileImageDTO(id:number): Observable<Users[]> {
+    getUsersProfileImageDTO(id: number): Observable<Users[]> {
         return this._httpClient.get<Users[]>(`http://localhost:8080/api/users/usersProfileImageDTO/${id}`)
     }
 
-    
 
-
+    signIn(credentials: any): Observable<any> {
+        return this._httpClient.post(`${this.apiUrl}/signIn`, {
+            name: credentials.name,
+            password: credentials.password
+        }, { withCredentials: true });
+    }
+    signOut(): Observable<any> {
+        return this._httpClient.post(`${this.apiUrl}/signOut`, {}, {
+            responseType: 'text' // שינוי חשוב: השרת מחזיר מחרוזת גולמית
+        });
+    }
 
 
 

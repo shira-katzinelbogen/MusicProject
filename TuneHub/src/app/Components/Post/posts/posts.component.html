@@ -1,14 +1,15 @@
 <div class="container">
-
     <header class="header">
         <div class="cover-wrapper">
             <img src="./assets/images/posts.jpg" class="cover-image" />
             <div class="overlay-content">
                 <div class="header-inner-content">
-                    <h1 class="musicians" style="font-size:60px;">Posts & Vibes</h1>
-                    <p style="font-size:25px;color:#fff">Create, share, and enjoy</p>
+                    <div class="title-section">
+                        <h1 class="musicians" style="font-size:60px;">Posts & Vibes</h1>
+                        <p style="font-size:25px;color:#fff">Create, share, and see the world through others' eyes</p>
+                    </div>
 
-                    <button class="button join-network-btn">
+                    <button class="button join-network-btn" (click)="navigateToUpload()">
                         Upload Post
                         <mat-icon>upload</mat-icon>
                     </button>
@@ -18,114 +19,101 @@
     </header>
 
     @if(posts.length===0){
-        <p class="no-posts">אין פוסטים כרגע</p>
+    <p class="no-posts">אין פוסטים כרגע</p>
     }
 
-<div class="posts-toolbar">
-    <button class="upload-post-button" (click)="navigateToUpload()">
-        העלאת פוסט
-        <span style="font-size: 1.2em;">⬆️</span> 
-        </button>
-</div>
 
-<hr>
-@if(posts.length===0){
+
+    @if(posts.length===0){
     <div class="empty-posts-container">
         <p class="empty-message">עדיין לא פורסמו פוסטים. התחל לשתף את המוזיקה שלך עכשיו!</p>
-        
-               <button class="upload-post-button" routerLink="/post">...</button>
-            <span style="font-size: 1.5em; margin-left: 10px;">🎶</span>
-            העלה את הפוסט הראשון שלך
-            <span style="font-size: 1.5em; margin-right: 10px;">⬆️</span>
-        
+
+        <button class="upload-post-button" routerLink="/post">...</button>
+        <span style="font-size: 1.5em; margin-left: 10px;">🎶</span>
+        העלה את הפוסט הראשון שלך
+        <span style="font-size: 1.5em; margin-right: 10px;">⬆️</span>
+
 
     </div>
     }
-@else{
->>>>>>> 135e9fddc14953702d1986439e7e0751685c69fb
+    @else{
 
-        @for(post of posts; track $index){
+    @for(post of posts; track $index){
 
-        <div class="post-card">
+    <div class="post-card">
 
-            <header class="post-header">
-                
-                <img class="avatar"
-                     [src]="fileUtils.getImageUrl(post.user?.imageProfilePath)"
-                     alt="avatar">
+        <header class="post-header">
 
-                <div class="user-info">
-                    <span class="username">{{post.user?.name}}</span>
-                    <span class="date">{{post.dateUploaded | date:'short'}}</span>
-                </div>
+            <img class="avatar" [src]="fileUtils.getImageUrl(post.user?.imageProfilePath)" alt="avatar">
 
-                <!-- כפתור דיווח למשתמש רגיל -->
-                <button *ngIf="!isAdmin"
-                        class="action-btn report-btn"
-                        (click)="onReportPost(post.id!)">
-                    <mat-icon>report</mat-icon> דווח
+            <div class="user-info">
+                <span class="username">{{post.user?.name}}</span>
+                <span class="date">{{post.dateUploaded | date:'short'}}</span>
+            </div>
+
+            <!-- כפתור דיווח למשתמש רגיל -->
+            <button *ngIf="!isAdmin" class="action-btn report-btn" (click)="onReportPost(post.id!)">
+                <mat-icon>report</mat-icon> דווח
+            </button>
+
+            <!-- כפתורי אדמין -->
+            <div *ngIf="isAdmin" class="post-actions-wrapper">
+                <button class="action-btn more-actions-btn" (click)="toggleAdminActions(post.id!)">
+                    <mat-icon>more_vert</mat-icon>
                 </button>
 
-                <!-- כפתורי אדמין -->
-                <div *ngIf="isAdmin" class="post-actions-wrapper">
-                    <button class="action-btn more-actions-btn"
-                            (click)="toggleAdminActions(post.id!)">
-                        <mat-icon>more_vert</mat-icon>
+                <div *ngIf="showAdminActions[post.id!]" class="admin-actions-dropdown">
+
+                    <button class="action-btn delete-btn" (click)="onDeletePost(post.id!)">
+                        <mat-icon>delete</mat-icon> מחיקה
                     </button>
 
-                    <div *ngIf="showAdminActions[post.id!]" class="admin-actions-dropdown">
-
-                        <button class="action-btn delete-btn"
-                                (click)="onDeletePost(post.id!)">
-                            <mat-icon>delete</mat-icon> מחיקה
-                        </button>
-
-                        <button class="action-btn report-btn"
-                                (click)="onReportPost(post.id!)">
-                            <mat-icon>report</mat-icon> דיווח
-                        </button>
-
-                    </div>
-                </div>
-
-            </header>
-
-            <div class="post-body">
-
-                <h3 class="post-title">{{post.title}}</h3>
-                <p class="post-content">{{post.content}}</p>
-
-                <div class="post-media">
-                    
-                    <div *ngFor="let image of post.imagesBase64" class="image-container">
-                        <img [src]="fileUtils.getImageUrl(image)" class="post-image">
-                    </div>
-
-                    <audio *ngIf="post.audioPath" controls
-                           [src]="getSafeMediaUrl('audio/' + post.audioPath)">
-                    </audio>
-
-                    <video *ngIf="post.videoPath" controls
-                           [src]="getSafeMediaUrl('video/' + post.videoPath)">
-                    </video>
+                    <button class="action-btn report-btn" (click)="onReportPost(post.id!)">
+                        <mat-icon>report</mat-icon> דיווח
+                    </button>
 
                 </div>
             </div>
 
-            <footer class="post-footer">
-                <div class="stats">
-                    <span>❤️ {{post.hearts}}</span>
-                    <span>👍 {{post.likes}}</span>
+        </header>
+
+        <div class="post-body">
+
+            <h3 class="post-title">{{post.title}}</h3>
+            <p class="post-content">{{post.content}}</p>
+
+            <div class="post-media">
+
+                <div *ngFor="let image of post.imagesBase64" class="image-container">
+                    <img [src]="fileUtils.getImageUrl(image)" class="post-image">
                 </div>
-            </footer>
 
-            <hr>
+                <audio *ngIf="post.audioPath" controls [src]="getSafeMediaUrl('audio/' + post.audioPath)">
+                </audio>
 
+                <video *ngIf="post.videoPath" controls [src]="getSafeMediaUrl('video/' + post.videoPath)">
+                </video>
+
+            </div>
         </div>
 
-        }
+        <footer class="post-footer">
+            <div class="stats">
+                <span>❤️ {{post.hearts}}</span>
+                <span>👍 {{post.likes}}</span>
+            </div>
+        </footer>
+
+        <hr>
+
+    </div>
+
+    }
 
 
     }
+    <br>
+    <br>
+    <br>
 
 </div>

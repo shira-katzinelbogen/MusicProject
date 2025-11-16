@@ -4,6 +4,8 @@ import { Observable, Subscription } from 'rxjs';
 import { Router } from '@angular/router';
 import { LoginService } from '../../../Services/login.service';
 import { UserProfile, UserStateService } from '../../../Services/user-state.service';
+import { UsersService } from '../../../Services/users.service';
+import { FileUtilsService } from '../../../Services/fileutils.service';
 
 
 @Component({
@@ -15,12 +17,13 @@ import { UserProfile, UserStateService } from '../../../Services/user-state.serv
 })
 export class ProfileMiniAvatarComponent implements OnInit, OnDestroy {
   currentUser$: Observable<UserProfile | null> | undefined;
-  isDropdownOpen: boolean = false; 
+  isDropdownOpen: boolean = false;
 
   userStateService = inject(UserStateService);
-  loginService = inject(LoginService);
+  usersService = inject(UsersService);
   router = inject(Router);
-  elementRef = inject(ElementRef); 
+  elementRef = inject(ElementRef);
+  public fileUtilsService = inject(FileUtilsService);
 
   ngOnInit(): void {
     this.currentUser$ = this.userStateService.currentUser$;
@@ -43,8 +46,8 @@ export class ProfileMiniAvatarComponent implements OnInit, OnDestroy {
   }
 
   handleSignOut(event: Event): void {
-    event.stopPropagation(); 
-    this.loginService.signOut().subscribe({
+    event.stopPropagation();
+    this.usersService.signOut().subscribe({
       next: () => {
         this.userStateService.clearUser();
         this.router.navigate(['/home']);
@@ -53,15 +56,15 @@ export class ProfileMiniAvatarComponent implements OnInit, OnDestroy {
       error: (error) => {
         this.userStateService.clearUser();
         this.router.navigate(['/home']);
-        this.isDropdownOpen = false; 
+        this.isDropdownOpen = false;
       }
     });
   }
-  
+
   // פונקציה לניווט לעמוד הפרופיל המלא
   navigateToProfile(name: string): void {
     this.isDropdownOpen = false;
     // נניח שאתה מנתב לפי שם/handle/ID:
-    this.router.navigate(['/profile', name]); 
+    this.router.navigate(['/profile', name]);
   }
 }

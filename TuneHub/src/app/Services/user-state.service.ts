@@ -5,9 +5,10 @@ import { isPlatformBrowser } from '@angular/common';
 import { BehaviorSubject, Observable } from 'rxjs';
 
 export interface UserProfile {
+  id: number;
   name: string;
-  hasProfilePicture: boolean;
-  profilePictureUrl?: string;
+  hasImageProfilePath: boolean;
+  imageProfilePath?: string;
   roles: string[]; // ← רולים
 }
 
@@ -16,6 +17,7 @@ const STORAGE_KEY = 'currentUserProfile';
 @Injectable({
   providedIn: 'root'
 })
+
 export class UserStateService {
 
   private currentUserSubject: BehaviorSubject<UserProfile | null>;
@@ -52,6 +54,7 @@ export class UserStateService {
       sessionStorage.setItem(STORAGE_KEY, JSON.stringify(user));
     }
     this.currentUserSubject.next(user);
+    
   }
 
   /** ניקוי המשתמש */

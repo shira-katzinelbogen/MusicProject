@@ -21,21 +21,21 @@ export class SignupService {
   constructor() { }
 
   signup(data: SignupRequest, imageFile: File | null): Observable<any> {
-    
+
     // יצירת אובייקט FormData כדי לאפשר שליחת קובץ ו-JSON יחד
     const formData: FormData = new FormData();
-         const userBlob = new Blob([JSON.stringify(data)], { type: 'application/json' });
+    const userBlob = new Blob([JSON.stringify(data)], { type: 'application/json' });
 
-    formData.append('profile', userBlob); 
+    formData.append('profile', userBlob);
 
     if (imageFile) {
-        formData.append('image', imageFile, imageFile.name);
-    } else {
-        // שולח חלק 'image' ריק (כמו מחרוזת ריקה) במקום קובץ.
-        // זה מבטיח שהבקשה היא תמיד multipart/form-data עם שני חלקים.
-        formData.append('image', new Blob(), 'null'); 
-    }
-     return this.http.post(`${this.apiUrl}/signUp`, formData);
-}
+      formData.append('image', imageFile, imageFile.name);
+    } else {
+      // שולח חלק 'image' ריק (כמו מחרוזת ריקה) במקום קובץ.
+      // זה מבטיח שהבקשה היא תמיד multipart/form-data עם שני חלקים.
+      formData.append('image', new Blob(), 'null');
+    }
+    return this.http.post(`${this.apiUrl}/signUp`, formData);
+  }
 }
 

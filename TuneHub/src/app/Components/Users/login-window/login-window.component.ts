@@ -7,6 +7,7 @@ import { SignupService } from '../../../Services/signup.service';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
 import { UserProfile, UserStateService } from '../../../Services/user-state.service';
+import { UsersService } from '../../../Services/users.service';
 
 type AuthMode = 'login' | 'signup';
 
@@ -21,7 +22,7 @@ export class LoginWindowComponent {
 
   userStateService: UserStateService;
   loginwindowService = inject(LoginwindowService);
-  loginService = inject(LoginService);
+  usersService = inject(UsersService);
   signupService = inject(SignupService);
   private router = inject(Router);
   signupErrorMessage: string | null = null;
@@ -88,31 +89,33 @@ export class LoginWindowComponent {
     }
   }
 
+
   onLoginSubmit(): void {
     if (this.loginForm.valid) {
-      // 1. הוצאת הנתונים מהטופס
       const { name, password } = this.loginForm.value;
 
-      // 2. קריאה לשירות ה-Login
-      this.loginService.signin({ name, password }).subscribe({
+      this.usersService.signIn({ name, password }).subscribe({
         next: (response: any) => {
           const userProfile: UserProfile = {
-            name: response.username,
-            hasProfilePicture: !!response.imagePath,
-            profilePictureUrl: response.imagePath ? 'http://localhost:8080/images/' + response.imagePath : undefined,
-            roles: response.roles   // ← חשוב!
+            id: response.id,
+            name: response.name,
+            hasImageProfilePath: !!response.imageProfilePath,
+            imageProfilePath: response.imageProfilePath,
+            // ? 'http://localhost:8080/images/' + response.imageProfilePath
+            // : undefined,
+            roles: response.roles ? response.roles.map((r: any) => r.name) : []
           };
+          console.log("PROFILE:", response.imageProfilePath);
 
-          this.userStateService.setUser(userProfile); // 👈 עדכון המצב
+          // שמירה ב־UserStateService + sessionStorage
+          this.userStateService.setUser(userProfile);
+          console.log('After setUser:', this.userStateService.getCurrentUserValue());
+
           this.closeWindow();
-          this.router.navigate(['/home']); // או נתיב אחר
+          this.router.navigate(['/home']);
         },
         error: (error) => {
-          // 💡 כישלון: 401, 403, 500, או בעיית רשת.
-          //  console.error('Login Failed:', error);
-
-          // הצגת הודעה כללית למשתמש
-          let errorMessage = 'Login failed. Please check your email and password.';
+          let errorMessage = 'Login failed. Please check your credentials.';
           if (error.status === 401 || error.status === 403) {
             errorMessage = 'Invalid credentials. Please try again.';
           }
@@ -121,6 +124,8 @@ export class LoginWindowComponent {
       });
     }
   }
+
+
   // לוגיקה לשליחת טופס הרשמה
   onSignupSubmit(): void {
     // איפוס הודעות
