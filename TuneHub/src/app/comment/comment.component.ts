@@ -4,6 +4,7 @@ import { CommentService } from '../Services/comment.service';
 @Component({
   selector: 'app-comment',
   imports: [],
+  standalone: true, // <-- ודא שזה קיים ונכון!
   templateUrl: './comment.component.html',
   styleUrl: './comment.component.css'
 })
