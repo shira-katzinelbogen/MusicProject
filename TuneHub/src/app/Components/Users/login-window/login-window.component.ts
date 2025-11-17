@@ -8,6 +8,7 @@ import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angula
 import { HttpClient } from '@angular/common/http';
 import { UserProfile, UserStateService } from '../../../Services/user-state.service';
 import { UsersService } from '../../../Services/users.service';
+import { MatIcon } from '@angular/material/icon';
 
 type AuthMode = 'login' | 'signup';
 

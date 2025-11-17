@@ -1,9 +1,10 @@
 import { Component, HostListener } from '@angular/core';
 import { CommentService } from '../Services/comment.service';
-
+import { CommonModule } from '@angular/common';
 @Component({
   selector: 'app-comment',
-  imports: [],
+   standalone:true,
+  imports: [CommonModule],
   templateUrl: './comment.component.html',
   styleUrl: './comment.component.css'
 })

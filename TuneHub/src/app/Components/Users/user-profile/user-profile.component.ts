@@ -1,11 +1,15 @@
 import { Component } from '@angular/core';
-  import {  OnInit } from '@angular/core';
+import { OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import Users, { Profile } from '../../../Models/Users';
 import { MatIconModule } from '@angular/material/icon';
 import { CommonModule } from '@angular/common';
 import { UsersService } from '../../../Services/users.service';
 import { FileUtilsService } from '../../../Services/fileutils.service';
+import Post from '../../../Models/Post';
+import SheetMusic from '../../../Models/SheetMusic';
+import { PostService } from '../../../Services/post.service';
+import { SheetMusicService } from '../../../Services/sheetmusic.service';
 
 // // ממשק לדוגמה לנתוני הפרופיל 
 // interface Profile {
@@ -22,7 +26,7 @@ import { FileUtilsService } from '../../../Services/fileutils.service';
 
 @Component({
   selector: 'app-user-profile',
- imports: [
+  imports: [
     CommonModule,  // <- חייב להיות כאן בשביל *ngIf ו-*ngFor
     MatIconModule, // אם את משתמשת ב-mat-icon
   ],
@@ -30,23 +34,27 @@ import { FileUtilsService } from '../../../Services/fileutils.service';
   styleUrl: './user-profile.component.css'
 })
 export class UserProfileComponent {
- 
 
 
-activeTab: string = 'posts';
+
+  activeTab: string = 'posts';
 
   profileId: number | null = null;
   profileData: Users | null = null;
   isCurrentUserProfile: boolean = false; // שולט בהצגת כפתור Edit
   isFollowing: boolean = false; // שולט בטקסט של כפתור Follow
-   
+  posts: Post[] | undefined;
+  sheets: SheetMusic | undefined;
+
 
   constructor(
     private route: ActivatedRoute,
     private router: Router,
     private _usersService: UsersService,
+    private _postService: PostService,
+      private _sheetMusicService: SheetMusicService,
     public fileUtilsService: FileUtilsService
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.route.paramMap.subscribe(params => {
@@ -69,7 +77,29 @@ activeTab: string = 'posts';
     });
   }
 
+  loadPosts(userId: number): void {
+    this._postService.getPostsByUserId(userId).subscribe({
+      next: (res) => {
+        this.posts = res;
+      },
+      error: (err) => {
+        console.error('Error loading profile:', err);
+      }
+    });
+  }
 
+
+  loadSheets(userId: number): void {
+    this._sheetMusicService.getSheetMusicsByUserId(userId).subscribe({
+      next: (res) => {
+        this.posts = res;
+      },
+      error: (err) => {
+        console.error('Error loading profile:', err);
+      }
+    });
+  }
+  
   // פונקציות פעולה
   goBack(): void {
     this.router.navigate(['/musician-finder']);
