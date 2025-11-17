@@ -14,25 +14,30 @@
       <div class="profile-picture-wrapper">
         <img [src]="fileUtilsService.getImageUrl(profileData?.imageProfilePath)" alt="Profile Picture"
           class="profile-image">
-          
+
 
         <span class="active-dot"></span>
       </div>
 
       <!-- User Details -->
       <div class="user-details">
+   
         <h2>{{ profileData?.name }}</h2>
-        <div class="followers-stats">
-  <span>Followers: {{ profileData?.followers?.length }}</span>
-  <span>Following: {{ profileData?.followers?.length || 0 }}</span>
-</div>
+        <!-- <div class="followers-stats">
+          <span class="follow">followers: {{ profileData?.followers?.length }}</span>
+          <span class="follow">following: {{ profileData?.followers?.length || 0 }}</span>
+        </div> -->
 
         <div class="contact-details">
           <span *ngIf="profileData?.city && profileData?.country" class="location">
-            📍 {{ profileData?.city }}, {{ profileData?.country }}
+            <mat-icon>location_on</mat-icon>
+
+            {{ profileData?.city }}, {{ profileData?.country }}
           </span>
           <span *ngIf="profileData?.email" class="website">
-            🔗 <a [href]="profileData?.email" target="_blank">{{ profileData?.email }}</a>
+            <mat-icon>email</mat-icon>
+
+            <a [href]="profileData?.email" target="_blank">{{ profileData?.email }}</a>
           </span>
         </div>
       </div>
@@ -53,10 +58,10 @@
 
 <!-- Description Section -->
 <div class="profile-description" *ngIf="profileData?.description || profileData?.teacher">
-  
+
   <!-- Role / Teacher Status -->
   <div class="role-section" *ngIf="profileData?.teacher">
-    👨‍🏫 מורה למוזיקה  
+    👨‍🏫 מורה למוזיקה
     <!-- <div class="students-count" *ngIf="profileData?.">
       תלמידים: {{ profileData?.studentsCount }}
     </div> -->
@@ -71,20 +76,34 @@
 
 <!-- Profile Navigation Tabs -->
 <div class="profile-tabs">
-  <button [class.active]="activeTab==='posts'" (click)="activeTab='posts'">Posts</button>
-  <button [class.active]="activeTab==='sheets'" (click)="activeTab='sheets'">Sheets Music</button>
-  <button [class.active]="activeTab==='movies'" (click)="activeTab='movies'">Movies</button>
-  <button [class.active]="activeTab==='photos'" (click)="activeTab='photos'">Photos</button>
-  <button [class.active]="activeTab==='followers'" (click)="activeTab='followers'">Followers</button>
-  <button [class.active]="activeTab==='following'" (click)="activeTab='following'">Following</button>
-</div>
+    <button [class.button]="activeTab==='overview'" (click)="activeTab='overview'">
+        <i class="material-icons">person_outline</i> Overview
+    </button>
+    
+    <button [class.button]="activeTab==='tracks'" (click)="activeTab='tracks'">
+        <i class="material-icons">music_note</i> Tracks (0)
+    </button>
+
+    <button [class.button]="activeTab==='movies'" (click)="activeTab='movies'">
+        <i class="material-icons">videocam</i> Videos (0)
+    </button>
+    
+    <button [class.button]="activeTab==='sheets'" (click)="activeTab='sheets'">
+        <i class="material-icons">description</i> Sheets  ({{profileData?.sheetsMusic?.length}})
+    </button>
+    
+    <button [class.button]="activeTab==='posts'" (click)="activeTab='posts'">
+        <i class="material-icons">chat_bubble_outline</i> Posts ({{profileData?.posts?.length}})
+    </button>
+
+    </div>
 
 
 
 <div class="tab-content">
 
   <div *ngIf="activeTab === 'posts'">
-    <!-- כאן יוצגו הפוסטים -->
+    
   </div>
 
   <div *ngIf="activeTab === 'sheets'">
