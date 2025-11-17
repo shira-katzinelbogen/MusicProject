@@ -3,6 +3,7 @@ import { Router, RouterModule } from '@angular/router';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { MatIconModule } from "@angular/material/icon";
 import { CommonModule } from '@angular/common';
+import { CommentComponent } from '../../../comment/comment.component';
 
 import { PostService } from '../../../Services/post.service';
 import Post from '../../../Models/Post';
@@ -13,12 +14,12 @@ import { ERole } from '../../../Models/Users';
 @Component({
   selector: 'app-posts',
   standalone: true,
-  imports: [RouterModule, MatIconModule, CommonModule],
+  imports: [RouterModule, MatIconModule, CommonModule,CommentComponent],
   templateUrl: './posts.component.html',
   styleUrl: './posts.component.css'
 })
 export class PostsComponent implements OnInit {
-
+  showComments: { [key: number]: boolean } = {};
   posts: Post[] = [];
   newCommentTexts: { [key: number]: string } = {};
 
@@ -116,5 +117,9 @@ export class PostsComponent implements OnInit {
   navigateToUpload() {
     this.router.navigate(['/upload-post']);
   }
+
+  toggleComments(postId: number) {
+  this.showComments[postId] = !this.showComments[postId];
+}
 
 }

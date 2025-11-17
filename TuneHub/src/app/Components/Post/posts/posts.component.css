@@ -1401,3 +1401,40 @@ body::-webkit-scrollbar-thumb:hover {
     flex-direction: column;
     justify-content: center; /* מרכז אנכית */
 }
+
+/* כפתור צפייה בתגובות */
+.view-comments-btn {
+    background: linear-gradient(90deg, #6a5acd, #836fff);
+    border: none;
+    padding: 10px 18px;
+    border-radius: 12px;
+    color: white;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: 600;
+    transition: 0.25s ease;
+    margin-top: 10px;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.view-comments-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 14px rgba(0,0,0,0.15);
+    background: linear-gradient(90deg, #7a6bfd, #9b8fff);
+}
+
+/* עטיפת תגובות עם אנימציית פתיחה חלקה */
+.comments-wrapper {
+    max-height: 0;
+    overflow: hidden;
+    opacity: 0;
+    transition: max-height 0.45s ease, opacity 0.35s ease;
+}
+
+/* כשהתגובות פתוחות */
+.comments-wrapper.open {
+    max-height: 600px; /* מספיק לרוב המצבים */
+    opacity: 1;
+}

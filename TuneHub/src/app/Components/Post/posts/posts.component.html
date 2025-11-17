@@ -22,8 +22,6 @@
     <p class="no-posts">אין פוסטים כרגע</p>
     }
 
-
-
     @if(posts.length===0){
     <div class="empty-posts-container">
         <p class="empty-message">עדיין לא פורסמו פוסטים. התחל לשתף את המוזיקה שלך עכשיו!</p>
@@ -32,8 +30,6 @@
         <span style="font-size: 1.5em; margin-left: 10px;">🎶</span>
         העלה את הפוסט הראשון שלך
         <span style="font-size: 1.5em; margin-right: 10px;">⬆️</span>
-
-
     </div>
     }
     @else{
@@ -43,7 +39,6 @@
     <div class="post-card">
 
         <header class="post-header">
-
             <img class="avatar" [src]="fileUtils.getImageUrl(post.user?.imageProfilePath)" alt="avatar">
 
             <div class="user-info">
@@ -74,26 +69,20 @@
 
                 </div>
             </div>
-
         </header>
 
         <div class="post-body">
-
             <h3 class="post-title">{{post.title}}</h3>
             <p class="post-content">{{post.content}}</p>
 
             <div class="post-media">
-
                 <div *ngFor="let image of post.imagesBase64" class="image-container">
                     <img [src]="fileUtils.getImageUrl(image)" class="post-image">
                 </div>
 
-                <audio *ngIf="post.audioPath" controls [src]="getSafeMediaUrl('audio/' + post.audioPath)">
-                </audio>
+                <audio *ngIf="post.audioPath" controls [src]="getSafeMediaUrl('audio/' + post.audioPath)"></audio>
 
-                <video *ngIf="post.videoPath" controls [src]="getSafeMediaUrl('video/' + post.videoPath)">
-                </video>
-
+                <video *ngIf="post.videoPath" controls [src]="getSafeMediaUrl('video/' + post.videoPath)"></video>
             </div>
         </div>
 
@@ -106,14 +95,29 @@
 
         <hr>
 
+        <!-- ----------------------------------------------------- -->
+        <!--           🔽 כאן הכנסתי את מערך התגובות 🔽            -->
+        <!-- ----------------------------------------------------- -->
+
+        <!-- כפתור צפייה בתגובות -->
+       <button class="view-comments-btn" (click)="toggleComments(post.id!)">
+    {{ showComments[post.id!] ? 'סגור תגובות' : 'צפייה בתגובות' }}
+</button>
+
+<!-- קומפוננטת תגובות עם אנימציית פתיחה -->
+<div class="comments-wrapper" [class.open]="showComments[post.id!]">
+    @if (showComments[post.id!]) {
+        <app-comment [postId]="post.id!"></app-comment>
+    }
+</div>
+
+        <!-- ----------------------------------------------------- -->
+
     </div>
 
     }
 
-
     }
-    <br>
-    <br>
-    <br>
+    <br><br><br>
 
 </div>

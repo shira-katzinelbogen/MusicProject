@@ -1,4 +1,4 @@
-import { Component, HostListener } from '@angular/core';
+import { Component, HostListener, Input } from '@angular/core';
 import { CommentService } from '../Services/comment.service';
 
 @Component({
@@ -9,9 +9,9 @@ import { CommentService } from '../Services/comment.service';
   styleUrl: './comment.component.css'
 })
 export class CommentComponent {
+  @Input() postId!: number;  // <-- נקבל את ה-ID מהקומפוננטה של הפוסט
 
    comments: any[] = [];
-  postId: number = 1;
   page: number = 0;
   size: number = 10;
   totalPages: number = 0;
