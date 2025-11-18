@@ -10,6 +10,7 @@ import Post from '../../../Models/Post';
 import SheetMusic from '../../../Models/SheetMusic';
 import { PostService } from '../../../Services/post.service';
 import { SheetMusicService } from '../../../Services/sheetmusic.service';
+import { UserStateService } from '../../../Services/user-state.service';
 
 // // ממשק לדוגמה לנתוני הפרופיל 
 // interface Profile {
@@ -44,7 +45,8 @@ export class UserProfileComponent {
   isCurrentUserProfile: boolean = false; // שולט בהצגת כפתור Edit
   isFollowing: boolean = false; // שולט בטקסט של כפתור Follow
   posts: Post[] | undefined;
-  sheets: SheetMusic | undefined;
+  sheets: SheetMusic[] | undefined;
+  currentUserId: number | null = null;
 
 
   constructor(
@@ -53,10 +55,14 @@ export class UserProfileComponent {
     private _usersService: UsersService,
     private _postService: PostService,
       private _sheetMusicService: SheetMusicService,
-    public fileUtilsService: FileUtilsService
+    public fileUtilsService: FileUtilsService,
+    private userStateService: UserStateService 
   ) { }
 
   ngOnInit(): void {
+  const currentUser = this.userStateService.getCurrentUserValue();
+  this.currentUserId = currentUser?.id || Number(localStorage.getItem('userId')) || null;
+
     this.route.paramMap.subscribe(params => {
       this.profileId = Number(params.get('id'));
       if (this.profileId) {
@@ -92,7 +98,7 @@ export class UserProfileComponent {
   loadSheets(userId: number): void {
     this._sheetMusicService.getSheetMusicsByUserId(userId).subscribe({
       next: (res) => {
-        this.posts = res;
+        this.sheets  = res;
       },
       error: (err) => {
         console.error('Error loading profile:', err);
@@ -105,21 +111,72 @@ export class UserProfileComponent {
     this.router.navigate(['/musician-finder']);
   }
 
-  editProfile(): void {
-    console.log('Editing profile...');
-    // לוגיקה לעריכת פרופיל
-  }
 
   sendMessage(): void {
     console.log(`Sending message to ${this.profileData?.name}`);
     // לוגיקה לשליחת הודעה
   }
 
-  followUser(): void {
-    this.isFollowing = !this.isFollowing;
-    console.log(`Follow status changed to: ${this.isFollowing}`);
-    // לוגיקה לשליחת בקשת Follow לשרת
-  }
+  // פותח חלון עריכת פרופיל
+openEditProfileModal(): void {
+  // כאן תוכלי לקרוא ל־SignUp modal שלך עם prefill של הנתונים
+  this.showEditProfileModal = true;
+}
+
+// משתנים לחלונית
+showEditProfileModal: boolean = false;
+
+// פונקציה ל־Sign Out (שנמצא אצלך כבר ב־ProfileMiniAvatarComponent)
+handleSignOut(): void {
+  // אם את משתמשת ב־UserService/UsersService
+  this._usersService.signOut().subscribe({
+    next: () => {
+      localStorage.removeItem('userId'); // נקה את ה־localStorage
+      this.router.navigate(['/home']);
+    },
+    error: () => {
+      localStorage.removeItem('userId');
+      this.router.navigate(['/home']);
+    }
+  });
+}
+
+
+
+  signOut(): void {
+//     // נניח ש-usersService.signOut הוא ה-LoginService.signOut ששלחת
+     this._usersService.signOut().subscribe({
+      next: () => {
+//         this.userStateService.clearUser(); // ניקוי המשתמש מהסטייט
+//         this.router.navigate(['/home']); // ניווט לדף הבית
+      },
+      error: (err) => {
+       console.error('Sign out error:', err);
+//         // בדרך כלל מנקים בכל מקרה
+       this.userStateService.clearUser(); 
+       this.router.navigate(['/home']); 
+       }
+   });
+  }
+
+ editProfile(): void {
+    if (this.isCurrentUserProfile) {
+      console.log('Opening profile edit modal...');
+      
+//       // אם קיים שירות מודל: this.modalService.openEditProfileModal(this.profileData);
+//       
+//       // ⚠️ ניתוב זמני: מנווט לעמוד עריכה עם מזהה הפרופיל
+//       this.router.navigate(['/edit-profile', this.profileId]); 
+   }
+  }
+
+followUser(): void {
+    if (this.isCurrentUserProfile || !this.currentUserId) return;
+    this.isFollowing = !this.isFollowing;
+    console.log(`Follow status changed to: ${this.isFollowing}`);
+    // לוגיקה לשליחת בקשת Follow לשרת
+  }
+
 
 
 }

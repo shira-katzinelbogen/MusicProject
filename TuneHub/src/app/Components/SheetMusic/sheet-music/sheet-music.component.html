@@ -1,1 +1,19 @@
-<p>sheet-music works!</p>
+<div *ngIf="sheet">
+  <h2>{{ sheet.name }}</h2>
+  <p>Category: {{ sheet.category?.name }}</p>
+  <p>Level: {{ sheet.level }}</p>
+
+  <div *ngIf="pdfUrl; else noPreview">
+    <iframe
+      [src]="pdfUrl"
+      width="100%"
+      height="600px"
+      style="border: 1px solid #ccc;"
+      title="PDF Preview of {{ sheet.name }}"
+    ></iframe>
+  </div>
+
+  <ng-template #noPreview>
+    <p>No preview available</p>
+  </ng-template>
+</div>

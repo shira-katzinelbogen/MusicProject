@@ -19,105 +19,89 @@
     </header>
 
     @if(posts.length===0){
-    <p class="no-posts">אין פוסטים כרגע</p>
-    }
+        <div class="empty-posts-container">
+            <p class="empty-message">עדיין לא פורסמו פוסטים. התחל לשתף את המוזיקה שלך עכשיו!</p>
 
-    @if(posts.length===0){
-    <div class="empty-posts-container">
-        <p class="empty-message">עדיין לא פורסמו פוסטים. התחל לשתף את המוזיקה שלך עכשיו!</p>
-
-        <button class="upload-post-button" routerLink="/post">...</button>
-        <span style="font-size: 1.5em; margin-left: 10px;">🎶</span>
-        העלה את הפוסט הראשון שלך
-        <span style="font-size: 1.5em; margin-right: 10px;">⬆️</span>
-    </div>
+            <button class="upload-post-button" routerLink="/post">...</button>
+            <span style="font-size: 1.5em; margin-left: 10px;">🎶</span>
+            העלה את הפוסט הראשון שלך
+            <span style="font-size: 1.5em; margin-right: 10px;">⬆️</span>
+        </div>
     }
     @else{
 
-    @for(post of posts; track $index){
+        @for(post of posts; track $index){
 
-    <div class="post-card">
+            <div class="post-card">
 
-        <header class="post-header">
-            <img class="avatar" [src]="fileUtils.getImageUrl(post.user?.imageProfilePath)" alt="avatar">
+                <header class="post-header">
+                    <img class="avatar" [src]="fileUtils.getImageUrl(post.user?.imageProfilePath)" alt="avatar">
 
-            <div class="user-info">
-                <span class="username">{{post.user?.name}}</span>
-                <span class="date">{{post.dateUploaded | date:'short'}}</span>
-            </div>
+                    <div class="user-info">
+                        <span class="username">{{post.user?.name}}</span>
+                        <span class="date">{{post.dateUploaded | date:'short'}}</span>
+                    </div>
 
-            <!-- כפתור דיווח למשתמש רגיל -->
-            <button *ngIf="!isAdmin" class="action-btn report-btn" (click)="onReportPost(post.id!)">
-                <mat-icon>report</mat-icon> דווח
-            </button>
-
-            <!-- כפתורי אדמין -->
-            <div *ngIf="isAdmin" class="post-actions-wrapper">
-                <button class="action-btn more-actions-btn" (click)="toggleAdminActions(post.id!)">
-                    <mat-icon>more_vert</mat-icon>
-                </button>
-
-                <div *ngIf="showAdminActions[post.id!]" class="admin-actions-dropdown">
-
-                    <button class="action-btn delete-btn" (click)="onDeletePost(post.id!)">
-                        <mat-icon>delete</mat-icon> מחיקה
+                    <button *ngIf="!isAdmin" class="action-btn report-btn" (click)="onReportPost(post.id!)">
+                        <mat-icon>report</mat-icon> דווח
                     </button>
 
-                    <button class="action-btn report-btn" (click)="onReportPost(post.id!)">
-                        <mat-icon>report</mat-icon> דיווח
-                    </button>
+                    <div *ngIf="isAdmin" class="post-actions-wrapper">
+                        <button class="action-btn more-actions-btn" (click)="toggleAdminActions(post.id!)">
+                            <mat-icon>more_vert</mat-icon>
+                        </button>
 
+                        <div *ngIf="showAdminActions[post.id!]" class="admin-actions-dropdown">
+                            <button class="action-btn delete-btn" (click)="onDeletePost(post.id!)">
+                                <mat-icon>delete</mat-icon> מחיקה
+                            </button>
+
+                            <button class="action-btn report-btn" (click)="onReportPost(post.id!)">
+                                <mat-icon>report</mat-icon> דיווח
+                            </button>
+                        </div>
+                    </div>
+                </header>
+
+                <div class="post-body">
+                    <h3 class="post-title">{{post.title}}</h3>
+                    <p class="post-content">{{post.content}}</p>
+
+                    <div class="post-media">
+                        <div *ngFor="let image of post.imagesBase64" class="image-container">
+                            <img [src]="fileUtils.getImageUrl(image)" class="post-image">
+                        </div>
+
+                        <audio *ngIf="post.audioPath" controls [src]="getSafeMediaUrl('audio/' + post.audioPath)"></audio>
+
+                        <video *ngIf="post.videoPath" controls [src]="getSafeMediaUrl('video/' + post.videoPath)"></video>
+                    </div>
                 </div>
-            </div>
-        </header>
 
-        <div class="post-body">
-            <h3 class="post-title">{{post.title}}</h3>
-            <p class="post-content">{{post.content}}</p>
+                <footer class="post-footer">
+                    <div class="stats">
+                        <span>❤️ {{post.hearts}}</span>
+                        <span>👍 {{post.likes}}</span>
+                    </div>
+                </footer>
 
-            <div class="post-media">
-                <div *ngFor="let image of post.imagesBase64" class="image-container">
-                    <img [src]="fileUtils.getImageUrl(image)" class="post-image">
-                </div>
+                <hr>
 
-                <audio *ngIf="post.audioPath" controls [src]="getSafeMediaUrl('audio/' + post.audioPath)"></audio>
-
-                <video *ngIf="post.videoPath" controls [src]="getSafeMediaUrl('video/' + post.videoPath)"></video>
-            </div>
-        </div>
-
-        <footer class="post-footer">
-            <div class="stats">
-                <span>❤️ {{post.hearts}}</span>
-                <span>👍 {{post.likes}}</span>
-            </div>
-        </footer>
-
-        <hr>
-
-        <!-- ----------------------------------------------------- -->
-        <!--           🔽 כאן הכנסתי את מערך התגובות 🔽            -->
-        <!-- ----------------------------------------------------- -->
-
-        <!-- כפתור צפייה בתגובות -->
-       <button class="view-comments-btn" (click)="toggleComments(post.id!)">
+              <div class="comments-actions-row">
+                      <button class="view-comments-btn" (click)="toggleComments(post.id!)">
     {{ showComments[post.id!] ? 'סגור תגובות' : 'צפייה בתגובות' }}
-</button>
+  </button>
+                                <button class="add-comment-page-btn" (click)="navigateToAddComment(post.id!)">
+                                הוסף תגובה <mat-icon>add_comment</mat-icon>
+                            </button>
+                        </div>      
 
-<!-- קומפוננטת תגובות עם אנימציית פתיחה -->
-<div class="comments-wrapper" [class.open]="showComments[post.id!]">
-    @if (showComments[post.id!]) {
-        <app-comment [postId]="post.id!"></app-comment>
-    }
+               <div class="comments-wrapper" *ngIf="showComments[post.id!]" [class.open]="showComments[post.id!]">
+    <app-comment [postId]="post.id!"></app-comment>
 </div>
 
-        <!-- ----------------------------------------------------- -->
-
-    </div>
-
-    }
-
+            </div>
+        }
     }
     <br><br><br>
-
 </div>

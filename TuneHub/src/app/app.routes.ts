@@ -23,6 +23,7 @@ import { CommunityGroupsComponent } from './Components/Community/community-group
 import { ChatMeesageComponent } from './Components/Chat/chat-meesage/chat-meesage.component';
 import { SheetMusicComponent } from './Components/SheetMusic/sheet-music/sheet-music.component';
 import { CommentComponent } from './comment/comment.component';
+import { AddCommentComponent } from './add-comment/add-comment.component';
 
 
 
@@ -42,6 +43,8 @@ export const routes: Routes = [
 
   //Comments
   { path: 'comment', component: CommentComponent },
+  { path: 'add-comment/:postId', component: AddCommentComponent },
+  {path: 'add-comment', component: AddCommentComponent },
   // Shared
   { path: 'sidebar', component: SidebarComponent },
   { path: 'home-page', component: HomePageComponent },
@@ -49,6 +52,7 @@ export const routes: Routes = [
   // Sheet Music
   { path: 'sheets-music', component: SheetsMusicComponent },
   { path: 'sheet-music/:id', component: SheetMusicComponent },
+  {path: 'sheet-music', component: SheetMusicComponent },
 
   { path: 'teacher-list', component: TeacherListComponent },
   { path: 'challenge-card', component: ChallengeCardComponent },

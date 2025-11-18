@@ -106,6 +106,32 @@
     
   </div>
 
+  <div class="action-buttons">
+    
+    @if (isCurrentUserProfile) {
+        <button class="edit-btn button" (click)="editProfile()">
+            ערוך פרופיל
+            <mat-icon>edit</mat-icon>
+        </button>
+
+        <button class="signout-btn button" (click)="signOut()">
+            התנתק
+            <mat-icon>logout</mat-icon>
+        </button>
+
+    } @else {
+        <button 
+            class="button follow-btn" 
+            [class.unfollow]="isFollowing"
+            [disabled]="!currentUserId" (click)="followUser()">
+            {{ isFollowing ? 'הפסק לעקוב' : 'עקוב' }}
+            <mat-icon>{{ isFollowing ? 'person_remove' : 'person_add' }}</mat-icon>
+        </button>
+
+    }
+    
+    </div>
+
   <div *ngIf="activeTab === 'sheets'">
     <!-- כאן יוצגו תווי המוזיקה -->
   </div>

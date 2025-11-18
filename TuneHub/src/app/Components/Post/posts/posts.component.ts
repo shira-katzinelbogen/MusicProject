@@ -9,19 +9,21 @@ import { PostService } from '../../../Services/post.service';
 import Post from '../../../Models/Post';
 import { FileUtilsService } from '../../../Services/fileutils.service';
 import { UserStateService } from '../../../Services/user-state.service';
+import { CommentService } from '../../../Services/comment.service';
 import { ERole } from '../../../Models/Users';
+import { FormsModule } from '@angular/forms';
+import { AddCommentComponent } from '../../../add-comment/add-comment.component';
 
 @Component({
   selector: 'app-posts',
   standalone: true,
-  imports: [RouterModule, MatIconModule, CommonModule,CommentComponent],
+  imports: [RouterModule, MatIconModule, CommonModule,CommentComponent,FormsModule],
   templateUrl: './posts.component.html',
   styleUrl: './posts.component.css'
 })
 export class PostsComponent implements OnInit {
   showComments: { [key: number]: boolean } = {};
   posts: Post[] = [];
-  newCommentTexts: { [key: number]: string } = {};
 
   // רולים של המשתמש שמחובר
   currentUserRoles: string[] = [];
@@ -34,12 +36,15 @@ export class PostsComponent implements OnInit {
     private _postService: PostService,
     private sanitizer: DomSanitizer,
     public fileUtils: FileUtilsService,
-    private userState: UserStateService
+    private userState: UserStateService,
+    private commentService: CommentService    
+
   ) { }
 
   ngOnInit(): void {
     this.loadCurrentUserRoles();
     this.loadPostsFromService();
+
   }
 
   // ----------------------------------------------------------------
@@ -71,9 +76,7 @@ export class PostsComponent implements OnInit {
       next: (posts) => {
         this.posts = posts;
 
-        posts.forEach(post => {
-          this.newCommentTexts[post.id!] = '';
-        });
+        
       },
       error: (err) => console.error("שגיאה בטעינת פוסטים:", err)
     });
@@ -121,5 +124,33 @@ export class PostsComponent implements OnInit {
   toggleComments(postId: number) {
   this.showComments[postId] = !this.showComments[postId];
 }
+
+// ----------------------------------------------------------------
+  navigateToAddComment(postId: number): void {
+    // ננווט לעמוד /add-comment/ID_פוסט
+    this.router.navigate(['/add-comment', postId]);
+  }
+
+
+
+  
+// uploadComment(postId: number): void {
+//   const content = this.newCommentTexts[postId]?.trim();
+//   if (!content) return;
+
+//   const currentUser = this.userState.getCurrentUserValue();
+//   if (!currentUser?.id) return;
+
+//   const dto = { content, postId };
+
+//   this.commentService.uploadComment(dto, currentUser.id)
+//     .subscribe({
+//       next: () => {
+//         this.newCommentTexts[postId] = '';
+//       },
+//       error: (err) => console.error('שגיאה בהוספת תגובה:', err)
+//     });
+// }
+
 
 }
