@@ -1,17 +1,17 @@
-import { Component, HostListener } from '@angular/core';
+import { Component, HostListener, Input } from '@angular/core';
 import { CommentService } from '../Services/comment.service';
-import { CommonModule } from '@angular/common';
+import { log } from 'console';
 @Component({
   selector: 'app-comment',
-   standalone:true,
-  imports: [CommonModule],
+  imports: [],
+  standalone: true, 
   templateUrl: './comment.component.html',
   styleUrl: './comment.component.css'
 })
 export class CommentComponent {
+  @Input() postId!: number;  // <-- נקבל את ה-ID מהקומפוננטה של הפוסט
 
    comments: any[] = [];
-  postId: number = 1;
   page: number = 0;
   size: number = 10;
   totalPages: number = 0;
@@ -21,21 +21,42 @@ export class CommentComponent {
 
   ngOnInit(): void {
     this.loadComments();
+  console.log('Post ID:', this.postId);
+
   }
 
-  loadComments(): void {
-    if (this.loading || this.page >= this.totalPages) return;
-    this.loading = true;
+  ngOnChanges(): void {
+  if (this.postId) {
+    this.loadComments();
+  }
+}
 
-    this.commentService.getCommentsPaged(this.postId, this.page, this.size)
-      .subscribe(response => {
+ loadComments(): void {
+   if (this.loading) return;  // אל תבדוק totalPages עדיין
+  this.loading = true;
+
+
+  this.commentService.getCommentsPaged(this.postId, this.page, this.size)
+    .subscribe({
+      next: response => {
+      console.log('API Response:', response);  // ← בדיקה כאן
+
         // הוספה למעלה כדי שהחדשות ביותר יהיו ראשונות
         this.comments = [...response.comments, ...this.comments];
+                console.log(this.comments);
+                      console.log('API Response:', response);  // ← בדיקה כאן
+
+
         this.totalPages = response.totalPages;
         this.page++;
         this.loading = false;
-      }, () => this.loading = false);
-  }
+      },
+      //error: () => this.loading = false
+          error: err => console.error('API Error:', err)
+
+    });
+}
+
 
   //לטעינה בגלילה למטה
    @HostListener("window:scroll", [])

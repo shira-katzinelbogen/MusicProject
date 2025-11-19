@@ -1,0 +1,121 @@
+/* Container */
+.add-comment-page-container {
+  background-color: #111827;
+  color: #F9FAFB;
+  max-width: 550px;
+  margin: 40px auto;
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0 0 12px rgba(0,0,0,0.3);
+}
+
+/* Header */
+.header-section {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+
+.header-section h2 {
+  font-size: 1.6rem;
+  color: #E5E7EB;
+}
+
+.back-btn {
+  background-color: #1F2937;
+  color: #F9FAFB;
+  border: none;
+  border-radius: 8px;
+  padding: 6px 12px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  transition: 0.3s;
+}
+
+.back-btn:hover {
+  background-color: #374151;
+}
+
+/* Form */
+.comment-form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+/* Textarea */
+.comment-form label {
+  font-weight: bold;
+  color: #9CA3AF;
+  margin-bottom: 6px;
+  display: block;
+}
+
+.comment-form textarea {
+  width: 100%;
+  padding: 12px;
+  background-color: #1F2937;
+  border: 1px solid #4B5563;
+  border-radius: 8px;
+  color: #F9FAFB;
+  resize: vertical;
+  font-size: 0.95rem;
+  box-sizing: border-box;
+  transition: 0.3s;
+}
+
+.comment-form textarea:focus {
+  outline: none;
+  border-color: #60A5FA;
+  background-color: #111827;
+}
+
+/* Submit Button */
+.submit-btn {
+  background-color: #2563EB;
+  color: #F9FAFB;
+  border: none;
+  padding: 10px 16px;
+  font-weight: bold;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  transition: 0.3s;
+}
+
+.submit-btn:hover {
+  background-color: #3B82F6;
+}
+
+.submit-btn:disabled {
+  background-color: #374151;
+  cursor: not-allowed;
+}
+
+/* Spinner icon */
+.spinner {
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* Status Messages */
+.success-message {
+  color: lightgreen;
+  font-weight: bold;
+}
+
+.error-message {
+  color: salmon;
+  font-weight: bold;
+}
