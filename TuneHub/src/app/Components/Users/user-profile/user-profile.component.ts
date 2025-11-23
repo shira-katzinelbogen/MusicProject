@@ -1,182 +1,182 @@
-import { Component } from '@angular/core';
-import { OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import Users, { Profile } from '../../../Models/Users';
-import { MatIconModule } from '@angular/material/icon';
 import { CommonModule } from '@angular/common';
+import { MatIconModule } from '@angular/material/icon';
+import { MatButtonModule } from '@angular/material/button';
+import { PostsComponent } from '../../Post/posts/posts.component';
+import { SheetsMusicComponent } from '../../SheetMusic/sheets-music/sheets-music.component';
 import { UsersService } from '../../../Services/users.service';
 import { FileUtilsService } from '../../../Services/fileutils.service';
-import Post from '../../../Models/Post';
-import SheetMusic from '../../../Models/SheetMusic';
 import { PostService } from '../../../Services/post.service';
 import { SheetMusicService } from '../../../Services/sheetmusic.service';
-import { UserStateService } from '../../../Services/user-state.service';
-
-// // ממשק לדוגמה לנתוני הפרופיל 
-// interface Profile {
-//   id: number;
-//   name: string;
-//   handle: string;
-//   city: string;
-//   country: string;
-//   website?: string;
-//   coverImagePath: string ;
-//   imageProfilePath: string;
-//   // ... נתונים נוספים
-// }
+import { UserStateService, UserProfile } from '../../../Services/user-state.service';
+import Users from '../../../Models/Users';
+import Post from '../../../Models/Post';
+import SheetMusic from '../../../Models/SheetMusic';
+import { log } from 'console';
 
 @Component({
   selector: 'app-user-profile',
-  imports: [
-    CommonModule,  // <- חייב להיות כאן בשביל *ngIf ו-*ngFor
-    MatIconModule, // אם את משתמשת ב-mat-icon
-  ],
+  standalone: true,
+  imports: [CommonModule, MatIconModule, MatButtonModule, PostsComponent, SheetsMusicComponent ],
   templateUrl: './user-profile.component.html',
-  styleUrl: './user-profile.component.css'
+  styleUrls: ['./user-profile.component.css']
 })
-export class UserProfileComponent {
-
-
+export class UserProfileComponent implements OnInit {
 
   activeTab: string = 'posts';
-
   profileId: number | null = null;
   profileData: Users | null = null;
-  isCurrentUserProfile: boolean = false; // שולט בהצגת כפתור Edit
-  isFollowing: boolean = false; // שולט בטקסט של כפתור Follow
+  isCurrentUserProfile: boolean = false; 
+  isFollowing: boolean = false; 
   posts: Post[] | undefined;
   sheets: SheetMusic[] | undefined;
-  currentUserId: number | null = null;
-
 
   constructor(
     private route: ActivatedRoute,
     private router: Router,
     private _usersService: UsersService,
     private _postService: PostService,
-      private _sheetMusicService: SheetMusicService,
+    private _sheetMusicService: SheetMusicService,
     public fileUtilsService: FileUtilsService,
-    private userStateService: UserStateService 
-  ) { }
+    private userStateService: UserStateService
+  ) {}
 
-  ngOnInit(): void {
-  const currentUser = this.userStateService.getCurrentUserValue();
-  this.currentUserId = currentUser?.id || Number(localStorage.getItem('userId')) || null;
+ ngOnInit(): void {
+    this.route.paramMap.subscribe(params => {
+      this.profileId = Number(params.get('id'));
 
-    this.route.paramMap.subscribe(params => {
-      this.profileId = Number(params.get('id'));
-      if (this.profileId) {
-        this.loadProfileData(this.profileId);
-      }
-    });
-  }
+      if (this.profileId) {
+        this.loadProfileData(this.profileId);
+
+        // 👈 טען את הנתונים הראשוניים (לשונית 'posts' כברירת מחדל)
+        this.setActiveTab(this.activeTab); // activeTab ברירת מחדל הוא 'posts'
+      }
+    });
+  }
 
   loadProfileData(id: number): void {
+      console.log('Clicked edit button!');
+
     this._usersService.getUserById(id).subscribe({
       next: (data) => {
         this.profileData = data;
-        this.isCurrentUserProfile = (id === Number(localStorage.getItem('userId')));
+        const currentUser: UserProfile | null = this.userStateService.getCurrentUserValue();
+        this.isCurrentUserProfile = currentUser ? id === Number(currentUser.id) : false;
+         console.log('profileData:', this.profileData);
+      console.log('isCurrentUserProfile:', this.isCurrentUserProfile);
       },
-      error: (err) => {
-        console.error('Error loading profile:', err);
-      }
+      error: (err) => console.error('Error loading profile:', err)
     });
   }
+// בקובץ user-profile.component.ts
 
-  loadPosts(userId: number): void {
-    this._postService.getPostsByUserId(userId).subscribe({
-      next: (res) => {
-        this.posts = res;
-      },
-      error: (err) => {
-        console.error('Error loading profile:', err);
-      }
-    });
-  }
 
+loadPosts(userId: number): void {
+  this._postService.getPostsByUserId(userId).subscribe({
+    next: (res: Post[]) => { 
+      this.posts = res;
+      console.log('Posts loaded (Count):', this.posts.length); // 💡 ודא שהלוג הזה מציג 1
+      
+      // (הקאונטר מתעדכן אוטומטית כי this.posts השתנה)
+    },
+    error: (err) => {
+      console.error('Error loading posts:', err);
+      this.posts = []; // אפס אם יש שגיאה כדי שהקאונטר יציג 0
+    }
+  });
+}
 
   loadSheets(userId: number): void {
     this._sheetMusicService.getSheetMusicsByUserId(userId).subscribe({
-      next: (res) => {
-        this.sheets  = res;
-      },
-      error: (err) => {
-        console.error('Error loading profile:', err);
-      }
+      next: (res) => this.sheets = res,
+      error: (err) => console.error('Error loading sheets:', err)
     });
   }
-  
-  // פונקציות פעולה
-  goBack(): void {
-    this.router.navigate(['/musician-finder']);
-  }
 
+  goBack(): void {
+    this.router.navigate(['/musicians']);
+  }
 
   sendMessage(): void {
     console.log(`Sending message to ${this.profileData?.name}`);
-    // לוגיקה לשליחת הודעה
   }
 
-  // פותח חלון עריכת פרופיל
+  // ---------------------------
+  // התנתקות אמיתית
+  // ---------------------------
+  handleSignOut(): void {
+    this._usersService.signOut().subscribe({
+      next: () => {
+        this.userStateService.clearUser();
+        this.router.navigate(['/home']); // ניווט לדף הבית
+      },
+      error: (err) => console.error('Error signing out:', err)
+    });
+  }
+
+  /**
+ * קובע את הלשונית הפעילה וטוען את הנתונים המתאימים.
+ * @param tabName שם הלשונית ('posts', 'sheets', וכו').
+ */
+setActiveTab(tabName: string): void {
+  this.activeTab = tabName;
+  this.posts = undefined; // איפוס הקאונטר של הפוסטים ב-HTML
+  this.sheets = undefined; // איפוס הקאונטר של התווים
+  // אם יש ProfileId, טען את הנתונים הרלוונטיים
+  if (this.profileId) {
+    switch (tabName) {
+      case 'posts':
+        // טוען פוסטים רק אם הלשונית היא 'posts'
+        this.loadPosts(this.profileId);
+        break;
+      case 'sheets':
+        // טוען תווים רק אם הלשונית היא 'sheets'
+        this.loadSheets(this.profileId);
+        break;
+      // ניתן להוסיף כאן לוגיקה לטעינת movies, tracks וכו'
+    }
+  }
+}
+
+
+  // ---------------------------
+  // ניווט לקומפוננטת עריכה
+// ---------------------------
+// ניווט לקומפוננטת עריכה
 openEditProfileModal(): void {
-  // כאן תוכלי לקרוא ל־SignUp modal שלך עם prefill של הנתונים
-  this.showEditProfileModal = true;
+  console.log('Button clicked!');
+  console.log('profileData:', this.profileData); // הלוג הזה חשוב
+
+  const currentUser = this.userStateService.getCurrentUserValue();
+  
+  // 🎯 התיקון: השתמש ב-ID של הקומפוננטה (שנלקח מה-URL)
+  const profileId = this.profileId; 
+
+  if (currentUser && profileId != null) {
+    // המשתמש הנוכחי יכול להיות מחרוזת, לכן משווים בצורה בטוחה
+    const isCurrentUser = profileId === Number(currentUser.id);
+    
+    console.log('isCurrentUser:', isCurrentUser);
+    console.log('profileId (from URL):', profileId);
+    console.log('currentUser.id:', currentUser.id);
+
+    if (isCurrentUser) {
+      console.log('Navigating to edit profile with ID:', profileId);
+      this.router.navigate(['/edit-profil-modal', profileId]);
+    } else {
+      console.warn('Cannot navigate: not current user profile.');
+    }
+  } else {
+    console.warn('Cannot navigate: missing profile ID or current user.');
+  }
 }
 
-// משתנים לחלונית
-showEditProfileModal: boolean = false;
 
-// פונקציה ל־Sign Out (שנמצא אצלך כבר ב־ProfileMiniAvatarComponent)
-handleSignOut(): void {
-  // אם את משתמשת ב־UserService/UsersService
-  this._usersService.signOut().subscribe({
-    next: () => {
-      localStorage.removeItem('userId'); // נקה את ה־localStorage
-      this.router.navigate(['/home']);
-    },
-    error: () => {
-      localStorage.removeItem('userId');
-      this.router.navigate(['/home']);
-    }
-  });
-}
+  followUser(): void {
+    const currentUser = this.userStateService.getCurrentUserValue();
+    if (this.isCurrentUserProfile || !currentUser) return;
 
-
-
-  signOut(): void {
-//     // נניח ש-usersService.signOut הוא ה-LoginService.signOut ששלחת
-     this._usersService.signOut().subscribe({
-      next: () => {
-//         this.userStateService.clearUser(); // ניקוי המשתמש מהסטייט
-//         this.router.navigate(['/home']); // ניווט לדף הבית
-      },
-      error: (err) => {
-       console.error('Sign out error:', err);
-//         // בדרך כלל מנקים בכל מקרה
-       this.userStateService.clearUser(); 
-       this.router.navigate(['/home']); 
-       }
-   });
-  }
-
- editProfile(): void {
-    if (this.isCurrentUserProfile) {
-      console.log('Opening profile edit modal...');
-      
-//       // אם קיים שירות מודל: this.modalService.openEditProfileModal(this.profileData);
-//       
-//       // ⚠️ ניתוב זמני: מנווט לעמוד עריכה עם מזהה הפרופיל
-//       this.router.navigate(['/edit-profile', this.profileId]); 
-   }
-  }
-
-followUser(): void {
-    if (this.isCurrentUserProfile || !this.currentUserId) return;
-    this.isFollowing = !this.isFollowing;
-    console.log(`Follow status changed to: ${this.isFollowing}`);
-    // לוגיקה לשליחת בקשת Follow לשרת
-  }
-
-
-
+    this.isFollowing = !this.isFollowing;
+  }
 }

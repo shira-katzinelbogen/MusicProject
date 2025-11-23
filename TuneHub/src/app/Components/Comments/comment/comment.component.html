@@ -1,0 +1,20 @@
+<div class="comments-container" (scroll)="onScroll($event)">
+  <div *ngFor="let c of comments" class="comment-item">
+    <div class="comment-header">
+<img 
+  class="comment-avatar" 
+  [src]="getProfileImage(c.profile?.imageProfilePath || null)" 
+  alt="avatar"
+/>
+      <span class="comment-username">{{ c.profile.name }}</span>
+    </div>
+
+    <p class="comment-content">{{ c.content }}</p>
+    <small class="comment-date">{{ c.dateUploaded }}</small>
+    <hr>
+  </div>
+
+  <button *ngIf="page < totalPages" (click)="loadComments()">
+    Load More
+  </button>
+</div>

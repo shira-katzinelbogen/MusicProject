@@ -1,0 +1,174 @@
+/* --- Overlay --- */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0,0,0,0.85);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2000;
+}
+
+/* --- Modal Content --- */
+.modal-content {
+  background: #1D2838;
+  border: 1px solid #374151;
+  border-radius: 16px;
+  padding: 30px;
+  width: 450px;
+  max-width: 95%;
+  box-shadow: 0 0 18px rgba(0,0,0,0.45);
+  color: #F9FAFB;
+  position: relative;
+  animation: fadeIn 0.25s ease;
+}
+
+/* Animation */
+@keyframes fadeIn {
+  from { opacity: 0; transform: scale(0.95); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+/* Close Button */
+.close-button {
+  position: absolute;
+  top: 12px;
+  right: 14px;
+  background: none;
+  border: none;
+  color: #a0a0a0;
+  font-size: 22px;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.close-button:hover {
+  color: #fff;
+  transform: scale(1.2);
+}
+
+/* Title */
+.modal-content h2 {
+  text-align: center;
+  margin-bottom: 20px;
+  color: #E5E7EB;
+  font-size: 1.6rem;
+  letter-spacing: 0.5px;
+}
+
+/* --- Upload Image Button --- */
+.upload-container button {
+  width: 100%;
+  background: #1F2937;
+  border: 1px dashed #6B7280;
+  border-radius: 10px;
+  padding: 12px;
+  cursor: pointer;
+  color: #D1D5DB;
+  transition: 0.3s;
+  text-align: center;
+}
+
+.upload-container button:hover {
+  border-color: #60A5FA;
+  background: #374151;
+  color: #F9FAFB;
+}
+
+.uploaded-image-preview {
+  width: 100%;
+  height: 170px;
+  object-fit: cover;
+  border-radius: 10px;
+  margin-bottom: 8px;
+  border: 1px solid #4B5563;
+}
+
+/* --- Input Groups --- */
+.input-group {
+  margin-top: 15px;
+}
+
+.input-group label {
+  color: #9CA3AF;
+  font-size: 0.9rem;
+  margin-bottom: 6px;
+  display: block;
+}
+
+.input-group input,
+.input-group textarea {
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid #4B5563;
+  border-radius: 8px;
+  background: #1F2937;
+  color: #F9FAFB;
+  transition: 0.3s;
+  font-size: 0.95rem;
+}
+
+.input-group textarea {
+  height: 90px;
+  resize: none;
+}
+
+/* Focus */
+.input-group input:focus,
+.input-group textarea:focus {
+  border-color: #60A5FA;
+  background: #111827;
+  outline: none;
+  box-shadow: 0 0 6px rgba(96,165,250,0.4);
+}
+
+/* --- Buttons --- */
+.modal-actions {
+  margin-top: 25px;
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.modal-actions button {
+  flex: 1;
+  padding: 12px 0;
+  font-size: 1rem;
+  font-weight: bold;
+  border-radius: 8px;
+  cursor: pointer;
+  border: none;
+  transition: 0.25s;
+}
+
+.modal-actions button:first-child {
+  background: #2563EB;
+  color: white;
+}
+
+.modal-actions button:first-child:hover:not(:disabled) {
+  background: #3B82F6;
+}
+
+.modal-actions button:first-child:disabled {
+  background: #374151;
+  cursor: not-allowed;
+}
+
+.modal-actions button:last-child {
+  background: #374151;
+  color: #E5E7EB;
+}
+
+.modal-actions button:last-child:hover {
+  background: #4B5563;
+}
+.modal-content {
+  
+  max-height: 85vh;     /* גובה מקסימלי של החלון */
+  overflow-y: auto;     /* גלילה אנכית רק בתוך הטופס */
+  padding-right: 20px;  /* מקום לבר־גלילה שלא יחתוך טקסט */
+}

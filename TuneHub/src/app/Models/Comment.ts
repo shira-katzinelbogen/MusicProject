@@ -8,4 +8,10 @@ export default class Comment {
     post?: Post;
     content?: string;
     dateUploaded?: Date;
+    profile?: {
+        id?: number;
+        name?: string;
+        imageProfilePath?: string | null;
+        roles?: { name: string }[];
+    };
 }

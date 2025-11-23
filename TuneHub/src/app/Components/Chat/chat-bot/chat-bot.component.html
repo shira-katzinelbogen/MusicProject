@@ -1,0 +1,37 @@
+<!-- כפתור צ׳אט עם תמונת אייקון -->
+<div class="chat-toggle" (click)="toggleChat()">
+  <img src="assets/images/chat-ai.webp" alt="צ׳אט" class="chat-icon" />
+</div>
+
+<!-- חלון צ׳אט -->
+<div class="chat-container" [class.open]="isOpen">
+  @if (isOpen) {
+    <div class="chat-header">
+      <span>צ'אט מוזיקה</span>
+      <button class="close-btn" (click)="toggleChat()">✖</button>
+    </div>
+
+    <div class="messages" #messagesContainer>
+      @for (msg of messages; track $index) {
+        <div class="message-row" [ngClass]="msg.sender">
+  <img class="avatar" [src]="msg.avatar" alt="profile" />
+  <div class="message-text">{{ msg.text }}</div>
+</div>
+         
+      } @empty {
+        <div class="system-message">התחל שיחה חדשה.</div>
+      }
+    </div>
+
+    <form (submit)="sendMessage($event)" class="input-area">
+      <input
+        type="text"
+        [(ngModel)]="userInput"
+        name="userInput"
+        placeholder="כתוב הודעה..."
+        autocomplete="off"
+      />
+      <button type="submit">שלח</button>
+    </form>
+  }
+</div>
