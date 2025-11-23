@@ -383,3 +383,17 @@ body {
     /* פאדינג ששומר על ריווח מהצדדים כאשר המסך קטן מ-900px */
     padding: 0 20px; 
 }
+
+
+app-header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 9999;
+}
+
+mat-sidenav-container {
+  transform: none !important;
+}
+

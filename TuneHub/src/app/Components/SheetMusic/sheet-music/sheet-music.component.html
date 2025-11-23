@@ -1,6 +1,6 @@
 <div *ngIf="sheet">
-  <h2>{{ sheet.name }}</h2>
-  <p>Category: {{ sheet.category?.name }}</p>
+  <h2>{{ sheet.title }}</h2>
+  <!-- <p>Category: {{ sheet.category?.name }}</p> -->
   <p>Level: {{ sheet.level }}</p>
 
   <div *ngIf="pdfUrl; else noPreview">
@@ -9,7 +9,7 @@
       width="100%"
       height="600px"
       style="border: 1px solid #ccc;"
-      title="PDF Preview of {{ sheet.name }}"
+      title="PDF Preview of {{ sheet.title }}"
     ></iframe>
   </div>
 

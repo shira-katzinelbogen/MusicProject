@@ -5,25 +5,39 @@
     left: 0;
     width: 100%;
     height: 100%;
-    background-color: rgba(0, 0, 0, 0.75);
+    background-color: rgba(0,0,0,0.75);
     display: flex;
-    justify-content: center;
-    align-items: center;
-    z-index: 1000;
+    justify-content: center;  /* מרכז אופקי */
+    align-items: center;      /* מרכז אנכי */
+    z-index: 999666666669;
+    padding: 0;               /* מסיר רווחים מיותרים */
 }
 
 /* קונטיינר הטופס הראשי */
 .modal-container {
-    background-color: #2c2c2c; /* צבע רקע כהה */
-    color: #ffffff;
+    background-color: #2c2c2c;
+    color: #fff;
     border-radius: 10px;
-    width: 90%;
-    max-width: 600px;
-    padding: 25px;
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
-    /* חשוב לוודא שהתוכן לא חורג */
-    max-height: 90vh; 
+
+    width: auto;          /* רוחב דינמי */
+    max-width: 1000px;    /* מקסימום רוחב */
+    max-height: 90vh;     /* גובה מקסימלי */
     overflow-y: auto;
+
+    display: flex;
+    flex-direction: row;  /* חצי-חצי אופקי */
+    gap: 30px;
+    padding: 25px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.5);
+    margin: 0;            /* אין מרג' פנימי */
+}
+
+/* צד ימין ושמאל */
+.modal-left, .modal-right {
+    flex: 1;                  /* כל צד תופס חצי */
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
 }
 
 /* כותרת וסגירה */
@@ -34,8 +48,6 @@
     margin-bottom: 20px;
     padding-bottom: 10px;
     border-bottom: 1px solid #444;
-    /* כדי שהכפתור יתיישב נכון */
-    flex-shrink: 0;
 }
 
 .modal-header h2 {
@@ -57,21 +69,22 @@
     color: #fff;
 }
 
-/* --- שדות קלט --- */
+/* שדות קלט ושורות */
 .input-row {
     display: flex;
-    gap: 20px;
+    gap: 15px;
+    flex-wrap: wrap;
     margin-bottom: 15px;
 }
 
 .input-group {
-    flex: 1; 
+    flex: 1;
     display: flex;
     flex-direction: column;
 }
 
 .input-group.full-width {
-    flex: 2; 
+    flex: 2;
 }
 
 label {
@@ -80,37 +93,25 @@ label {
     color: #ccc;
 }
 
-input[type="text"], 
-select {
+input, select {
     padding: 10px;
-    border: 1px solid #555;
     border-radius: 5px;
-    background-color: #383838; 
+    border: 1px solid #555;
+    background-color: #383838;
     color: #eee;
     font-size: 1rem;
-    transition: border-color 0.3s;
-    /* איפוס מראה ברירת המחדל של סלקטים בדפדפנים */
-    -webkit-appearance: none;
-    -moz-appearance: none;
-    appearance: none;
 }
 
-input:focus, 
-select:focus {
-    border-color: #007bff; /* צבע הדגשה בהיר יותר */
+input:focus, select:focus {
+    border-color: #007bff;
     outline: none;
 }
 
-/* אזור העלאת קבצים */
-.upload-section {
-    margin-top: 10px;
-    margin-bottom: 20px;
-}
-
+/* PDF drop zone */
 .drop-zone {
     border: 2px dashed #6a6a6a;
     border-radius: 8px;
-    padding: 30px 20px;
+    padding: 40px 20px;
     text-align: center;
     cursor: pointer;
     background-color: #383838;
@@ -118,56 +119,85 @@ select:focus {
 }
 
 .drop-zone:hover {
-    background-color: #444444;
+    background-color: #444;
 }
 
 .drop-icon {
-    font-size: 2rem;
-    margin-bottom: 5px;
+    font-size: 2.5rem;
+    margin-bottom: 10px;
 }
 
-.supported-formats {
-    font-size: 0.8rem;
-    color: #999;
-    margin-top: 5px;
-}
-
-/* --- הודעות שגיאה --- */
-.error-message {
-    color: #ff5555; /* אדום ברור */
-    font-size: 0.85rem;
-    margin-top: 5px;
-    margin-bottom: 0;
-}
-.general-error {
-    text-align: center;
-    padding: 10px;
-    border: 1px solid #ff5555;
-    border-radius: 5px;
-    margin-bottom: 15px;
-}
-
-
-/* --- כפתורי הפעולה (Modal Footer) --- */
-.modal-footer {
+/* כפתור העלאת תמונה */
+.upload-photo {
+    border: 2px dashed #4e408d;
+    border-radius: 15px;
+    width: 120px;
+    height: 120px;
     display: flex;
-    justify-content: flex-end;
-    gap: 10px;
-    padding-top: 15px;
-    border-top: 1px solid #444;
-    flex-shrink: 0;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    position: relative;
+    background-color: #383838;
 }
 
-/* עיצוב כפתור ביטול */
-.cancel-btn {
-    background-color: transparent;
-    border: 1px solid #777;
-    color: #ccc;
+.upload-photo:hover {
+    border-color: #700aff;
+}
+
+.uploaded-image-preview {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 10px;
+}
+
+/* קומבובוקסים עם צ'קבוקס */
+.multi-checkbox-group {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.multi-checkbox-group label {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+/* כפתורי פעולה */
+.button {
+    background-color: #007bff;
+    color: #fff;
     padding: 10px 20px;
     border-radius: 5px;
-    cursor: pointer;
-    transition: background-color 0.2s, color 0.2s;
     font-weight: bold;
+    cursor: pointer;
+    border: none;
+    transition: background-color 0.2s, opacity 0.2s;
+}
+
+.button:hover:not([disabled]) {
+    background-color: #0056b3;
+}
+
+.button[disabled] {
+    background-color: #555;
+    color: #aaa;
+    cursor: not-allowed;
+    opacity: 0.6;
+}
+
+.cancel-btn {
+    background: transparent;
+    border: 1px solid #777;
+    padding: 10px 20px;
+    border-radius: 5px;
+    color: #ccc;
+    font-weight: bold;
+    cursor: pointer;
 }
 
 .cancel-btn:hover {
@@ -175,42 +205,16 @@ select:focus {
     color: #fff;
 }
 
-/* --- עיצוב כפתור השליחה (Upload Sheet) - .button --- */
-.button {
-    background-color: #007bff; /* כחול בולט וברור */
-    color: white;
-    padding: 10px 20px; 
-    border-radius: 5px;
-    cursor: pointer;
-    border: none;
-    font-weight: bold;
-    transition: background-color 0.2s, opacity 0.2s;
-    text-align: center;
+.modal-backdrop{
+    z-index: 555555555555555555555555555555555555555555555555;
 }
 
-.button:hover:not([disabled]) {
-    background-color: #0056b3;
-}
-
-/* --- מצב מושבת (Disabled) - הפתרון לבעיית ה"היעלמות" --- */
-.button[disabled] {
-    background-color: #555; /* צבע אפור כהה */
-    color: #aaa; /* טקסט אפור בהיר */
-    cursor: not-allowed; 
-    opacity: 0.6; /* מושבת אך גלוי */
-}
-
-/* --- התאמה למסכים קטנים --- */
-@media (max-width: 650px) {
-    .modal-container {
-        padding: 15px;
-    }
-    .input-row {
-        flex-direction: column; /* שדות אחד מתחת לשני */
-        gap: 10px;
-    }
-    .input-group,
-    .input-group.full-width {
-        flex: auto;
-    }
+app-upload-sheet-music {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 9555555555555999;
+  /* pointer-events: auto; */
 }

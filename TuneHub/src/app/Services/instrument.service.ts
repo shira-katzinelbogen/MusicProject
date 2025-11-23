@@ -29,6 +29,15 @@ export class InstrumentsService {
         return this._httpClient.get<Instrument[]>(`http://localhost:8080/api/post/postsByUserId/${id}`)
     }
 
+    private apiUrl = 'http://localhost:8080/api/instrument';
+
+  
+
+    // ✅ פונקציה לאחזור כל הכלים
+    getInstruments(): Observable<Instrument[]> {
+        return this._httpClient.get<Instrument[]>(`${this.apiUrl}/instruments`);
+    }
+
 
     //Post
     // uploadPost(post: Post): Observable<Post> {

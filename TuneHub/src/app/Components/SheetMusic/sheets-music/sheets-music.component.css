@@ -469,3 +469,106 @@ body{
   color: gray;
 }
 
+
+
+/* ADDED: Wrapper to control the absolute positioning of both badge groups */
+.badges-wrapper {
+    position: absolute;
+    top: 10px;
+    left: 10px; /* Start on the left */
+    right: 10px; /* Extend to the right */
+    display: flex; /* Use Flexbox to separate left (categories) and right (difficulty) */
+    justify-content: space-between; /* Pushes the left and right elements to the edges */
+    align-items: flex-start;
+    /* pointer-events: none; /* Optional: ensures clicks go through to the image */
+}
+
+/* MODIFIED: Category Group (Left side, stacked) */
+.badge-group {
+    /* Removed absolute positioning */
+    /* position: absolute; */
+    /* top: 10px; */
+    /* left: 10px; */
+    
+    /* NEW: Display items stacked vertically */
+    display: flex; 
+    flex-direction: column; 
+    gap: 6px; 
+}
+
+/* MODIFIED: Difficulty Badge (Right side) */
+.badge.difficulty {
+    /* No need for position: absolute anymore, it's controlled by .badges-wrapper */
+    /* NEW: Ensure it is displayed inline/flex for alignment */
+    display: inline-flex;
+    
+    /* We can keep the styling from before */
+    padding: 4px 10px;
+    border-radius: 8px;
+    align-items: center;
+    gap: 4px;
+    font-weight: 600;
+}
+
+/* BADGES (כלל כללי) */
+.badge {
+  padding: 4px 10px; /* ריפוד זהה ל-difficulty */
+  font-size: 12px; /* גודל פונט זהה ל-difficulty */
+  border-radius: 10px; /* נשאיר 10px או נשנה ל-8px כדי להתאים ל-difficulty */
+  font-weight: 600;
+}
+
+/* difficulty Badge - Reference */
+.badge.difficulty {
+  padding: 4px 10px;
+  border-radius: 8px; /* העדכון לגודל 8px כבר קיים ב-CSS שלך */
+  /* ... (שאר הכללים) ... */
+}
+
+/* MODIFIED: Category Badge */
+.badge.category {
+    /* הכללים הקיימים שמגדירים צבע */
+    background: linear-gradient(90deg, #ffc107, #ff9800);
+    color: #000;
+    
+    /* ***שינוי מרכזי:*** נשתמש בערכים זהים ל-difficulty 
+    (אם כי כנראה שהם כבר יורשים אותם מהכלל הכללי .badge)
+    */
+    padding: 4px 10px; /* ודא שהריפוד זהה */
+    border-radius: 8px; /* גודל פינה זהה */
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+/* ADDED: Wrapper to control the absolute positioning of both badge groups */
+.badges-wrapper {
+    position: absolute;
+    top: 10px;
+    left: 10px; 
+    right: 10px; 
+    display: flex; 
+    justify-content: space-between; 
+    align-items: flex-start;
+}
+
+/* MODIFIED: Category Group (Left side, stacked) */
+.badge-group {
+    display: flex; 
+    flex-direction: column; /* stacking categories vertically */
+    gap: 6px; 
+}
+
+/* MODIFIED: Category Badge - כדי להבטיח התאמה לגודל ה-difficulty */
+.badge.category {
+    background: linear-gradient(90deg, #ffc107, #ff9800);
+    color: #000;
+    /* הכללים האלה מוודאים שגודל הריפוד והפינה זהים */
+    padding: 4px 10px; 
+    border-radius: 8px; 
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}

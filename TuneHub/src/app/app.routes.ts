@@ -24,8 +24,7 @@ import { ChatMeesageComponent } from './Components/Chat/chat-meesage/chat-meesag
 import { SheetMusicComponent } from './Components/SheetMusic/sheet-music/sheet-music.component';
 import { CommentComponent } from './comment/comment.component';
 import { AddCommentComponent } from './add-comment/add-comment.component';
-
-
+import { UploadSheetMusicComponent } from './Components/SheetMusic/upload-sheet-music/upload-sheet-music.component';
 
 export const routes: Routes = [
 
@@ -53,6 +52,8 @@ export const routes: Routes = [
   { path: 'sheets-music', component: SheetsMusicComponent },
   { path: 'sheet-music/:id', component: SheetMusicComponent },
   {path: 'sheet-music', component: SheetMusicComponent },
+  {path:'upload-sheet-music',component: UploadSheetMusicComponent},
+
 
   { path: 'teacher-list', component: TeacherListComponent },
   { path: 'challenge-card', component: ChallengeCardComponent },

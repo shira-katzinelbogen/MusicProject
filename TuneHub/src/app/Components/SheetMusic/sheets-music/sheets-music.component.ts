@@ -1,3 +1,6 @@
+
+
+
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { SheetMusicService } from '../../../Services/sheetmusic.service';
 import SheetMusic from '../../../Models/SheetMusic';
@@ -7,12 +10,13 @@ import { NavigationService } from '../../../Services/navigation.service';
 import { MatIconModule } from '@angular/material/icon';
 import { UploadSheetMusicService } from '../../../Services/uploadsheetmusic.service';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
+import { UploadSheetMusicComponent } from "../upload-sheet-music/upload-sheet-music.component";
 
 
 @Component({
   selector: 'app-sheets-music',
   standalone: true,
-  imports: [MatIconModule],
+  imports: [MatIconModule, UploadSheetMusicComponent],
   changeDetection: ChangeDetectionStrategy.OnPush, // ⬅️ הוסף את זה
   templateUrl: './sheets-music.component.html',
   styleUrl: './sheets-music.component.css'
@@ -92,4 +96,13 @@ export class SheetsMusicComponent implements OnInit {
 
 
   }
+
+  getImageCoverPath(sheet: SheetMusic) {
+    if(sheet.imageCoverName != null){
+      return this.fileUtilsService.getImageUrl(sheet.imageCoverName)
+    }
+    
+      return 'assets/images/sheets_music.webp'
+  }
+
 }

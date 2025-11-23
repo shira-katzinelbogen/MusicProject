@@ -1,9 +1,9 @@
-import  Instrument  from "./Instrument";
-import  sheetMusicCategory  from "./SheetMusicCategory";
-import  Users  from "./Users";
+import Instrument from "./Instrument";
+import sheetMusicCategory from "./SheetMusicCategory";
+import Users from "./Users";
 
 export enum DifficultyLevel {
-    EASY, MEDIUM, HARD
+    BEGINNER, INTERMEDIATE, ADVANCED
 }
 
 
@@ -11,16 +11,16 @@ export enum Scale {
     C, D, E, F, G, A, B,
 
     // SHARP = (#)
-    C_SHARP, D_SHARP, F_SHARP, G_SHARP, A_SHARP,
+    C_MAJOR, D_MAJOR, F_MAJOR, G_MAJOR, A_MAJOR,
 
     // FLAT = (b)
-    D_FLAT, E_FLAT, G_FLAT, A_FLAT, B_FLAT
+    D_MINOR, E_MINOR, G_MINOR, A_MINOR, B_MINOR
 }
 
 
 export default class SheetMusic {
     id?: number;
-    name?: string;
+    title?: string;
     scale?: Scale;
     likes?: number = 0;
     hearts?: number = 0;
@@ -28,7 +28,7 @@ export default class SheetMusic {
     level?: DifficultyLevel;
     user?: Users;
     instruments?: Instrument[]
-    category?: sheetMusicCategory
+    categories?: sheetMusicCategory[]
     usersFavorite?: Users[];
     filePath?: string;
     downloads?: number;
@@ -36,4 +36,8 @@ export default class SheetMusic {
 
     isLiked?: boolean;
     isFavorite?: boolean;
+    imageCoverName?: string;
+    composer?: string;
+    lyricist?: string;
+
 }
