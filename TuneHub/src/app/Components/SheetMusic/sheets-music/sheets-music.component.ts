@@ -48,23 +48,41 @@ export class SheetsMusicComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.loadSheetMusic();
-  }
+        // *** הלוגיקה המתוקנת ***
+        if (this.sheets && this.sheets.length > 0) {
+            // 1. אם רשימה סופקה (מהאב):
+            this.originalSheetMusicList = this.sheets;
+            this.sheetMusicList = [...this.sheets]; 
+            
+            // ✅ תיקון: מזמנים את הפונקציה ומעבירים לה את רשימת המקור
+            this.extractFilterOptions(this.originalSheetMusicList); 
+            
+            this.applyFilters(); // יישום פילטרים ראשוניים
+        } else {
+            // 2. אם לא סופקה רשימה:
+            this.loadSheetMusic();
+            // הערה: applyFilters() ו-extractFilterOptions() יופעלו 
+            // בתוך פונקציית loadSheetMusic לאחר קבלת הנתונים.
+        }
+    }
 
   loadSheetMusic(): void {
-    this._sheetMusicService.getAllSheetMusics().subscribe({
-      next: (data) => {
-        // הנתונים המגיעים מהשרת הם אכן SheetMusic[], אך ה-Enums בפועל הם מחרוזות (string)
-        this.originalSheetMusicList = data;
-        this.sheetMusicList = data; 
-        this.extractFilterOptions(data); 
-        this.cdr.detectChanges();
-      },
-      error: (err) => {
-        console.error('Failed to load sheet music:', err);
-      }
-    });
-  }
+        this._sheetMusicService.getAllSheetMusics().subscribe({
+            next: (data) => {
+                this.originalSheetMusicList = data;
+                this.sheetMusicList = data; 
+
+                // ✅ תיקון: מזמנים את הפונקציה ומעבירים לה את הנתונים מהשרת
+                this.extractFilterOptions(data); 
+
+                this.applyFilters(); // יישום פילטרים ראשוניים
+                this.cdr.detectChanges();
+            },
+            error: (err) => {
+                console.error('Failed to load sheet music:', err);
+            }
+        });
+    }
   
   /**
    * חילוץ אפשרויות הסינון הייחודיות.
