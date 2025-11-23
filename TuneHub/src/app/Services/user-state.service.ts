@@ -3,6 +3,7 @@
 import { Injectable, PLATFORM_ID, inject } from '@angular/core';
 import { isPlatformBrowser } from '@angular/common';
 import { BehaviorSubject, Observable } from 'rxjs';
+import { log } from 'node:console';
 
 export interface UserProfile {
   id: number;
@@ -67,6 +68,8 @@ export class UserStateService {
 
   /** מחזיר את המשתמש הנוכחי באופן סינכרוני */
   getCurrentUserValue(): UserProfile | null {
+    console.log(this.currentUserSubject.getValue());
+    
     return this.currentUserSubject.getValue();
   }
 

@@ -151,6 +151,37 @@
 
 
 
+/* --- כפתורי עריכה והתנתקות בפרופיל --- */
+.action-buttons .edit-btn,
+.action-buttons .signout-btn {
+    padding: 10px 20px;
+    border-radius: 25px; /* עגול כמו Follow/Message */
+    font-weight: bold;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    transition: all 0.2s ease;
+    color: white;
+    border: none;
+}
+
+/* כפתור עריכה */
+.action-buttons .edit-btn {
+    background: linear-gradient(to right, #8a2be2, #4169e1); /* סגנון סגול-כחול */
+}
+
+/* כפתור התנתקות */
+.action-buttons .signout-btn {
+    background-color: #dc3545; /* אדום בולט */
+}
+
+/* אפקט Hover */
+.action-buttons .edit-btn:hover,
+.action-buttons .signout-btn:hover {
+    transform: scale(1.05);
+    box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+}
 
 
 
@@ -500,4 +531,24 @@
     cursor: not-allowed;
     opacity: 0.6;
     transform: none;
+}
+
+button {
+  z-index: 1000;
+  position: relative;
+  pointer-events: auto;
+}
+
+.profile-tabs button {
+  background: transparent;
+  border: none;
+  padding: 10px 15px;
+  cursor: pointer;
+  font-weight: 500;
+  color: #9ca3af;
+}
+
+.profile-tabs button.active {
+  border-bottom: 3px solid #6366f1;
+  color: #fff;
 }

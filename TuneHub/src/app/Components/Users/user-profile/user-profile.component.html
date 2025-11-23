@@ -12,42 +12,52 @@
 
       <!-- Profile Picture with Active Dot -->
       <div class="profile-picture-wrapper">
-        <img [src]="fileUtilsService.getImageUrl(profileData?.imageProfilePath)" alt="Profile Picture"
-          class="profile-image">
-
-
+        <img [src]="fileUtilsService.getImageUrl(profileData?.imageProfilePath)" 
+             alt="Profile Picture" class="profile-image">
         <span class="active-dot"></span>
       </div>
 
       <!-- User Details -->
       <div class="user-details">
-   
         <h2>{{ profileData?.name }}</h2>
-        <!-- <div class="followers-stats">
-          <span class="follow">followers: {{ profileData?.followers?.length }}</span>
-          <span class="follow">following: {{ profileData?.followers?.length || 0 }}</span>
-        </div> -->
-
         <div class="contact-details">
           <span *ngIf="profileData?.city && profileData?.country" class="location">
             <mat-icon>location_on</mat-icon>
-
             {{ profileData?.city }}, {{ profileData?.country }}
           </span>
           <span *ngIf="profileData?.email" class="website">
             <mat-icon>email</mat-icon>
-
             <a [href]="profileData?.email" target="_blank">{{ profileData?.email }}</a>
           </span>
         </div>
       </div>
 
       <!-- Action Buttons -->
-      <div class="action-buttons">
-        <!-- <button class="message-btn" (click)="sendMessage()">Message</button> -->
-        <button class="button" (click)="followUser()">
-          {{ isFollowing ? 'Unfollow' : 'Follow' }}
-        </button>
+      <div class="action-buttons" style="display: flex; gap: 10px; flex-wrap: wrap; margin-top: 10px;">
+
+        <!-- אם זה הפרופיל של המשתמש הנוכחי -->
+      <!-- אם זה הפרופיל של המשתמש הנוכחי -->
+<ng-container *ngIf="profileData && isCurrentUserProfile; else notCurrentUser">
+  <button class="edit-btn" (click)="openEditProfileModal()">
+    <mat-icon>edit</mat-icon>
+    ערוך פרופיל
+  </button>
+
+  <button class="signout-btn" (click)="handleSignOut()">
+    <mat-icon>logout</mat-icon>
+    התנתק
+  </button>
+</ng-container>
+
+
+        <!-- אם זה פרופיל של משתמש אחר -->
+        <ng-template #notCurrentUser>
+          <button mat-raised-button color="accent" (click)="followUser()">
+            <mat-icon>{{ isFollowing ? 'person_remove' : 'person_add' }}</mat-icon>
+            {{ isFollowing ? 'הפסק לעקוב' : 'עקוב' }}
+          </button>
+        </ng-template>
+
       </div>
 
     </div>
@@ -62,9 +72,6 @@
   <!-- Role / Teacher Status -->
   <div class="role-section" *ngIf="profileData?.teacher">
     👨‍🏫 מורה למוזיקה
-    <!-- <div class="students-count" *ngIf="profileData?.">
-      תלמידים: {{ profileData?.studentsCount }}
-    </div> -->
   </div>
 
   <!-- User Description -->
@@ -76,80 +83,45 @@
 
 <!-- Profile Navigation Tabs -->
 <div class="profile-tabs">
-    <button [class.button]="activeTab==='overview'" (click)="activeTab='overview'">
-        <i class="material-icons">person_outline</i> Overview
-    </button>
-    
-    <button [class.button]="activeTab==='tracks'" (click)="activeTab='tracks'">
-        <i class="material-icons">music_note</i> Tracks (0)
-    </button>
+    <button [class.active]="activeTab==='overview'" (click)="setActiveTab('overview')">
+      <i class="material-icons">person_outline</i> Overview
+  </button>
+  
+  <button [class.active]="activeTab==='tracks'" (click)="setActiveTab('tracks')">
+      <i class="material-icons">music_note</i> Tracks (0)
+  </button>
 
-    <button [class.button]="activeTab==='movies'" (click)="activeTab='movies'">
-        <i class="material-icons">videocam</i> Videos (0)
-    </button>
-    
-    <button [class.button]="activeTab==='sheets'" (click)="activeTab='sheets'">
-        <i class="material-icons">description</i> Sheets  ({{profileData?.sheetsMusic?.length}})
-    </button>
-    
-    <button [class.button]="activeTab==='posts'" (click)="activeTab='posts'">
-        <i class="material-icons">chat_bubble_outline</i> Posts ({{profileData?.posts?.length}})
-    </button>
-
-    </div>
-
-
-
+  <button [class.active]="activeTab==='movies'" (click)="setActiveTab('movies')">
+      <i class="material-icons">videocam</i> Videos (0)
+  </button>
+  
+  <button [class.active]="activeTab==='sheets'" (click)="setActiveTab('sheets')">
+      <i class="material-icons">description</i> Sheets ({{ sheets?.length || 0 }})
+  </button>
+  
+  <button [class.active]="activeTab==='posts'" (click)="setActiveTab('posts')">
+      <i class="material-icons">chat_bubble_outline</i> Posts ({{ posts?.length || 0 }})
+  </button>
+</div>
 <div class="tab-content">
 
-  <div *ngIf="activeTab === 'posts'">
-    
-  </div>
+    <div *ngIf="activeTab === 'posts'">
+    <app-posts [postsFromProfile]="posts ?? []"></app-posts>
+  </div>
 
-  <div class="action-buttons">
-    
-    @if (isCurrentUserProfile) {
-        <button class="edit-btn button" (click)="editProfile()">
-            ערוך פרופיל
-            <mat-icon>edit</mat-icon>
-        </button>
+    <div *ngIf="activeTab === 'sheets'">
+    <app-sheets-music [sheets]="sheets ?? []"></app-sheets-music>
+  </div>
 
-        <button class="signout-btn button" (click)="signOut()">
-            התנתק
-            <mat-icon>logout</mat-icon>
-        </button>
+    <div *ngIf="activeTab === 'movies'">
+          </div>
 
-    } @else {
-        <button 
-            class="button follow-btn" 
-            [class.unfollow]="isFollowing"
-            [disabled]="!currentUserId" (click)="followUser()">
-            {{ isFollowing ? 'הפסק לעקוב' : 'עקוב' }}
-            <mat-icon>{{ isFollowing ? 'person_remove' : 'person_add' }}</mat-icon>
-        </button>
+    <div *ngIf="activeTab === 'tracks'">
+          </div>
 
-    }
-    
-    </div>
-
-  <div *ngIf="activeTab === 'sheets'">
-    <!-- כאן יוצגו תווי המוזיקה -->
-  </div>
-
-  <div *ngIf="activeTab === 'movies'">
-    <!-- כאן יוצגו הסרטונים -->
-  </div>
-
-  <div *ngIf="activeTab === 'photos'">
-    <!-- כאן יוצגו תמונות -->
-  </div>
-
-  <div *ngIf="activeTab === 'followers'">
-    <!-- כאן רשימת העוקבים -->
-  </div>
-
-  <div *ngIf="activeTab === 'following'">
-    <!-- כאן רשימת הנעקבים -->
-  </div>
+    <div *ngIf="activeTab === 'overview'">
+          </div>
 
 </div>
+
+

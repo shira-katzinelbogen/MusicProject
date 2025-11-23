@@ -1,0 +1,50 @@
+<div class="modal-overlay" (click)="cancel()">
+    <div class="modal-content" (click)="$event.stopPropagation()" *ngIf="profileData">
+
+    <button class="close-button" (click)="cancel()">×</button>
+    <h2>Edit Profile</h2>
+
+        <form [formGroup]="editForm">
+
+            <div class="upload-container">
+        <input type="file" accept="image/*" hidden #fileInput (change)="onFileSelected($event)" />
+        <button type="button" (click)="fileInput.click()">
+          <img *ngIf="profilePreviewUrl" [src]="profilePreviewUrl" alt="Profile Preview" class="uploaded-image-preview">
+          <span *ngIf="!profilePreviewUrl">{{ selectedFile ? (selectedFile.name + ' | Change') : 'Upload Photo' }}</span>
+        </button>
+      </div>
+
+            <div class="input-group">
+        <label>Full Name</label>
+        <input type="text" formControlName="name" placeholder="Enter full name" />
+      </div>
+
+            <div class="input-group">
+        <label>Email</label>
+        <input type="email" formControlName="email" placeholder="Enter email" />
+      </div>
+
+            <div class="input-group">
+        <label>City</label>
+        <input type="text" formControlName="city" placeholder="City" />
+      </div>
+
+            <div class="input-group">
+        <label>Country</label>
+        <input type="text" formControlName="country" placeholder="Country" />
+      </div>
+
+            <div class="input-group">
+        <label>Description</label>
+        <textarea formControlName="description" placeholder="Write something about yourself"></textarea>
+      </div>
+
+      <div class="modal-actions">
+                <button type="button" (click)="saveChanges()" [disabled]="editForm.invalid">Save</button>
+        <button type="button" (click)="cancel()">Cancel</button>
+      </div>
+
+    </form>
+
+  </div>
+</div>

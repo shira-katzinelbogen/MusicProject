@@ -22,8 +22,10 @@ import { ChallengeCardComponent } from './Components/Community/challenge-card/ch
 import { CommunityGroupsComponent } from './Components/Community/community-groups/community-groups.component';
 import { ChatMeesageComponent } from './Components/Chat/chat-meesage/chat-meesage.component';
 import { SheetMusicComponent } from './Components/SheetMusic/sheet-music/sheet-music.component';
-import { CommentComponent } from './comment/comment.component';
-import { AddCommentComponent } from './add-comment/add-comment.component';
+import { CommentComponent } from './Components/Comments/comment/comment.component';
+import { AddCommentComponent } from './Components/Comments/add-comment/add-comment.component';
+import { ChatBotComponent } from './Components/Chat/chat-bot/chat-bot.component';
+import { EditProfilModalComponent } from './Components/Users/edit-profil-modal/edit-profil-modal.component';
 
 
 
@@ -40,6 +42,11 @@ export const routes: Routes = [
   { path: 'login-window', component: LoginWindowComponent },
   { path: 'musicians', component: MusiciansComponent },
   { path: 'user-profile/:id', component: UserProfileComponent },
+  { path: 'edit-profil-modal/:id', component: EditProfilModalComponent }
+,{ path: 'edit-profil-modal', component: EditProfilModalComponent },
+
+
+
 
   //Comments
   { path: 'comment', component: CommentComponent },
@@ -53,12 +60,11 @@ export const routes: Routes = [
   { path: 'sheets-music', component: SheetsMusicComponent },
   { path: 'sheet-music/:id', component: SheetMusicComponent },
   {path: 'sheet-music', component: SheetMusicComponent },
-
+{path:'chat-bot',component:ChatBotComponent}, 
   { path: 'teacher-list', component: TeacherListComponent },
   { path: 'challenge-card', component: ChallengeCardComponent },
   { path: 'community-group', component: CommunityGroupsComponent },
   { path: 'chat-meesage', component: ChatMeesageComponent },
-
   // Wildcard
   { path: '**', component: HomePageComponent }
 ];

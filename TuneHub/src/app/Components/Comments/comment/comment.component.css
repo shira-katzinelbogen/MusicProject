@@ -1,0 +1,57 @@
+.comments-scroll {
+  max-height: 300px;
+  overflow-y: auto;
+}
+
+/* מוודא שכיתוב התגובה תמיד שחור */
+.comments-container {
+  color: black !important;
+}
+
+/* גם התוכן של כל תגובה */
+.comment-item p,
+.comment-item small {
+  color: black !important;
+}
+
+/* כפתור טעינת עוד */
+.comments-container button {
+  color: black !important;
+  background-color: #e0e0e0;
+}
+
+.comment-item {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 10px;
+  padding: 5px;
+  background-color: #eef5ff;
+  border-radius: 8px;
+}
+
+.comment-header {
+  display: flex;
+  align-items: center;
+  margin-bottom: 5px;
+}
+
+.comment-avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  margin-right: 10px;
+}
+
+.comment-username {
+  font-weight: bold;
+  color: #000;
+}
+
+.comment-content {
+  color: #000;
+}
+
+.comment-date {
+  font-size: 0.8em;
+  color: #555;
+}

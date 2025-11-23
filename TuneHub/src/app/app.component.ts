@@ -7,6 +7,7 @@ import { SidebarComponent } from './Components/Shared/sidebar/sidebar.component'
 import { SidebarService } from './Services/sidebar.service'; 
 import { LoginWindowComponent } from './Components/Users/login-window/login-window.component';
 import { UploadSheetMusicComponent } from "./Components/SheetMusic/upload-sheet-music/upload-sheet-music.component";
+import { ChatBotComponent } from './Components/Chat/chat-bot/chat-bot.component';
 
 @Component({
   selector: 'app-root',
@@ -16,6 +17,7 @@ import { UploadSheetMusicComponent } from "./Components/SheetMusic/upload-sheet-
     MatSidenavModule,
     HeaderComponent,
     FooterComponent,
+    ChatBotComponent,
     SidebarComponent,
     LoginWindowComponent,
     UploadSheetMusicComponent

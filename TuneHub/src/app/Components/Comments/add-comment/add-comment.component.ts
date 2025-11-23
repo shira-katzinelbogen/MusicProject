@@ -3,8 +3,8 @@ import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { MatIconModule } from '@angular/material/icon';
-import { CommentService } from '../Services/comment.service';
-import { UserStateService } from '../Services/user-state.service';
+import { CommentService } from '../../../Services/comment.service';
+import { UserStateService } from '../../../Services/user-state.service';
 
 
 

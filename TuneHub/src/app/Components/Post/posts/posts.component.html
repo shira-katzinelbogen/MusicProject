@@ -18,7 +18,55 @@
         </div>
     </header>
 
-    @if(posts.length===0){
+      <section class="search-bar">
+        <div class="search-input-group">
+            <span class="search-icon">🔍</span>
+            <input type="text" placeholder="Search musicians by name, instrument, or skills..." />
+        </div>
+        <select class="dropdown">
+            <option>All</option>
+        </select>
+        <select class="dropdown">
+            <option>All</option>
+        </select>
+
+        <button class="filters-btn" (click)="toggleFilters()">
+            Filters <span class="arrow-icon">{{ showFilters ? '∧' : '∨' }}</span>
+        </button>
+    </section>
+    @if (showFilters) {
+    <section class="additional-filters">
+        <div class="filter-group">
+            <label>Experience</label>
+            <select class="dropdown">
+                <option>Any Experience</option>
+            </select>
+        </div>
+
+        <div class="filter-group">
+            <label>Rating</label>
+            <select class="dropdown">
+                <option>Any Rating</option>
+            </select>
+        </div>
+
+        <div class="filter-group">
+            <label>Availability</label>
+            <select class="dropdown">
+                <option>Any Availability</option>
+            </select>
+        </div>
+
+        <div class="filter-group">
+            <label>Price Range</label>
+            <select class="dropdown">
+                <option>Any Price</option>
+            </select>
+        </div>
+    </section>
+    }
+
+    @if(displayedPosts.length===0){
         <div class="empty-posts-container">
             <p class="empty-message">עדיין לא פורסמו פוסטים. התחל לשתף את המוזיקה שלך עכשיו!</p>
 
@@ -30,7 +78,7 @@
     }
     @else{
 
-        @for(post of posts; track $index){
+        @for(post of displayedPosts; track $index){
 
             <div class="post-card">
 
@@ -96,7 +144,10 @@
                             </button>
                         </div>      
 
-               <div class="comments-wrapper" *ngIf="showComments[post.id!]" [class.open]="showComments[post.id!]">
+<div class="comments-wrapper" 
+     *ngIf="showComments[post.id!]" 
+     [class.open]="showComments[post.id!]">
+     
     <app-comment [postId]="post.id!"></app-comment>
 </div>
 
