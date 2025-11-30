@@ -5,6 +5,8 @@ import Instrument from '../Models/Instrument';
 import SheetMusicCategory from '../Models/SheetMusicCategory';
 import Users from '../Models/Users';
 import { Observable } from 'rxjs';
+import { SheetMusicResponseAI } from '../Models/SheetMusicResponseAI';
+import SheetMusic from '../Models/SheetMusic';
 
 @Injectable({
   providedIn: 'root'
@@ -12,7 +14,7 @@ import { Observable } from 'rxjs';
 export class SheetMusicService {
   private apiUrl = 'http://localhost:8080/api/sheetMusic';
 
-  constructor(private http: HttpClient) {}
+ // constructor(private http: HttpClient) {}
 
 uploadSheetMusic(data: sheetMusic, file: File): Observable<sheetMusic> {
   const formData = new FormData();
@@ -21,7 +23,7 @@ uploadSheetMusic(data: sheetMusic, file: File): Observable<sheetMusic> {
   formData.append('file', file, file.name);
 
   // 2️⃣ המרת IDs לוודא שהם מספרים
-const categoryId = data.category
+   const categoryId = data.category
     ? data.category.map(cat => ({ id: Number(cat.id) })) // הופך [Category1, Category2] ל- [{id: 1}, {id: 2}]
     : [];  const instrumentIds = data.instruments?.map(instr => ({ id: Number(instr.id) })) || [];
   const userId = data.user?.id ? Number(data.user.id) : null;
@@ -48,30 +50,53 @@ const categoryId = data.category
   // 5️⃣ שליחת POST (ללא Content-Type מוגדר — Angular עושה את זה לבד)
   return this.http.post<sheetMusic>(`${this.apiUrl}/uploadSheetMusic`, formData);
 }
+  constructor(private http: HttpClient) { }
 
 
-  // פונקציות קריאה נוספות נשארות ללא שינוי
+
+
+  // ✅ פונקציה חדשה לניתוח PDF עם AI
+  analyzePDF(file: File): Observable<SheetMusicResponseAI> {
+    const formData = new FormData();
+    formData.append('file', file, file.name);
+
+    // 💡 שימו לב: הקריאה היא ל-analyzePDF מה-SheetMusicAIController בשרת
+    return this.http.post<SheetMusicResponseAI>(`${this.apiUrl}/analyzePDF`, formData, { withCredentials: true });
+  }
+
+  // ... שאר המתודות ...
+
+  // 💡 עדכון קל ב-uploadSheetMusic כדי לכלול את שדות המלל החדשים
+  // (בהנחה שזה DTO חדש ששולח את הכלים והקטגוריות כרשימה)
+  // uploadSheetMusic(formData: FormData): Observable<sheetMusic> {
+  //   return this.http.post<sheetMusic>(`${this.apiUrl}/uploadSheetMusic`, formData, { withCredentials: true });
+  // }
+
   getSheetMusicById(id: number): Observable<sheetMusic> {
-    return this.http.get<sheetMusic>(`${this.apiUrl}/sheetMusicById/${id}`);
+    return this.http.get<sheetMusic>(`${this.apiUrl}/sheetMusicById/${id}`, { withCredentials: true });
+  }
+
+   getSheetsMusicByTitle(title: string): Observable<sheetMusic[]> {
+    return this.http.get<sheetMusic[]>(`${this.apiUrl}/sheetsMusicByTitle/${title}`, { withCredentials: true });
   }
 
   getAllSheetMusics(): Observable<sheetMusic[]> {
-    return this.http.get<sheetMusic[]>(`${this.apiUrl}/sheetsMusic`);
+    return this.http.get<sheetMusic[]>(`${this.apiUrl}/sheetsMusic`, { withCredentials: true });
   }
 
   getSheetMusicsByUserId(id: number): Observable<sheetMusic[]> {
-    return this.http.get<sheetMusic[]>(`${this.apiUrl}/sheetsMusicByUserId/${id}`);
+    return this.http.get<sheetMusic[]>(`${this.apiUrl}/sheetsMusicByUserId/${id}`, { withCredentials: true });
   }
 
   getFavoritesSheetMusicsByUserId(id: number): Observable<sheetMusic[]> {
-    return this.http.get<sheetMusic[]>(`${this.apiUrl}/favoriteSheetsMusicByUserId/${id}`);
+    return this.http.get<sheetMusic[]>(`${this.apiUrl}/favoriteSheetsMusicByUserId/${id}`, { withCredentials: true });
   }
 
   getSheetsMusicByName(name: string): Observable<sheetMusic[]> {
-    return this.http.get<sheetMusic[]>(`${this.apiUrl}/sheetsMusic/${name}`);
+    return this.http.get<sheetMusic[]>(`${this.apiUrl}/sheetsMusic/${name}`, { withCredentials: true });
   }
 
   getSheetsMusicByDifficultyLevel(difficulty_level: DifficultyLevel): Observable<sheetMusic[]> {
-    return this.http.get<sheetMusic[]>(`${this.apiUrl}/sheetsMusicByDifficultyLevel/${difficulty_level}`);
+    return this.http.get<sheetMusic[]>(`${this.apiUrl}/sheetsMusicByDifficultyLevel/${difficulty_level}`, { withCredentials: true });
   }
 }

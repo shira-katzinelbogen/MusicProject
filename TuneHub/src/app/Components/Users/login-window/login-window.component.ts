@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { Router, RouterModule } from '@angular/router';
 import { LoginwindowService } from '../../../Services/loginwindow.service';
 import { CommonModule } from '@angular/common';
@@ -19,7 +19,7 @@ type AuthMode = 'login' | 'signup';
   templateUrl: './login-window.component.html',
   styleUrl: './login-window.component.css'
 })
-export class LoginWindowComponent {
+export class LoginWindowComponent implements OnInit{
 
   userStateService: UserStateService;
   loginwindowService = inject(LoginwindowService);

@@ -15,6 +15,8 @@ export default class Post {
     videoPath?: string;
     title?: string;
     rating?: number;
+    isLiked?: boolean;
+    isFavorite?: boolean;
     safeImages?: string[]; // ודא שאתחלת את המערך
 
 
@@ -30,7 +32,10 @@ export interface PostResponseDTO {
     audioPath?: string;
     videoPath?: string;
     imagesBase64?: string[];
-    dateUploaded: string; // מגיע כמחרוזת
+    dateUploaded: string; 
+       isLiked?: boolean;
+    isFavorite?: boolean;
+    
 }
 
 export interface PostUploadDTO {

@@ -8,18 +8,48 @@ import { UserStateService } from '../../../Services/user-state.service'; // וד
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { CommonModule } from '@angular/common';
+import { GlobalSearchComponent } from "../global-search/global-search.component";
+import { NotificationService } from '../../../Services/notification.service';
 @Component({
   selector: 'app-header',
   standalone: true,
-  imports: [MatIconModule,CommonModule,ProfileMiniAvatarComponent],
+  imports: [MatIconModule, CommonModule, ProfileMiniAvatarComponent, GlobalSearchComponent],
   templateUrl: './header.component.html',
   styleUrl: './header.component.css'
 })
 export class HeaderComponent {
+  unreadCount$!: Observable<number | string>;
   private router = inject(Router);
   sidebarService = inject(SidebarService); // ← משתמש ב-Signal
   loginwindowService = inject(LoginwindowService);
   userStateService = inject(UserStateService);
+  private notificationService = inject(NotificationService);
+
+  searchQuery: string = '';
+  showSearchBox = false;
+  searchTerm: string = '';
+  isSearchOpen: boolean = false;
+
+ ngOnInit(): void {
+  // הרשמה ל-observable של ספירת ההתראות הלא נקראות
+  this.unreadCount$ = this.notificationService.unreadCount$;
+
+  // טוען את הערך הראשוני מהשרת
+  this.notificationService.loadUnreadCount();
+}
+
+
+  onSearchChange(event: any) {
+    const value = event.target.value;
+    this.searchQuery = value;
+    this.showSearchBox = value.trim().length > 0;
+  }
+  onSearchInput(event: any) {
+    this.searchTerm = event.target.value;
+
+    // פותח חלונית אם יש טקסט
+    this.isSearchOpen = this.searchTerm.trim().length > 0;
+  }
 
   isLoggedIn$: Observable<boolean> = this.userStateService.currentUser$.pipe(
     map(user => !!user) // מחזיר true אם יש אובייקט משתמש, אחרת false
@@ -36,6 +66,18 @@ export class HeaderComponent {
   goToLoginWindow() {
     this.sidebarService.close();
     this.router.navigate(['/login-window']);
+  }
+
+  loadUnreadCount(): void {
+    // מקבל את הספירה, ומוסיף פייפ (pipe) כדי לוודא שמוצג מספר, או טקסט ריק
+    this.unreadCount$ = this.notificationService.getUnreadCount();
+  }
+
+  // פונקציה לניווט - עליך ליישם ניווט Router ביישום שלך
+  navigateToNotifications(): void {
+    this.router.navigate(['/notifications']);
+    console.log('Navigating to Notifications page...');
+    // router.navigate(['/notifications']);
   }
 
 }

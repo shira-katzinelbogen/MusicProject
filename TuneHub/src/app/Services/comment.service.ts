@@ -14,17 +14,23 @@ export class CommentService {
     public count = 0;
 
  
-  private baseUrl = 'http://localhost:8080/api/comment';
+  private apiUrl = 'http://localhost:8080/api/comment';
 
   constructor(private http: HttpClient) {}
 
   // -------------------------------
   // POST: העלאת תגובה
   // -------------------------------
- uploadComment(dto: Comment, userId: number): Observable<Comment> {
-  const params = new HttpParams().set('userId', userId);
-  return this.http.post<Comment>(`${this.baseUrl}/upload`, dto, { params });
+ uploadComment(dto: Comment): Observable<Comment> {
+  // const params = new HttpParams().set('userId', userId);
+  return this.http.post<Comment>(`${this.apiUrl}/upload`, dto, { withCredentials: true });
 }
+
+// uploadComment(dto: Comment, userId: number): Observable<Comment> {
+//   // const params = new HttpParams().set('userId', userId);
+//   return this.http.post<Comment>(`${this.apiUrl}/upload`, dto, { withCredentials: true });
+// }
+// { params }, 
 
   // -------------------------------
   // GET: הבאת תגובות עם פאגינציה
@@ -33,9 +39,10 @@ export class CommentService {
     const params = new HttpParams()
       .set('page', page)
       .set('size', size);
-    console.log(`${this.baseUrl}/byPost/${postId}/paged?page=${page}&size=${size}`);
+    console.log(`${this.apiUrl}/byPost/${postId}/paged?page=${page}&size=${size}`);
 
-    return this.http.get<any>(`${this.baseUrl}/byPost/${postId}/paged`, { params });
+    return this.http.get<any>(`${this.apiUrl}/byPost/${postId}/paged`, { withCredentials: true });
+      //  { params });
   }
     //Get
     // getCommentById(id: number): Observable<Comment> {

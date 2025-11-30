@@ -17,9 +17,11 @@ export class InstrumentsService {
     constructor(private _httpClient: HttpClient) { }
 
     //Get
-  getInstruments(): Observable<Instrument[]> { 
-        return this._httpClient.get<Instrument[]>(`http://localhost:8080/api/instrument/instruments`); 
-    }
+  
+ // ✅ פונקציה לאחזור כל הכלים
+    getInstruments(): Observable<Instrument[]> {
+        return this._httpClient.get<Instrument[]>(`${this.apiUrl}/instruments`, { withCredentials: true });
+    }
 
     // ✅ תיקון שמות מתודות דומות (אם נחוץ)
     getInstrumentById(id: number): Observable<Instrument> {
@@ -31,6 +33,23 @@ export class InstrumentsService {
         // נתיב API דמה לטובת כלי נגינה של משתמש ב-Java
         return this._httpClient.get<Instrument[]>(`http://localhost:8080/api/users/${id}/instruments`)
     }
+    getPostById(id: number): Observable<Instrument> {
+        return this._httpClient.get<Instrument>(`http://localhost:8080/api/post/postById/${id}`, { withCredentials: true });
+    }
+
+    getPosts(): Observable<Instrument[]> {
+        return this._httpClient.get<Instrument[]>(`http://localhost:8080/api/post/posts`, { withCredentials: true });
+    }
+
+    getPostsByUserId(id: number): Observable<Instrument[]> {
+        return this._httpClient.get<Instrument[]>(`http://localhost:8080/api/post/postsByUserId/${id}`, { withCredentials: true })
+    }
+
+    private apiUrl = 'http://localhost:8080/api/instrument';
+
+  
+
+   
 
 
     //Post

@@ -1,0 +1,45 @@
+<div class="overlay" [class.open]="isOpen">
+  <div class="panel-container">
+    <div class="panel-header">
+      <h2>My Favorites</h2>
+      <button class="close-btn" (click)="isOpen = false">
+        <mat-icon>close</mat-icon>
+      </button>
+    </div>
+
+    <div class="search-container" onclick="document.getElementById('qf').focus()">
+      <mat-icon>search</mat-icon>
+
+      <input id="qf" class="search-input" type="search" placeholder="Search musicians, tracks, lessons..."
+        aria-label="search" />
+    </div>
+
+    <div class="category-buttons">
+      <button 
+        *ngFor="let cat of categories" 
+        [class.active]="selectedCategory === cat"
+        (click)="selectCategory(cat)"
+      >
+        {{ cat }}
+      </button>
+    </div>
+
+    <hr>
+    
+    <div class="favorites-content">
+      <h3>Results for {{ selectedCategory }}</h3>
+      <div *ngIf="selectedCategory === 'Posts'">
+        <p>List of favorite Posts...</p>
+      </div>
+      <div *ngIf="selectedCategory === 'Sheet Music'">
+        <p>List of favorite Sheet Music...</p>
+      </div>
+      <div *ngIf="selectedCategory === 'Teachers'">
+        <p>List of favorite Teachers...</p>
+      </div>
+      <div *ngIf="selectedCategory === 'Musicians'">
+        <p>List of favorite Musicians...</p>
+      </div>
+    </div>
+  </div>
+</div>

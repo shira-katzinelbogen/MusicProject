@@ -4,7 +4,7 @@
   top: 0;
   left: 0;
   width: 100%;
-    z-index: 100;
+  
   /* גבוה מאוד */
   /* background: rgba(255,255,255,0.3); שקוף */
 }
@@ -37,7 +37,7 @@ body {
   display: flex;
   align-items: center;
   gap: 10px;
-  width: 360px;
+  width: 460px;
 
   padding: 10px 18px;
   border-radius: 10px;
@@ -67,34 +67,6 @@ body {
   opacity: 1;
 }
 
-/* שדה הקלט עצמו */
-.search-input {
-  border: none;
-  outline: none;
-  background: transparent;
-  font-size: 18px;
-  font-weight: 500;
-
-  width: 100%;
-  caret-color: var(--purple-1);
-  color: white;
-}
-
-.search-input::placeholder {
-  color: #94a3b8;
-  font-weight: 500;
-}
-
-
-.search-container:hover {
-  box-shadow: 0 6px 18px rgba(15, 23, 36, 0.04);
-}
-
-/* תמיכה באנשים שמשתמשים במקלדת: גבול בולט יותר בעת focus-visible */
-.search-input:focus-visible {
-
-  outline: none;
-}
 
 
 
@@ -268,7 +240,7 @@ header {
   display: flex;
   justify-content: space-between;
   align-items: center;
- 
+
   /* margin: 15px 15px; */
   /* margin-top: 16px; */
   border-radius: 0 0 45px 45px;
@@ -280,7 +252,7 @@ header {
 
   backdrop-filter: blur(12px);
   
-  
+     z-index: 100000000000000 !important;
   box-shadow: 0 8px 25px rgba(0, 0, 0, 0.6);
   border: 1px solid rgba(255, 255, 255, 0.1);   /* קו לבן דק ושקוף */
 }
@@ -303,6 +275,64 @@ header {
 
 
 
+.notification-icon-container {
+    /* ה-Tailwind כבר מטפל בעיצוב הראשי (relative, cursor-pointer) */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 5px; /* מוסיף אזור לחיצה (Touch Target) נוח יותר */
+    border-radius: 50%;
+    transition: background-color 0.2s;
+}
+
+.notification-icon-container:hover {
+    background-color: #2a2a2a; /* רקע קל בריחוף */
+}
 
 
+/* ----------------------------------------------------------------
+/* מיכל הפעמון */
+.notification-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: -160px;
+      margin-left: 55px;
+     margin-top: 11px;  /* הצמדה לפרופיל */
+    cursor: pointer;
+}
 
+/* אייקון הפעמון */
+.notification-wrapper mat-icon {
+    font-size: 32px !important;   /* הגדלת האייקון */
+    width: 40px !important;
+    height: 40px !important;
+    color: #d1d1d1;
+    transition: 0.2s;
+}
+
+.notification-wrapper mat-icon:hover {
+    color: #d16fff;
+}
+
+/* עיגול ההתראות */
+.notification-badge {
+    position: absolute;
+    top: -4px;        /* מיקום מדויק מעל הפעמון */
+    right: -2px;
+    background-color: #8e00e6;
+    color: #ffffff;
+    width: 20px;
+    height: 20px;
+    font-size: 11px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+
+    border: 1px solid #c300ff; /* קו שמפריד מהרקע */
+    box-shadow: 0 0 6px rgba(0,0,0,0.6);
+    z-index: 10;
+}

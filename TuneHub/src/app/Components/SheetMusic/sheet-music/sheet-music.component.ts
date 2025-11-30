@@ -9,6 +9,7 @@ import SheetMusic from '../../../Models/SheetMusic';
 @Component({
   selector: 'app-sheet-music',
   templateUrl: './sheet-music.component.html',
+  standalone: true,
   imports: [
         
         CommonModule // ⬅️ חובה לכלול CommonModule כדי להשתמש ב-*ngIf ו-*ngFor

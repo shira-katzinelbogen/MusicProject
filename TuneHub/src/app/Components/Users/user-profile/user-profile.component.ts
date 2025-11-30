@@ -13,6 +13,9 @@ import { SheetMusicService } from '../../../Services/sheetmusic.service';
 import { MatMenuModule } from '@angular/material/menu';  
 import { UserStateService, UserProfile } from '../../../Services/user-state.service';
 import Post from '../../../Models/Post';
+import { EFollowStatus } from '../../../Models/Follow'; // ייבוא ה־enum
+import { InteractionService } from '../../../Services/interaction.service';
+
 import SheetMusic from '../../../Models/SheetMusic';
 // אין צורך ב-log מ-console בתוך הקוד, הוסר הייבוא המיותר
 
@@ -42,6 +45,8 @@ export class UserProfileComponent implements OnInit {
   isElevatedAdmin: boolean = false; // האם המשתמש המחובר הוא ADMIN או SUPER_ADMIN
   showAdminActions: boolean = false; // האם להציג את כפתור 3 הנקודות
   public instrumentsString: string = ''; // ניתן לשנות ל-getters/setters בהמשך אם צריך
+  followStatus: EFollowStatus = EFollowStatus.NONE; // סטטוס ברירת מחדל
+  followButtonDisabled: boolean =false;
   constructor(
     private route: ActivatedRoute,
     private router: Router,
@@ -49,7 +54,8 @@ export class UserProfileComponent implements OnInit {
     private _postService: PostService,
     private _sheetMusicService: SheetMusicService,
     public fileUtilsService: FileUtilsService,
-    private userStateService: UserStateService
+    private userStateService: UserStateService,
+    private _interactionService: InteractionService
   ) {}
 
 ngOnInit(): void {
@@ -88,6 +94,11 @@ ngOnInit(): void {
         
         const userRoles: ERole[] | undefined = currentUser?.roles as ERole[] | undefined;        
         
+if (this.profileData.id=== this.profileId) { // 💡 אם למשתמש יש teacherId
+    this.isStudentOfThisTeacher = true;
+} else {
+    this.isStudentOfThisTeacher = false;
+}
         // בדיקה האם המשתמש המחובר מחזיק ברול ADMIN או SUPER_ADMIN
         this.isElevatedAdmin = !!userRoles && (
           userRoles.includes(ERole.ROLE_SUPER_ADMIN)
@@ -315,29 +326,8 @@ getStarArray(): string[] {
     }
   }
 
-  openEditProfileModal(): void {
-    const currentUser = this.userStateService.getCurrentUserValue();
-    const profileId = this.profileId; 
+ 
 
-    if (currentUser && profileId != null) {
-      const isCurrentUser = profileId === Number(currentUser.id);
-      
-      if (isCurrentUser) {
-        this.router.navigate(['/edit-profil-modal', profileId]);
-      } else {
-        console.warn('Cannot navigate: not current user profile.');
-      }
-    } else {
-      console.warn('Cannot navigate: missing profile ID or current user.');
-    }
-  }
-
-  followUser(): void {
-    const currentUser = this.userStateService.getCurrentUserValue();
-    if (this.isCurrentUserProfile || !currentUser) return;
-
-    this.isFollowing = !this.isFollowing;
-  }
 
 deleteUser(): void {
     // 1. בדיקת בטיחות: ודא שיש ID ונתוני פרופיל
@@ -369,4 +359,48 @@ deleteUser(): void {
         }
     });
 }
+  // ---------------------------
+  // ניווט לקומפוננטת עריכה
+  // ---------------------------
+  // ניווט לקומפוננטת עריכה
+  openEditProfileModal(): void {
+    console.log('Button clicked!');
+    console.log('profileData:', this.profileData); // הלוג הזה חשוב
+
+    const currentUser = this.userStateService.getCurrentUserValue();
+
+    // 🎯 התיקון: השתמש ב-ID של הקומפוננטה (שנלקח מה-URL)
+    const profileId = this.profileId;
+
+    if (currentUser && profileId != null) {
+      // המשתמש הנוכחי יכול להיות מחרוזת, לכן משווים בצורה בטוחה
+      const isCurrentUser = profileId === Number(currentUser.id);
+
+      console.log('isCurrentUser:', isCurrentUser);
+      console.log('profileId (from URL):', profileId);
+      console.log('currentUser.id:', currentUser.id);
+
+      if (isCurrentUser) {
+        console.log('Navigating to edit profile with ID:', profileId);
+        this.router.navigate(['/edit-profil-modal', profileId]);
+      } else {
+        console.warn('Cannot navigate: not current user profile.');
+      }
+    } else {
+      console.warn('Cannot navigate: missing profile ID or current user.');
+    }
+  }
+followUser(): void {
+  if (!this.profileId || this.isCurrentUserProfile || this.followButtonDisabled) return;
+
+  this._interactionService.toggleFollow(this.profileId).subscribe({
+    next: (status: EFollowStatus) => {
+      this.followStatus = status; // עכשיו זה enum
+      this.isFollowing = status === EFollowStatus.APPROVED;
+      this.followButtonDisabled = status === EFollowStatus.PENDING;
+    },
+    error: (err) => console.error(err)
+  });
+}
+
 }

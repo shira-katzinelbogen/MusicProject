@@ -1,0 +1,77 @@
+/* מבטיח שהפאנל יופיע מעל הכל (מעל כל הקומפוננטות) */
+.overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5); /* רקע כהה מעט */
+    display: none; /* מתחיל כסגור */
+    justify-content: center;
+    align-items: center;
+    z-index: 1000; /* ודא שהוא מעל כל רכיב אחר */
+    transition: opacity 0.3s ease;
+    opacity: 0;
+}
+
+.overlay.open {
+    display: flex;
+    opacity: 1;
+}
+
+.panel-container {
+    /* background-color: white; */
+        background-color: #1D2838;
+    padding: 20px;
+    border-radius: 10px;
+    width: 90%;
+    max-width: 800px;
+    max-height:  800px;
+    color: #ffffff;
+    overflow-y: auto;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    transform: scale(0.95);
+    transition: transform 0.3s ease;
+}
+
+.overlay.open .panel-container {
+    transform: scale(1);
+}
+
+.panel-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.close-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+}
+
+.category-buttons button {
+    margin: 5px;
+    padding: 8px 15px;
+    border: 1px solid #ccc;
+    background-color: #f0f0f0;
+    
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+.category-buttons button.active {
+    background-color: #007bff;
+    color: white;
+    border-color: #007bff;
+}
+
+.search-bar input {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+

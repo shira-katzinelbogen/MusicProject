@@ -1,7 +1,8 @@
 <header>
 
 
-    <mat-icon (click)="sidebarService.toggle(); $event.stopPropagation()" style="color: rgb(65, 126, 231);">menu</mat-icon>
+  <mat-icon (click)="sidebarService.toggle(); $event.stopPropagation()"
+    style="color: rgb(65, 126, 231);">menu</mat-icon>
   <div class="logo" (click)="goToHomePage()">
     <img class="logo-pic" src="./assets/images/LOGO.png" alt="Logo" />
     <!-- <div id="logo-name">
@@ -27,15 +28,11 @@
 
 
     <div class="search-container" onclick="document.getElementById('q').focus()">
-      <!-- אייקון SVG של זכוכית מגדלת -->
       <mat-icon>search</mat-icon>
+      <input id="q" class="search-input" type="search" placeholder="Search musicians, teachers, sheets music, posts"
+        (input)="onSearchInput($event)" />
 
-      <!-- שדה החיפוש -->
-      <input id="q" class="search-input" type="search" placeholder="Search musicians, tracks, lessons..."
-        aria-label="חפש" />
 
-      <!-- תצוגת קיצור מקשים (אופציונלי) -->
-      <!-- <div class="kbd-hint" aria-hidden="true">⌘K</div> -->
     </div>
 
     <div id="musicans" class="button" (click)="goToFindMusicians()">
@@ -49,17 +46,40 @@
   <!-- <mat-icon>notifications</mat-icon> -->
 
 
-@if (isLoggedIn$ | async) {
-        <app-profile-mini-avatar></app-profile-mini-avatar>
-    } 
-    @else {
-        <div id="get-started" class="button" (click)="loginwindowService.open()">
-            Get Started
+  @if (isLoggedIn$ | async) {
+    <div class="notification-wrapper" (click)="navigateToNotifications()">
+
+    <mat-icon>notifications_none</mat-icon>
+
+    <ng-container *ngIf="(unreadCount$ | async) as count">
+        <div *ngIf="+count > 0" class="notification-badge">
+            {{ count }}
         </div>
-    }
+    </ng-container>
+
+
+
+
+</div>
+  <app-profile-mini-avatar></app-profile-mini-avatar>
+  <!-- אייקון התראות -->
+       
+  }
+  @else {
+  <div id="get-started" class="button" (click)="loginwindowService.open()">
+    Get Started
+  </div>
+  }
 
 </header>
 
 <!-- Overlay -->
 <!-- <div ngIf="!isSidebarOpen" class="overlay"
   (click)="closeSidebar()"></div> -->
+<!-- <app-global-search
+  *ngIf="showSearchBox"
+  [query]="searchQuery">
+</app-global-search> -->
+@if (isSearchOpen) {
+<app-global-search [query]="searchTerm"></app-global-search>
+}

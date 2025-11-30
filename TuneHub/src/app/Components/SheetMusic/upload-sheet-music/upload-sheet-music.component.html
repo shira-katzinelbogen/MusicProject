@@ -1,4 +1,146 @@
 @if(uploadSheetMusicService.isOpen){
+
+  <div class="modal-backdrop" (click)="onCancel()">
+<br><br><br><br>
+    <form class="modal-container"
+          [formGroup]="uploadForm"
+          (click)="$event.stopPropagation()"
+          (submit)="onSubmit()">
+
+      <!-- צד שמאל: PDF + תמונה -->
+      <div class="modal-left">
+
+        <label>Upload PDF Score</label>
+
+        <div class="drop-zone"
+             (click)="pdfInput.click()"
+             (drop)="onFileDrop($event)"
+             (dragover)="onFileDragOver($event)">
+             
+          <div class="drop-icon">📄</div>
+          <p>Drop PDF files here</p>
+
+          <input type="file"
+                 #pdfInput
+                 style="display:none"
+                 (change)="onFileSelected($event)"
+                 accept=".pdf" />
+        </div>
+
+        <div class="upload-container">
+          <button type="button"
+                  class="upload-photo"
+                  (click)="imageInput.click()"
+                  [disabled]="!aiDataAnalyzed">
+
+            <img *ngIf="imageCoverUrl"
+                 [src]="imageCoverUrl"
+                 class="uploaded-image-preview" />
+
+            <span *ngIf="!imageCoverUrl">Upload Cover</span>
+          </button>
+
+          <input type="file"
+                 #imageInput
+                 (change)="onImageSelected($event)"
+                 style="display:none"
+                 accept="image/*" />
+
+          <p class="optional-text">(Optional)</p>
+        </div>
+
+      </div>
+
+
+      <div class="modal-right">
+<br><br><br><br>
+        <button type="button"
+                class="button"
+                [disabled]="isLoading || aiDataAnalyzed || !selectedFile"
+                (click)="analyzePDF()">
+          <mat-icon>smart_toy</mat-icon>
+          Analyze with AI
+        </button>
+
+        <!-- שדות -->
+        <div class="input-row">
+          <div class="input-group">
+            <label>Title</label>
+            <input formControlName="title" />
+          </div>
+
+          <div class="input-group">
+            <label>Key/Scale</label>
+            <select formControlName="scale">
+              <option value="" disabled>Select key...</option>
+              <option *ngFor="let scale of scaleOptions" [value]="scale">{{ scale }}</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="input-row">
+          <div class="input-group">
+            <label>Composer</label>
+            <input formControlName="composer" />
+          </div>
+
+          <div class="input-group">
+            <label>Lyricist</label>
+            <input formControlName="lyricist" />
+          </div>
+        </div>
+
+        <div class="input-row">
+          <div class="input-group">
+            <label>Categories</label>
+            <select formControlName="categories" multiple>
+              <option *ngFor="let cat of categories" [value]="cat.id">{{ cat.name }}</option>
+            </select>
+          </div>
+
+          <div class="input-group">
+            <label>Difficulty Level</label>
+            <select formControlName="level">
+              <option value="" disabled>Select level...</option>
+              <option *ngFor="let level of difficultyLevels" [value]="level">{{ level }}</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="input-row full-width">
+          <div class="input-group full-width">
+            <label>Instruments</label>
+            <select formControlName="instruments" multiple>
+              <option *ngFor="let inst of instrumentsList" [value]="inst.id">
+                {{ inst.name }}
+              </option>
+            </select>
+          </div>
+        </div>
+
+        <div class="modal-footer">
+          <button type="button" class="cancel-btn" (click)="onCancel()">Cancel</button>
+          <button type="submit"
+                  class="button"
+                  [disabled]="!uploadForm.valid || !selectedFile || isLoading">
+            Save Sheet
+          </button>
+        </div>
+
+      </div>
+    </form>
+
+  </div>
+
+}
+
+
+
+
+
+
+
+<!-- @if(uploadSheetMusicService.isOpen){
 <div class="modal-backdrop" (click)="onCancel()"> 
     <div class="modal-container" (click)="$event.stopPropagation()">
       <div class="modal-header">
@@ -108,4 +250,5 @@
       </form>
     </div>
 </div>
-}
+} -->
+

@@ -1,0 +1,12 @@
+<button (click)="onToggleLike()" [class.liked]="isLikedByUser" class="like-button">
+
+    @if (isLikedByUser) {
+    <span>❤️</span>
+    }
+    @if (!isLikedByUser) {
+    <span>🤍</span>
+    }
+
+
+    {{ currentLikeCount }} לייקים
+</button>
