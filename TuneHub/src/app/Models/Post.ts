@@ -14,7 +14,7 @@ export default class Post {
     audioPath?: string;
     videoPath?: string;
     title?: string;
-
+    rating?: number;
     safeImages?: string[]; // ודא שאתחלת את המערך
 
 

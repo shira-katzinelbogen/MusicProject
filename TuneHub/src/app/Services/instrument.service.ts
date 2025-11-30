@@ -17,17 +17,20 @@ export class InstrumentsService {
     constructor(private _httpClient: HttpClient) { }
 
     //Get
-    getPostById(id: number): Observable<Instrument> {
-        return this._httpClient.get<Instrument>(`http://localhost:8080/api/post/postById/${id}`);
-    }
+  getInstruments(): Observable<Instrument[]> { 
+        return this._httpClient.get<Instrument[]>(`http://localhost:8080/api/instrument/instruments`); 
+    }
 
-    getPosts(): Observable<Instrument[]> {
-        return this._httpClient.get<Instrument[]>(`http://localhost:8080/api/post/posts`);
-    }
+    // ✅ תיקון שמות מתודות דומות (אם נחוץ)
+    getInstrumentById(id: number): Observable<Instrument> {
+        // נתיב API דמה לטובת כלי נגינה ב-Java
+        return this._httpClient.get<Instrument>(`http://localhost:8080/api/instrument/instrumentById/${id}`);
+    }
 
-    getPostsByUserId(id: number): Observable<Instrument[]> {
-        return this._httpClient.get<Instrument[]>(`http://localhost:8080/api/post/postsByUserId/${id}`)
-    }
+    getInstrumentsByUserId(id: number): Observable<Instrument[]> {
+        // נתיב API דמה לטובת כלי נגינה של משתמש ב-Java
+        return this._httpClient.get<Instrument[]>(`http://localhost:8080/api/users/${id}/instruments`)
+    }
 
 
     //Post

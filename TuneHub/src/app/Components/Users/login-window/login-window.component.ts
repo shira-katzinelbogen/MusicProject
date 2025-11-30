@@ -41,7 +41,6 @@ export class LoginWindowComponent {
 
   profilePreviewUrl: string | ArrayBuffer | null = null;
 
-  // פונקציה שמטפלת בבחירת קובץ (יש לחבר אותה לאירוע change ב-HTML)
 
   constructor(private fb: FormBuilder, http: HttpClient) {
     this.userStateService = inject(UserStateService);

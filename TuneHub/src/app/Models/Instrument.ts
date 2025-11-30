@@ -3,7 +3,7 @@ import  Teacher  from "./Teacher";
 import  Users from "./Users";
 
 export default class Instrument {
-    id?: string;
+    id?: number;
     name?: string;
     users?: Users[];
     teachers?: Teacher[];

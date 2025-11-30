@@ -1,18 +1,4 @@
-<!-- <div>
-    <h3>
-        Find Musicians
-        Connect with talented professionals for your next project
-        Join Network
-    </h3>
-</div> -->
-<!-- <br><br><br><br> -->
-
-
 <div class="container">
-    <!-- <br>
-
-    <br>
-    <br> -->
     <header class="header">
         <div class="cover-wrapper">
             <img src="./assets/images/musicians.png" class="cover-image" />
@@ -26,18 +12,15 @@
                             project</p>
                     </div>
 
-                    <button class="button">
-                        <!-- <span class="icon"></span> -->
-                        Join Network
-                        <mat-icon>person</mat-icon>
-
-                    </button>
-
+                    @if (!isMusician) {
+                        <button class="button" (click)="joinMusicianNetwork()" [disabled]="!user">
+                            Join Network
+                            <mat-icon>person</mat-icon>
+                        </button>
+                    }
                 </div>
             </div>
         </div>
-
-
     </header>
 
     <section class="search-bar">
@@ -56,40 +39,48 @@
             Filters <span class="arrow-icon">{{ showFilters ? '∧' : '∨' }}</span>
         </button>
     </section>
+
     @if (showFilters) {
     <section class="additional-filters">
+        
         <div class="filter-group">
-            <label>Experience</label>
-            <select class="dropdown">
-                <option>Any Experience</option>
+            <label>מדינה</label>
+            <select class="dropdown" 
+                    [(ngModel)]="selectedCountry" 
+                    (change)="applyMusicianFilters()">
+                @for (country of countries; track country) {
+                    <option [value]="country">{{ country }}</option>
+                }
             </select>
         </div>
 
         <div class="filter-group">
-            <label>Rating</label>
-            <select class="dropdown">
-                <option>Any Rating</option>
+            <label>עיר</label>
+            <select class="dropdown" 
+                    [(ngModel)]="selectedCity" 
+                    (change)="applyMusicianFilters()">
+                @for (city of cities; track city) {
+                    <option [value]="city">{{ city }}</option>
+                }
             </select>
         </div>
 
         <div class="filter-group">
-            <label>Availability</label>
-            <select class="dropdown">
-                <option>Any Availability</option>
+            <label>שנת כניסה</label>
+            <select class="dropdown" 
+                    [(ngModel)]="selectedCreatedYear" 
+                    (change)="applyMusicianFilters()">
+                @for (year of createdYears; track year) {
+                    <option [value]="year">{{ year }}</option>
+                }
             </select>
         </div>
-
-        <div class="filter-group">
-            <label>Price Range</label>
-            <select class="dropdown">
-                <option>Any Price</option>
-            </select>
-        </div>
+        
     </section>
     }
-
-    @if(users.length===0){
-    <p class="have-no-users"><b>There are currently no users to display.</b><br>
+    @if(musicianList.length===0){
+    <p class="have-no-users">
+        <b>There are currently no users to display.</b><br>
         Add new users to manage your work efficiently and neatly.<br><br>
 
         Take advantage of this tool to organize your day in the best way and achieve the goals you have set for
@@ -100,7 +91,7 @@
     @else{
     <br><br>
     <div class="musicians-container">
-        @for(u of users; track $index){
+        @for(u of musicianList; track $index){
         <div (click)="navigationService.goToProfile(u!.profile!.id!)">
             <h3>name {{u.profile!.name}}</h3>
             <h3>description {{u.description}}</h3>
@@ -113,3 +104,5 @@
         }
     </div>
     }
+
+</div>

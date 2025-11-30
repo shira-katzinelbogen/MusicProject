@@ -1,48 +1,96 @@
 <div class="container">
 
-  <header class="header">
-    <div class="cover-wrapper">
-      <img src="./assets/images/sheets_music.webp" class="cover-image" />
+  <header class="header">
+    <div class="cover-wrapper">
+      <img src="./assets/images/sheets_music.webp" class="cover-image" />
 
-      <div class="overlay-content">
-        <div class="title-section">
-          <h1 class="musicians" style="font-size: 60px;">Sheet Music Library</h1>
-          <p style="font-size: 25px; color: #ffffff;">
-            Discover, learn, and share musical scores from around the world
-          </p>
-        </div>
+      <div class="overlay-content">
+        <div class="title-section">
+          <h1 class="musicians" style="font-size: 60px;">Sheet Music Library</h1>
+          <p style="font-size: 25px; color: #ffffff;">
+            Discover, learn, and share musical scores from around the world
+          </p>
+        </div>
 
-        <button class="button join-network-btn" (click)="openUploadModal()">
-          <mat-icon>upload</mat-icon>
-          UploadSheetMusic
-        </button>
-      </div>
-    </div>
-  </header>
+        <button class="button join-network-btn" (click)="openUploadModal()">
+          <mat-icon>upload</mat-icon>
+          UploadSheetMusic
+        </button>
+      </div>
+    </div>
+  </header>
 
-   <section class="search-bar">
-        <div class="search-input-group">
-            <span class="search-icon">🔍</span>
-            <input type="text" placeholder="Search musicians by name, instrument, or skills..." />
-        </div>
-        <select class="dropdown">
-            <option>All</option>
-        </select>
-        <select class="dropdown">
-            <option>All</option>
-        </select>
 
-        <button class="filters-btn" (click)="toggleFilters()">
-            Filters <span class="arrow-icon">{{ showFilters ? '∧' : '∨' }}</span>
-        </button>
-    </section>
-  @if (showFilters) {
+   <section class="search-bar">
+        <div class="search-input-group">
+            <span class="search-icon">🔍</span>
+            <input type="text" placeholder="Search musicians by name, instrument, or skills..." />
+        </div>
+        <select class="dropdown">
+            <option>All</option>
+        </select>
+        <select class="dropdown">
+            <option>All</option>
+        </select>
+
+        <button class="filters-btn" (click)="toggleFilters()">
+            Filters <span class="arrow-icon">{{ showFilters ? '∧' : '∨' }}</span>
+        </button>
+    </section>
+    <section class="browse-categories-section">
+    <h2 class="section-title">Browse by Category</h2>
+    
+   <div class="category-grid">
+        
+        <div 
+            class="category-card all-categories-card" 
+            [class.selected]="selectedCategory === 'All'"
+            (click)="selectCategory('All')">
+            <div class="category-icon-wrapper">
+                <mat-icon class="category-icon">folder</mat-icon>
+            </div>
+            <div class="category-details">
+                <h3 class="category-name">All Categories</h3>
+                <p class="category-desc">Browse all sheet music</p>
+                <span class="sheet-count">
+                                          {{ originalSheetMusicList.length }} sheets 
+                </span>
+            </div>
+            <mat-icon *ngIf="selectedCategory === 'All'" class="check-icon">check_circle</mat-icon>
+        </div>
+
+        @for(categoryName of categories; track categoryName) {
+            @if(categoryName !== 'All') {
+                <div 
+                    class="category-card"
+                    [class.selected]="selectedCategory === categoryName"
+                    (click)="selectCategory(categoryName)">
+                    
+                    <div class="category-icon-wrapper" [style.background-color]="getCategoryColor(categoryName)">
+                        <mat-icon class="category-icon">{{ getCategoryIcon(categoryName) }}</mat-icon>
+                    </div>
+
+                    <div class="category-details">
+                        <h3 class="category-name">{{ categoryName }}</h3>
+                        <p class="category-desc">{{ getCategoryDescription(categoryName) }}</p>
+                        <span class="sheet-count">
+                            {{ countSheetsByCategory(categoryName) }} sheets
+                        </span>
+                    </div>
+
+                    <mat-icon *ngIf="selectedCategory === categoryName" class="check-icon">check_circle</mat-icon>
+                </div>
+            }
+        }
+    </div>
+</section>
+  @if (showFilters) {
     <section class="additional-filters">
                 <div class="filter-group">
             <label>כלי נגינה</label>
             <select class="dropdown" 
-                    [(ngModel)]="selectedInstrument" 
-                    (change)="applyFilters()">
+                    [(ngModel)]="selectedInstrument" 
+                    (change)="applyFilters()">
                 @for (instrument of instruments; track instrument) {
                     <option [value]="instrument">{{ instrument }}</option>
                 }
@@ -52,8 +100,8 @@
                 <div class="filter-group">
             <label>סולם</label>
             <select class="dropdown" 
-                    [(ngModel)]="selectedScale" 
-                    (change)="applyFilters()">
+                    [(ngModel)]="selectedScale" 
+                    (change)="applyFilters()">
                 @for (scale of scales; track scale) {
                     <option [value]="scale">{{ scale }}</option>
                 }
@@ -63,8 +111,8 @@
                 <div class="filter-group">
             <label>רמת קושי</label>
             <select class="dropdown" 
-                    [(ngModel)]="selectedLevel" 
-                    (change)="applyFilters()">
+                    [(ngModel)]="selectedLevel" 
+                    (change)="applyFilters()">
                 @for (level of levels; track level) {
                     <option [value]="level">{{ level }}</option>
                 }
@@ -73,120 +121,139 @@
     </section>
     }
 
-  <div class="sheet-music-container">
+  <div class="sheet-music-container">
 
-    @for (sheet of sheetMusicList; track sheet.id) {
+    @for (sheet of sheetMusicList; track sheet.id) {
 
-      <div class="music-card">
+      
 
-        <!-- HEADER (IMAGE + TAGS) -->
-        <div class="sheet-cover-header">
+      <div class="music-card">
 
-          <div class="cover-image">
-            <div class="pdf-preview-half">
+                <div class="sheet-cover-header">
 
-              @if (sheet.filePath) {
-                <iframe
-                  [src]="getSafeMediaUrl(sheet.filePath)"
-                  class="file-preview-iframe"
-                  title="תצוגה מקדימה של {{ sheet.name }}"
-                  allowfullscreen>
-                </iframe>
-              }
-              @else {
-                <div class="no-preview-overlay">אין תצוגה מקדימה</div>
-              }
+          <div class="cover-image">
+            <div class="pdf-preview-half">
 
-            </div>
-          </div>
+              @if (sheet.filePath) {
+                <iframe
+                  [src]="getSafeMediaUrl(sheet.filePath)"
+                  class="file-preview-iframe"
+                  title="תצוגה מקדימה של {{ sheet.name }}"
+                  allowfullscreen>
+                </iframe>
+              }
+              @else {
+                <div class="no-preview-overlay">אין תצוגה מקדימה</div>
+              }
+            </div>
+          </div>
 
-          <div class="badge-group">
-            <span class="badge category">
-              <mat-icon>folder</mat-icon>
-              {{ sheet.category?.name }}
-            </span>
+          <div class="badge-group">
+           @for (category of sheet.category; track category.id) {
+        <span class="badge category" title="{{ category.name }}">
+            <mat-icon>folder</mat-icon>
+            {{ category.name }}
+            
+            @if (!$last) { <span> &middot; </span> }
+        </span>
+    }
 
-            <span class="badge difficulty {{ sheet.level }}">
-              {{ sheet.level }}
-            </span>
-          </div>
+            <span class="badge difficulty {{ sheet.level }}">
+              {{ sheet.level }}
+            </span>
+          </div>
 
-        </div>
+        </div>
 
-        <!-- BODY -->
-        <div class="card-content">
 
-          <h3 class="title">{{ sheet.name }}</h3>
+                <div class="card-content">
 
-          <p class="artist-legacy">
-            <span
-              class="artist-mini-profile"
-              (click)="navigationService.goToProfile(sheet.user!.id!)">
-
-              <img
-                [src]="fileUtilsService.getImageUrl(sheet.user!.imageProfilePath)"
-                class="artist-mini-img"
-                alt="Profile" />
-
-              <span>{{ sheet.user!.name }}</span>
-            </span>
-          </p>
-
-          <div class="details-row">
-            <div class="primary-tags">
-
-              <span class="detail-tag">
-                <mat-icon>description</mat-icon>
-                {{ sheet.pages }}
-              </span>
-
-              <span class="detail-tag">
-                <mat-icon>music_note</mat-icon>
-                {{ sheet.scale }}
-              </span>
-
-              <span class="detail-tag">
-                @for (instrument of sheet.instruments; track instrument.id) {
-                  {{ instrument.name }}
-                  @if (!$last) { <span>, </span> }
-                }
-              </span>
-
-            </div>
-          </div>
-
-          <div class="stats-row">
-            <span class="stat-item">
-              <mat-icon>download</mat-icon>
-              {{ sheet.downloads }}
-            </span>
-          </div>
-
-          <span class="stat-item likes" (click)="toggleLike(sheet)">
-            <mat-icon style="color: #f0ff6c;" ngClass="sheet.isLiked ? 'liked' : 'not-liked'">
-              {{ sheet.isLiked ? 'thumb_up' : 'thumb_up_off_alt' }}
+          <h3 class="title">{{ sheet.name }}</h3>
+          
+            <div class="sheet-rating-container">
+    <span class="rating-value">{{ sheet.rating | number:'1.1-1' }}</span>
+    
+    <div class="stars-wrapper">
+        @for (starType of getStarArray(sheet.rating); track $index) {
+            <mat-icon 
+                class="star-icon"
+                [ngClass]="{'filled-star': starType !== 'star_border'}">
+                
+                {{ starType }}
             </mat-icon>
-            <span class="like-count">{{ sheet.likes }}</span>
-          </span>
+        }
+    </div>
+</div>
+                      <p class="artist-legacy">
+            <span
+              class="artist-mini-profile"
+              (click)="navigationService.goToProfile(sheet.user!.id!)">
 
-          <span class="stat-item hearts" (click)="toggleFavorite(sheet)">
-            <mat-icon style="color: #f85e5e;" ngClass="sheet.isFavorite ? 'liked' : 'not-liked'">
-              {{ sheet.hearts ? 'favorite' : 'favorite_border' }}
-            </mat-icon>
-            <span class="hearts-count">{{ sheet.hearts }}</span>
-          </span>
+              <img
+                [src]="fileUtilsService.getImageUrl(sheet.user!.imageProfilePath)"
+                class="artist-mini-img"
+                alt="Profile" />
 
-          <button class="button" (click)="goToSheetMusic(sheet)">
-            VIEW
-          </button>
+              <span>{{ sheet.user!.name }}</span>
+            </span>
+          </p>
 
-        </div>
-      </div>
-    }
-    @empty {
-      <div class="no-results">לא נמצאו גיליונות מוזיקליים להצגה.</div>
-    }
+          <div class="details-row">
+            <div class="primary-tags">
 
-  </div>
+              <span class="detail-tag">
+                <mat-icon>description</mat-icon>
+                {{ sheet.pages }}
+              </span>
+
+              <span class="detail-tag">
+                <mat-icon>music_note</mat-icon>
+                {{ sheet.scale }}
+              </span>
+
+              <span class="detail-tag">
+                @for (instrument of sheet.instruments; track instrument.id) {
+                  {{ instrument.name }}
+                  @if (!$last) { <span>, </span> }
+                }
+              </span>
+
+            </div>
+          </div>
+
+          <div class="stats-row">
+            <span class="stat-item">
+              <mat-icon>download</mat-icon>
+              {{ sheet.downloads }}
+            </span>
+          </div>
+
+          <span class="stat-item likes" (click)="toggleLike(sheet)">
+            <mat-icon style="color: #f0ff6c;" ngClass="sheet.isLiked ? 'liked' : 'not-liked'">
+              {{ sheet.isLiked ? 'thumb_up' : 'thumb_up_off_alt' }}
+            </mat-icon>
+            <span class="like-count">{{ sheet.likes }}</span>
+          </span>
+
+          <span class="stat-item hearts" (click)="toggleFavorite(sheet)">
+            <mat-icon style="color: #f85e5e;" ngClass="sheet.isFavorite ? 'liked' : 'not-liked'">
+              {{ sheet.hearts ? 'favorite' : 'favorite_border' }}
+            </mat-icon>
+            <span class="hearts-count">{{ sheet.hearts }}</span>
+          </span>
+
+          <button class="button" (click)="goToSheetMusic(sheet)">
+            VIEW
+          </button>
+
+        </div>
+        
+      </div>
+    }
+    @empty {
+      <div class="no-results">לא נמצאו גיליונות מוזיקליים להצגה.</div>
+    }
+
+  </div>
 
 </div>

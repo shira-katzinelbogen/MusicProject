@@ -13,9 +13,10 @@
 
     <div class="messages" #messagesContainer>
       @for (msg of messages; track $index) {
-        <div class="message-row" [ngClass]="msg.sender">
-  <img class="avatar" [src]="msg.avatar" alt="profile" />
-  <div class="message-text">{{ msg.text }}</div>
+     <div class="message-row" [ngClass]="msg.sender">
+  <img class="avatar" [src]="msg.avatar" alt="profile" />
+  
+  <div class="message-text" [innerHTML]="msg.text"></div> 
 </div>
          
       } @empty {

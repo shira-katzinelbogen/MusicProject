@@ -1,0 +1,151 @@
+/*
+  =====================================
+  CSS לטופס רישום מורה - סגנון יוקרתי כהה
+  =====================================
+*/
+
+:host {
+    display: flex;
+    justify-content: center;
+    padding: 40px 20px;
+    background-color: #1a1a2e; /* רקע כללי כהה */
+    min-height: 100vh;
+}
+
+.signup-container {
+    width: 100%;
+    max-width: 600px;
+    padding: 40px;
+    background-color: #27293d; /* רקע כהה יותר לקונטיינר */
+    border-radius: 12px;
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.4); /* צל עדין ועמוק */
+    color: #f0f0f0; /* צבע טקסט בהיר */
+    direction: rtl; /* יישור מימין לשמאל */
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+h2 {
+    color: #e5b800; /* צבע זהב/חרדל לכותרת */
+    font-size: 2em;
+    font-weight: 600;
+    margin-bottom: 5px;
+    border-bottom: 2px solid #e5b800; /* קו הפרדה עדין */
+    padding-bottom: 10px;
+}
+
+.subtitle {
+    color: #b0b0b0;
+    margin-bottom: 30px;
+    font-size: 1.1em;
+}
+
+/* --- קבוצת טופס (Form Group) --- */
+.form-group {
+    margin-bottom: 25px;
+}
+
+label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 500;
+    color: #f0f0f0;
+    font-size: 1em;
+}
+
+input[type="number"],
+input[type="text"] {
+    width: 100%;
+    padding: 12px 15px;
+    border: 1px solid #4a4d65; /* גבול כהה ומעודן */
+    border-radius: 6px;
+    background-color: #3e405a; /* רקע כהה לשדה הקלט */
+    color: #f0f0f0;
+    font-size: 1em;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+input:focus {
+    border-color: #e5b800; /* גבול זהב בפוקוס */
+    box-shadow: 0 0 0 3px rgba(229, 184, 0, 0.3);
+    outline: none;
+}
+
+/* --- ניהול כלי נגינה (Tags) --- */
+.instrument-select-group {
+    border-top: 1px solid #4a4d65;
+    padding-top: 20px;
+}
+
+.instrument-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 10px;
+}
+
+.instrument-tag {
+    /* כפתור הטאג הבסיסי */
+    background-color: #3e405a;
+    color: #f0f0f0;
+    border: 1px solid #5a5d7c;
+    padding: 8px 15px;
+    border-radius: 20px;
+    cursor: pointer;
+    font-size: 0.9em;
+    transition: background-color 0.2s ease, border-color 0.2s ease;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.instrument-tag:hover {
+    background-color: #5a5d7c; /* אפקט ריחוף כהה */
+}
+
+.instrument-tag.selected {
+    /* טאג שנבחר (סטייל יוקרתי) */
+    background-color: #e5b800; /* צבע הזהב הראשי */
+    color: #27293d; /* טקסט כהה על רקע בהיר */
+    border-color: #e5b800;
+    font-weight: bold;
+}
+
+.instrument-tag.selected span {
+    /* סימן ה-V הירוק */
+    color: #27293d; 
+    font-weight: 900;
+}
+
+.error-message {
+    color: #ff6b6b; /* צבע אדום רך לשגיאות */
+    margin-top: 10px;
+    font-size: 0.9em;
+}
+
+/* --- כפתור שליחה --- */
+.submit-btn {
+    width: 100%;
+    padding: 15px;
+    margin-top: 30px;
+    background: linear-gradient(135deg, #e5b800, #ffc72c); /* גרדיאנט זהב יוקרתי */
+    color: #27293d;
+    font-size: 1.2em;
+    font-weight: bold;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    box-shadow: 0 4px 15px rgba(229, 184, 0, 0.4);
+    transition: transform 0.2s, box-shadow 0.2s, opacity 0.2s;
+}
+
+.submit-btn:hover:not([disabled]) {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(229, 184, 0, 0.6);
+}
+
+.submit-btn[disabled] {
+    background: #5a5d7c; /* רקע כהה כשהכפתור מנוטרל */
+    cursor: not-allowed;
+    opacity: 0.7;
+    box-shadow: none;
+}

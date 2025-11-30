@@ -21,8 +21,9 @@ uploadSheetMusic(data: sheetMusic, file: File): Observable<sheetMusic> {
   formData.append('file', file, file.name);
 
   // 2️⃣ המרת IDs לוודא שהם מספרים
-  const categoryId = data.category?.id ? Number(data.category.id) : null;
-  const instrumentIds = data.instruments?.map(instr => ({ id: Number(instr.id) })) || [];
+const categoryId = data.category
+    ? data.category.map(cat => ({ id: Number(cat.id) })) // הופך [Category1, Category2] ל- [{id: 1}, {id: 2}]
+    : [];  const instrumentIds = data.instruments?.map(instr => ({ id: Number(instr.id) })) || [];
   const userId = data.user?.id ? Number(data.user.id) : null;
 
   // 3️⃣ המרת enums ל־string כפי ש־Spring Boot מצפה

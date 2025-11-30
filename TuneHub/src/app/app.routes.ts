@@ -14,8 +14,6 @@ import { UploadPostComponent } from './Components/Post/upload-post/upload-post.c
 import { PostsComponent } from './Components/Post/posts/posts.component';
 
 // Teacher
-import { TeacherListComponent } from './Components/Teachers/teacher-list/teacher-list.component';
-
 // Sheet Music
 import { SheetsMusicComponent } from './Components/SheetMusic/sheets-music/sheets-music.component';
 import { ChallengeCardComponent } from './Components/Community/challenge-card/challenge-card.component';
@@ -26,6 +24,8 @@ import { CommentComponent } from './Components/Comments/comment/comment.componen
 import { AddCommentComponent } from './Components/Comments/add-comment/add-comment.component';
 import { ChatBotComponent } from './Components/Chat/chat-bot/chat-bot.component';
 import { EditProfilModalComponent } from './Components/Users/edit-profil-modal/edit-profil-modal.component';
+import { TeacherSignupComponent } from './teacher-signup/teacher-signup.component';
+import { TeacherListComponent } from './Components/Teachers/teacher-list/teacher-list.component';
 
 
 
@@ -41,10 +41,12 @@ export const routes: Routes = [
   // Users
   { path: 'login-window', component: LoginWindowComponent },
   { path: 'musicians', component: MusiciansComponent },
+  { path: 'musicians/:id', component: MusiciansComponent },
   { path: 'user-profile/:id', component: UserProfileComponent },
   { path: 'edit-profil-modal/:id', component: EditProfilModalComponent }
 ,{ path: 'edit-profil-modal', component: EditProfilModalComponent },
-
+{ path: 'teacher-signup/:id', component: TeacherSignupComponent },
+{ path: 'teacher-signup', component: TeacherSignupComponent },
 
 
 

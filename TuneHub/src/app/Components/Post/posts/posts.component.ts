@@ -12,12 +12,11 @@ import { UserStateService } from '../../../Services/user-state.service';
 import { CommentService } from '../../../Services/comment.service';
 import { ERole } from '../../../Models/Users';
 import { FormsModule } from '@angular/forms';
-import { AddCommentComponent } from '../../Comments/add-comment/add-comment.component';
 
 @Component({
   selector: 'app-posts',
   standalone: true,
-  imports: [RouterModule, MatIconModule, CommonModule,CommentComponent,FormsModule,AddCommentComponent],
+  imports: [RouterModule, MatIconModule, CommonModule,CommentComponent,FormsModule],
   templateUrl: './posts.component.html',
   styleUrl: './posts.component.css'
 })
@@ -28,9 +27,16 @@ export class PostsComponent implements OnInit, OnChanges {
   // 1. המשתנה היחיד לרינדור ב-HTML - מאותחל כריק.
   displayedPosts: Post[] = []; 
 
+  
+  // ✅ 2. רשימה המכילה את כל הפוסטים שנטענו (המקור לסינון)
+  originalPosts: Post[] = []; 
+
+  // ✅ 3. המשתנה שיחזיק את הבחירה מה-dropdown (ערך ברירת מחדל: 'All')
+  selectedTimeRange: 'All' | 'Today' | 'Week' | 'Month' = 'All';
   // 2. הקלט (Input) שמגיע רק מפרופיל המשתמש. מאותחל כריק.
   @Input() postsFromProfile: Post[] = []; 
-  
+@Input() showOnlyMedia: 'audio' | 'video' | 'all' = 'all';
+  @Input() isProfileView: boolean = false; // ✅ המשתנה החדש והחיוני לתיקון
     showFilters: boolean = false; // אפשר להתחיל עם false אם רוצים שיהיה מקופל בהתחלה
 
   
@@ -53,11 +59,20 @@ export class PostsComponent implements OnInit, OnChanges {
   // ----------------------------------------------------------------
   // Lifecycle Hook: מטפל בשינויים של Input (כשלחצת על לשונית הפוסטים)
   // ----------------------------------------------------------------
-  ngOnChanges(changes: SimpleChanges): void {
-    if (changes['postsFromProfile']) {
-      // אם הועבר Input חדש (גם אם הוא מערך ריק), נשתמש בו לרינדור.
-      // זה מכסה את מצב פרופיל המשתמש.
-      this.displayedPosts = this.postsFromProfile ?? []; 
+ngOnChanges(changes: SimpleChanges): void {
+    if (changes['postsFromProfile'] && this.postsFromProfile) {
+      // 1. עדכן את רשימת המקור (originalPosts) שתשקף את הנתונים מהאב
+      this.originalPosts = this.postsFromProfile; 
+
+      // 2. ודא שרשימת התצוגה מתחילה בנתונים החדשים
+      this.displayedPosts = [...this.postsFromProfile]; 
+      
+      // 3. ✅ החזר את הסינון לברירת המחדל שלו אם הוא לא 'All'
+      // זה חשוב כדי שהסינון לא יישאר על 'Today' מרכיב אחר
+      this.selectedTimeRange = 'All'; 
+
+      // 4. הפעל את הסינון (שכעת יחזיר את כל ה-originalPosts כיוון שהטווח הוא 'All')
+      this.applyTimeFilter(); 
     }
   }
   
@@ -69,10 +84,10 @@ export class PostsComponent implements OnInit, OnChanges {
     
     // בדיקה: נטען את כל הפוסטים רק אם ה-Input ריק (מצב דף כללי).
     // שימו לב: אנחנו משתמשים ב-length כי postsFromProfile מאותחל כ-[]
-    if (this.postsFromProfile.length === 0) {
-        this.loadPostsFromService(); 
-    }
+ if (!this.isProfileView && this.postsFromProfile.length === 0) {
+      this.loadPostsFromService(); 
   }
+}
 
   // ----------------------------------------------------------------
   // 1️⃣ טעינת משתמש שמחובר
@@ -100,7 +115,11 @@ export class PostsComponent implements OnInit, OnChanges {
   loadPostsFromService(): void {
     this._postService.getPosts().subscribe({
       next: (posts) => {
-        this.displayedPosts = posts; // 💡 מאכלס את המשתנה שמציג ב-HTML
+        this.originalPosts = posts; // ✅ קבע את המקור
+        this.displayedPosts = posts; // ואתחֵל את המוצג
+        
+        // ✅ הפעל סינון מידי אם יש בחירת זמן
+        this.applyTimeFilter(); 
       },
       error: (err) => console.error("שגיאה בטעינת פוסטים:", err)
     });
@@ -153,9 +172,81 @@ export class PostsComponent implements OnInit, OnChanges {
     this.router.navigate(['/add-comment', postId]);
   }
 
-  // ... (אין צורך בפונקציות התגובה המוערות) ...
 
+
+
+// ----------------------------------------------------------------
+// 5️⃣ פונקציית סינון לפי טווח זמן
+// ----------------------------------------------------------------
+applyTimeFilter(): void {
+    const today = new Date();
+    let filterDate: Date;
+    
+    // אם נבחרה אפשרות "All", מציגים את כל רשימת המקור
+    if (this.selectedTimeRange === 'All') {
+        this.displayedPosts = this.originalPosts;
+        return;
+    }
+
+    // 1. קביעת תאריך הגבול התחתון (לפניו הפוסטים יסוננו החוצה)
+    if (this.selectedTimeRange === 'Today') {
+        // מגדיר את תאריך הגבול לתחילת היום הנוכחי (00:00:00)
+        filterDate = new Date(today.getFullYear(), today.getMonth(), today.getDate());
+    } else if (this.selectedTimeRange === 'Week') {
+        // מחזיר את היום שבוע אחורה
+        filterDate = new Date(today);
+        filterDate.setDate(today.getDate() - 7);
+    } else if (this.selectedTimeRange === 'Month') {
+        // מחזיר את היום חודש אחורה
+        filterDate = new Date(today);
+        filterDate.setMonth(today.getMonth() - 1);
+    } else {
+        // אם משהו השתבש, מציג את כל הפוסטים
+        this.displayedPosts = this.originalPosts;
+        return; 
+    }
+
+    // 2. ביצוע הסינון בפועל
+    this.displayedPosts = this.originalPosts.filter(post => {
+        // א. ודא שתאריך העלאה קיים.
+        if (!post.dateUploaded) return false;
+
+        // ב. המר את תאריך הפוסט לאובייקט Date.
+        // מכיוון שהמודל מגדיר אותו כ-Date, הוא אמור להיות Date אם ה-HttpClient פרסס אותו.
+        // אם הוא מחרוזת (כפי שצוין ב-DTO), ה-new Date יעבוד.
+        const postDate = new Date(post.dateUploaded); 
+
+        // ג. ההשוואה: האם תאריך הפוסט מאוחר או שווה לתאריך הגבול?
+        // (כלומר, האם הפוסט הועלה בטווח הזמן שנבחר)
+        return postDate.getTime() >= filterDate.getTime();
+    });
+}
 toggleFilters(): void {
     this.showFilters = !this.showFilters;
   }
+
+  getStarArray(rating: number | undefined): string[] {
+    const MAX_STARS = 5;
+    // אם הדירוג הוא undefined או null, נשתמש ב-0
+    const effectiveRating = rating ?? 0;
+    const stars: string[] = [];
+
+    for (let i = 1; i <= MAX_STARS; i++) {
+        
+        // 1. כוכב מלא
+        if (i <= effectiveRating) {
+            stars.push('star');
+            
+        // 2. חצי כוכב: אם הדירוג גדול מהכוכב הקודם (i-1)
+        } else if (effectiveRating > (i - 1)) {
+            stars.push('star_half');
+            
+        // 3. כוכב ריק
+        } else {
+            stars.push('star_border');
+        }
+    }
+    
+    return stars;
+  }
 }

@@ -18,23 +18,31 @@
         </div>
     </header>
 
-      <section class="search-bar">
-        <div class="search-input-group">
-            <span class="search-icon">🔍</span>
-            <input type="text" placeholder="Search musicians by name, instrument, or skills..." />
-        </div>
-        <select class="dropdown">
-            <option>All</option>
-        </select>
-        <select class="dropdown">
-            <option>All</option>
-        </select>
-
-        <button class="filters-btn" (click)="toggleFilters()">
-            Filters <span class="arrow-icon">{{ showFilters ? '∧' : '∨' }}</span>
-        </button>
-    </section>
-    @if (showFilters) {
+<section class="search-bar">
+        <div class="search-input-group">
+            <span class="search-icon">🔍</span>
+                        <input type="text" placeholder="Search musicians by name, instrument, or skills..." />
+        </div>
+        
+                <select 
+            class="dropdown"
+            [(ngModel)]="selectedTimeRange" 
+            (change)="applyTimeFilter()">
+                <option value="All">All times</option>
+                <option value="Today">Current Day</option>
+                <option value="Week">Current Week</option>
+                <option value="Month">Current Month</option>
+        </select>
+        
+        <select class="dropdown">
+            <option>All</option>
+        </select>
+<!-- 
+        <button class="filters-btn" (click)="toggleFilters()">
+            Filters <span class="arrow-icon">{{ showFilters ? '∧' : '∨' }}</span>
+        </button> -->
+    </section>
+    <!-- @if (showFilters) {
     <section class="additional-filters">
         <div class="filter-group">
             <label>Experience</label>
@@ -64,7 +72,7 @@
             </select>
         </div>
     </section>
-    }
+    } -->
 
     @if(displayedPosts.length===0){
         <div class="empty-posts-container">
@@ -78,81 +86,101 @@
     }
     @else{
 
-        @for(post of displayedPosts; track $index){
+    @for(post of displayedPosts; track $index){
 
-            <div class="post-card">
+    <div class="post-card">
 
-                <header class="post-header">
-                    <img class="avatar" [src]="fileUtils.getImageUrl(post.user?.imageProfilePath)" alt="avatar">
+        <ng-container *ngIf="!isProfileView || showOnlyMedia === 'all'">
+            <header class="post-header">
+                <img class="avatar" [src]="fileUtils.getImageUrl(post.user?.imageProfilePath)" alt="avatar">
 
-                    <div class="user-info">
-                        <span class="username">{{post.user?.name}}</span>
-                        <span class="date">{{post.dateUploaded | date:'short'}}</span>
-                    </div>
-
-                    <button *ngIf="!isAdmin" class="action-btn report-btn" (click)="onReportPost(post.id!)">
-                        <mat-icon>report</mat-icon> דווח
-                    </button>
-
-                    <div *ngIf="isAdmin" class="post-actions-wrapper">
-                        <button class="action-btn more-actions-btn" (click)="toggleAdminActions(post.id!)">
-                            <mat-icon>more_vert</mat-icon>
-                        </button>
-
-                        <div *ngIf="showAdminActions[post.id!]" class="admin-actions-dropdown">
-                            <button class="action-btn delete-btn" (click)="onDeletePost(post.id!)">
-                                <mat-icon>delete</mat-icon> מחיקה
-                            </button>
-
-                            <button class="action-btn report-btn" (click)="onReportPost(post.id!)">
-                                <mat-icon>report</mat-icon> דיווח
-                            </button>
-                        </div>
-                    </div>
-                </header>
-
-                <div class="post-body">
-                    <h3 class="post-title">{{post.title}}</h3>
-                    <p class="post-content">{{post.content}}</p>
-
-                    <div class="post-media">
-                        <div *ngFor="let image of post.imagesBase64" class="image-container">
-                            <img [src]="fileUtils.getImageUrl(image)" class="post-image">
-                        </div>
-
-                        <audio *ngIf="post.audioPath" controls [src]="getSafeMediaUrl('audio/' + post.audioPath)"></audio>
-
-                        <video *ngIf="post.videoPath" controls [src]="getSafeMediaUrl('video/' + post.videoPath)"></video>
-                    </div>
+                <div class="user-info">
+                    <span class="username">{{post.user?.name}}</span>
+                    <span class="date">{{post.dateUploaded | date:'short'}}</span>
                 </div>
 
-                <footer class="post-footer">
-                    <div class="stats">
-                        <span>❤️ {{post.hearts}}</span>
-                        <span>👍 {{post.likes}}</span>
+                <button *ngIf="!isAdmin" class="action-btn report-btn" (click)="onReportPost(post.id!)">
+                    <mat-icon>report</mat-icon> דווח
+                </button>
+
+                <div *ngIf="isAdmin" class="post-actions-wrapper">
+                    <button class="action-btn more-actions-btn" (click)="toggleAdminActions(post.id!)">
+                        <mat-icon>more_vert</mat-icon>
+                    </button>
                     </div>
-                </footer>
+            </header>
+        </ng-container>
 
-                <hr>
+        <div class="post-body">
+            <ng-container *ngIf="!isProfileView || showOnlyMedia === 'all'">
+                <h3 class="post-title">{{post.title}}</h3>
+                <p class="post-content">{{post.content}}</p>
+            </ng-container>
 
-              <div class="comments-actions-row">
-                      <button class="view-comments-btn" (click)="toggleComments(post.id!)">
-    {{ showComments[post.id!] ? 'סגור תגובות' : 'צפייה בתגובות' }}
-  </button>
-                                <button class="add-comment-page-btn" (click)="navigateToAddComment(post.id!)">
-                                הוסף תגובה <mat-icon>add_comment</mat-icon>
-                            </button>
-                        </div>      
+            <div class="post-media">
+                <ng-container *ngIf="!isProfileView || showOnlyMedia === 'all'">
+                    <div *ngFor="let image of post.imagesBase64" class="image-container">
+                        <img [src]="fileUtils.getImageUrl(image)" class="post-image">
+                    </div>
+                </ng-container>
 
-<div class="comments-wrapper" 
-     *ngIf="showComments[post.id!]" 
-     [class.open]="showComments[post.id!]">
-     
-    <app-comment [postId]="post.id!"></app-comment>
-</div>
+                <div *ngIf="post.audioPath && (showOnlyMedia === 'all' || showOnlyMedia === 'audio')" class="media-track-wrapper">
+                    <h3 *ngIf="showOnlyMedia !== 'all'" class="media-title">{{post.title}}</h3>
+                    <audio controls [src]="getSafeMediaUrl('audio/' + post.audioPath)"></audio>
+                </div>
 
+                <div *ngIf="post.videoPath && (showOnlyMedia === 'all' || showOnlyMedia === 'video')" class="media-video-wrapper">
+                    <h3 *ngIf="showOnlyMedia !== 'all'" class="media-title">{{post.title}}</h3>
+                    <video controls [src]="getSafeMediaUrl('video/' + post.videoPath)"></video>
+                </div>
             </div>
-        }
+        </div>
+
+        <ng-container *ngIf="!isProfileView || showOnlyMedia === 'all'">
+            <footer class="post-footer">
+                                               
+                <div class="stats">
+                    <div class="post-rating">
+                        <span class="rating-value">{{ post.rating | number:'1.1-1' }}</span>
+<div class="stars-wrapper">
+                        @for (starType of getStarArray(post.rating); track $index) {
+                            <mat-icon 
+                                class="star-icon" 
+                                [ngClass]="{'filled-star': starType !== 'star_border'}">
+                                {{ starType }}
+                            </mat-icon>
+                        }
+                    </div>
+                    </div>
+
+
+                    <span>❤️ {{post.hearts}}</span>
+                    <span>👍 {{post.likes}}</span>
+                </div>
+            </footer>
+            <hr>
+        </ng-container>
+
+        <ng-container *ngIf="!isProfileView || showOnlyMedia === 'all'">
+            <div class="comments-actions-row">
+                <button class="view-comments-btn" (click)="toggleComments(post.id!)">
+                    {{ showComments[post.id!] ? 'סגור תגובות' : 'צפייה בתגובות' }}
+                </button>
+                <button class="add-comment-page-btn" (click)="navigateToAddComment(post.id!)">
+                    הוסף תגובה <mat-icon>add_comment</mat-icon>
+                </button>
+            </div>      
+
+            <div class="comments-wrapper" 
+                *ngIf="showComments[post.id!]" 
+                [class.open]="showComments[post.id!]">
+                
+                <app-comment [postId]="post.id!"></app-comment>
+            </div>
+        </ng-container>
+
+    </div>
+}
     }
     <br><br><br>
 </div>

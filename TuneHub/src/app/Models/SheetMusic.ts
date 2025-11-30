@@ -28,12 +28,12 @@ export default class SheetMusic {
     level?: DifficultyLevel;
     user?: Users;
     instruments?: Instrument[]
-    category?: sheetMusicCategory
+    category?: sheetMusicCategory[]
     usersFavorite?: Users[];
     filePath?: string;
     downloads?: number;
     pages?: number;
-
+    rating?: number;
     isLiked?: boolean;
     isFavorite?: boolean;
 }

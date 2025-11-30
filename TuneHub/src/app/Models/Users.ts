@@ -1,7 +1,7 @@
 import Instrument from './Instrument'; // מניח שהממשק הזה קיים
 import Post from './Post';
 import SheetMusic from './SheetMusic';
-import Teacher from './Teacher';
+import type Teacher from './Teacher';
 import Comment from './Comment';
 
 
@@ -13,10 +13,11 @@ export enum ERole {
 
 
 export enum UserType {
-    STUDENT,
-    MANAGER,
-    TEACHER,
-    MUSIC_LOVER
+    STUDENT = 'STUDENT',
+    MANAGER = 'MANAGER',
+    TEACHER = 'TEACHER',
+    MUSIC_LOVER = 'MUSIC_LOVER',
+    MUSICIANS = 'MUSICIANS'
 }
 
 // --------------------------------------------------------------------------
@@ -47,7 +48,6 @@ export interface UsersProfileDTO {
 //     description: string;
 //     instruments: InstrumentResponseDTO; // מניח שזה InstrumentResponseDTO
 //     EUserType: UserType;
-//     createDate: Date;               // LocalDate ב-Java, עדיף להשתמש ב-Date
 // }
 
 // --------------------------------------------------------------------------
@@ -103,13 +103,14 @@ export default class Users {
     password?: string;
     email?: string;
     description?: string;
-    userType?: UserType;
-    createdAt?: Date;
+    userTypes?: UserType[];
+    createdAt?: Date  | string;
     editedIn?: Date;
     active?: boolean;
     city?: string;
     country?: string;
-
+    rating?: number;
+    
     // רשימות
     followers?: Users[];
     following?: Users[];

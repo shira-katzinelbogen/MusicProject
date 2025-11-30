@@ -3,7 +3,6 @@
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 // 💡 נניח שהמודל Users מכיל שדה 'profile'
-import Users from '../Models/Users'; 
 
 @Injectable({
     providedIn: 'root'

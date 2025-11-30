@@ -1,12 +1,24 @@
-<p>teacher-list works!</p>
-<div><p>Teacher List</p>
-    <ul>
-        <li>Teacher 1</li>
-        <li>Teacher 2</li>
-        <li>Teacher 3</li>
-    </ul>
+<div class="container">
+    <header class="header">
+        <div class="cover-wrapper">
+            <img src="./assets/images/LOGO.png" class="cover-image" />
 
-     <section class="search-bar">
+            <div class="overlay-content">
+                <div class="header-inner-content">
+
+                    <div class="title-section">
+                        <h1 class="teachers" style="font-size: 60px;">Find </h1>
+                        <p style="font-size: 25px;color: #ffffff;">Connect with talented professionals for your next
+                            project</p>
+                    </div>
+
+        
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <section class="search-bar">
         <div class="search-input-group">
             <span class="search-icon">🔍</span>
             <input type="text" placeholder="Search musicians by name, instrument, or skills..." />
@@ -22,35 +34,125 @@
             Filters <span class="arrow-icon">{{ showFilters ? '∧' : '∨' }}</span>
         </button>
     </section>
+
     @if (showFilters) {
     <section class="additional-filters">
+        
         <div class="filter-group">
-            <label>Experience</label>
-            <select class="dropdown">
-                <option>Any Experience</option>
+            <label>מדינה</label>
+            <select class="dropdown" 
+                    [(ngModel)]="selectedCountry" 
+                    (change)="applyTeacherFilters()">
+                @for (country of countries; track country) {
+                    <option [value]="country">{{ country }}</option>
+                }
             </select>
         </div>
 
         <div class="filter-group">
-            <label>Rating</label>
-            <select class="dropdown">
-                <option>Any Rating</option>
+            <label>עיר</label>
+            <select class="dropdown" 
+                    [(ngModel)]="selectedCity" 
+                    (change)="applyTeacherFilters()">
+                @for (city of cities; track city) {
+                    <option [value]="city">{{ city }}</option>
+                }
             </select>
         </div>
 
-        <div class="filter-group">
-            <label>Availability</label>
-            <select class="dropdown">
-                <option>Any Availability</option>
-            </select>
-        </div>
+<div class="filter-group">
+    <label>משך שיעור (דקות)</label>
+    <select class="dropdown" 
+            [(ngModel)]="selectedLessonDuration" 
+            (change)="applyTeacherFilters()">
+                @for (duration of lessonDurations; track $index) {
+            <option [value]="duration">{{ duration }}</option>
+        }
+    </select>
+</div>
+
+<div class="filter-group">
+    <label>ניסיון (שנים)</label>
+    <select class="dropdown" 
+            [(ngModel)]="selectedExperience" 
+            (change)="applyTeacherFilters()">
+                @for (exp of experiences; track $index) {
+            <option [value]="exp">{{ exp }}</option>
+        }
+    </select>
+</div>
+
+<div class="filter-group">
+    <label>כלי נגינה</label>
+    <select class="dropdown" 
+            [(ngModel)]="selectedInstrumentId" 
+            (change)="applyTeacherFilters()">
+                @for (instrument of instruments; track instrument.id) {
+            <option [value]="instrument.id">{{ instrument.name }}</option>
+        }
+    </select>
+</div>
+
+<div class="filter-group">
+    <label>מחיר לשיעור</label>
+    <select class="dropdown" 
+            [(ngModel)]="selectedPrice" 
+            (change)="applyTeacherFilters()">
+                @for (price of prices; track $index) {
+            <option [value]="price">{{ price }}</option>
+        }
+    </select>
+</div>
 
         <div class="filter-group">
-            <label>Price Range</label>
-            <select class="dropdown">
-                <option>Any Price</option>
+            <label>שנת כניסה</label>
+            <select class="dropdown" 
+                    [(ngModel)]="selectedCreatedYear" 
+                    (change)="applyTeacherFilters()">
+                @for (year of createdYears; track year) {
+                    <option [value]="year">{{ year }}</option>
+                }
             </select>
         </div>
+        
     </section>
     }
+    @if(TeacherList.length===0){
+    <p class="have-no-users">
+        <b>There are currently no users to display.</b><br>
+        Add new users to manage your work efficiently and neatly.<br><br>
+
+        Take advantage of this tool to organize your day in the best way and achieve the goals you have set for
+        yourself<br>
+    </p>
+    }
+
+    @else{
+    <br><br>
+    <div class="musicians-container">
+        @for(u of TeacherList; track $index){
+        <div (click)="navigationService.goToProfile(u!.profile!.id!)">
+            <h3>name {{u.profile!.name}}</h3>
+            <h3>description {{u.description}}</h3>
+            <h3>city {{u.city}}</h3>
+            <h3>country {{u.country}}</h3>
+            <h3>pricePerLesson {{u.teacher?.pricePerLesson}}</h3>
+            <h3>lessonDuration {{u.teacher?.lessonDuration}}</h3>
+            <h3>experience {{u.teacher?.experience}}</h3>
+            <h3>instrumentsUsers 
+                @for(instrumentId of u.teacher?.instrumentsIds; track $index){
+                    {{instrumentId}} 
+                }
+            </h3>
+
+
+            <div class="image-p">
+                <img [src]="fileUtilsService.getImageUrl(u!.profile!.imageProfilePath!)" class="profile-image">
+            </div>
+        </div>
+        }
+    </div>
+    }
+
 </div>
+
