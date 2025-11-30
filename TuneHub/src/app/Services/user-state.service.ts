@@ -4,6 +4,9 @@ import { Injectable, PLATFORM_ID, inject } from '@angular/core';
 import { isPlatformBrowser } from '@angular/common';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { log } from 'node:console';
+import { UsersService } from './users.service';
+import { Router } from '@angular/router';
+
 
 export interface UserProfile {
   id: number;
@@ -27,27 +30,29 @@ export class UserStateService {
   private platformId = inject(PLATFORM_ID);
   private isBrowser: boolean;
 
-  constructor() {
-    this.isBrowser = isPlatformBrowser(this.platformId);
-
-    let initialUser: UserProfile | null = null;
-
-    if (this.isBrowser) {
-      const storedUser = sessionStorage.getItem(STORAGE_KEY);
-
-      if (storedUser) {
-        try {
-          initialUser = JSON.parse(storedUser);
-        } catch (e) {
-          console.error("Failed to parse user profile from session storage", e);
-          sessionStorage.removeItem(STORAGE_KEY);
-        }
+constructor(
+  private _usersService: UsersService,
+  private router: Router,
+  // private platformId: Object
+) {
+  this.isBrowser = isPlatformBrowser(this.platformId);
+  
+  let initialUser: UserProfile | null = null;
+  if (this.isBrowser) {
+    const storedUser = sessionStorage.getItem(STORAGE_KEY);
+    if (storedUser) {
+      try {
+        initialUser = JSON.parse(storedUser);
+      } catch (e) {
+        console.error("Failed to parse user profile from session storage", e);
+        sessionStorage.removeItem(STORAGE_KEY);
       }
     }
-
-    this.currentUserSubject = new BehaviorSubject<UserProfile | null>(initialUser);
-    this.currentUser$ = this.currentUserSubject.asObservable();
   }
+
+  this.currentUserSubject = new BehaviorSubject<UserProfile | null>(initialUser);
+  this.currentUser$ = this.currentUserSubject.asObservable();
+}
 
   /** שמירת המשתמש וההרשאות */
   setUser(user: UserProfile): void {
@@ -57,14 +62,22 @@ export class UserStateService {
     this.currentUserSubject.next(user);
     
   }
+logout(): void {
+  if (!this.isBrowser) return;
 
-  /** ניקוי המשתמש */
-  clearUser(): void {
-    if (this.isBrowser) {
+  // קוראים קודם לשרת
+  this._usersService.signOut().subscribe({
+    next: () => {
+      // אחרי שהשרת אישר את הסיין אאוט
       sessionStorage.removeItem(STORAGE_KEY);
-    }
-    this.currentUserSubject.next(null);
-  }
+      this.currentUserSubject.next(null);
+
+      this.router.navigate(['/home']);
+    },
+    error: (err) => console.error('Sign out failed:', err)
+  });
+}
+
 
   /** מחזיר את המשתמש הנוכחי באופן סינכרוני */
   getCurrentUserValue(): UserProfile | null {
@@ -92,4 +105,5 @@ export class UserStateService {
     }
     return null;
   }
+  
 }

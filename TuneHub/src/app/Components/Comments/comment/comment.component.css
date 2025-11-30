@@ -1,11 +1,15 @@
 .comments-scroll {
   max-height: 300px;
   overflow-y: auto;
+  
+  width: 100%;
 }
 
 /* מוודא שכיתוב התגובה תמיד שחור */
 .comments-container {
   color: black !important;
+
+  width: 100%;
 }
 
 /* גם התוכן של כל תגובה */
@@ -55,3 +59,36 @@
   font-size: 0.8em;
   color: #555;
 }
+
+.comments-container {
+    /* הגדל את הגובה המקסימלי (max-height) */
+    max-height: 500px; /* שנה את 500px לערך גבוה יותר (לדוגמה, 600px או 70vh) */
+    overflow-y: auto; /* ודא שהגלילה האנכית מופעלת כשהתוכן חורג */
+    padding: 15px; /* הוסף ריפוד מסביב לתוכן */
+    border: 1px solid #ccc; /* גבול עדין לתצוגה ברורה */
+    border-radius: 8px;
+    
+    /* ודא שהמיכל יושב ברוחב הרצוי */
+    width: 100%; 
+    /* אם זה בתוך אזור צר יותר, אפשר להשתמש בערך קבוע כמו max-width: 600px */
+}
+
+/* הגדל את הגובה המקסימלי של הגלילה */
+.comments-scroll {
+  /* מומלץ להשתמש ביחידות יחסיות כמו vh (גובה התצוגה) או פיקסלים גבוהים */
+  max-height: 70vh; /* לדוגמה, 70% מגובה המסך */
+  overflow-y: auto;
+}
+
+/* ודא שכלל זה אינו סותר את כלל הגלילה העיקרי */
+.comments-container {
+    /* נשנה לערך גבוה יותר או נשתמש ב-vh כמו ב-.comments-scroll אם הוא מכיל אותו */
+    max-height: 70vh; /* או 700px */
+    overflow-y: auto; 
+    padding: 15px; 
+    border: 1px solid #ccc; 
+    border-radius: 8px;
+    width: 100%; 
+    color: black !important;
+}
+

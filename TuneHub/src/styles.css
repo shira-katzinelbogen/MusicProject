@@ -18,23 +18,39 @@ body {
 /* ==============================
    Scrollbar
    ============================== */
-body::-webkit-scrollbar { width: 15px; }
-body::-webkit-scrollbar-track {
+*::-webkit-scrollbar { width: 15px; }
+*::-webkit-scrollbar-track {
     background: #1D2838;
     border-radius: 10px;
 }
-body::-webkit-scrollbar-thumb {
+*::-webkit-scrollbar-thumb {
     background: linear-gradient(to bottom, #9430ff 0%, #3888ff 100%);
     border-radius: 10px;
     border: 3px solid #2c3e50;
 }
-body::-webkit-scrollbar-thumb:hover {
+*::-webkit-scrollbar-thumb:hover {
     background: linear-gradient(to bottom, #8413fe 0%, #1b76ff);
 }
 
 /* ==============================
    Buttons
    ============================== */
+   /* button {
+  all: unset;           
+  display: inline-block;   
+  cursor: pointer;       
+  font: inherit;          
+  color: inherit;       
+  background: none;      
+  border: none;          
+  padding: 0;              
+  margin: 0;               
+  border-radius: 0;        
+  text-align: inherit;     
+} */
+
+
+/* button, */
 .button {
     display: inline-flex;
     align-items: center;
@@ -124,8 +140,8 @@ body::-webkit-scrollbar-thumb:hover {
 .logo img {
     height: 50px;
     width: auto;
-    margin-left: -150px;
-    margin-right: 100px;
+    margin-left: -142px;
+    margin-right: 0px;
 }
 
 /* ==============================
@@ -395,5 +411,93 @@ app-header {
 
 mat-sidenav-container {
   transform: none !important;
+}
+
+
+
+
+
+/* קונטיינר התיבה */
+.search-container {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 360px;
+
+  padding: 10px 18px;
+  border-radius: 10px;
+  background-color: #2b3a52;
+  border: 3px solid rgba(0, 0, 0, 0.08);
+  transition: border-color 180ms ease, box-shadow 180ms ease, transform 120ms ease;
+  box-shadow: 0 1px 2px rgba(16, 24, 40, 0.04);
+  cursor: text;
+  /* מרמז שמשתמש יכול להקליד */
+
+}
+
+/* כשהשדה בפנים מקבל פוקוס או כשהקונטיינר נבחר - הגבול סגול + הילה */
+.search-container:focus-within {
+  border-color: #A03FFB;
+
+  box-shadow: 0 6px 20px var(--bg-alpha);
+  transform: translateY(-1px);
+}
+
+/* אייקון זכוכית מגדלת פשוט */
+.search-icon {
+  width: 20px;
+  height: 20px;
+  flex: 0 0 20px;
+  display: inline-block;
+  opacity: 1;
+}
+
+
+
+
+
+/* שדה הקלט עצמו */
+.search-input {
+  border: none;
+  outline: none;
+  background: transparent;
+  font-size: 18px;
+  font-weight: 500;
+
+  width: 100%;
+  caret-color: var(--purple-1);
+  color: white;
+}
+
+.search-input::placeholder {
+  color: #94a3b8;
+  font-weight: 500;
+}
+
+
+
+.search-container:hover {
+  box-shadow: 0 6px 18px rgba(15, 23, 36, 0.04);
+}
+
+/* תמיכה באנשים שמשתמשים במקלדת: גבול בולט יותר בעת focus-visible */
+.search-input:focus-visible {
+
+  outline: none;
+}
+
+
+
+
+.highlighted-text {
+  /* מעבר צבע בזווית 45 מעלות: זהב עתיק לזהב בהיר */
+  background: linear-gradient(45deg, #B8860B 0%, #FFD700 80%, #FFF8DC 100%);
+  
+  /* צבע טקסט: שחור קלאסי */
+  color: #000; 
+  font-weight: 700;
+  padding: 0 4px;
+  border-radius: 4px;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.4); /* הוספת צל קל לבליטה */
 }
 

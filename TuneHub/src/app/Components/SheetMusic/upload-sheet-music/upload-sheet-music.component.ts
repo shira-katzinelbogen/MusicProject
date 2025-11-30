@@ -49,7 +49,7 @@ export class UploadSheetMusicComponent implements OnInit {
 
   ngOnInit() {
     this.initForm();
-    this.loadDependencies();
+
   }
 
   initForm(): void {
@@ -67,16 +67,20 @@ export class UploadSheetMusicComponent implements OnInit {
     this.disableAIFields();
   }
 
-  loadDependencies(): void {
-    this.categoryService.getSheetMusicCategories().subscribe({
-      next: data => this.categories = data,
-      error: err => console.error('Failed to load categories', err)
-    });
-    this.instrumentService.getInstruments().subscribe({
-      next: data => this.instrumentsList = data,
-      error: err => console.error('Failed to load instruments', err)
-    });
-  }
+
+
+  loadDependenciesAfterAI(): void {
+  this.categoryService.getSheetMusicCategories().subscribe({
+    next: data => this.categories = data,
+    error: err => console.error('Failed to load categories', err)
+  });
+
+  this.instrumentService.getInstruments().subscribe({
+    next: data => this.instrumentsList = data,
+    error: err => console.error('Failed to load instruments', err)
+  });
+}
+
 
   disableAIFields(): void {
     ['title', 'scale', 'categories', 'instruments', 'level', 'composer', 'lyricist'].forEach(field => {
@@ -153,8 +157,10 @@ export class UploadSheetMusicComponent implements OnInit {
       next: (aiResponse: SheetMusicResponseAI) => {
         this.isLoading = false;
         this.aiDataAnalyzed = true;
+            this.loadDependenciesAfterAI();
         this.enableAIFields();
         this.applyAIResponseToForm(aiResponse);
+        
       },
       error: (err) => {
         console.error('AI analysis failed:', err);

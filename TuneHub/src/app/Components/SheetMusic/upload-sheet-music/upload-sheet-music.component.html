@@ -1,7 +1,7 @@
 @if(uploadSheetMusicService.isOpen){
 
   <div class="modal-backdrop" (click)="onCancel()">
-
+<br><br><br><br>
     <form class="modal-container"
           [formGroup]="uploadForm"
           (click)="$event.stopPropagation()"
@@ -51,9 +51,9 @@
 
       </div>
 
-      <!-- צד ימין: שדות + כפתור AI -->
-      <div class="modal-right">
 
+      <div class="modal-right">
+<br><br><br><br>
         <button type="button"
                 class="button"
                 [disabled]="isLoading || aiDataAnalyzed || !selectedFile"

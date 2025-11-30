@@ -19,6 +19,11 @@
                 <app-chat-bot></app-chat-bot>
 
       <router-outlet></router-outlet>
+      <button class="fixed-favorites-button" (click)="toggleFavorites()"><mat-icon>favorite</mat-icon></button>
+  <!-- <span></span> -->
+
+
+<app-favorites [isOpen]="isFavoritesOpen$ | async"></app-favorites>
 
     </main>
 
@@ -26,5 +31,5 @@
     
   </mat-sidenav-content>
 </mat-sidenav-container>
-<app-upload-sheet-music></app-upload-sheet-music>
+<!-- <app-upload-sheet-music></app-upload-sheet-music> -->
 <app-login-window></app-login-window>

@@ -18,15 +18,15 @@ export class InstrumentsService {
 
     //Get
     getPostById(id: number): Observable<Instrument> {
-        return this._httpClient.get<Instrument>(`http://localhost:8080/api/post/postById/${id}`);
+        return this._httpClient.get<Instrument>(`http://localhost:8080/api/post/postById/${id}`, { withCredentials: true });
     }
 
     getPosts(): Observable<Instrument[]> {
-        return this._httpClient.get<Instrument[]>(`http://localhost:8080/api/post/posts`);
+        return this._httpClient.get<Instrument[]>(`http://localhost:8080/api/post/posts`, { withCredentials: true });
     }
 
     getPostsByUserId(id: number): Observable<Instrument[]> {
-        return this._httpClient.get<Instrument[]>(`http://localhost:8080/api/post/postsByUserId/${id}`)
+        return this._httpClient.get<Instrument[]>(`http://localhost:8080/api/post/postsByUserId/${id}`, { withCredentials: true })
     }
 
     private apiUrl = 'http://localhost:8080/api/instrument';
@@ -35,7 +35,7 @@ export class InstrumentsService {
 
     // ✅ פונקציה לאחזור כל הכלים
     getInstruments(): Observable<Instrument[]> {
-        return this._httpClient.get<Instrument[]>(`${this.apiUrl}/instruments`);
+        return this._httpClient.get<Instrument[]>(`${this.apiUrl}/instruments`, { withCredentials: true });
     }
 
 

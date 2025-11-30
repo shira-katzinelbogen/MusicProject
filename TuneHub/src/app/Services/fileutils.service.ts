@@ -2,8 +2,9 @@ import { Injectable } from '@angular/core';
 import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
 
 @Injectable({
-    providedIn: 'root'
+  providedIn: 'root'
 })
+
 export class FileUtilsService {
 
     constructor(private sanitizer: DomSanitizer) { }
@@ -27,6 +28,16 @@ export class FileUtilsService {
     //         return this.sanitizer.bypassSecurityTrustResourceUrl(pdfUrl);
     //     }
     //     return '';
+    // }
+
+      // 1. תמונות (Base64) - מתאים לרוב המקרים
+    // getImageUrl(base64?: string): SafeUrl | string {
+    //     if (base64?.trim()) {
+    //         // זיהוי סוג MIME לפי התחלת ה-Base64 (רוב הזמן זה jpeg או png)
+    //         const mime = base64.startsWith('/9j/') ? 'jpeg' : 'png';
+    //         return this.sanitizer.bypassSecurityTrustUrl(`data:image/${mime};base64,${base64}`);
+    //     }
+    //     return 'assets/images/2.jpg'; // תמונת ברירת מחדל
     // }
 
     getPDFUrl(fileName: string): string {

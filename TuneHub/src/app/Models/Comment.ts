@@ -4,6 +4,7 @@ import  Users  from "./Users";
 export default class Comment {
     id?: number;
     likes?: number;
+    isLiked?:boolean
     user?: Users;
     post?: Post;
     content?: string;

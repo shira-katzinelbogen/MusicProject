@@ -51,12 +51,12 @@ export class ProfileMiniAvatarComponent implements OnInit, OnDestroy {
     event.stopPropagation();
     this.usersService.signOut().subscribe({
       next: () => {
-        this.userStateService.clearUser();
+        this.userStateService.logout();
         this.router.navigate(['/home']);
         this.isDropdownOpen = false;
       },
       error: (error) => {
-        this.userStateService.clearUser();
+        this.userStateService.logout();
         this.router.navigate(['/home']);
         this.isDropdownOpen = false;
       }

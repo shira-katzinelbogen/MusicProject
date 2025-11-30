@@ -3,25 +3,37 @@
  *********************************/
 .chat-toggle {
   position: fixed;
-  bottom: 20px;
-  right: 20px;
+  bottom: 35px;
+  right: 50px;
   width: 65px;
   height: 65px;
-  border-radius: 50%;
-  background: #1F2937;
+  /* border-radius: 50%; */
+  /* background: #1F2937; */
   display: flex;
   justify-content: center;
   align-items: center;
   cursor: pointer;
-  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.35);
+  /* box-shadow: 0 6px 14px rgba(0, 0, 0, 0.35); */
   transition: 0.25s ease;
+  z-index: 555555555555555555;
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
+     /* position: relative; */
 }
 .chat-toggle:hover {
-  background: #374151;
+  /* background: #374151; */
+
+    transform: scale(1.05);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+
 }
 .chat-icon {
   width: 55px;
   height: 45px;
+}
+
+.chat-icon {
+  width:120px;
+  height: auto;
 }
 
 /*********************************
@@ -29,8 +41,8 @@
  *********************************/
 .chat-container {
   position: fixed;
-  bottom: 95px;
-  right: 20px;
+  bottom: 115px;
+  right: 50px;
   width: 360px;
   max-height: 520px;
   background: #111827;
@@ -46,6 +58,8 @@
   font-family: 'Segoe UI', Tahoma, sans-serif;
   direction: rtl;
   text-align: right;
+    z-index: 555555555555555555;
+
 }
 .chat-container.open {
   transform: scale(1);
@@ -158,6 +172,7 @@
 .message-row.bot .avatar {
   top: -8px;
   right: -45px;
+  
 }
 
 /* צבע בועה */

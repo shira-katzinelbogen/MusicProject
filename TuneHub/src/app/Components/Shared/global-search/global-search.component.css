@@ -1,0 +1,245 @@
+.search-results-container {
+  position: absolute;
+  top: 60px; /* מתחת להדר */
+  left: 0;
+  right: 0;
+  background: rgb(24, 9, 9);
+  width: 80%;
+  max-height: 350px;
+  overflow-y: auto;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+  border-radius: 6px;
+  padding: 15px;
+  z-index: 23333333333333333333333000;
+}
+.search-results-container {
+position: absolute;
+height: 580px;
+top: 70px; /* מרחק קטן מהתיבה */
+left: 35.4vw;
+width: 31.4vw; /* 40 אחוז רוחב מסך */
+min-width: 300px; /* לפחות 300px */
+background-color: #142848; /* כחול כמו הגבול */
+color: white;
+max-height: 3550px;
+overflow-y: auto; /* גלילה אנכית בלבד */
+overflow-x: hidden; /* בלי גלילה אופקית */
+box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+border-radius: 6px;
+padding: 10px;
+z-index: 10000;
+margin-top: 5px; /* רווח קטן מהתיבה */
+}
+
+/* סגנון פנימי לרשימת התוצאות */
+.search-results-container h4 {
+margin: 5px 0;
+font-size: 14px;
+font-weight: bold;
+}
+
+.search-results-container div {
+padding: 5px 8px;
+border-radius: 4px;
+cursor: pointer;
+transition: background 0.2s ease;
+}
+/* 
+.search-results-container div:hover {
+background-color: rgba(255, 255, 255, 0.1);
+} */
+
+
+.file-preview-iframe {
+  width: 100%;
+  height: 300px;
+  border: none;
+  pointer-events: none;
+  /* לא מאפשר גלילה, רק תצוגה */
+  overflow: hidden;
+  scrollbar-width: none;
+}
+
+.file-preview-iframe::-webkit-scrollbar {
+  display: none;
+}
+
+.artist-mini-img {
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+}
+
+.artist-mini-profile span {
+  font-size: 18px;
+  font-weight: 600;
+}
+.search-results-container {
+  font-family: "Segoe UI", Roboto, Arial, sans-serif;
+  color: #e9eef3;
+  background: #0b0f12;
+  padding: 16px;
+  border-radius: 8px;
+}
+
+/* generic */
+.section { margin-top: 18px; }
+.section-title { color: #9fb7c7; margin-bottom: 8px; font-weight: 600; }
+.results-count { color: #b9d6e6; margin-bottom: 10px; }
+
+.result-item {
+  display: flex;
+  align-items: center;
+  padding: 10px;
+  gap: 12px;
+  border-radius: 10px;
+  margin-bottom: 8px;
+  background: rgba(255,255,255,0.02);
+  position: relative;
+}
+
+/* layout helpers */
+.row { flex-direction: row; }
+.column { flex-direction: column; align-items: flex-start; }
+
+.left-icon { width: 40px; display:flex; align-items:center; justify-content:center; }
+.left-icon .icon { width: 22px; height:22px; fill: #6ed0ff; opacity: 0.95; }
+
+/* avatars */
+.avatar {
+  width: 56px;
+  height: 56px;
+  min-width: 56px;
+  min-height: 56px;
+  border-radius: 50%;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, rgba(255,255,255,0.04), rgba(255,255,255,0.01));
+  box-shadow: 0 2px 6px rgba(0,0,0,0.5);
+}
+
+.avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+/* specific sizes */
+.cover-avatar { width: 72px; height: 72px; min-width:72px; min-height:72px; border-radius: 50%; }
+.profile-avatar { width: 56px; height: 56px; min-width:56px; min-height:56px; }
+
+/* active dot on profile */
+.profile-avatar { position: relative; }
+.profile-avatar .active-dot {
+  position: absolute;
+  right: 4px;
+  bottom: 4px;
+  width: 12px;
+  height: 12px;
+  background: #39ff7a;
+  border-radius: 50%;
+  box-shadow: 0 0 8px rgba(57,255,122,0.6);
+  border: 2px solid rgba(11,15,18,0.6);
+}
+
+/* main content */
+.main-content {
+  flex: 1 1 auto;
+  display: flex;
+  flex-direction: column;
+}
+
+/* title row */
+.title-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 8px;
+  width: 100%;
+}
+
+.title-row.column { flex-direction: column; align-items: flex-start; gap: 4px; }
+
+.title {
+  font-size: 16px;
+  font-weight: 700;
+  color: #e8f7ff;
+  line-height: 1.05;
+}
+
+.title.clickable { cursor: pointer; }
+.title.clickable:hover { text-decoration: underline; }
+
+/* meta (username & time) */
+.meta {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #9fb7c7;
+  font-size: 13px;
+}
+
+.meta.small { font-size: 12px; color: #9bb0bf; margin-top: 4px; }
+
+.username { font-weight: 600; color: #dff6ff; }
+.dot { color: #6b93a0; margin: 0 6px; }
+.time { color: #98b1bd; font-size: 12px; }
+
+/* location under name for musician/teacher */
+.location {
+  color: #a9c1cc;
+  font-size: 13px;
+  margin-top: 2px;
+}
+
+/* right tag */
+.right-tag {
+  margin-left: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  min-width: 88px;
+}
+
+/* neon search tags */
+.search-tag {
+  padding: 6px 10px;
+  border-radius: 999px;
+  font-weight: 700;
+  font-size: 12px;
+  color: #061017;
+  text-transform: uppercase;
+  letter-spacing: 0.6px;
+  box-shadow: 0 4px 18px rgba(0,0,0,0.6);
+}
+
+/* colors per type (neon) */
+.search-tag.posts {
+  background: linear-gradient(90deg,#8ee7ff,#6ed0ff);
+  box-shadow: 0 6px 24px rgba(110,208,255,0.18);
+}
+.search-tag.sheet {
+  background: linear-gradient(90deg,#ffd36e,#ff9f6e);
+  box-shadow: 0 6px 24px rgba(255,159,110,0.16);
+}
+.search-tag.musician {
+  background: linear-gradient(90deg,#b26eff,#7e6eff);
+  box-shadow: 0 6px 24px rgba(126,110,255,0.16);
+}
+.search-tag.teacher {
+  background: linear-gradient(90deg,#6effb2,#6ef2d4);
+  box-shadow: 0 6px 24px rgba(110,242,212,0.12);
+}
+
+/* small excerpt/subline */
+.subline { color: #9fb7c7; font-size: 13px; margin-top: 6px; }
+
+/* responsiveness */
+@media (max-width: 720px) {
+  .right-tag { min-width: 64px; }
+  .cover-avatar { width: 56px; height:56px; }
+  .title { font-size: 15px; }
+}

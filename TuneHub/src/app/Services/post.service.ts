@@ -12,20 +12,20 @@ export class PostService {
 
     public posts: Post[] = [];
     public count = 0;
-    private baseUrl = 'http://localhost:8080/api/post'; 
+    private apiUrl = 'http://localhost:8080/api/post'; 
     constructor(private _httpClient: HttpClient) { }
 
     //Get
     getPostById(id: number): Observable<Post> {
-        return this._httpClient.get<Post>(`http://localhost:8080/api/post/postById/${id}`);
+        return this._httpClient.get<Post>(`${this.apiUrl}/postById/${id}`, { withCredentials: true } );
     }
 
     getPosts(): Observable<Post[]> {
-        return this._httpClient.get<Post[]>(`http://localhost:8080/api/post/posts`);
+        return this._httpClient.get<Post[]>(`${this.apiUrl}/posts`, { withCredentials: true } );
     }
 
     getPostsByUserId(id: number): Observable<Post[]> {
-        return this._httpClient.get<Post[]>(`http://localhost:8080/api/post/postsByUserId/${id}`)
+        return this._httpClient.get<Post[]>(`${this.apiUrl}/postsByUserId/${id}`, { withCredentials: true } );
     }
 
 
@@ -48,7 +48,7 @@ console.log("DTO I'm sending:", dto);
     if (audio) formData.append('audio', audio, audio.name);
     if (video) formData.append('video', video, video.name);
 
-    return this._httpClient.post<PostResponseDTO>(`${this.baseUrl}/uploadPost`, formData,  { withCredentials: true });
+    return this._httpClient.post<PostResponseDTO>(`${this.apiUrl}/uploadPost`, formData,  { withCredentials: true });
 }
 }
 

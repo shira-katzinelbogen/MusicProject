@@ -1,0 +1,133 @@
+<div class="search-results-container">
+
+    <div *ngIf="loading" class="loading">Loading...</div>
+
+    <div *ngIf="results">
+        <h4 class="results-count">{{ resLength }} results found</h4>
+
+        <!-- Posts -->
+        <div *ngIf="results.posts.length" class="section">
+            <h4 class="section-title">Posts ({{ results.posts.length }})</h4>
+
+            <div *ngFor="let post of results.posts" class="result-item row post-item">
+                <!-- left icon -->
+                <div class="left-icon">
+                    <!-- post SVG icon -->
+                    <svg viewBox="0 0 24 24" class="icon">
+                        <path d="M3 3h18v14H7l-4 4V3z" />
+                    </svg>
+                </div>
+
+                <!-- main content -->
+                <div class="main-content">
+
+                    <div class="title-row">
+                        <div class="title" [innerHTML]="post.title | highlight: query"></div>
+                        <div class="right-tag">
+                            <span class="search-tag posts">Posts</span>
+                        </div>
+                    </div>
+
+                    <div class="meta">
+                        <span class="username">{{ post.userName }}</span>
+                        <span class="dot">·</span>
+                        <span class="time">{{ post.dateUploaded | timeAgo }}</span>
+                    </div>
+
+                </div>
+
+
+                <!-- right tag -->
+                <!-- <div class="right-tag"><span class="search-tag posts">Posts</span></div> -->
+            </div>
+        </div>
+
+        <!-- Sheet Music -->
+        <div *ngIf="results.sheetMusic.length" class="section">
+            <h4 class="section-title">Sheet Music ({{ results.sheetMusic.length }})</h4>
+
+            <div *ngFor="let sheet of results.sheetMusic" class="result-item row sheet-item">
+                <!-- cover as circle -->
+                <div class="avatar cover-avatar">
+                    <img [src]="fileUtilsService.getImageUrl(sheet.imageCoverName)" alt="cover">
+                </div>
+
+                <div class="main-content">
+
+                    <div class="title-row">
+                        <div class="title" [innerHTML]="sheet.title | highlight: query"></div>
+                        <div class="right-tag">
+                            <span class="search-tag sheet">Sheet</span>
+                        </div>
+                    </div>
+
+                    <div class="meta small">
+                        <span class="username">{{ sheet.userName }}</span>
+                        <span class="dot">·</span>
+                        <span class="time">{{ sheet.dateUploaded | timeAgo }}</span>
+                    </div>
+
+                </div>
+
+                <!-- <div class="right-tag"><span class="search-tag sheet">Sheet</span></div> -->
+            </div>
+        </div>
+
+        <!-- Musicians -->
+        <div *ngIf="results.musicians.length" class="section">
+            <h4 class="section-title">Musicians ({{ results.musicians.length }})</h4>
+
+            <div *ngFor="let musician of results.musicians" class="result-item row musician-item">
+                <div class="avatar profile-avatar" (click)="navigationService.goToProfile(musician.profile.id)">
+                    <img [src]="fileUtilsService.getImageUrl(musician.profile.imageProfilePath)" alt="profile">
+                    <span class="active-dot"></span>
+                </div>
+
+                <div class="main-content">
+                    <div class="title-row column">
+                        <div class="title clickable" (click)="navigationService.goToProfile(musician.profile.id)"
+                            [innerHTML]="musician.profile.name | highlight: query">
+                        </div>
+
+                        <div class="location">
+                            <span class="city">{{ musician.city }}</span>
+                            <span *ngIf="musician.city && musician.country" class="comma">,</span>
+                            <span class="country">{{ musician.country }}</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="right-tag"><span class="search-tag musician">Musician</span></div>
+            </div>
+        </div>
+
+        <!-- Teachers -->
+        <div *ngIf="results.teachers.length" class="section">
+            <h4 class="section-title">Teachers ({{ results.teachers.length }})</h4>
+
+            <div *ngFor="let teacher of results.teachers" class="result-item row teacher-item">
+                <div class="avatar profile-avatar" (click)="navigationService.goToProfile(teacher.profile.id)">
+                    <img [src]="fileUtilsService.getImageUrl(teacher.profile.imageProfilePath)" alt="profile">
+                </div>
+
+                <div class="main-content">
+                    <div class="title-row column">
+                        <div class="title clickable"
+     (click)="navigationService.goToProfile(teacher.profile.id)"
+     [innerHTML]="teacher.profile.name | highlight: query">
+</div>
+
+                        <div class="location">
+                            <span class="city">{{ teacher.city }}</span>
+                            <span *ngIf="teacher.city && teacher.country" class="comma">,</span>
+                            <span class="country">{{ teacher.country }}</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="right-tag"><span class="search-tag teacher">Teacher</span></div>
+            </div>
+        </div>
+
+    </div>
+</div>

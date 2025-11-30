@@ -25,30 +25,30 @@ export class UsersService {
         return this._httpClient.get<Users>(`http://localhost:8080/api/users/musicianById/${id}`);
     }
 
-updateUser(userId: number, data: Partial<Users>, file?: File): Observable<Users> {
-  const formData = new FormData();
-  
-  // הוספת שדות הטופס
-  formData.append('name', data.name || '');
-  formData.append('email', data.email || '');
-  formData.append('city', data.city || '');
-  formData.append('country', data.country || '');
-  formData.append('description', data.description || '');
+    updateUser(userId: number, data: Partial<Users>, file?: File): Observable<Users> {
+        const formData = new FormData();
 
-  // 💡 חשוב: אם לא נבחר קובץ חדש, אנו צריכים לשלוח את הנתיב הישן 
-  // (מה שמאוחסן ב-imageProfilePath בטופס) כדי שה-Backend יידע לא למחוק אותו
-  if (!file && data.imageProfilePath) {
-     formData.append('imageProfilePath', data.imageProfilePath);
-  }
+        // הוספת שדות הטופס
+        formData.append('name', data.name || '');
+        formData.append('email', data.email || '');
+        formData.append('city', data.city || '');
+        formData.append('country', data.country || '');
+        formData.append('description', data.description || '');
 
-  // הוספת הקובץ אם נבחר חדש
-  if (file) {
-    formData.append('image', file);
-  }
+        // 💡 חשוב: אם לא נבחר קובץ חדש, אנו צריכים לשלוח את הנתיב הישן 
+        // (מה שמאוחסן ב-imageProfilePath בטופס) כדי שה-Backend יידע לא למחוק אותו
+        if (!file && data.imageProfilePath) {
+            formData.append('imageProfilePath', data.imageProfilePath);
+        }
 
-  // נשנה את הכתובת ל־endpoint שיודע לקבל Multipart/FormData (נניח '/update-with-image')
-  return this._httpClient.put<Users>(`${this.apiUrl}/updateUser/${userId}`, formData);
-}
+        // הוספת הקובץ אם נבחר חדש
+        if (file) {
+            formData.append('image', file);
+        }
+
+        // נשנה את הכתובת ל־endpoint שיודע לקבל Multipart/FormData (נניח '/update-with-image')
+        return this._httpClient.put<Users>(`${this.apiUrl}/updateUser/${userId}`, formData);
+    }
 
 
     getUsers(): Observable<Users[]> {
@@ -76,9 +76,9 @@ updateUser(userId: number, data: Partial<Users>, file?: File): Observable<Users>
     }
 
     // הפונקציה החדשה
-getUserProfileDTO(id: number): Observable<Users> {
-  return this._httpClient.get<Users>(`${this.apiUrl}/users/${id}/dto`);
-}
+    getUserProfileDTO(id: number): Observable<Users> {
+        return this._httpClient.get<Users>(`${this.apiUrl}/users/${id}/dto`);
+    }
 
 
     signIn(credentials: any): Observable<any> {
@@ -87,21 +87,28 @@ getUserProfileDTO(id: number): Observable<Users> {
             password: credentials.password
         }, { withCredentials: true });
     }
-    signOut(): Observable<any> {
-        return this._httpClient.post(`${this.apiUrl}/signOut`, {}, {
-            responseType: 'text' // שינוי חשוב: השרת מחזיר מחרוזת גולמית
-        });
+
+signOut(): Observable<any> {
+  return this._httpClient.post(
+    `${this.apiUrl}/signOut`,
+    {}, // גוף הבקשה
+    {
+      responseType: 'text',
+      withCredentials: true
+    }
+  );
+}
+
+
+    // ב-Backend זה צריך לנקות את ה-Token/Session
+
+
+    // -----------------------------------------------------------
+    // 2. דוגמה לפונקציה לעריכת פרופיל (לשימוש עתידי)
+    // -----------------------------------------------------------
+    updateProfile(userId: number, profileData: any): Observable<Users> {
+        return this._httpClient.put<Users>(`${this.apiUrl}/updateUser/${userId}`, profileData);
     }
 
-    
-    // ב-Backend זה צריך לנקות את ה-Token/Session
-  
-  
-  // -----------------------------------------------------------
-  // 2. דוגמה לפונקציה לעריכת פרופיל (לשימוש עתידי)
-  // -----------------------------------------------------------
- updateProfile(userId: number, profileData: any): Observable<Users> {
-    return this._httpClient.put<Users>(`${this.apiUrl}/updateUser/${userId}`, profileData);
-}
 
 }

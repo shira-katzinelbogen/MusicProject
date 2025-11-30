@@ -17,15 +17,15 @@ export class SheetMusicCategoryService {
 
     //Get
     getSheetMusicCategoryById(id: number): Observable<SheetMusicCategory> {
-        return this._httpClient.get<SheetMusicCategory>(`http://localhost:8080/api/sheetMusicCategory/sheetMusicCategoryById/${id}`);
+        return this._httpClient.get<SheetMusicCategory>(`http://localhost:8080/api/sheetMusicCategory/sheetMusicCategoryById/${id}`, { withCredentials: true });
     }
 
     getSheetMusicCategories(): Observable<SheetMusicCategory[]> {
-        return this._httpClient.get<SheetMusicCategory[]>(`http://localhost:8080/api/sheetMusicCategory/sheetMusicCategories`);
+        return this._httpClient.get<SheetMusicCategory[]>(`http://localhost:8080/api/sheetMusicCategory/sheetMusicCategories`, { withCredentials: true });
     }
 
     getSheetsMusicCategoryByName(name: String): Observable<SheetMusicCategory[]> {
-        return this._httpClient.get<SheetMusicCategory[]>(`http://localhost:8080/api/sheetMusic/sheetsMusicCategoryByName/${name}`)
+        return this._httpClient.get<SheetMusicCategory[]>(`http://localhost:8080/api/sheetMusic/sheetsMusicCategoryByName/${name}`, { withCredentials: true })
     }
 
     

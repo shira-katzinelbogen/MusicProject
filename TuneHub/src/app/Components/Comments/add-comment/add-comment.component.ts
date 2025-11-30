@@ -60,7 +60,7 @@ export class AddCommentComponent implements OnInit {
 
     const dto = { content, postId: this.postId };
 
-    this.commentService.uploadComment(dto, currentUser.id)
+    this.commentService.uploadComment(dto)
       .subscribe({
         next: () => {
           this.isUploading = false;
