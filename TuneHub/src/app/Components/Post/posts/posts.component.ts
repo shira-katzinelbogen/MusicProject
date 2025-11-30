@@ -42,9 +42,9 @@ import { AdminService } from '../../../Services/admin.service';
   displayedPosts: Post[] = [];
 
   // 2. הקלט (Input) שמגיע רק מפרופיל המשתמש. מאותחל כריק.
-  @Input() postsFromProfile: Post[] = [];
+  //@Input() postsFromProfile: Post[] = [];
 
-  showFilters: boolean = false; // אפשר להתחיל עם false אם רוצים שיהיה מקופל בהתחלה
+//   showFilters: boolean = false; // אפשר להתחיל עם false אם רוצים שיהיה מקופל בהתחלה
 
 
   newCommentTexts: { [key: number]: string } = {};
