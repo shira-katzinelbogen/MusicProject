@@ -9,7 +9,6 @@ import { AuthInterceptor } from './Models/AuthInterceptor';
 export const appConfig: ApplicationConfig = {
   providers: [
     provideZoneChangeDetection({ eventCoalescing: true }), 
-    
     provideHttpClient(
       withInterceptorsFromDi() // מאפשר שימוש בשיטת הרישום הקלאסית (multi: true)
     ),

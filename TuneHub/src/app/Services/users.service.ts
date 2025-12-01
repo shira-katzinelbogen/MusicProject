@@ -20,8 +20,12 @@ export class UsersService {
 
     //Get
     getUserById(id: number): Observable<Users> {
-        return this._httpClient.get<Users>(`http://localhost:8080/api/users/userById/${id}`);
-    }
+        // הוספת הקונפיגורציה הנכונה
+        return this._httpClient.get<Users>(
+            `http://localhost:8080/api/users/userById/${id}`, 
+            { withCredentials: true } // ⬅️ הפתרון הוא כאן!
+        );
+    }
 
     getMusicianById(id: number): Observable<Users> {
         return this._httpClient.get<Users>(`http://localhost:8080/api/users/musicianById/${id}`);
@@ -48,11 +52,7 @@ updateUser(userId: number, data: Partial<Users>, file?: File): Observable<Users>
   formData.append('description', data.description || '');
 
         // הוספת שדות הטופס
-        formData.append('name', data.name || '');
-        formData.append('email', data.email || '');
-        formData.append('city', data.city || '');
-        formData.append('country', data.country || '');
-        formData.append('description', data.description || '');
+        
 
         // 💡 חשוב: אם לא נבחר קובץ חדש, אנו צריכים לשלוח את הנתיב הישן 
         // (מה שמאוחסן ב-imageProfilePath בטופס) כדי שה-Backend יידע לא למחוק אותו

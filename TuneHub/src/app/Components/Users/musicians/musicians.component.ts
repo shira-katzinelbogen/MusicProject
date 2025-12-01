@@ -82,7 +82,7 @@ ngOnInit(): void {
 
       // שמירה על הלוגיקה הקיימת
       const userTypes: UserType[] = this.user.userTypes || [];
-      this.isMusician = userTypes.includes(UserType.MUSICIANS);
+      this.isMusician = userTypes.includes(UserType.MUSICIAN);
         this.needsProfileUpdate = !this.user.city || !this.user.description;
     },
     error: (err) => console.error('שגיאה בטעינת המשתמש הנוכחי:', err)
@@ -97,7 +97,7 @@ loadCurrentUser(userId: number): void {
 
       // התאמה מלאה ללוגיקה המקורית שלך
 const userTypes: UserType[] = this.user.userTypes || [];
-      this.isMusician = userTypes.includes(UserType.MUSICIANS);
+      this.isMusician = userTypes.includes(UserType.MUSICIAN);
       this.needsProfileUpdate =
         !this.user.city ||
         !this.user.description;
@@ -121,7 +121,7 @@ loadMusicians(): void {
       next: (res) => {
         // ⭐️ התיקון: סינון קשיח ב-Frontend לפי סוג המשתמש הנכון (UserType.MUSICIANS)
         // השתמש ב-userType כפי שהצגת בפלט הקונסול.
-       const onlyMusicians = res.filter(user => (user.userTypes || []).includes(UserType.MUSICIANS));
+       const onlyMusicians = res.filter(user => (user.userTypes || []).includes(UserType.MUSICIAN));
         this.users = onlyMusicians;
         this.originalMusicianList = onlyMusicians;
         
@@ -180,7 +180,7 @@ updateUserTypeToMusician(userId: number): void {
     return;
   }
 
-  this._usersService.updateUserType(userId, UserType.MUSICIANS).subscribe({
+  this._usersService.updateUserType(userId, UserType.MUSICIAN).subscribe({
     next: () => {
       this.isMusician = true;
       alert('ברוך הבא לרשת המוזיקאים!');
@@ -188,8 +188,8 @@ updateUserTypeToMusician(userId: number): void {
       // עדכן את this.user.userType רק אם this.user קיים
       if (this.user) {
                     const userTypes = this.user.userTypes || [];
-                    if (!userTypes.includes(UserType.MUSICIANS)) {
-                        userTypes.push(UserType.MUSICIANS);
+                    if (!userTypes.includes(UserType.MUSICIAN)) {
+                        userTypes.push(UserType.MUSICIAN);
                     }
                     this.user.userTypes = [...userTypes]; // עדכון המערך (אם משתמשים ב-OnPush)
      }

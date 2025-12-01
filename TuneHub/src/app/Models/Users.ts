@@ -17,7 +17,7 @@ export enum UserType {
     MANAGER = 'MANAGER',
     TEACHER = 'TEACHER',
     MUSIC_LOVER = 'MUSIC_LOVER',
-    MUSICIANS = 'MUSICIANS'
+    MUSICIAN = 'MUSICIAN'
 }
 
 // --------------------------------------------------------------------------
