@@ -7,7 +7,7 @@ import { InstrumentsService } from '../../../Services/instrument.service';
 import { SheetMusicCategoryService } from '../../../Services/sheetmusiccategory.service';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { SheetMusicResponseAI, InstrumentResponseDTO, SheetMusicCategoryResponseDTO } from '../../../Models/SheetMusicResponseAI';
-import { DifficultyLevel } from '../../../Models/SheetMusic';
+import SheetMusic, { DifficultyLevel } from '../../../Models/SheetMusic';
 import SheetMusicCategory from '../../../Models/SheetMusicCategory';
 import Instrument from '../../../Models/Instrument';
 import { MatIconModule } from '@angular/material/icon';
@@ -247,6 +247,8 @@ const blob = new Blob([JSON.stringify(uploadDto)], { type: 'application/json' })
 formData.append('data', blob);                       // JSON עם שדות
 
 
+// אם formData מכיל רק את ה-JSON (data: sheetMusic), ואת הקובץ את שולחת בנפרד (file: File).
+// נניח ש-formData הוא למעשה אובייקט ה-sheetMusic
   this.sheetMusicService.uploadSheetMusic(formData).subscribe({
     next: () => {
       this.uploadSuccess.emit();

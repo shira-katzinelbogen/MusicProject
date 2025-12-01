@@ -16,40 +16,40 @@ export class SheetMusicService {
 
  // constructor(private http: HttpClient) {}
 
-uploadSheetMusic(data: sheetMusic, file: File): Observable<sheetMusic> {
-  const formData = new FormData();
+// uploadSheetMusic(data: sheetMusic, file: File): Observable<sheetMusic> {
+//   const formData = new FormData();
 
-  // 1️⃣ הקובץ עצמו
-  formData.append('file', file, file.name);
+//   // 1️⃣ הקובץ עצמו
+//   formData.append('file', file, file.name);
 
-  // 2️⃣ המרת IDs לוודא שהם מספרים
-   const categoryId = data.category
-    ? data.category.map(cat => ({ id: Number(cat.id) })) // הופך [Category1, Category2] ל- [{id: 1}, {id: 2}]
-    : [];  const instrumentIds = data.instruments?.map(instr => ({ id: Number(instr.id) })) || [];
-  const userId = data.user?.id ? Number(data.user.id) : null;
+//   // 2️⃣ המרת IDs לוודא שהם מספרים
+//    const categoryId = data.category
+//     ? data.category.map(cat => ({ id: Number(cat.id) })) // הופך [Category1, Category2] ל- [{id: 1}, {id: 2}]
+//     : [];  const instrumentIds = data.instruments?.map(instr => ({ id: Number(instr.id) })) || [];
+//   const userId = data.user?.id ? Number(data.user.id) : null;
 
-  // 3️⃣ המרת enums ל־string כפי ש־Spring Boot מצפה
-  const levelStr = data.level !== undefined ? DifficultyLevel[data.level] : null;
-  const scaleStr = data.scale !== undefined ? Scale[data.scale] : null;
+//   // 3️⃣ המרת enums ל־string כפי ש־Spring Boot מצפה
+//   const levelStr = data.level !== undefined ? DifficultyLevel[data.level] : null;
+//   const scaleStr = data.scale !== undefined ? Scale[data.scale] : null;
 
-  // 4️⃣ יצירת JSON מדויק עבור ה־DTO
-  const dto = {
-    name: data.name,
-    level: levelStr,
-    scale: scaleStr,
-    category: categoryId !== null ? { id: categoryId } : null,
-    instruments: instrumentIds,
-    user: userId !== null ? { id: userId } : null,
-    fileName: file.name
-  };
+//   // 4️⃣ יצירת JSON מדויק עבור ה־DTO
+//   const dto = {
+//     name: data.name,
+//     level: levelStr,
+//     scale: scaleStr,
+//     category: categoryId !== null ? { id: categoryId } : null,
+//     instruments: instrumentIds,
+//     user: userId !== null ? { id: userId } : null,
+//     fileName: file.name
+//   };
 
-  // ✅ המרה ל־Blob כדי שהשרת יקבל JSON בתוך Multipart
-  const blob = new Blob([JSON.stringify(dto)], { type: 'application/json' });
-  formData.append('data', blob);
+//   // ✅ המרה ל־Blob כדי שהשרת יקבל JSON בתוך Multipart
+//   const blob = new Blob([JSON.stringify(dto)], { type: 'application/json' });
+//   formData.append('data', blob);
 
-  // 5️⃣ שליחת POST (ללא Content-Type מוגדר — Angular עושה את זה לבד)
-  return this.http.post<sheetMusic>(`${this.apiUrl}/uploadSheetMusic`, formData);
-}
+//   // 5️⃣ שליחת POST (ללא Content-Type מוגדר — Angular עושה את זה לבד)
+//   return this.http.post<sheetMusic>(`${this.apiUrl}/uploadSheetMusic`, formData);
+// }
   constructor(private http: HttpClient) { }
 
 
@@ -68,9 +68,9 @@ uploadSheetMusic(data: sheetMusic, file: File): Observable<sheetMusic> {
 
   // 💡 עדכון קל ב-uploadSheetMusic כדי לכלול את שדות המלל החדשים
   // (בהנחה שזה DTO חדש ששולח את הכלים והקטגוריות כרשימה)
-  // uploadSheetMusic(formData: FormData): Observable<sheetMusic> {
-  //   return this.http.post<sheetMusic>(`${this.apiUrl}/uploadSheetMusic`, formData, { withCredentials: true });
-  // }
+  uploadSheetMusic(formData: FormData): Observable<sheetMusic> {
+    return this.http.post<sheetMusic>(`${this.apiUrl}/uploadSheetMusic`, formData, { withCredentials: true });
+  }
 
   getSheetMusicById(id: number): Observable<sheetMusic> {
     return this.http.get<sheetMusic>(`${this.apiUrl}/sheetMusicById/${id}`, { withCredentials: true });

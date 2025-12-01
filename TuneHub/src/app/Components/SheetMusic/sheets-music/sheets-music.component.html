@@ -119,17 +119,17 @@
 
         <!-- CARD CONTENT -->
         <div class="card-content">
-          <h3 class="title" [innerHTML]="sheet.title | highlight: searchText"></h3>
+          <h3 class="title" [innerHTML]="sheet.title! | highlight: searchText"></h3>
           <p class="artist-legacy">
-            <span class="artist-mini-profile" (click)="navigationService.goToProfile(sheet.user.id)">
-              <img [src]="fileUtilsService.getImageUrl(sheet.user.imageProfilePath)" class="artist-mini-img" alt="Profile" />
+            <span class="artist-mini-profile" (click)="navigationService.goToProfile(sheet.user?.id!)">
+              <img [src]="fileUtilsService.getImageUrl(sheet.user?.imageProfilePath)" class="artist-mini-img" alt="Profile" />
               <div class="sheet-rating-container">
                 <span class="rating-value">{{ sheet.rating | number:'1.1-1' }}</span>
                 <div class="stars-wrapper">
                   <mat-icon *ngFor="let starType of getStarArray(sheet.rating)" [ngClass]="{'filled-star': starType !== 'star_border'}">{{ starType }}</mat-icon>
                 </div>
               </div>
-              <span>{{ sheet.user.name }}</span>
+              <span>{{ sheet.user?.name }}</span>
             </span>
           </p>
 

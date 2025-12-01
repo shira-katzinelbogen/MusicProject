@@ -19,7 +19,7 @@ import { debounceTime, distinctUntilChanged, Subject } from 'rxjs';
 @Component({
   selector: 'app-sheets-music',
   standalone: true,
-  imports: [MatIconModule, FormsModule,CommonModule], 
+  imports: [MatIconModule, FormsModule,CommonModule,HighlightPipe,UploadSheetMusicComponent], 
   changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: './sheets-music.component.html',
   styleUrl: './sheets-music.component.css'
