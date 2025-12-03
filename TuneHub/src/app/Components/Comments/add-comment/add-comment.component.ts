@@ -33,9 +33,8 @@ export class AddCommentComponent implements OnInit {
     this.route.paramMap.subscribe(params => {
       const id = params.get('postId');
       if (id) {
-        this.postId = +id; // המרה למספר
+        this.postId = +id; 
       } else {
-        // אם חסר מזהה פוסט, מנווט חזרה
         this.router.navigate(['/posts']);
       }
     });
@@ -65,12 +64,11 @@ export class AddCommentComponent implements OnInit {
         next: () => {
           this.isUploading = false;
           this.uploadSuccess = true;
-          this.commentContent = ''; // איפוס הטופס
+          this.commentContent = ''; 
           
-          // ניווט חזרה לפוסטים לאחר 2 שניות
           setTimeout(() => {
             this.router.navigate(['/posts']); 
-          }, 2000);
+          }, 1000);
         },
         error: (err) => {
           this.isUploading = false;

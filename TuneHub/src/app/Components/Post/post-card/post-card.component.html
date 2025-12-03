@@ -1,0 +1,124 @@
+<div class="post-card">
+
+    <!-- HEADER מוצג רק ב-all -->
+    <ng-container *ngIf="!isProfileView || showOnlyMedia === 'all'">
+        <header class="post-header">
+            <img class="avatar" [src]="fileUtils.getImageUrl(post.user?.imageProfilePath)" alt="avatar">
+
+            <div class="user-info">
+                <span class="username">{{post.user?.name}}</span>
+                <span class="date">{{post.dateUploaded | date:'short'}}</span>
+            </div>
+
+            <div class="rating-stars">
+        <mat-icon *ngFor="let star of getStarArray(post.rating)" [class.filled-star]="star === 'star' || star === 'star_half'">
+            {{ star }}
+        </mat-icon>
+    </div>
+            <ng-container *ngIf="!isAdmin">
+                <button class="action-btn report-btn" (click)="onReportPost(post.id!)">
+                    <mat-icon>report</mat-icon> דווח
+                </button>
+            </ng-container>
+
+            <div *ngIf="isAdmin" class="post-actions-wrapper">
+
+                <button class="action-btn more-actions-btn" (click)="toggleAdminActions(post.id!)">
+                    <mat-icon>more_horiz</mat-icon>
+                </button>
+
+                <div *ngIf="showAdminActions[post.id!]" class="admin-actions-dropdown">
+
+                    <button class="action-btn" (click)="onSendWarningNotification(post.id!, post.user!.id!)">
+                        <mat-icon>campaign</mat-icon> Send Warning
+                    </button>
+
+                    <button class="action-btn delete-btn"
+                        (click)="onDeletePostWithNotification(post.id!, post.user!.id!)">
+                        <mat-icon>delete_forever</mat-icon> Delete & Notify
+                    </button>
+
+                </div>
+            </div>
+
+        </header>
+    </ng-container>
+
+    <div class="post-body">
+
+        <!-- TITLE + TEXT מוצגים רק ב-all -->
+        <ng-container *ngIf="!isProfileView || showOnlyMedia === 'all'">
+            <h3 class="post-title" [innerHTML]="post.title! | highlight: searchText!">{{post.title}}</h3>
+            <p class="post-content">{{post.content}}</p>
+        </ng-container>
+
+        <div class="post-media">
+
+            <!-- IMAGES רק ב-all -->
+            <ng-container *ngIf="!isProfileView || showOnlyMedia === 'all'">
+                <div *ngFor="let image of post.imagesBase64" class="image-container">
+                    <img [src]="fileUtils.getImageUrl(image)" class="post-image">
+                </div>
+            </ng-container>
+
+            <!-- AUDIO מוצג אם audio או all -->
+            <div *ngIf="post.audioPath && (showOnlyMedia === 'all' || showOnlyMedia === 'audio')"
+                class="media-track-wrapper">
+
+                <h3 *ngIf="showOnlyMedia !== 'all'" class="media-title">{{post.title}}</h3>
+
+                <audio controls [src]="getSafeMediaUrl('audio/' + post.audioPath)"></audio>
+            </div>
+
+            <!-- VIDEO מוצג אם video או all -->
+            <div *ngIf="post.videoPath && (showOnlyMedia === 'all' || showOnlyMedia === 'video')"
+                class="media-video-wrapper">
+
+                <h3 *ngIf="showOnlyMedia !== 'all'" class="media-title">{{post.title}}</h3>
+
+                <video controls [src]="getSafeMediaUrl('video/' + post.videoPath)"></video>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- FOOTER + לייקים מוצגים רק ב-all -->
+    <ng-container *ngIf="!isProfileView || showOnlyMedia === 'all'">
+        <footer class="post-footer">
+
+            <span class="stat-item likes" (click)="toggleLike(post)">
+                <mat-icon style="color: #f0ff6c;" [ngClass]="post.isLiked ? 'liked' : 'not-liked'">
+                    {{ post.isLiked ? 'thumb_up' : 'thumb_up_off_alt' }}
+                </mat-icon>
+                <span class="like-count">{{ post.likes }}</span>
+            </span>
+
+            <span class="stat-item hearts" (click)="toggleFavorite(post)">
+                <mat-icon style="color: #f85e5e;" [ngClass]="post.isFavorite ? 'liked' : 'not-liked'">
+                    {{ post.isFavorite ? 'favorite' : 'favorite_border' }}
+                </mat-icon>
+
+                <span class="hearts-count">{{ post.hearts }}</span>
+            </span>
+
+        </footer>
+        <hr>
+    </ng-container>
+
+    <!-- COMMENTS מוצגים רק ב-all -->
+    <ng-container *ngIf="!isProfileView || showOnlyMedia === 'all'">
+        <div class="comments-actions-row">
+            <button class="view-comments-btn" (click)="toggleComments(post.id!)">
+                {{ showComments[post.id!] ? 'סגור תגובות' : 'צפייה בתגובות' }}
+            </button>
+            <button class="add-comment-page-btn" (click)="navigateToAddComment(post.id!)">
+                הוסף תגובה <mat-icon>add_comment</mat-icon>
+            </button>
+        </div>
+
+        <div class="comments-wrapper" *ngIf="showComments[post.id!]" [class.open]="showComments[post.id!]">
+            <app-comment [postId]="post.id!"></app-comment>
+        </div>
+    </ng-container>
+
+</div>

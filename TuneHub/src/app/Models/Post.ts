@@ -18,7 +18,8 @@ export default class Post {
     isLiked?: boolean;
     isFavorite?: boolean;
     safeImages?: string[]; // ודא שאתחלת את המערך
-
+    totalPages!: number;
+    currentPage!: number;
 
 }
 

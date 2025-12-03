@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, ChangeDetectorRef } from '@angular/core';
 import { NotificationResponseDTO, ENotificationCategory } from '../../../Models/Notification';
 import { NotificationService } from '../../../Services/notification.service';
 import { InteractionService } from '../../../Services/interaction.service';
@@ -29,7 +29,18 @@ export class NotificationsComponent implements OnInit, OnDestroy {
   hasMore = true;
   unreadOnly = false;
 
+  thisWeekCount: number = 0;
+  newFollowersCount: number = 0;
+  interactionsCount: number = 0;
+
   activeCategory: ENotificationCategory | 'ALL' = 'ALL';
+
+  private interactionTypes = [
+    ENotificationCategory.FOLLOW_UPDATES,
+    ENotificationCategory.LIKES_FAVORITES,
+    ENotificationCategory.COMMENTS,
+    ENotificationCategory.FOLLOW_REQUESTS
+  ];
 
   categories: { key: ENotificationCategory | 'ALL'; label: string; unreadCount: number }[] = [
     { key: 'ALL', label: 'All', unreadCount: 0 },
@@ -40,12 +51,12 @@ export class NotificationsComponent implements OnInit, OnDestroy {
     { key: ENotificationCategory.FOLLOW_REQUESTS, label: 'Follow Requests', unreadCount: 0 },
     { key: ENotificationCategory.ADMIN, label: 'Admin Messages', unreadCount: 0 }
   ];
-;
 
   constructor(
-    private _notificationService: NotificationService,  private _interactionService: InteractionService
-  ) {}
-
+    private _notificationService: NotificationService,
+    private _interactionService: InteractionService,
+    private cdr: ChangeDetectorRef
+  ) { }
 
   ngOnInit(): void {
     this.loadNotifications();
@@ -58,13 +69,10 @@ export class NotificationsComponent implements OnInit, OnDestroy {
     });
   }
 
-
   ngOnDestroy(): void {
     this.unreadSub?.unsubscribe();
     if (this.stompClient) this.stompClient.deactivate();
   }
-
-  
 
   private initWebSocketConnection(): void {
     const socket = new SockJS('http://localhost:8080/ws-notifications');
@@ -75,30 +83,63 @@ export class NotificationsComponent implements OnInit, OnDestroy {
     });
 
     this.stompClient.onConnect = () => {
+
+      // 🔔 Notification received
       this.stompClient?.subscribe('/user/queue/notifications', (msg: IMessage) => {
+
         const notification: NotificationResponseDTO = JSON.parse(msg.body);
         this.notifications.unshift(notification);
+
         this._notificationService.incrementUnreadCount();
+
         this.applyFilter();
+        this.calculateUnread();
+        this.calculateThisWeek();
+        this.calculateNewFollowers();
+        this.calculateInteractions();
       });
 
+      // 📌 Mark all as read
       this.stompClient?.subscribe('/user/queue/notifications/mark-all-read', () => {
-        this.notifications.forEach(n => n.isRead = true);
+        this.notifications = this.notifications.map(n => ({
+          ...n,
+          isRead: true
+        }));
+
         this._notificationService.resetUnreadCount();
+
         this.applyFilter();
+        this.calculateUnread();
+        this.calculateThisWeek();
+        this.calculateNewFollowers();
+        this.calculateInteractions();
+
+        this.cdr.detectChanges();
       });
     };
 
     this.stompClient.activate();
   }
 
-
   markAsRead(notification: NotificationResponseDTO) {
     if (!notification.isRead) {
-      this._notificationService.markAsRead(notification.id).subscribe(() => {
-        notification.isRead = true;
-        this._notificationService.decrementUnreadCount();
-        this.applyFilter();
+      this._notificationService.markAsRead(notification.id).subscribe({
+        next: () => {
+          this.notifications = this.notifications.map(n =>
+            n.id === notification.id ? { ...n, isRead: true } : n
+          );
+
+          this._notificationService.decrementUnreadCount();
+
+          this.applyFilter();
+          this.calculateUnread();
+          this.calculateThisWeek();
+          this.calculateNewFollowers();
+          this.calculateInteractions();
+
+          this.cdr.detectChanges();
+        },
+        error: err => console.error('Failed to mark as read:', err)
       });
     }
   }
@@ -107,82 +148,92 @@ export class NotificationsComponent implements OnInit, OnDestroy {
   markAllAsRead(): void {
     this._notificationService.markAllAsRead().subscribe({
       next: () => {
-        this.notifications.forEach(n => n.isRead = true);
+        this.notifications = this.notifications.map(n => ({
+          ...n,
+          isRead: true
+        }));
+
         this._notificationService.resetUnreadCount();
+
         this.applyFilter();
+        this.calculateUnread();
+        this.calculateThisWeek();
+        this.calculateNewFollowers();
+        this.calculateInteractions();
+
+        this.refreshCategoryUnreadCounters();
+
+        this.cdr.detectChanges();
       },
       error: err => console.error('Failed to mark all as read', err)
     });
   }
 
-
   deleteNotification(id: number) {
     this._notificationService.deleteNotification(id).subscribe(() => {
       this.notifications = this.notifications.filter(n => n.id !== id);
       this.applyFilter();
+
+      this.calculateUnread();
+      this.calculateThisWeek();
+      this.calculateNewFollowers();
+      this.calculateInteractions();
     });
   }
-
 
   approveFollow(followerId: number) {
     this._interactionService.approveFollow(followerId).subscribe();
   }
-refreshCategoryUnreadCounters() {
-  this._notificationService.getUnreadCountByCategory().subscribe(unreadMap => {
-    this.categories.forEach(c => {
-      c.unreadCount = unreadMap[c.key as string] ?? 0;
+
+  refreshCategoryUnreadCounters() {
+    this._notificationService.getUnreadCountByCategory().subscribe(unreadMap => {
+      this.categories.forEach(c => {
+        c.unreadCount = unreadMap[c.key as string] ?? 0;
+      });
     });
-  });
-}
-
-
-  
-
-
-loadNotifications(reset = false) {
-  if (reset) {
-    this.page = 0;
-    this.notifications = [];
-    this.hasMore = true;
   }
 
-  let request$;
+  loadNotifications(reset = false) {
+    if (reset) {
+      this.notifications = [];
+      this.hasMore = true;
+    }
 
-  if (this.unreadOnly) {
-    request$ = this._notificationService.getUnreadByCategory(
-      this.page,
-      this.size,
-      this.activeCategory === 'ALL' ? undefined  : this.activeCategory
-    );
+    let request$;
 
-    
-  } else {
-    request$ = this._notificationService.getAllByCategory(
-      this.page,
-      this.size,
-      this.activeCategory === 'ALL' ? undefined  : this.activeCategory
-    );
+    if (this.unreadOnly) {
+      request$ = this._notificationService.getUnreadByCategory(
+        this.activeCategory === 'ALL' ? undefined : this.activeCategory
+      );
+    } else {
+      request$ = this._notificationService.getAllByCategory(
+        this.activeCategory === 'ALL' ? undefined : this.activeCategory
+      );
+    }
+
+    request$.subscribe({
+      next: (pageData) => {
+        this.notifications.push(...pageData.content);
+        if (pageData.last) this.hasMore = false;
+
+        this.applyFilter();
+        this.calculateUnread();
+        this.calculateThisWeek();
+        this.calculateNewFollowers();
+        this.calculateInteractions();
+      },
+      error: err => console.error('Failed to load notifications:', err)
+    });
   }
-
-  request$.subscribe(pageData => {
-    this.notifications.push(...pageData.content);
-    if (pageData.last) this.hasMore = false;
-    this.applyFilter();
-  });
-}
-
-
 
   private loadUnreadCount(): void {
     this._notificationService.loadUnreadCount();
   }
 
-
   setActiveCategory(cat: ENotificationCategory | 'ALL') {
     this.activeCategory = cat;
     this.loadNotifications(true);
   }
-
 
   getIconForType(type: ENotificationCategory): string {
     switch (type) {
@@ -195,40 +246,64 @@ loadNotifications(reset = false) {
     }
   }
 
-
   loadMore() {
     this.page++;
     this.loadNotifications();
   }
-
 
   toggleUnread() {
     this.unreadOnly = !this.unreadOnly;
     this.loadNotifications(true);
   }
 
-
   private applyFilter(): void {
-    if (this.activeCategory === 'ALL') {
-      const order: ENotificationCategory[] = [
-        ENotificationCategory.FOLLOW_UPDATES,
-        ENotificationCategory.LIKES_FAVORITES,
-        ENotificationCategory.COMMENTS,
-        ENotificationCategory.APPROVED_FOLLOWS,
-        ENotificationCategory.FOLLOW_REQUESTS,
-        ENotificationCategory.ADMIN
-      ];
+    let tempNotifications = this.notifications.slice();
 
-      this.filteredNotifications = this.notifications
-        .slice()
-        .sort((a, b) => order.indexOf(a.type) - order.indexOf(b.type));
-
-    } else {
-      this.filteredNotifications = this.notifications.filter(
-        n => n.type === this.activeCategory
-      );
+    if (this.unreadOnly) {
+      tempNotifications = tempNotifications.filter(n => !n.isRead);
     }
+
+    this.filteredNotifications = tempNotifications;
+  }
+
+  shouldShowActions(notification: any): boolean {
+    if (!notification.isRead) return true;
+
+    const specialTypes = ['ADMIN', 'COMMENTS', 'FOLLOW_REQUESTS'];
+    if (specialTypes.includes(notification.type)) return true;
+
+    return false;
+  }
+
+  private calculateUnread() {
+    this.unreadCount = this.notifications.filter(n => !n.isRead).length;
+  }
+
+  private calculateThisWeek() {
+    const now = new Date();
+
+    this.thisWeekCount = this.notifications.filter(n => {
+      const created = new Date(n.createdAt);
+      if (isNaN(created.getTime())) return false; // אם createdAt לא תאריך תקין
+
+      const diffMs = now.getTime() - created.getTime();
+      const diffDays = diffMs / (1000 * 60 * 60 * 24);
+
+      return diffDays <= 7; // בתוך 7 ימים
+    }).length;
+  }
+
+
+  private calculateNewFollowers() {
+    this.newFollowersCount = this.notifications.filter(
+      n => n.type === ENotificationCategory.FOLLOW_UPDATES
+    ).length;
+  }
+
+  private calculateInteractions() {
+    this.interactionsCount = this.notifications.filter(
+      n => this.interactionTypes.includes(n.type)
+    ).length;
   }
 
 }
-

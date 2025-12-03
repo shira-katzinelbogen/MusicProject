@@ -1,44 +1,88 @@
 <div class="overlay" [class.open]="isOpen">
   <div class="panel-container">
     <div class="panel-header">
-      <h2>My Favorites</h2>
+      <mat-icon class="header-icon">favorite</mat-icon>
+      <div class="header-text">
+        <h2>My Favorites</h2>
+        <p class="subtitle">Your saved music content</p>
+      </div>
       <button class="close-btn" (click)="isOpen = false">
         <mat-icon>close</mat-icon>
       </button>
     </div>
 
-    <div class="search-container" onclick="document.getElementById('qf').focus()">
+    <div class="search-container">
       <mat-icon>search</mat-icon>
-
-      <input id="qf" class="search-input" type="search" placeholder="Search musicians, tracks, lessons..."
-        aria-label="search" />
+      <input id="qf"
+             class="search-input"
+             type="search"
+             placeholder="Search your favorites..."
+             [(ngModel)]="searchText"
+             (input)="onSearch($event)"
+             aria-label="search" />
     </div>
 
     <div class="category-buttons">
-      <button 
-        *ngFor="let cat of categories" 
-        [class.active]="selectedCategory === cat"
-        (click)="selectCategory(cat)"
-      >
+      <button *ngFor="let cat of categories; let i = index"
+              [class.active]="selectedCategory === cat"
+              (click)="selectCategory(cat)">
+        <mat-icon>{{ getCategoryIcon(cat) }}</mat-icon>
         {{ cat }}
       </button>
     </div>
 
     <hr>
-    
-    <div class="favorites-content">
-      <h3>Results for {{ selectedCategory }}</h3>
-      <div *ngIf="selectedCategory === 'Posts'">
-        <p>List of favorite Posts...</p>
-      </div>
-      <div *ngIf="selectedCategory === 'Sheet Music'">
-        <p>List of favorite Sheet Music...</p>
-      </div>
-      <div *ngIf="selectedCategory === 'Teachers'">
-        <p>List of favorite Teachers...</p>
-      </div>
-      <div *ngIf="selectedCategory === 'Musicians'">
-        <p>List of favorite Musicians...</p>
+
+    <div class="favorites-scroll-container">
+      <div class="favorites-content">
+        <div *ngIf="isLoading" class="loading-indicator">
+          <p>Loading favorites...</p>
+        </div>
+
+        <div *ngIf="!isLoading && currentFavorites.length > 0" class="favorites-list">
+          <div *ngFor="let item of currentFavorites" class="favorite-item">
+            <div class="item-info">
+              <strong *ngIf="item.targetType === 'POST' || item.targetType === 'USER'"
+                      class="item-title">
+                {{ getFavoriteName(item) }}
+              </strong>
+
+              <strong *ngIf="item.targetType === 'SHEET_MUSIC'" class="item-title">
+                {{ getFavoriteName(item) }}
+              </strong>
+
+              <p *ngIf="item.targetType === 'POST'" class="item-snippet">
+                {{ getPostContentSnippet(item) }}
+              </p>
+
+              <span *ngIf="item.targetType === 'SHEET_MUSIC'" class="item-composer">
+                {{ getComposerOrActor(item) }}
+              </span>
+
+              <div class="likes-meta" *ngIf="item.details?.likes">
+                <span class="likes-count">{{ item.details.likes }} likes</span>
+              </div>
+            </div>
+
+            <div class="item-actions">
+              <span *ngIf="item.targetType === 'SHEET_MUSIC' && getLevel(item)"
+                    class="item-level"
+                    [ngClass]="{
+                      'level-advanced': getLevel(item) === 'Advanced',
+                      'level-intermediate': getLevel(item) === 'Intermediate',
+                      'level-beginner': getLevel(item) === 'Beginner'
+                    }">
+                {{ getLevel(item) }}
+              </span>
+
+              <mat-icon class="favorite-icon">favorite</mat-icon>
+            </div>
+          </div>
+        </div>
+
+        <div *ngIf="!isLoading && currentFavorites.length === 0" class="no-results">
+          <p>No favorite {{ selectedCategory | lowercase }} found.</p>
+        </div>
       </div>
     </div>
   </div>

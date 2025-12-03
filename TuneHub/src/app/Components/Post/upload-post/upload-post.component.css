@@ -1,16 +1,23 @@
 .post-card {
   background-color: #111827;
   border: 1px solid #374151;
+  background: #1e1e2f;
+  margin: auto;
+  margin-top: 100px;
   border-radius: 12px;
   padding: 15px;
   color: #F9FAFB;
   width: 100%;
   max-width: 500px;
-  margin: auto;
   box-shadow: 0 0 8px rgba(0, 0, 0, 0.25);
 }
 
-/* Header */
+.post-card .post-header,
+.post-card .post-body,
+.post-card .post-footer {
+  margin-bottom: 10px;
+}
+
 .post-header {
   display: flex;
   align-items: center;
@@ -40,7 +47,6 @@
   font-size: 0.8rem;
 }
 
-/* Text Fields */
 .post-text label {
   display: block;
   font-weight: bold;
@@ -68,7 +74,6 @@
   background-color: #111827;
 }
 
-/* Upload Section */
 .media-inputs h3 {
   color: #E5E7EB;
   font-weight: bold;
@@ -77,17 +82,19 @@
 }
 
 .upload-zone {
-  position: relative; /* כדי שהמדיה תופיע מעל הקווקו */
+  position: relative;
   border: 2px dashed #6B7280;
   border-radius: 10px;
   padding: 15px;
   text-align: center;
   color: #D1D5DB;
   background-color: #1F2937;
+    background: #2a2a3d;
+
   cursor: pointer;
   transition: all 0.3s ease;
   margin-bottom: 12px;
-  overflow: hidden; /* חשוב למדיה */
+  overflow: hidden;
 }
 
 .upload-zone:hover {
@@ -109,7 +116,6 @@
   font-size: 13px;
 }
 
-/* Media Preview */
 .upload-zone img,
 .upload-zone video {
   position: absolute;
@@ -122,7 +128,6 @@
   z-index: 1;
 }
 
-/* Button */
 .publish-btn {
   background-color: #2563EB;
   color: #F9FAFB;
@@ -144,7 +149,6 @@
   cursor: not-allowed;
 }
 
-/* Status messages */
 .upload-status p {
   margin-top: 8px;
   font-size: 0.85rem;
@@ -157,38 +161,33 @@
 .error {
   color: salmon;
 }
-/* שינוי ה-upload-zone כדי שיתאים ל-Flex Layout (לריכוז נגני מדיה) */
+
 .upload-zone {
-    /* מאפשר למרכיבים בתוכו להיות ממוקמים */
     display: flex;
     align-items: center;
     justify-content: center;
-    height: 150px; /* קביעת גובה כדי שנגן הוידאו או התמונות יופיעו בגודל סביר */
-    padding: 0; /* הסרת padding פנימי כדי למקסם את שטח המדיה */
-    /* ... שאר הסגנונות הקיימים ... */
+    height: 150px;
+    padding: 0;
 }
 
-/* קונטיינר לתמונות מרובות */
 .image-previews-container {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(80px, 1fr)); /* מציג עד 3-4 תמונות בשורה */
+    grid-template-columns: repeat(auto-fit, minmax(80px, 1fr));
     gap: 8px;
     width: 100%;
     height: 100%;
-    overflow-y: auto; /* מאפשר גלילה אנכית אם יש הרבה תמונות */
+    overflow-y: auto;
     padding: 10px;
 }
 
-/* סגנון התמונה המקדימה בתוך הקונטיינר */
 .preview-image {
     width: 100%;
-    height: 100px; /* גובה קבוע לכל תמונה מקדימה */
+    height: 100px;
     object-fit: cover;
     border-radius: 6px;
     border: 1px solid #4B5563;
 }
 
-/* סגנון לנגן אודיו */
 .preview-audio {
     width: 90%; 
     height: 40px; 
@@ -196,10 +195,69 @@
     margin: auto;
 }
 
-/* סגנון לנגן וידאו */
 .preview-video {
     width: 100%;
     max-height: 100%; 
-    object-fit: contain; /* מציג את הוידאו במלואו בתוך התיבה */
+    object-fit: contain;
     border-radius: 8px;
+}
+.spacer {
+    background: #2a2a3d;
+
+background-color: #1e1e2f;
+}
+body, html {
+  background-color: #1e1e2f !important;
+  color: #fff;
+  margin: 0;
+  padding: 0;
+  font-family: Arial, sans-serif;
+}
+
+.container {
+  background-color: #1e1e2f !important;
+  min-height: 100vh;
+  padding: 20px;
+}
+.upload-post-container {
+  background-color: rgba(0, 0, 0, 0.9) !important;
+  min-height: 100vh;
+  padding: 20px;
+}
+.upload-post-container::before {
+  content: "";
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  background: radial-gradient(circle at top left, rgba(70, 50, 200, 0.15), transparent 70%),
+              radial-gradient(circle at bottom right, rgba(100, 50, 150, 0.15), transparent 70%);
+  pointer-events: none;
+}
+
+.publish-btn {
+  background-image: linear-gradient(to right, #6a30c5, #9b59b6);
+  color: #F9FAFB;
+  border: none;
+  padding: 8px 14px;
+  border-radius: 6px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-size: 0.9rem;
+  box-shadow: 0 4px 10px rgba(106, 48, 197, 0.4);
+}
+
+.publish-btn:hover {
+  background-image: linear-gradient(to right, #7a40d5, #a569c7);
+  transform: translateY(-1px);
+  box-shadow: 0 6px 15px rgba(106, 48, 197, 0.6);
+}
+
+.publish-btn:disabled {
+  background-image: none;
+  background-color: #374151;
+  color: #9CA3AF;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
 }

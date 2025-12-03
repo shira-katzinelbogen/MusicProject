@@ -10,25 +10,20 @@ import { map } from 'rxjs/operators';
     providedIn: 'root'
 })
 export class NotificationService {
-    private apiUrl = 'http://localhost:8080/api/notification'; // שנה לכתובת ה-API שלך
+    private apiUrl = 'http://localhost:8080/api/notification';
     private unreadCountSubject = new BehaviorSubject<number>(0);
     unreadCount$ = this.unreadCountSubject.asObservable();
 
     constructor(private http: HttpClient) { }
 
-    // טוען את הספירה מהשרת ומעדכן את ה-Subject
     loadUnreadCount(): void {
         this.getUnreadCount().subscribe(count => this.unreadCountSubject.next(count));
     }
 
-    // פונקציה קיימת שלך
-
-    // קריאה כשמקבלים התראה חדשה מה-WebSocket
     incrementUnreadCount() {
         this.unreadCountSubject.next(this.unreadCountSubject.value + 1);
     }
 
-    // קריאה כשמסמנים התראות כנקראות
     resetUnreadCount() {
         this.unreadCountSubject.next(0);
     }
@@ -73,12 +68,6 @@ export class NotificationService {
         });
     }
 
-    // getUnreadByCategory() {
-    //     return this.http.get<{ [key: string]: number }>(
-    //         `${this.apiUrl}/unreadByType`,
-    //         { withCredentials: true }
-    //     );
-    // }
     decrementUnreadCount() {
         const currentCount = this.unreadCountSubject.value;
         if (currentCount > 0) {
@@ -86,10 +75,8 @@ export class NotificationService {
         }
     }
 
-    getAllByCategory(page: number, size: number, category?: string) {
+    getAllByCategory(category?: string) {
         let params = new HttpParams()
-            // .set("page", page)
-            // .set("size", size);
 
         if (category) params = params.set("category", category);
 
@@ -99,10 +86,8 @@ export class NotificationService {
         );
     }
 
-    getUnreadByCategory(page: number, size: number, category?: string) {
+    getUnreadByCategory(category?: string) {
         let params = new HttpParams()
-            // .set("page", page)
-            // .set("size", size);
 
         if (category) params = params.set("category", category);
 

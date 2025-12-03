@@ -1,17 +1,16 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
+import { Favorite, FavoriteType } from '../Models/favorite';
+import { HttpClient } from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root'
 })
 export class FavoritesService {
-  // BehaviorSubject מאפשר לשמור את המצב הנוכחי
-  private favoritesOpen = new BehaviorSubject<boolean>(false); 
-  
-  // Observable לקריאה על ידי קומפוננטות אחרות
-  isFavoritesOpen$: Observable<boolean> = this.favoritesOpen.asObservable();
+  constructor(private _httpClient: HttpClient) { }
+  private favoritesOpen = new BehaviorSubject<boolean>(false);
 
-  constructor() { }
+  isFavoritesOpen$: Observable<boolean> = this.favoritesOpen.asObservable();
 
   openFavorites(): void {
     this.favoritesOpen.next(true);
@@ -24,4 +23,7 @@ export class FavoritesService {
   toggleFavorites(): void {
     this.favoritesOpen.next(!this.favoritesOpen.value);
   }
+
+
+
 }

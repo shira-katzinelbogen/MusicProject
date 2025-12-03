@@ -42,6 +42,8 @@ export class CommentService {
     console.log(`${this.apiUrl}/byPost/${postId}/paged?page=${page}&size=${size}`);
 
     return this.http.get<any>(`${this.apiUrl}/byPost/${postId}/paged`, { withCredentials: true });
+
+    
       //  { params });
   }
     //Get

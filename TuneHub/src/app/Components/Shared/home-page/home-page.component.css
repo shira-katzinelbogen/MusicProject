@@ -234,3 +234,115 @@ html {
   gap: 2rem;
   flex-wrap: wrap;
 }
+
+/* ----------------------------------------------------
+    6. עיצוב כרטיס המשימה (מתחת ל-Hero Section)
+    ---------------------------------------------------- */
+.mission-card-container {
+    /* מיקום וגודל */
+    max-width: 900px; /* תואם לרוחב ה-main-content */
+    /* margin: 40px auto;  */
+    padding: 40px 30px;
+    margin-left: 290px;
+    margin-top: 40px; /* שמירה על מרווח עליון (כדי שלא יזוז) */
+    /* מראה הכרטיס */
+    background-color: #12121e; /* 🚨 רקע כהה וסגול עמום יותר */
+    border-radius: 16px; 
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+    text-align: center;
+}
+
+.mission-card-container h2 {
+    font-size: 24px;
+    font-weight: 700;
+    color: #ffffff;
+    margin-bottom: 10px;
+}
+
+.mission-card-container p {
+    font-size: 15px;
+    color: #b0b0c0;
+    max-width: 600px;
+    margin: 0 auto 25px auto;
+}
+
+/* ----------------------------------------------------
+    6.1. כפתורי הכרטיס (Mission Buttons)
+    ---------------------------------------------------- */
+.mission-buttons-row {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    /* margin-bottom: 40px; */
+}
+
+.mission-buttons-row button {
+    padding: 10px 20px;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+    font-size: 15px;
+    transition: all 0.2s;
+}
+
+.primary-btn {
+    background: linear-gradient(45deg, #a033e0, #5c00b8); 
+    color: #ffffff;
+    border: none;
+    box-shadow: 0 3px 10px rgba(160, 51, 224, 0.3);
+}
+
+.secondary-btn {
+    background-color: transparent;
+    color: #a033e0; 
+    border: 2px solid #a033e0;
+}
+
+/* ----------------------------------------------------
+    6.2. שורת התכונות (Features Row)
+    ---------------------------------------------------- */
+.mission-features-row {
+    display: flex;
+    justify-content: space-around;
+    gap: 30px;
+    margin-top: 20px;
+}
+
+.feature-item {
+    flex: 1; /* מאפשר לכל עמודה להיות ברוחב שווה */
+    text-align: center;
+}
+
+/* עיצוב האייקונים (mat-icon) */
+.feature-icon {
+    font-size: 40px;
+    height: 40px;
+    width: 40px;
+    color: #a033e0; /* סגול בולט */
+    /* עיצוב הרקע העגול (כמו בתמונה) */
+    background-color: rgba(160, 51, 224, 0.15); 
+    border-radius: 12px; /* 🚨 הפינות העגולות של הריבוע */
+    padding: 10px;
+    margin-bottom: 10px;
+    display: inline-block; /* כדי שהריבוע יעבוד */
+}
+
+.feature-item h3 {
+    font-size: 16px;
+    font-weight: 600;
+    color: #ffffff;
+    margin: 0 0 5px 0;
+}
+
+.feature-item p {
+    font-size: 13px;
+    color: #b0b0c0;
+    margin: 0;
+}
+.home-page-container {
+   background-color: #0A0A16;
+}
+.footer {
+   height: 100px;
+   background-color: #0A0A16;
+}

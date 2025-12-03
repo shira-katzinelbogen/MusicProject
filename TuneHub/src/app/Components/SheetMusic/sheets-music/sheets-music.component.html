@@ -1,6 +1,5 @@
 <div class="container">
 
-  <!-- HEADER -->
   <header class="header">
     <div class="cover-wrapper">
       <img src="./assets/images/sheets_music.webp" class="cover-image" />
@@ -18,22 +17,17 @@
     </div>
   </header>
 
-  <!-- SEARCH & FILTERS -->
   <section class="search-bar">
     <div class="search-input-group">
       <span class="search-icon">🔍</span>
-      <input type="text" placeholder="Search musicians by name, instrument, or skills..." [(ngModel)]="searchText"/>
+      <input type="text" placeholder="Search musicians by name, instrument, or skills..." [(ngModel)]="searchText" (ngModelChange)="onSearchChange($event)"/>
     </div>
-
-    <select class="dropdown"><option>All</option></select>
-    <select class="dropdown"><option>All</option></select>
 
     <button class="filters-btn" (click)="toggleFilters()">
       Filters <span class="arrow-icon">{{ showFilters ? '∧' : '∨' }}</span>
     </button>
   </section>
 
-  <!-- ADDITIONAL FILTERS -->
   <section class="additional-filters" *ngIf="showFilters">
     <div class="filter-group">
       <label>כלי נגינה</label>
@@ -41,14 +35,12 @@
         <option *ngFor="let instrument of instruments" [value]="instrument">{{ instrument }}</option>
       </select>
     </div>
-
     <div class="filter-group">
       <label>סולם</label>
       <select class="dropdown" [(ngModel)]="selectedScale" (change)="applyFilters()">
         <option *ngFor="let scale of scales" [value]="scale">{{ scale }}</option>
       </select>
     </div>
-
     <div class="filter-group">
       <label>רמת קושי</label>
       <select class="dropdown" [(ngModel)]="selectedLevel" (change)="applyFilters()">
@@ -57,10 +49,8 @@
     </div>
   </section>
 
-  <!-- CATEGORIES -->
   <section class="browse-categories-section">
     <h2 class="section-title">Browse by Category</h2>
-
     <div class="category-grid">
       <div class="category-card all-categories-card" 
            [class.selected]="selectedCategory === 'All'"
@@ -94,55 +84,61 @@
     </div>
   </section>
 
-  <!-- SHEET MUSIC LIST -->
+  @if(uploadSheetMusicService.isOpen){
+    <app-upload-sheet-music></app-upload-sheet-music>
+  }
+
   <div class="sheet-music-container">
     @for(sheet of sheetMusicList; track sheet.id) {
       <div class="music-card">
-        <!-- COVER -->
         <div class="sheet-cover-header">
-          <div class="cover-image">
-            <img [src]="getImageCoverPath(sheet)" class="file-preview-iframe" />
-            <div class="no-preview-overlay" *ngIf="!sheet.filePath">אין תצוגה מקדימה</div>
-            <iframe *ngIf="sheet.filePath" [src]="getSafeMediaUrl(sheet.filePath)" class="file-preview-iframe"
-                    title="תצוגה מקדימה של {{ sheet.name }}" allowfullscreen></iframe>
+          <div class="cover-image" (click)="selectedSheetId === sheet.id ? closePdf(sheet.id!) : openSheet(sheet)">
+            <!-- 🚨 תיקון: אם ה-card פעיל, הצג iframe במקום img, עם גלילה -->
+            <img *ngIf="selectedSheetId !== sheet.id || !isPdfVisible" 
+                 [src]="getImageCoverPath(sheet)" 
+                 class="file-preview-iframe" 
+                 alt="Cover" />
+
+            <iframe *ngIf="selectedSheetId === sheet.id && isPdfVisible && sheet.filePath" 
+                    [src]="getSafeMediaUrl(sheet.filePath)" 
+                    class="pdf-iframe-view"
+                    type="application/pdf"
+                    title="Sheet PDF"
+                    (click)="$event.stopPropagation()">
+            </iframe>
+
+            <!-- 🚨 כפתור סגירה על ה-PDF (כדי לסגור) -->
+            <button class="close-pdf-btn" *ngIf="selectedSheetId === sheet.id && isPdfVisible" (click)="closePdf(sheet.id!)">
+              <mat-icon>close</mat-icon>
+            </button>
           </div>
         </div>
 
-        <!-- BADGES -->
         <div class="badge-group">
-          <span class="badge category" *ngFor="let category of sheet.category; let last = last" title="{{ category.name }}">
-            <mat-icon>folder</mat-icon>
-            {{ category.name }}<span *ngIf="!last"> • </span>
+          <span class="badge category" *ngFor="let category of sheet.category; let last = last">
+            <mat-icon>folder</mat-icon> {{ category.name }}
           </span>
           <span class="badge difficulty {{ sheet.level }}">{{ sheet.level }}</span>
         </div>
 
-        <!-- CARD CONTENT -->
         <div class="card-content">
           <h3 class="title" [innerHTML]="sheet.title! | highlight: searchText"></h3>
           <p class="artist-legacy">
-            <span class="artist-mini-profile" (click)="navigationService.goToProfile(sheet.user?.id!)">
-              <img [src]="fileUtilsService.getImageUrl(sheet.user?.imageProfilePath)" class="artist-mini-img" alt="Profile" />
-              <div class="sheet-rating-container">
-                <span class="rating-value">{{ sheet.rating | number:'1.1-1' }}</span>
-                <div class="stars-wrapper">
-                  <mat-icon *ngFor="let starType of getStarArray(sheet.rating)" [ngClass]="{'filled-star': starType !== 'star_border'}">{{ starType }}</mat-icon>
-                </div>
-              </div>
-              <span>{{ sheet.user?.name }}</span>
-            </span>
+             <span class="artist-mini-profile" (click)="navigationService.goToProfile(sheet.user?.id!)">
+               <img [src]="fileUtilsService.getImageUrl(sheet.user?.imageProfilePath)" class="artist-mini-img" alt="Profile" />
+               <div class="sheet-rating-container">
+                 <span class="rating-value">{{ sheet.rating | number:'1.1-1' }}</span>
+                 <mat-icon class="star-icon">star</mat-icon>
+               </div>
+               <span>{{ sheet.user?.name }}</span>
+             </span>
           </p>
 
           <div class="details-row">
-            <div class="primary-tags">
-              <span class="detail-tag"><mat-icon>description</mat-icon>{{ sheet.pages }}</span>
-              <span class="detail-tag"><mat-icon>music_note</mat-icon>{{ sheet.scale }}</span>
-              <span class="detail-tag">
-                <ng-container *ngFor="let instrument of sheet.instruments; let last = last">
-                  {{ instrument.name }}<span *ngIf="!last">, </span>
-                </ng-container>
-              </span>
-            </div>
+             <div class="primary-tags">
+               <span class="detail-tag"><mat-icon>description</mat-icon>{{ sheet.pages }}</span>
+               <span class="detail-tag"><mat-icon>music_note</mat-icon>{{ sheet.scale }}</span>
+             </div>
           </div>
 
           <div class="stats-row">
@@ -151,19 +147,20 @@
               <mat-icon style="color:#f0ff6c" [ngClass]="sheet.isLiked ? 'liked' : 'not-liked'">
                 {{ sheet.isLiked ? 'thumb_up' : 'thumb_up_off_alt' }}
               </mat-icon>
-              <span class="like-count">{{ sheet.likes }}</span>
+              {{ sheet.likes }}
             </span>
             <span class="stat-item hearts" (click)="toggleFavorite(sheet)">
               <mat-icon style="color:#f85e5e" [ngClass]="sheet.isFavorite ? 'liked' : 'not-liked'">
                 {{ sheet.isFavorite ? 'favorite' : 'favorite_border' }}
               </mat-icon>
-              <span class="hearts-count">{{ sheet.hearts }}</span>
+              {{ sheet.hearts }}
             </span>
           </div>
 
-          <button class="button" (click)="goToSheetMusic(sheet)">VIEW</button>
+          <button class="button" (click)="selectedSheetId === sheet.id ? closePdf(sheet.id!) : openSheet(sheet)">
+            {{ selectedSheetId === sheet.id ? 'CLOSE' : 'VIEW' }}
+          </button>
         </div>
-
       </div>
     }
     @empty {

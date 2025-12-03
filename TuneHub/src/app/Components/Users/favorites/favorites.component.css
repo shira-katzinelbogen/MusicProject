@@ -1,17 +1,16 @@
-/* מבטיח שהפאנל יופיע מעל הכל (מעל כל הקומפוננטות) */
 .overlay {
     position: fixed;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    background-color: rgba(0, 0, 0, 0.5); /* רקע כהה מעט */
-    display: none; /* מתחיל כסגור */
+    background-color: rgba(0, 0, 0, 0.5);
+    display: none;
     justify-content: center;
-    align-items: center;
-    z-index: 1000; /* ודא שהוא מעל כל רכיב אחר */
+    z-index: 1000;
     transition: opacity 0.3s ease;
     opacity: 0;
+    align-items: flex-start;
 }
 
 .overlay.open {
@@ -20,11 +19,11 @@
 }
 
 .panel-container {
-    /* background-color: white; */
-        background-color: #1D2838;
+    background-color: #1D2838;
     padding: 20px;
     border-radius: 10px;
     width: 90%;
+    height: 80vh;
     max-width: 800px;
     max-height:  800px;
     color: #ffffff;
@@ -32,6 +31,10 @@
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
     transform: scale(0.95);
     transition: transform 0.3s ease;
+    padding: 0 20px 15px 20px; 
+    box-shadow: -5px 0 15px rgba(0, 0, 0, 0.5);
+    margin-top: 100px;
+    padding: 0 25px 15px 25px;
 }
 
 .overlay.open .panel-container {
@@ -73,5 +76,627 @@
     margin-bottom: 15px;
     border: 1px solid #ccc;
     border-radius: 5px;
+    
 }
 
+:host {
+    display: block;
+}
+
+
+
+.panel-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 0 10px 0;
+    border-bottom: 1px solid #333;
+}
+
+.panel-header h2 {
+    font-size: 18px;
+    font-weight: 600;
+    margin: 0;
+    display: flex;
+    align-items: center;
+}
+
+.subtitle {
+    font-size: 12px;
+    color: #999;
+    margin: -10px 0 0 0;
+    position: absolute;
+    top: 40px;
+    left: 70px;
+}
+
+.close-btn {
+    background: none;
+    border: none;
+    color: #fff;
+    cursor: pointer;
+    padding: 5px;
+}
+.close-btn {
+    background: none;
+    border: none;
+    color: #fff;
+    cursor: pointer;
+    padding: 5px;
+    margin-right: -10px;
+}
+
+.close-btn mat-icon {
+    font-size: 24px;
+    height: 24px;
+    width: 24px;
+    margin-right: -100px;
+}
+
+.search-container mat-icon {
+    color: #999;
+    margin-right: 8px;
+    font-size: 20px;
+}
+
+
+.search-input::placeholder {
+    color: #999;
+}
+
+.category-buttons {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 15px;
+}
+
+.category-buttons button {
+    background-color: #2a2a47;
+    color: #fff;
+    border: none;
+    padding: 8px 15px;
+    border-radius: 20px;
+    cursor: pointer;
+    font-size: 13px;
+    transition: background-color 0.2s;
+}
+
+.category-buttons button.active {
+    background-color: #8a2be2;
+    font-weight: bold;
+}
+
+hr {
+    border: 0;
+    height: 1px;
+    background-color: #333;
+    margin: 0 0 15px 0;
+}
+
+.favorites-scroll-container {
+    flex-grow: 1;
+    overflow-y: auto;
+    overflow-x: hidden;
+    padding-right: 5px;
+}
+
+.favorite-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    padding: 10px 0; 
+    border-bottom: 1px solid #333; 
+}
+
+.item-info {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+    margin-right: 10px;
+}
+
+.item-title {
+    font-size: 15px;
+    font-weight: 600;
+    color: #fff;
+    margin-bottom: 3px;
+}
+
+.item-snippet {
+    font-size: 14px;
+    color: #ccc;
+    margin-bottom: 5px;
+}
+
+.item-composer {
+    font-size: 13px;
+    color: #999;
+    margin-bottom: 5px;
+}
+
+.likes-meta {
+    margin-top: 5px;
+}
+
+.likes-count {
+    font-size: 13px;
+    color: #00c6ff;
+    font-weight: 500;
+}
+
+.item-actions {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 5px;
+}
+
+.favorite-icon {
+    color: #8a2be2;
+    font-size: 20px;
+    height: 20px;
+    width: 20px;
+    margin-top: 5px;
+}
+
+.item-level {
+    font-size: 11px;
+    font-weight: bold;
+    padding: 2px 7px;
+    border-radius: 10px;
+    text-transform: uppercase;
+    white-space: nowrap;
+    line-height: 1;
+    margin-top: 0;
+}
+
+.level-advanced {
+    background-color: #8a2be2;
+    color: #fff;
+}
+
+.level-intermediate {
+    background-color: #ffc107;
+    color: #333;
+}
+
+.level-beginner {
+    background-color: #28a745;
+    color: #fff;
+}
+
+.item-snippet {
+    font-size: 14px;
+    color: #ccc; 
+    margin-bottom: 5px;
+    
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.favorite-item {
+background-color: #2a2a47;
+border-radius: 10px;
+margin-bottom: 12px;
+box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+
+display: flex;
+justify-content: space-between;
+align-items: center;
+padding: 15px;
+border-bottom: none;
+cursor: pointer; 
+transition: background-color 0.2s;
+}
+
+.favorite-item:hover {
+background-color: #333355;
+}
+
+.favorite-item:last-child {
+border-bottom: none;
+}
+
+
+.item-info {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1; 
+    align-items: flex-start;
+}
+
+.item-title {
+font-size: 15px;
+font-weight: 600;
+color: #e0e0e0;
+margin-bottom: 3px;
+}
+
+.item-snippet, .item-composer {
+font-size: 13px;
+color: #b0b0c0;
+margin-bottom: 5px;
+}
+
+.likes-count {
+font-size: 12px;
+color: #a033e0;
+font-weight: 500;
+}
+
+.item-actions {
+    display: flex;
+    align-items: center;
+    gap: 15px; 
+    margin-left: 40px;
+    flex-shrink: 0;
+}
+.h2{
+    margin-left: 10px;
+}
+
+.likes-meta {
+    margin-top: 3px;
+    margin-right: 0px;
+}
+
+.favorite-icon {
+color: #a033e0;
+font-size: 20px;
+height: 20px;
+width: 20px;
+}
+
+.item-level {
+padding: 3px 8px;
+border-radius: 4px;
+font-size: 11px;
+font-weight: 600;
+text-transform: uppercase;
+}
+
+.level-beginner {
+background-color: #28a745;
+color: #ffffff;
+}
+
+.level-intermediate {
+background-color: #ffc107;
+color: #1a1a1a;
+}
+
+.level-advanced {
+background-color: #dc3545;
+color: #ffffff;
+}
+hr {
+    border: 0;
+    height: 1px;
+    background-color: #333;
+    margin: 0 0 15px 0; 
+}
+
+.favorites-scroll-container {
+    flex-grow: 1; 
+    overflow-y: auto; 
+    overflow-x: hidden;
+    padding-right: 5px; 
+    min-height: 50px; 
+}
+.panel-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    
+    padding: 20px 0 10px 0; 
+    border-bottom: 1px solid #333;
+    
+    position: relative; 
+    
+    margin-bottom: 0; 
+}
+
+
+.panel-header h2 {
+    font-size: 18px;
+    font-weight: 600;
+    margin: 0;
+    display: flex; 
+    align-items: center;
+    gap: 8px;
+}
+
+.panel-header h2 .heart-icon-container {
+    color: #8a2be2;
+    font-size: 24px;
+}
+
+.subtitle {
+    font-size: 12px;
+    color: #999;
+    
+    position: absolute;
+    top: 40px;
+    left: 45px;
+    margin: 0;
+}
+
+
+.close-btn {
+    background: none;
+    border: none;
+    color: #fff;
+    cursor: pointer;
+    padding: 5px;
+    margin-right: -10px; 
+}
+
+.close-btn mat-icon {
+    font-size: 24px;
+}
+
+.search-container {
+    display: flex;
+    align-items: center;
+    background-color: #2a2a47;
+    border-radius: 8px;
+    padding: 8px 10px;
+    width: 750px;
+    margin-top: 15px;
+    margin-bottom: 15px;
+    margin-left: 0;
+    margin-right: 0;
+}
+
+.search-input {
+    flex-grow: 1;
+    background: none;
+    border: none;
+    color: #fff;
+    font-size: 14px;
+    padding: 0;
+    outline: none;
+}
+
+.category-buttons {
+display: flex;
+flex-wrap: wrap;
+gap: 10px;
+margin: 0 0 15px 0;
+}
+
+.category-buttons button {
+background-color: #2a2a47; 
+color: #b0b0c0;
+border: none;
+padding: 10px 18px; 
+border-radius: 8px; 
+cursor: pointer;
+font-size: 14px;
+font-weight: 500;
+transition: background-color 0.2s, color 0.2s;
+display: flex; 
+align-items: center;
+gap: 6px; 
+}
+
+.category-buttons button mat-icon {
+font-size: 20px; 
+height: 20px;
+width: 20px;
+color: inherit; 
+}
+
+.category-buttons button.active {
+background: linear-gradient(135deg, #a033e0, #7b24cc); 
+color: #ffffff;
+font-weight: 600; 
+box-shadow: 0 2px 10px rgba(156, 39, 176, 0.4); 
+}
+.item-title {
+    font-size: 15px;
+    font-weight: 600;
+    color: #e0e0e0; 
+    margin-top: 0;
+    margin-bottom: 3px; 
+}
+
+.item-snippet, .item-composer {
+    font-size: 13px;
+    color: #b0b0c0; 
+    margin-top: 0;
+    margin-bottom: 5px;
+}
+
+.likes-meta {
+    margin-top: 3px;
+    margin-bottom: 0;
+}
+
+.favorite-item {
+background-color: #2a2a47; 
+border-radius: 10px; 
+margin-bottom: 12px; 
+box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); 
+display: flex;
+justify-content: space-between;
+align-items: center; 
+padding: 15px; 
+border-bottom: none; 
+cursor: pointer; 
+transition: background-color 0.2s;
+}
+
+.favorite-item:hover {
+background-color: #333355; 
+}
+
+.item-info {
+display: flex;
+flex-direction: column;
+flex-grow: 1; 
+align-items: flex-start; 
+}
+
+.item-title {
+font-size: 15px;
+font-weight: 600;
+color: #e0e0e0; 
+margin-top: 0;
+margin-bottom: 3px; 
+}
+
+.item-snippet, .item-composer {
+font-size: 13px;
+color: #b0b0c0; 
+margin-top: 0;
+margin-bottom: 5px;
+}
+
+.likes-meta {
+font-size: 12px;
+color: #a033e0; 
+font-weight: 500;
+margin-top: 3px;
+margin-bottom: 0;
+}
+
+.item-actions {
+display: flex;
+align-items: center;
+gap: 15px; 
+margin-left: 25px;
+flex-shrink: 0; 
+}
+
+.favorite-icon {
+color: #a033e0; 
+font-size: 20px;
+height: 20px;
+width: 20px;
+}
+
+.item-level {
+padding: 3px 8px;
+border-radius: 4px;
+font-size: 11px;
+font-weight: 600;
+text-transform: uppercase;
+}
+.level-beginner { background-color: #28a745; color: #ffffff; }
+.level-intermediate { background-color: #ffc107; color: #1a1a1a; }
+.level-advanced { background-color: #dc3545; color: #ffffff; }
+
+.panel-header {
+display: flex;
+align-items: center;
+justify-content: space-between;
+padding: 15px 10px 10px 20px;
+border-bottom: 1px solid #333;
+}
+
+.header-text {
+display: flex;
+flex-direction: column;
+margin-right: auto; 
+}
+
+.header-icon {
+color: #a033e0;
+font-size: 32px;
+height: 32px;
+width: 32px;
+margin-left: 0;
+margin-right: 12px;
+}
+
+.panel-header h2 {
+font-size: 18px;
+font-weight: 700;
+color: #ffffff;
+margin: 0;
+}
+
+.panel-header .subtitle {
+font-size: 13px;
+color: #b0b0c0;
+margin: 2px 0 0 0;
+}
+
+.close-btn {
+background: none;
+border: none;
+color: #b0b0c0;
+cursor: pointer;
+padding: 8px;
+margin-left: 15px;
+border-radius: 50%;
+transition: background-color 0.2s;
+}
+
+.close-btn:hover {
+background-color: #333355; 
+color: #ffffff;
+}
+
+.close-btn mat-icon {
+font-size: 20px;
+height: 20px;
+width: 20px;
+}
+
+.overlay {
+position: fixed;
+top: 0;
+left: 0;
+width: 100%;
+height: 100%;
+background-color: rgba(0, 0, 0, 0.6);
+display: flex;
+justify-content: center;
+align-items: center;
+z-index: 1000;
+opacity: 0;
+visibility: hidden;
+transition: opacity 0.3s, visibility 0.3s;
+}
+
+.overlay.open {
+opacity: 1;
+visibility: visible;
+}
+
+.panel-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 15px 20px 10px 20px; 
+    border-bottom: 1px solid #333; 
+}
+
+.header-icon {
+    color: #a033e0;
+    font-size: 32px; 
+    height: 32px;
+    width: 32px;
+    margin-right: 12px;
+}
+
+.header-text {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1; 
+    margin-right: auto; 
+}
+
+.close-btn {
+    background: none;
+    border: none;
+    color: #b0b0c0;
+    cursor: pointer;
+    padding: 8px; 
+    margin-left: 10px; 
+    border-radius: 50%;
+}

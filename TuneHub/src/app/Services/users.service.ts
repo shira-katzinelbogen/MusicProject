@@ -36,10 +36,13 @@ export class UsersService {
   }
 
 public updateUserRole(userId: number, newRole: ERole): Observable<any> {
-
-    const roleDto: Role = { name: newRole }; 
-    return this._httpClient.put(`http://localhost:8080/api/role/admin/${userId}/role`, roleDto, { responseType: 'text' }); 
-  }
+    const roleDto: Role = { name: newRole }; 
+    return this._httpClient.put(
+        `http://localhost:8080/api/role/admin/${userId}/role`, 
+        roleDto, 
+        { responseType: 'text', withCredentials: true }
+    ); 
+}
     
 updateUser(userId: number, data: Partial<Users>, file?: File): Observable<Users> {
   const formData = new FormData();
@@ -146,13 +149,13 @@ deleteUser(userId: number): Observable<any> {
         return this._httpClient.delete(`${this.apiUrl}/delete/${userId}`);
     }
 
-    refreshToken(): Observable<any> {
-    // 🎯 קורא לנקודת הקצה החדשה שיצרנו ב-Backend
-    // ה-Backend משתמש בקוקיז כדי לזהות את ה-Refresh Token
-    return this._httpClient.post('http://localhost:8080/api/users/refreshtoken', {}, { 
-        withCredentials: true // חובה לשלוח את הקוקיז
-    });
-}
+//     refreshToken(): Observable<any> {
+//     // 🎯 קורא לנקודת הקצה החדשה שיצרנו ב-Backend
+//     // ה-Backend משתמש בקוקיז כדי לזהות את ה-Refresh Token
+//     return this._httpClient.post('http://localhost:8080/api/users/refreshtoken', {}, { 
+//         withCredentials: true // חובה לשלוח את הקוקיז
+//     });
+// }
 
     // ב-Backend זה צריך לנקות את ה-Token/Session
 
