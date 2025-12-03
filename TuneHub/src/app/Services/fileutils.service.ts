@@ -14,9 +14,8 @@ export class FileUtilsService {
             const mime = base64.startsWith('/9j/') ? 'jpeg' : 'png';
             return this.sanitizer.bypassSecurityTrustUrl(`data:image/${mime};base64,${base64}`);
         }
-        return 'assets/images/2.jpg';
+        return 'assets/images/sheets_music.webp';
     }
-
 
 
     getPDFUrl(fileName: string): string {

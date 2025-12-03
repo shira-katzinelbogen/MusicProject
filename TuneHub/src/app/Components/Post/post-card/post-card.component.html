@@ -105,14 +105,14 @@
         <hr>
     </ng-container>
 
-    <!-- COMMENTS מוצגים רק ב-all -->
+    <!-- COMMENTS  -->
     <ng-container *ngIf="!isProfileView || showOnlyMedia === 'all'">
         <div class="comments-actions-row">
             <button class="view-comments-btn" (click)="toggleComments(post.id!)">
                 {{ showComments[post.id!] ? 'סגור תגובות' : 'צפייה בתגובות' }}
             </button>
-            <button class="add-comment-page-btn" (click)="navigateToAddComment(post.id!)">
-                הוסף תגובה <mat-icon>add_comment</mat-icon>
+            <button class="button" (click)="navigateToAddComment(post.id!)">
+                 add comment <mat-icon>add_comment</mat-icon>
             </button>
         </div>
 

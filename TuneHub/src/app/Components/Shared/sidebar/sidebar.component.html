@@ -26,27 +26,15 @@
       <mat-icon matListItemIcon>description</mat-icon>
       <span matListItemTitle>Posts</span>
     </a>
-    <a mat-list-item routerLink="/challenge-card" routerLinkActive="active" (click)="sidebarService.close()">
-      <mat-icon matListItemIcon>emoji_events</mat-icon>
-      <span matListItemTitle>Challenges</span>
-    </a>
     <a mat-list-item routerLink="/sheets-music" routerLinkActive="active" (click)="sidebarService.close()">
       <mat-icon matListItemIcon>music_note</mat-icon>
       <span matListItemTitle>Sheet Music</span>
     </a>
     <a mat-list-item routerLink="/teacher-list" routerLinkActive="active" (click)="sidebarService.close()">
       <mat-icon matListItemIcon>menu_book</mat-icon>
-      <span matListItemTitle>Teachers & Lessons</span>
+      <span matListItemTitle>Teachers</span>
     </a>
-    <a mat-list-item routerLink="/community-group" routerLinkActive="active" (click)="sidebarService.close()">
-      <mat-icon matListItemIcon>people_outline</mat-icon>
-      <span matListItemTitle>Communities</span>
-    </a>
-    <a mat-list-item routerLink="/marketplace" routerLinkActive="active" (click)="sidebarService.close()">
-      <mat-icon matListItemIcon>shopping_bag</mat-icon>
-      <span matListItemTitle>Marketplace</span>
-    </a>
-    <a mat-list-item routerLink="/chat-meesage" routerLinkActive="active" (click)="sidebarService.close()">
+    <a mat-list-item  (click)="sidebarService.close()">
       <mat-icon matListItemIcon>chat_bubble_outline</mat-icon>
       <span matListItemTitle>Messages</span>
     </a>

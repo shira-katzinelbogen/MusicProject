@@ -9,7 +9,7 @@ import { RouterModule } from '@angular/router';
 import { InteractionService } from '../../../Services/interaction.service';
 
 
-type DisplayCategory = 'Post' | 'Sheet Music' | 'Teachers' | 'Musicians';
+type DisplayCategory = 'Post' | 'Sheet Music';
 
 @Component({
   selector: 'app-favorites',
@@ -22,7 +22,7 @@ export class FavoritesComponent implements OnInit {
 
   @Input() isOpen: boolean | null = false;
 
-  readonly categories: DisplayCategory[] = ['Post', 'Sheet Music', 'Teachers', 'Musicians'];
+  readonly categories: DisplayCategory[] = ['Post', 'Sheet Music'];
 
   selectedCategory: DisplayCategory = 'Post';
   currentFavorites: Favorite[] = [];

@@ -54,7 +54,7 @@ export class UserProfileComponent implements OnInit {
     public fileUtilsService: FileUtilsService,
     private userStateService: UserStateService,
     private _interactionService: InteractionService
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.route.paramMap.subscribe(params => {
@@ -197,12 +197,52 @@ export class UserProfileComponent implements OnInit {
 
 
 
-    // פונקציה לדוגמה
-  checkTeacherEligibility() {
-    // כאן הקוד שבודק אם המשתמש יכול להפוך למורה
+ checkTeacherEligibility(): void {
+    if (!this.profileData || this.profileId === null) return;
+
+    const isEligible =
+        !!this.profileData.city &&
+        !!this.profileData.country &&
+        !!this.profileData.description;
+
+    const userIdAsNumber = Number(this.profileId);
+    
+    if (isEligible) {
+        if (!isNaN(userIdAsNumber)) {
+            this.router.navigate(['/teacher-signup', userIdAsNumber]);
+        }
+    } else {
+        alert('עליך למלא את העיר, המדינה והתיאור.');
+        
+        if (this.isCurrentUserProfile && !isNaN(userIdAsNumber)) {
+          this.openEditProfileModal();
+        }
+    }
   }
 
-  deleteUser() {
-    // כאן הקוד שמוחק משתמש (admin action)
+  deleteUser(): void {
+    if (!this.profileId || !this.profileData) {
+      console.error('Missing data.');
+      return;
+    }
+
+    if (!confirm(`האם אתה בטוח שברצונך למחוק את המשתמש ${this.profileData.name} (ID: ${this.profileId})?`)) {
+      return;
+    }
+
+    this._usersService.deleteUser(this.profileId).subscribe({
+      next: () => {
+        alert(`המשתמש ${this.profileData!.name} נמחק בהצלחה!`);
+        this.router.navigate(['/home-page']);
+      },
+      error: (err) => {
+        console.error('Error:', err);
+        const errorMessage = err.status === 403
+          ? 'אין הרשאה למחוק משתמשים.'
+          : `שגיאה במהלך המחיקה. קוד: ${err.status}`;
+        alert(errorMessage);
+      }
+    });
   }
+
 }
