@@ -43,6 +43,11 @@ public updateUserRole(userId: number, newRole: ERole): Observable<any> {
         { responseType: 'text', withCredentials: true }
     ); 
 }
+
+
+getActiveUsersCount(): Observable<number> {
+  return this._httpClient.get<number>('/api/users/count-active');
+}
     
 updateUser(userId: number, data: Partial<Users>, file?: File): Observable<Users> {
   const formData = new FormData();

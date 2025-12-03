@@ -33,9 +33,6 @@ import { TeacherListComponent } from './Components/Teachers/teacher-list/teacher
 import { NotificationsComponent } from './Components/Notification/notifications/notifications.component';
 
 
-// import { ChallengeCardComponent } from './Components/Community/challenge-card/challenge-card.component';
-// import { CommunityGroupsComponent } from './Components/Community/community-groups/community-groups.component';
-// import { ChatMeesageComponent } from './Components/Chat/chat-meesage/chat-meesage.component';
 
 export const routes: Routes = [
 
@@ -50,12 +47,10 @@ export const routes: Routes = [
   { path: 'musicians', component: MusiciansComponent },
   { path: 'musicians/:id', component: MusiciansComponent },
   { path: 'user-profile/:id', component: UserProfileComponent },
-  { path: 'edit-profil-modal/:id', component: EditProfilModalComponent }
-,{ path: 'edit-profil-modal', component: EditProfilModalComponent },
-{ path: 'teacher-signup/:id', component: TeacherSignupComponent },
-{ path: 'teacher-signup', component: TeacherSignupComponent },
-
-
+  { path: 'edit-profil-modal/:id', component: EditProfilModalComponent },
+  { path: 'edit-profil-modal', component: EditProfilModalComponent },
+  { path: 'teacher-signup/:id', component: TeacherSignupComponent },
+  { path: 'teacher-signup', component: TeacherSignupComponent },
 
   //Comments
   { path: 'edit-profil-modal/:id', component: EditProfilModalComponent },
@@ -80,9 +75,6 @@ export const routes: Routes = [
 
   // Teacher
   { path: 'teacher-list', component: TeacherListComponent },
-  // { path: 'challenge-card', component: ChallengeCardComponent },
-  // { path: 'community-group', component: CommunityGroupsComponent },
-  // { path: 'chat-meesage', component: ChatMeesageComponent },
 
   // Notification
   { path: 'notifications', component: NotificationsComponent },

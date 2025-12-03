@@ -50,11 +50,11 @@ export class MusicCardComponent {
   }
 
   toggleLike(sheet: SheetMusic): void {
-    if (!sheet.isLiked) {
+    if (!sheet.liked) {
       this._interactionService.addLike('SHEET_MUSIC', sheet.id!).subscribe({
         next: (res) => {
           sheet.likes = res.count;
-          sheet.isLiked = true;
+          sheet.liked = true;
           this.cdr.detectChanges();
         },
         error: (err) => console.error('Failed to add like', err)
@@ -63,7 +63,7 @@ export class MusicCardComponent {
       this._interactionService.removeLike('SHEET_MUSIC', sheet.id!).subscribe({
         next: (res) => {
           sheet.likes = res.count;
-          sheet.isLiked = false;
+          sheet.liked = false;
           this.cdr.detectChanges();
         },
         error: (err) => console.error('Failed to remove like', err)
@@ -72,11 +72,11 @@ export class MusicCardComponent {
   }
 
   toggleFavorite(sheet: SheetMusic): void {
-    if (!sheet.isFavorite) {
+    if (!sheet.favorited) {
       this._interactionService.addFavorite('SHEET_MUSIC', sheet.id!).subscribe({
         next: (res) => {
           sheet.hearts = res.count;
-          sheet.isFavorite = true;
+          sheet.favorited = true;
           this.cdr.detectChanges();
         }
       });
@@ -84,7 +84,7 @@ export class MusicCardComponent {
       this._interactionService.removeFavorite('SHEET_MUSIC', sheet.id!).subscribe({
         next: (res) => {
           sheet.hearts = res.count;
-          sheet.isFavorite = false;
+          sheet.favorited = false;
           this.cdr.detectChanges();
         }
       });

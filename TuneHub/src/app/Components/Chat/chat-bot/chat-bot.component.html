@@ -1,9 +1,7 @@
-<!-- כפתור צ׳אט עם תמונת אייקון -->
 <div class="chat-toggle" (click)="toggleChat()">
   <img src="assets/images/chat-ai.webp" alt="chat" class="chat-icon" />
 </div>
 
-<!-- חלון צ׳אט -->
 <div class="chat-container" [class.open]="isOpen">
   @if (isOpen) {
     <div class="chat-header">

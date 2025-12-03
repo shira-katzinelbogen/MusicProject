@@ -58,8 +58,8 @@ export default class SheetMusic {
     downloads?: number;
     pages?: number;
     rating?: number;
-    isLiked?: boolean;
-    isFavorite?: boolean;
+    liked?: boolean;
+    favorited?: boolean;
     imageCoverName?: string;
     composer?: string;
     lyricist?: string;

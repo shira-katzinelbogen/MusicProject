@@ -776,3 +776,7 @@
 .instrument-tag{
   background-color: #B8860B;
 }
+
+.stat-item {
+  pointer-events: auto;
+}

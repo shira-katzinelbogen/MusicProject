@@ -64,14 +64,14 @@
         <div class="stats-row">
             <span class="stat-item"><mat-icon>download</mat-icon>{{ sheet.downloads }}</span>
             <span class="stat-item likes" (click)="toggleLike(sheet)">
-                <mat-icon style="color:#f0ff6c" [ngClass]="sheet.isLiked ? 'liked' : 'not-liked'">
-                    {{ sheet.isLiked ? 'thumb_up' : 'thumb_up_off_alt' }}
+                <mat-icon style="color:#f0ff6c" [ngClass]="sheet.liked ? 'liked' : 'not-liked'">
+                    {{ sheet.liked ? 'thumb_up' : 'thumb_up_off_alt' }}
                 </mat-icon>
                 <span class="like-count">{{ sheet.likes }}</span>
             </span>
             <span class="stat-item hearts" (click)="toggleFavorite(sheet)">
-                <mat-icon style="color:#f85e5e" [ngClass]="sheet.isFavorite ? 'liked' : 'not-liked'">
-                    {{ sheet.isFavorite ? 'favorite' : 'favorite_border' }}
+                <mat-icon style="color:#f85e5e" [ngClass]="sheet.favorited ? 'liked' : 'not-liked'">
+                    {{ sheet.favorited ? 'favorite' : 'favorite_border' }}
                 </mat-icon>
                 <span class="hearts-count">{{ sheet.hearts }}</span>
             </span>
