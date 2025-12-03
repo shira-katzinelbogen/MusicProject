@@ -1,6 +1,5 @@
-
 import { ChangeDetectorRef, Component, Input } from '@angular/core';
-import SheetMusic, { DifficultyDisplayMap, DifficultyLevel, Scale, ScaleDisplayMap } from '../../../Models/SheetMusic';
+import SheetMusic from '../../../Models/SheetMusic';
 import { Router, RouterLink } from '@angular/router';
 import { HighlightPipe } from '../../Shared/highlight/highlight.component';
 import { CommonModule } from '@angular/common';
@@ -23,10 +22,6 @@ import { InteractionService } from '../../../Services/interaction.service';
 export class MusicCardComponent {
   @Input() sheet!: SheetMusic;
   @Input() searchText: string | undefined;
-  public DifficultyMap = DifficultyDisplayMap;
-  public ScaleMap = ScaleDisplayMap;
-  public DifficultyLevel = DifficultyLevel;
-  public Scale = Scale;
 
   constructor(
     private router: Router,
@@ -75,7 +70,6 @@ export class MusicCardComponent {
       });
     } console.log('like clicked!', sheet);
   }
-
 
   toggleFavorite(sheet: SheetMusic): void {
     if (!sheet.isFavorite) {

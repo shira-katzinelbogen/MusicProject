@@ -24,7 +24,8 @@ export interface NotificationResponseDTO {
     isRead: boolean;
     type: ENotificationCategory;
     targetId?: number;
-    actor?: UsersProfileDTO;  
+    actor?: UsersProfileDTO; 
+    count?: number; 
 }
 
 export interface NotificationCategory {

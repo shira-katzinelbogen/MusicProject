@@ -28,8 +28,8 @@
 
 .footer-logo-icon {
   font-size: 40px !important; /* 🔑 חדש: גודל גדול יותר (מ-32px ל-40px), mat-icon מלא */
-  width: 40px !important; /* ריבוע מושלם */
-  height: 40px !important;
+  width: 50px !important; /* ריבוע מושלם */
+  height: 50px !important;
   color: #A03FFB !important; /* סגול, כמו בתמונה */
   flex-shrink: 0 !important; /* לא מתכווץ */
 }

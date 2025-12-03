@@ -1,8 +1,9 @@
 // src/app/services/interaction.service.ts
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
-import Follow, { EFollowStatus } from '../Models/Follow'; // ✅ ייבוא ה־enum
+import { BehaviorSubject, Observable } from 'rxjs';
+import Follow, { EFollowStatus } from '../Models/Follow';
+import { Favorite, FavoriteType } from '../Models/favorite';
 
 export interface NotificationSimpleDTO {
   targetId: number;
@@ -15,6 +16,10 @@ export interface NotificationSimpleDTO {
 })
 export class InteractionService {
   private apiUrl = 'http://localhost:8080/api/interaction';
+  private favoritesOpen = new BehaviorSubject<boolean>(false);
+
+
+  isFavoritesOpen$: Observable<boolean> = this.favoritesOpen.asObservable();
 
   constructor(private http: HttpClient) { }
 
@@ -34,16 +39,16 @@ export class InteractionService {
 
   removeLike(targetType: string, targetId: number): Observable<NotificationSimpleDTO> {
     return this.http.delete<NotificationSimpleDTO>(
-      `${this.apiUrl}/like/remove/${targetType}/${targetId}`, { withCredentials: true } );
+      `${this.apiUrl}/like/remove/${targetType}/${targetId}`, { withCredentials: true });
   }
 
 
   addFavorite(targetType: string, targetId: number): Observable<any> {
-    return this.http.post(`${this.apiUrl}/favorite/add/${targetType}/${targetId}`, {}, { withCredentials: true } );
+    return this.http.post(`${this.apiUrl}/favorite/add/${targetType}/${targetId}`, {}, { withCredentials: true });
   }
 
   removeFavorite(targetType: string, targetId: number): Observable<any> {
-    return this.http.delete(`${this.apiUrl}/favorite/remove/${targetType}/${targetId}`, { withCredentials: true } );
+    return this.http.delete(`${this.apiUrl}/favorite/remove/${targetType}/${targetId}`, { withCredentials: true });
   }
 
   approveFollow(followerId: number) {
@@ -52,5 +57,28 @@ export class InteractionService {
       {},
       { withCredentials: true }
     );
+  }
+
+  openFavorites(): void {
+    this.favoritesOpen.next(true);
+  }
+
+  closeFavorites(): void {
+    this.favoritesOpen.next(false);
+  }
+
+  toggleFavorites(): void {
+    this.favoritesOpen.next(!this.favoritesOpen.value);
+  }
+
+
+  getFavoritesByType(type: FavoriteType, search: string = ''): Observable<Favorite[]> {
+    const serverType = type.toUpperCase().replace(' ', '_') as FavoriteType;
+
+    let params = { type: serverType, search: search };
+    return this.http.get<Favorite[]>(`${this.apiUrl}/byType`, {
+      params: params,
+      withCredentials: true
+    });
   }
 }

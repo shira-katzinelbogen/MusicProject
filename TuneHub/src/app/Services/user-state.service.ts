@@ -23,9 +23,12 @@ const STORAGE_KEY = 'currentUserProfile';
 })
 
 export class UserStateService {
-  clearUser() {
-    throw new Error('Method not implemented.');
-  }
+ clearUser(): void {
+        if (this.isBrowser) {
+            sessionStorage.removeItem(STORAGE_KEY);
+        }
+        this.currentUserSubject.next(null);
+    }
 
   private currentUserSubject: BehaviorSubject<UserProfile | null>;
   public currentUser$: Observable<UserProfile | null>;

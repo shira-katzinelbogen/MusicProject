@@ -47,8 +47,15 @@
            
     </section>
 
-
-    @if(displayedPosts.length===0){
+@if (hasMorePosts) {
+    <div class="load-more-container">
+        <button class="button load-more-btn" (click)="loadMore()">
+            טען עוד פוסטים
+            <mat-icon>expand_more</mat-icon>
+        </button>
+    </div>
+}
+@if(displayedPosts.length===0){
     <div class="empty-posts-container">
         <p class="empty-message">עדיין לא פורסמו פוסטים. התחל לשתף את המוזיקה שלך עכשיו!</p>
 
@@ -57,8 +64,8 @@
         העלה את הפוסט הראשון שלך
         <span style="font-size: 1.5em; margin-right: 10px;">⬆️</span>
     </div>
-    }
-    @else{
+}
+@else{
 
     @for(post of displayedPosts; track $index){
    <app-post-card
@@ -152,3 +159,5 @@
 <!-- }} -->
 
 <!-- <br><br><br> -->
+
+<br><br><br>

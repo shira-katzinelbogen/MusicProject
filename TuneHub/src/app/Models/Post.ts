@@ -16,7 +16,10 @@ export default class Post {
     rating?: number;
     isLiked?: boolean;
     isFavorite?: boolean;
-    safeImages?: string[]; 
+    safeImages?: string[];
+    totalPages!: number;
+    currentPage!: number;
+
 }
 
 export interface PostResponseDTO {

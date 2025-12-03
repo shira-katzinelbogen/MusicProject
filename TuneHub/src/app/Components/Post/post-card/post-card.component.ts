@@ -23,9 +23,8 @@ import { HighlightPipe } from "../../Shared/highlight/highlight.component";
   styleUrl: './post-card.component.css'
 })
 
-export class PostCardComponent  {
+export class PostCardComponent implements OnChanges, OnInit {
   showComments: { [key: number]: boolean } = {};
-
 
   @Input() post!: Post;
   @Input() isProfileView: boolean = false;
@@ -37,8 +36,6 @@ export class PostCardComponent  {
 
   newCommentTexts: { [key: number]: string } = {};
   currentUserRoles: string[] = [];
-
-
 
   displayedPosts: Post[] = [];
   constructor(
@@ -53,8 +50,16 @@ export class PostCardComponent  {
     private _adminService: AdminService
   ) { }
 
+  ngOnInit(): void {
+    this.loadCurrentUserRoles();
+  }
 
-
+  ngOnChanges(): void {
+    // If needed for input changes, e.g., update displayedPosts if multiple
+    if (this.post) {
+      this.displayedPosts = [this.post]; // Assuming single post for card
+    }
+  }
 
   toggleComments(postId: number) {
     this.showComments[postId] = !this.showComments[postId];
@@ -66,18 +71,15 @@ export class PostCardComponent  {
 
   // ... (אין צורך בפונקציות התגובה המוערות) ...
 
-
-
-get mediaTypeToShow(): 'audio' | 'video' | null {
-  if (this.showOnlyMedia === 'audio' && this.post.audioPath) return 'audio';
-  if (this.showOnlyMedia === 'video' && this.post.videoPath) return 'video';
-  if (this.showOnlyMedia === 'all') {
-    if (this.post.audioPath) return 'audio';
-    if (this.post.videoPath) return 'video';
+  get mediaTypeToShow(): 'audio' | 'video' | null {
+    if (this.showOnlyMedia === 'audio' && this.post.audioPath) return 'audio';
+    if (this.showOnlyMedia === 'video' && this.post.videoPath) return 'video';
+    if (this.showOnlyMedia === 'all') {
+      if (this.post.audioPath) return 'audio';
+      if (this.post.videoPath) return 'video';
+    }
+    return null;
   }
-  return null;
-}
-
 
   toggleLike(post: Post): void {
 
@@ -102,7 +104,6 @@ get mediaTypeToShow(): 'audio' | 'video' | null {
     } console.log('like clicked!', post);
   }
 
-
   toggleFavorite(post: Post): void {
     if (!post.isFavorite) {
       this._interactionService.addFavorite('POST', post.id!).subscribe({
@@ -122,8 +123,6 @@ get mediaTypeToShow(): 'audio' | 'video' | null {
       });
     }
   }
-
-
 
   toggleAdminActions(postId: number) {
     // ... לוגיקה קיימת של סגירת אחרים ופתיחת הנוכחי ...
@@ -226,9 +225,6 @@ get mediaTypeToShow(): 'audio' | 'video' | null {
 
     return stars;
   }
-
-
-
 
   // ----------------------------------------------------------------
   // 4️⃣ הצגת מדיה

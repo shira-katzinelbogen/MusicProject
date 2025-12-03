@@ -75,6 +75,8 @@ export const routes: Routes = [
   { path: 'sheets-music', component: SheetsMusicComponent },
   { path: 'sheet-music/:id', component: SheetMusicComponent },
   { path: 'sheet-music', component: SheetMusicComponent },
+  { path: 'music-card', component: SheetMusicComponent },
+  { path: 'post-card', component: PostsComponent },
 
   // Teacher
   { path: 'teacher-list', component: TeacherListComponent },

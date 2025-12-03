@@ -9,7 +9,8 @@ export const appConfig: ApplicationConfig = {
   providers: [
     provideZoneChangeDetection({ eventCoalescing: true }), 
     provideHttpClient(
-      withInterceptorsFromDi() // מאפשר שימוש בשיטת הרישום הקלאסית (multi: true)
+      
+      //withInterceptorsFromDi() // מאפשר שימוש בשיטת הרישום הקלאסית (multi: true)
     ),
 
  

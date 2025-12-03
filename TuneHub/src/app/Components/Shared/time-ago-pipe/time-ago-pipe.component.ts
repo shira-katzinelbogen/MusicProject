@@ -1,4 +1,3 @@
-// src/app/pipes/time-ago.pipe.ts
 import { Pipe, PipeTransform } from '@angular/core';
 
 @Pipe({
@@ -7,35 +6,43 @@ import { Pipe, PipeTransform } from '@angular/core';
 })
 export class TimeAgoPipe implements PipeTransform {
 
-  transform(value: string | Date | number): string {
+  transform(value: string | number | Date): string {
     if (!value) return '';
 
-    const date = value instanceof Date ? value : new Date(value);
-    const now = new Date();
-    const seconds = Math.floor((now.getTime() - date.getTime()) / 1000);
+    let timestamp: number;
 
-    if (seconds < 5) return 'just now';
-
-    const intervals = {
-      year: 31536000,
-      month: 2592000,
-      week: 604800,
-      day: 86400,
-      hour: 3600,
-      minute: 60,
-      second: 1
-    };
-
-    for (const key of Object.keys(intervals)) {
-      const intervalSeconds = intervals[key as keyof typeof intervals];
-      const count = Math.floor(seconds / intervalSeconds);
-
-      if (count >= 1) {
-        const label = count === 1 ? key : key + 's';
-        return `${count} ${label} ago`;
-      }
+    if (typeof value === 'number') {
+      timestamp = value;
+    } else if (typeof value === 'string') {
+      timestamp = parseFloat(value); 
+    } else {
+      timestamp = value.getTime() / 1000;
     }
 
-    return '';
+    const date = new Date(timestamp * 1000);
+
+    const seconds = Math.floor((Date.now() - date.getTime()) / 1000);
+
+    if (seconds < 45) return 'just now';
+    if (seconds < 90) return 'a minute ago';
+
+    const minutes = seconds / 60;
+    if (minutes < 45) return `${Math.floor(minutes)} minutes ago`;
+    if (minutes < 90) return 'an hour ago';
+
+    const hours = minutes / 60;
+    if (hours < 24) return `${Math.floor(hours)} hours ago`;
+    if (hours < 42) return 'a day ago';
+
+    const days = hours / 24;
+    if (days < 30) return `${Math.floor(days)} days ago`;
+    if (days < 45) return 'a month ago';
+
+    const months = days / 30.44;
+    if (months < 12) return `${Math.floor(months)} months ago`;
+
+    const years = months / 12;
+    return `${Math.floor(years)} years ago`;
   }
 }
+

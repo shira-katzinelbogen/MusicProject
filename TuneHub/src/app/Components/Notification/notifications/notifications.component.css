@@ -1,6 +1,4 @@
-/* --- עיצוב הרקע של הדף ומרכוז הכרטיס --- */
 body {
-    /* הרקע הכללי הכהה */
     background-color: #0d0d1b;
     font-family: 'Inter', sans-serif;
     margin: 0;
@@ -8,10 +6,9 @@ body {
     display: flex;
     align-items: center;
     justify-content: center;
-    color: #f0f0f0; /* צבע טקסט ברירת מחדל */
+    color: #f0f0f0;
 }
 
-/* קונטיינר המרכוז */
 .center-container {
     width: 100%;
     display: flex;
@@ -20,112 +17,93 @@ body {
     box-sizing: border-box;
 }
 
-/* --- עיצוב כרטיס הסטטיסטיקות המיוחד --- */
 .stats-card-container {
-    /* מיקסום רוחב כדי לאפשר מרווחים בדפדפן */
     max-width: 800px;
     width: 100%;
-    /* אפקט הקצה הסגול העדין כמו בתמונה */
-    padding: 1px; /* פדינג קטן ליצירת מסגרת הזוהר */
-    border-radius: 20px; /* פינות מעוגלות */
-    
-    /* המסגרת החיצונית המזוהרת */
+    padding: 1px;
+    border-radius: 20px;
+
     background: linear-gradient(135deg, rgba(142, 68, 173, 0.4) 0%, rgba(26, 188, 156, 0.0) 100%);
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5), 0 0 10px rgba(100, 100, 200, 0.2);
 }
 
 .stats-card {
-    /* הרקע הפנימי הכהה והעמוק */
     background: radial-gradient(circle at 50% 50%, #1e1e3f 0%, #12122a 80%);
-    border-radius: 19px; /* מעט קטן יותר מהחיצוני */
+    border-radius: 19px;
     display: flex;
     justify-content: space-around;
     align-items: center;
     padding: 25px 20px;
     text-align: center;
     gap: 15px;
-    /* המסגרת הפנימית הדקה */
-    border: 1px solid rgba(255, 255, 255, 0.05); 
+    border: 1px solid rgba(255, 255, 255, 0.05);
 }
 
-/* --- עיצוב כל פריט סטטיסטיקה --- */
 .stat-item {
-    flex: 1; /* מחלק את הרוחב שווה בשווה */
+    flex: 1;
     min-width: 80px;
     padding: 5px 0;
 }
 
 .stat-number {
-    font-size: 32px; /* גודל המספרים */
+    font-size: 32px;
     font-weight: 700;
     margin-bottom: 5px;
     transition: all 0.3s ease;
 }
 
 .stat-label {
-    font-size: 14px; /* גודל הכיתוב מתחת למספר */
-    color: #9ca3af; /* אפור בהיר לכיתוב הכללי */
+    font-size: 14px;
+    color: #9ca3af;
 }
 
-/* --- צבעים ואפקטי זוהר (ניאון) ספציפיים --- */
-
-/* 1. לבן (הטקסט הכללי זוהר קלות) */
 .white-glow .stat-number {
     color: #ffffff;
     text-shadow: 0 0 3px rgba(255, 255, 255, 0.3);
 }
 
-/* 2. סגול ניאון */
 .purple-glow .stat-number {
-    color: #d8b4fe; /* גוון סגול בהיר */
+    color: #d8b4fe;
     text-shadow: 0 0 5px #a78bfa, 0 0 15px #a78bfa;
 }
 
-/* 3. כחול ניאון */
 .blue-glow .stat-number {
-    color: #93c5fd; /* גוון כחול בהיר */
+    color: #93c5fd;
     text-shadow: 0 0 5px #60a5fa, 0 0 15px #60a5fa;
 }
 
-/* 4. ירוק ניאון */
 .green-glow .stat-number {
-    color: #86efac; /* גוון ירוק בהיר */
+    color: #86efac;
     text-shadow: 0 0 5px #4ade80, 0 0 15px #4ade80;
 }
 
-/* --- רספונסיביות למובייל --- */
 @media (max-width: 600px) {
     .stats-card {
-        flex-wrap: wrap; /* מאפשר גלישה בשורות נוספות */
+        flex-wrap: wrap;
         padding: 20px 10px;
     }
-    
+
     .stat-item {
-        flex: 1 1 50%; /* 2 פריטים בשורה */
+        flex: 1 1 50%;
         padding: 10px 0;
     }
-    
+
     .stat-number {
         font-size: 28px;
     }
-    
+
     .stat-label {
         font-size: 12px;
     }
 }
 
-
-/* --- עיצוב הרקע של הדף ומרכוז הכרטיס --- */
-/* (כללים אלו מתייחסים בדרך כלל ל-body או לרכיב המארח -:host, נשאיר אותם כהערות) */
 :host {
-    /* הרקע הכללי הכהה */
-    background-color: #0d0d1b; 
+    background-color: #0d0d1b;
     font-family: 'Inter', sans-serif;
-    display: block; /* חשוב לרכיב מארח */
+    display: block;
     min-height: 100vh;
 }
 
-/* קונטיינר המרכוז - אם נרצה למרכז את הכל בדף */
 .center-container {
     width: 100%;
     display: flex;
@@ -134,18 +112,97 @@ body {
     box-sizing: border-box;
 }
 
+.stats-card-container {
+    max-width: 800px;
+    width: 100%;
+    margin: 30px auto;
+    padding: 1px;
+    border-radius: 20px;
 
-/* ----------------------------------------------------
-   ה-CSS של שאר הרכיב (כדי למנוע איבוד עיצוב)
-   ---------------------------------------------------- */
+    background: linear-gradient(135deg, rgba(142, 68, 173, 0.4) 0%, rgba(26, 188, 156, 0.0) 100%);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5), 0 0 10px rgba(100, 100, 200, 0.2);
+}
+
+.stats-card {
+    background: radial-gradient(circle at 50% 50%, #1e1e3f 0%, #12122a 80%);
+    border-radius: 19px;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    padding: 25px 20px;
+    text-align: center;
+    gap: 15px;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.stat-item {
+    flex: 1;
+    min-width: 80px;
+    padding: 5px 0;
+    color: #f0f0f0;
+}
+
+.stat-number {
+    font-size: 32px;
+    font-weight: 700;
+    margin-bottom: 5px;
+    transition: all 0.3s ease;
+}
+
+.stat-label {
+    font-size: 14px;
+    color: #9ca3af;
+}
+
+.white-glow .stat-number {
+    color: #ffffff;
+    text-shadow: 0 0 3px rgba(255, 255, 255, 0.3);
+}
+
+.purple-glow .stat-number {
+    color: #d8b4fe;
+    text-shadow: 0 0 5px #a78bfa, 0 0 15px #a78bfa;
+}
+
+.blue-glow .stat-number {
+    color: #93c5fd;
+    text-shadow: 0 0 5px #60a5fa, 0 0 15px #60a5fa;
+}
+
+.green-glow .stat-number {
+    color: #86efac;
+    text-shadow: 0 0 5px #4ade80, 0 0 15px #4ade80;
+}
+
+@media (max-width: 600px) {
+    .stats-card {
+        flex-wrap: wrap;
+        padding: 20px 10px;
+    }
+
+    .stat-item {
+        flex: 1 1 50%;
+        padding: 10px 0;
+    }
+
+    .stat-number {
+        font-size: 28px;
+    }
+
+    .stat-label {
+        font-size: 12px;
+    }
+}
+
 .musicians {
     color: #ffffff;
 }
+
 .button {
     display: flex;
     align-items: center;
     padding: 10px 15px;
-    background-color: #4CAF50; 
+    background-color: #4CAF50;
     color: white;
     border: none;
     border-radius: 8px;
@@ -153,82 +210,98 @@ body {
     font-weight: 600;
     transition: background-color 0.3s;
 }
+
 .button:hover {
     background-color: #45a049;
 }
 
-
-/* --- הגדרות גלובליות ורקע כללי --- */
 body {
-    background-color: #0b0b1a; /* רקע כהה מאוד כמו בתמונות */
-    font-family: 'Inter', sans-serif; /* פונט נפוץ לממשקים מודרניים */
-    color: #e0e0e0; /* צבע טקסט בהיר כללי */
+    background-color: #0b0b1a;
+    font-family: 'Inter', sans-serif;
+    color: #e0e0e0;
     margin: 0;
     padding: 0;
     min-height: 100vh;
-    direction: rtl; /* כיוון כתיבה מימין לשמאל */
+    direction: rtl;
 }
 
 .max-w-4xl {
-    max-width: 900px; /* רוחב מרבי מעט גדול יותר לנוחות */
+    max-width: 900px;
 }
 
-/* --- עיצוב כפתורי הפילטר (Filter by type) --- */
 .filter-button {
     padding: 8px 16px;
-    border-radius: 12px; /* פינות מעוגלות יותר */
+    border-radius: 12px;
     font-size: 14px;
     font-weight: 500;
     cursor: pointer;
     transition: all 0.2s ease-in-out;
-    white-space: nowrap; /* מונע שבירת שורה */
+    white-space: nowrap;
 }
 
-/* כפתור פילטר רגיל (לא פעיל) */
 .filter-button {
-    background-color: #2a2a47; /* רקע כהה יותר */
-    color: #a0a0b0; /* טקסט אפרפר */
-    border: 1px solid #3a3a5a; /* מסגרת עדינה */
+    background-color: #2a2a47;
+    color: #a0a0b0;
+    border: 1px solid #3a3a5a;
 }
 
 .filter-button:hover:not(.active) {
-    background-color: #3b3b5e; /* רקע מעט בהיר יותר בריחוף */
+    background-color: #3b3b5e;
     color: #c0c0d0;
 }
 
-/* כפתור פילטר פעיל (active) */
 .filter-button.active {
-    background-color: #6a40df; /* סגול חזק כמו בתמונה */
+    background-color: #6a40df;
     color: #ffffff;
     border-color: #6a40df;
-    box-shadow: 0 0 10px rgba(106, 64, 223, 0.4); /* זוהר סגול קטן */
+    box-shadow: 0 0 10px rgba(106, 64, 223, 0.4);
 }
 
-/* --- עיצוב כרטיס התראה כללי --- */
 .notification-card {
     display: flex;
     align-items: flex-start;
     padding: 20px;
-    border-radius: 15px;
+    border-radius: 16px;
     margin-bottom: 16px;
     position: relative;
     transition: all 0.3s ease;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+
+    background: linear-gradient(135deg, #1A1A2E 0%, #290E49 100%);
+
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.5),
+        0 0 5px 1px rgba(160, 51, 224, 0.4);
+    border: 1px solid transparent;
 }
 
-/* קונטיינר האייקון והנקודה */
+.notification-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.6),
+        0 0 0 2px #A033E0;
+}
+
+.notification-card.is-unread {
+    background: linear-gradient(135deg, #1a1a2e 0%, #301a55 100%);
+    border-left: 5px solid #A033E0;
+    padding-left: 15px;
+}
+
+.notification-card.is-unread:hover {
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.6),
+        0 0 0 2px #A033E0;
+}
+
 .notification-icon-wrapper {
     position: relative;
     flex-shrink: 0;
-    margin-left: 15px; /* מרווח מצד ימין */
-    margin-top: 5px; /* יישור קטן למעלה */
+    margin-left: 15px;
+    margin-top: 5px;
 }
 
 .notification-icon {
     width: 45px;
     height: 45px;
     border-radius: 50%;
-    background-color: #4a4a70; /* צבע רקע לאייקון (אפור סגול) */
+    background-color: #4a4a70;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -238,7 +311,7 @@ body {
 }
 
 .notification-icon.music-icon {
-    background-color: #8b5cf6; /* צבע סגול לאייקון המוזיקה */
+    background-color: #8b5cf6;
     color: white;
 }
 
@@ -247,12 +320,12 @@ body {
     height: 24px;
 }
 
-
-/* תוכן ההתראה */
 .notification-content {
     flex-grow: 1;
     display: flex;
     flex-direction: column;
+    text-align: center;
+    margin-left: 500px;
 }
 
 .notification-title {
@@ -273,14 +346,13 @@ body {
     color: #7a7a90;
 }
 
-/* כפתורי פעולה בתוך ההתראה */
 .notification-actions {
     display: flex;
     align-items: center;
     gap: 10px;
     flex-shrink: 0;
-    margin-right: 15px; /* מרווח מצד שמאל */
-    white-space: nowrap; /* למנוע שבירת שורה בכפתורים */
+    margin-right: 15px;
+    white-space: nowrap;
 }
 
 .notification-actions button {
@@ -292,7 +364,6 @@ body {
     transition: all 0.2s ease;
 }
 
-/* כפתור "Mark as read" */
 .mark-as-read-button {
     background: none;
     border: 1px solid #4a4a70;
@@ -304,9 +375,8 @@ body {
     color: #e0e0e0;
 }
 
-/* כפתור "View Post" / "View Comments" */
 .view-button {
-    background-color: #6a40df; /* סגול חזק */
+    background-color: #6a40df;
     color: white;
     border: 1px solid #6a40df;
     box-shadow: 0 0 8px rgba(106, 64, 223, 0.3);
@@ -317,7 +387,6 @@ body {
     box-shadow: 0 0 12px rgba(106, 64, 223, 0.5);
 }
 
-/* כפתור מחיקה (X) */
 .delete-button {
     background: none;
     border: none;
@@ -330,83 +399,79 @@ body {
     justify-content: center;
     border-radius: 50%;
 }
+
 .delete-button:hover {
-    color: #ef4444; /* אדום באפקט ריחוף */
+    color: #ef4444;
     background-color: rgba(239, 68, 68, 0.1);
 }
 
-
-/* --- מצב התראה שלא נקראה (.unread) --- */
 .notification-card.unread {
-    background: radial-gradient(circle at 5% 5%, #3a3a5f 0%, #21213a 100%); /* רקע סגול כהה יותר, זוהר עדין */
-    border: 1px solid #6a40df; /* מסגרת סגולה */
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3), 0 0 15px rgba(106, 64, 223, 0.3); /* צל וזוהר חזקים יותר */
+    background: radial-gradient(circle at 5% 5%, #3a3a5f 0%, #21213a 100%);
+    border: 1px solid #6a40df;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3), 0 0 15px rgba(106, 64, 223, 0.3);
 }
 
 .notification-card.unread .notification-title {
-    color: #ffffff; /* כותרת לבנה בולטת */
+    color: #ffffff;
 }
 
-/* הנקודה האדומה של התראה שלא נקראה */
 .unread-dot {
     position: absolute;
-    top: -2px; /* מיקום למעלה */
-    right: -2px; /* מיקום ימינה */
+    top: -2px;
+    right: -2px;
     width: 12px;
     height: 12px;
-    background-color: #ef4444; /* אדום */
+    background-color: #ef4444;
     border-radius: 50%;
-    border: 2px solid #2a2a47; /* מסגרת כהה סביב הנקודה */
+    border: 2px solid #2a2a47;
 }
 
-/* --- מצב התראה נקראה (.read) --- */
 .notification-card.read {
-    background-color: #2a2a47; /* רקע אפור כהה יותר */
-    border: 1px solid #3a3a5a; /* מסגרת עדינה יותר */
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); /* צל עדין יותר */
+    background-color: #2a2a47;
+    border: 1px solid #3a3a5a;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
 }
 
 .notification-card.read .notification-title {
-    color: #c0c0d0; /* כותרת אפרפרה עדינה יותר */
+    color: #c0c0d0;
 }
 
 .notification-card.read .mark-as-read-button {
-    display: none; /* מסתיר את הכפתור "Mark as read" כשנקרא */
+    display: none;
 }
 
-
-/* --- רספונסיביות למסכים קטנים יותר --- */
 @media (max-width: 768px) {
     .notification-card {
-        flex-direction: column; /* בעמודות במקום בשורות */
+        flex-direction: column;
         align-items: flex-start;
         padding: 15px;
     }
 
     .notification-icon-wrapper {
         margin-left: 0;
-        margin-bottom: 15px; /* מרווח מתחת לאייקון */
+        margin-bottom: 15px;
     }
 
     .notification-actions {
-        flex-direction: row; /* כפתורים בשורה גם במובייל */
-        justify-content: flex-end; /* יישור לימין */
+        flex-direction: row;
+        justify-content: flex-end;
         margin-top: 15px;
         margin-right: 0;
-        width: 100%; /* תופס רוחב מלא */
+        width: 100%;
     }
-    
-    /* מזיז את כפתור המחיקה לסוף השורה */
+
     .notification-actions .delete-button {
-        margin-right: auto; /* דוחף אותו הכי שמאלה */
+        margin-right: auto;
     }
 
     .mark-as-read-button {
-        order: 1; /* סדר הכפתורים */
+        order: 1;
     }
+
     .view-button {
         order: 2;
     }
+
     .delete-button {
         order: 3;
     }
@@ -416,33 +481,32 @@ body {
     .notification-card {
         padding: 12px;
     }
+
     .notification-title {
         font-size: 16px;
     }
+
     .notification-message {
         font-size: 13px;
     }
+
     .notification-actions button {
         padding: 6px 10px;
         font-size: 12px;
     }
+
     .filter-button {
         padding: 6px 12px;
         font-size: 13px;
     }
 }
 
-
-
-
-/* עוטף את כל האזור של הכפתורים ומרכז */
 .categories-center {
     display: flex;
     justify-content: center;
     width: 100%;
 }
 
-/* הקופסא שמכילה את הכפתורים */
 .categories-box {
     display: flex;
     gap: 12px;
@@ -451,7 +515,6 @@ body {
     border-radius: 14px;
 }
 
-/* עיצוב בסיס לכפתורים */
 .category-btn {
     background: #444;
     color: #ccc;
@@ -462,9 +525,6 @@ body {
     cursor: pointer;
     transition: 0.2s;
 }
-
-/* עיצוב בריחוף */
-
 
 .button {
     display: inline-flex;
@@ -484,5 +544,209 @@ body {
 }
 
 .notification.unread {
-  background: rgba(138, 43, 226, 0.1);
+    background: rgba(138, 43, 226, 0.1);
+}
+
+.notifications-list {
+    max-width: 1000px;
+    margin: 40px auto;
+    padding: 0 15px;
+}
+
+.notification-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.5);
+}
+
+.notification-card.is-read {
+    background-color: #1a1a2e;
+    border: 1px solid #2a2a47;
+}
+
+.notification-card.is-unread {
+    background-color: #121226;
+    border: 1px solid #5c00b8;
+}
+
+.notification {
+    display: flex;
+    align-items: center;
+    width: 100%;
+}
+
+.icon-wrapper {
+    width: 40px;
+    height: 40px;
+    min-width: 40px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+    color: #ffffff;
+    margin-inline-end: 15px;
+    position: relative;
+    background-color: #5c00b8;
+    transition: background-color 0.2s;
+}
+
+.icon-wrapper.bg-gray-darker {
+    background-color: #33334d;
+}
+
+.unread-dot {
+    position: absolute;
+    top: -2px;
+    right: -2px;
+    width: 8px;
+    height: 8px;
+    background-color: #ff4500;
+    border-radius: 50%;
+    border: 2px solid #1a1a2e;
+}
+
+.content-body {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-grow: 1;
+}
+
+.header-details {
+    text-align: right;
+    direction: rtl;
+    margin-inline-end: 20px;
+    flex-grow: 1;
+}
+
+.title {
+    font-weight: 600;
+    font-size: 16px;
+    color: #ffffff;
+}
+
+.message,
+.timestamp {
+    font-size: 13px;
+    color: #b0b0c0;
+    margin-top: 2px;
+}
+
+.action-buttons-wrapper {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    flex-shrink: 0;
+}
+
+.action-button {
+    padding: 6px 10px;
+    border-radius: 6px;
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.2s;
+    border: none;
+}
+
+.primary-action-btn {
+    background-color: #a033e0;
+    color: #ffffff;
+}
+
+.approve-btn {
+    background-color: #1db954;
+    color: #ffffff;
+}
+
+.delete-btn mat-icon {
+    font-size: 20px;
+    color: #b0b0c0;
+    vertical-align: middle;
+}
+
+.delete-btn:hover mat-icon {
+    color: #dc3545;
+}
+
+.notification {
+    display: flex;
+    align-items: flex-start;
+    padding: 20px;
+    border-radius: 16px;
+    margin-bottom: 16px;
+    position: relative;
+    transition: all 0.3s ease;
+    text-align: center;
+    background: linear-gradient(135deg, #1A1A2E 0%, #290E49 100%);
+    border-radius: 50px;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.5),
+        0 0 5px 1px rgba(160, 51, 224, 0.4);
+    border: 1px solid transparent;
+    width: 800px;
+    margin-top: 20px;
+    margin-left: 340px;
+}
+
+.notification:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.6),
+        0 0 0 2px #A033E0;
+}
+
+.notification.is-unread {
+    background: linear-gradient(135deg, #1a1a2e 0%, #301a55 100%);
+    border-left: 5px solid #A033E0;
+    padding-left: 15px;
+}
+
+.notification-card.is-unread:hover {
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.6),
+        0 0 0 2px #A033E0;
+}
+
+.notification-icon-wrapper {
+    position: relative;
+    flex-shrink: 0;
+    margin-left: 15px;
+    margin-top: 5px;
+}
+
+.notification-icon {
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+    background-color: #4a4a70;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 600;
+    font-size: 18px;
+    color: #e0e0e0;
+}
+.font-semibold.text-lg {
+    font-size: 1.5rem;
+    
+    font-weight: 800;
+    text-align: center;
+    color: #E6E6FF; 
+    margin-left: 270px;
+}
+.text-sm.text-gray-400.mt-0\.5 {
+    font-size: 0.95rem; 
+    margin-left: 270px;
+
+    color: #A0A0C0; 
+    
+    margin-top: 5px; 
+}
+.text-xs.text-gray-500.mt-2 {
+    font-size: 0.8rem; 
+
+    color: #6a6a8c !important; 
+
+    font-weight: 500; 
+    
+    margin-top: 8px; 
+    margin-left: 270px;
 }

@@ -7,6 +7,7 @@
         </div>
     </div>
 
+    <!-- BADGES -->
     <div class="badge-group">
         <span class="badge category" *ngFor="let category of sheet.categories; let last = last"
             title="{{ category.name }}">
@@ -16,6 +17,7 @@
         <span class="badge difficulty {{ sheet.level }}">{{ sheet.level }}</span>
     </div>
 
+    <!-- CARD CONTENT -->
     <div class="card-content">
         <h3 class="title" [innerHTML]="sheet.title! | highlight: searchText!"></h3>
         <p class="artist-legacy">
@@ -79,6 +81,6 @@
             </span>
         </div>
 
-        <button class="button" (click)="goToSheetMusic(sheet)">View</button>
+        <button class="button" (click)="goToSheetMusic(sheet)">VIEW</button>
     </div>
 </div>

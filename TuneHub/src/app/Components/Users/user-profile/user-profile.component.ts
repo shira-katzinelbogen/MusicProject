@@ -1,22 +1,19 @@
-import { Component, Input, OnInit, input } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
-import { PostsComponent } from '../../Post/posts/posts.component';
+import { MatMenuModule } from '@angular/material/menu';
 import Users, { ERole, UserType } from '../../../Models/Users';
-import { SheetsMusicComponent } from '../../SheetMusic/sheets-music/sheets-music.component';
+import Post from '../../../Models/Post';
+import SheetMusic from '../../../Models/SheetMusic';
 import { UsersService } from '../../../Services/users.service';
-import { FileUtilsService } from '../../../Services/fileutils.service';
 import { PostService } from '../../../Services/post.service';
 import { SheetMusicService } from '../../../Services/sheetmusic.service';
-import { MatMenuModule } from '@angular/material/menu';  
+import { FileUtilsService } from '../../../Services/fileutils.service';
 import { UserStateService, UserProfile } from '../../../Services/user-state.service';
-import Post from '../../../Models/Post';
-import { EFollowStatus } from '../../../Models/Follow';
 import { InteractionService } from '../../../Services/interaction.service';
-
-import SheetMusic from '../../../Models/SheetMusic';
+import { EFollowStatus } from '../../../Models/Follow';
 import { PostCardComponent } from '../../Post/post-card/post-card.component';
 import { MusicCardComponent } from '../../SheetMusic/music-card/music-card.component';
 
@@ -28,23 +25,23 @@ import { MusicCardComponent } from '../../SheetMusic/music-card/music-card.compo
   styleUrls: ['./user-profile.component.css']
 })
 export class UserProfileComponent implements OnInit {
-  activeTab: string = 'posts';
+  activeTab: string = 'overview';
   profileId: number | null = null;
-profileData: Users | null = null;
-  isCurrentUserProfile: boolean = false; 
+  profileData: Users | null = null;
+  isCurrentUserProfile: boolean = false;
   userRating: number = 0;
-  isFollowing: boolean = false; 
-  posts: Post[] | undefined;
-  sheets: SheetMusic[] | undefined;
-  tracks: Post[] | undefined; 
-  videos: Post[] | undefined;
+  isFollowing: boolean = false;
+  posts: Post[] = [];
+  sheets: SheetMusic[] = [];
+  tracks: Post[] = [];
+  videos: Post[] = [];
   isStudentOfThisTeacher: boolean = false;
   canBeStudent: boolean = false;
   currentUserId: number | null = null;
   isTeacher: boolean = false;
   isElevatedAdmin: boolean = false;
   showAdminActions: boolean = false;
-  public instrumentsString: string = '';
+  instrumentsString: string = '';
   followStatus: EFollowStatus = EFollowStatus.NONE;
   followButtonDisabled: boolean = false;
 
@@ -62,14 +59,13 @@ profileData: Users | null = null;
   ngOnInit(): void {
     this.route.paramMap.subscribe(params => {
       const newProfileId = Number(params.get('id'));
+      if (this.profileId === newProfileId && this.profileData) return;
 
-      if (this.profileId === newProfileId && this.profileData) {
-          return; 
-      }
-
-      this.profileId = newProfileId; 
-      this.posts = undefined;
-      this.sheets = undefined; 
+      this.profileId = newProfileId;
+      this.posts = [];
+      this.sheets = [];
+      this.tracks = [];
+      this.videos = [];
       this.profileData = null;
 
       if (this.profileId) {
@@ -88,228 +84,74 @@ profileData: Users | null = null;
         this.isCurrentUserProfile = this.currentUserId ? id === this.currentUserId : false;
 
         const userRoles: ERole[] | undefined = currentUser?.roles as ERole[] | undefined;
+        this.isElevatedAdmin = !!userRoles && userRoles.includes(ERole.ROLE_SUPER_ADMIN);
 
-        if (this.profileData.id === this.profileId) {
-            this.isStudentOfThisTeacher = true;
-        } else {
-            this.isStudentOfThisTeacher = false;
-        }
-
-        this.isElevatedAdmin = !!userRoles && 
-          userRoles.includes(ERole.ROLE_SUPER_ADMIN);
-
-        if (this.profileData.instrumentsUsers && this.profileData.instrumentsUsers.length > 0) {
-            this.instrumentsString = this.profileData.instrumentsUsers.map(i => i.name).join(', ');
-        } else {
-            this.instrumentsString = '';
-        }
-
+        this.instrumentsString = this.profileData.instrumentsUsers?.map(i => i.name).join(', ') || '';
         this.userRating = data.rating || 0;
 
         this.showAdminActions = !!currentUser && this.isElevatedAdmin && !this.isCurrentUserProfile;
+        this.isTeacher = this.profileData.userTypes?.includes(UserType.TEACHER) || false;
+        this.canBeStudent = !!currentUser && !this.isCurrentUserProfile && this.isTeacher;
 
-        const profileUserTypes: UserType[] = this.profileData.userTypes || [];
-        this.isTeacher = profileUserTypes.includes(UserType.TEACHER);
-
-        this.canBeStudent = (!!currentUser && !this.isCurrentUserProfile && this.isTeacher);
-
-        if (this.canBeStudent && this.currentUserId !== null) {
-            this._usersService.getUserById(this.currentUserId).subscribe({
-                next: (currentUserData) => {
-                    const isStudent: boolean = currentUserData.userTypes?.includes(UserType.STUDENT) || false;
-                    console.log('isStudentOfThisTeacher:', this.isStudentOfThisTeacher);
-                },
-                error: (err) => {
-                    console.error('שגיאה:', err);
-                    this.isStudentOfThisTeacher = false;
-                }
-            });
-        } else {
-            this.isStudentOfThisTeacher = false;
+        if (this.canBeStudent && this.currentUserId) {
+          this._usersService.getUserById(this.currentUserId).subscribe({
+            next: (currentUserData) => {
+              this.isStudentOfThisTeacher = currentUserData.userTypes?.includes(UserType.STUDENT) || false;
+            },
+            error: () => this.isStudentOfThisTeacher = false
+          });
         }
 
-        if (!this.posts) this.loadPosts(id);
-        if (!this.sheets) this.loadSheets(id);
+        this.loadPosts(id);
+        this.loadSheets(id);
       },
-      error: (err) => console.error('שגיאה בטעינת הפרופיל:', err)
+      error: (err) => console.error('Error loading profile:', err)
     });
-  }
-
-  assignAdminRole(): void {
-    if (!this.profileId || !this.profileData) {
-      console.error('אין ID יעד.');
-      return;
-    }
-
-    if (confirm(`האם אתה בטוח שברצונך להפוך את ${this.profileData.name} למנהל (ADMIN)?`)) {
-        this._usersService.updateUserRole(this.profileId, ERole.ROLE_ADMIN).subscribe({
-          next: () => {
-            this.profileData!.roles = [ERole.ROLE_ADMIN]; 
-            alert(`${this.profileData!.name} הוא כעת מנהל (ADMIN)!`);
-            this.loadProfileData(this.profileId!); 
-          },
-          error: (err) => {
-            console.error('שגיאה:', err);
-            alert('שגיאה בעדכון רול.');
-          }
-        });
-    }
-  }
-
-  assignSuperAdminRole(): void {
-    if (!this.profileId || !this.profileData) {
-      console.error('אין ID יעד.');
-      return;
-    }
-
-    if (confirm(`האם אתה בטוח שברצונך להפוך את ${this.profileData.name} למנהל ראשי (SUPER ADMIN)?`)) {
-      this._usersService.updateUserRole(this.profileId, ERole.ROLE_SUPER_ADMIN).subscribe({
-        next: () => {
-          this.profileData!.roles = [ERole.ROLE_SUPER_ADMIN]; 
-          alert(`${this.profileData!.name} הוא כעת מנהל ראשי (SUPER ADMIN)!`);
-          this.loadProfileData(this.profileId!); 
-        },
-        error: (err) => {
-          console.error('שגיאה:', err);
-          alert('שגיאה בעדכון רול.');
-        }
-      });
-    }
-  }
-
-  joinAsStudent(): void {
-    if (!this.currentUserId || !this.profileId || !this.isTeacher) {
-        console.error('חסרים נתונים.');
-        return;
-    }
-
-    this._usersService.joinTeacher(this.currentUserId, this.profileId).subscribe({
-        next: () => {
-            alert(`הצטרפת בהצלחה כסטודנט של ${this.profileData?.name}!`);
-            this.isStudentOfThisTeacher = true;
-        },
-        error: (err) => {
-            console.error('שגיאה:', err);
-            alert('שגיאה בהצטרפות.');
-        }
-    });
-  }
-
-  checkTeacherEligibility(): void {
-    if (!this.profileData || this.profileId === null) return;
-
-    const isEligible = 
-        !!this.profileData.city && 
-        !!this.profileData.country && 
-        !!this.profileData.description;
-
-    const userIdAsNumber = Number(this.profileId);
-    
-    if (isEligible) {
-        if (!isNaN(userIdAsNumber)) {
-            this.router.navigate(['/teacher-signup', userIdAsNumber]);
-        }
-    } else {
-        alert('עליך למלא את העיר, המדינה והתיאור.');
-        
-        if (this.isCurrentUserProfile && !isNaN(userIdAsNumber)) {
-          this.openEditProfileModal(); 
-        }
-    }
   }
 
   loadPosts(userId: number): void {
     this._postService.getPostsByUserId(userId).subscribe({
-      next: (res: Post[]) => { 
+      next: (res: Post[]) => {
         this.posts = res;
-        this.tracks = res.filter(p => p.audioPath && p.audioPath.length > 0);
-        this.videos = res.filter(p => p.videoPath && p.videoPath.length > 0);
-
-        console.log(`Posts loaded: ${this.posts.length}`);
+        this.tracks = res.filter(p => !!p.audioPath);
+        this.videos = res.filter(p => !!p.videoPath);
       },
-      error: (err) => {
-        console.error('Error:', err);
-        this.posts = []; 
+      error: () => {
+        this.posts = [];
         this.tracks = [];
         this.videos = [];
       }
     });
   }
 
-  getStarArray(): string[] {
-    const rating = this.userRating;
-    const stars = [];
-    
-    for (let i = 1; i <= 5; i++) {
-        if (i <= rating) {
-            stars.push('star'); 
-        } else if (i - rating < 1 && i - rating > 0) {
-            if (rating % 1 >= 0.25) { 
-               stars.push('star_half'); 
-            } else {
-               stars.push('star_border'); 
-            }
-        } else {
-            stars.push('star_border'); 
-        }
-    }
-    
-    return stars.slice(0, 5);
-  }
-
   loadSheets(userId: number): void {
     this._sheetMusicService.getSheetMusicsByUserId(userId).subscribe({
       next: (res) => this.sheets = res,
-      error: (err) => console.error('Error:', err)
+      error: () => this.sheets = []
     });
   }
 
-  goBack(): void {
-    this.router.navigate(['/musicians']);
-  }
-
-  sendMessage(): void {
-    console.log(`Sending message to ${this.profileData?.name}`);
-  }
-
-  handleSignOut(): void {
-    this._usersService.signOut().subscribe({
-      next: () => {
-        this.userStateService.clearUser();
-        this.router.navigate(['/home']);
-      },
-      error: (err) => console.error('Error signing out:', err)
-    });
+  getStarArray(): string[] {
+    const stars = [];
+    for (let i = 1; i <= 5; i++) {
+      if (i <= this.userRating) stars.push('star');
+      else if (i - this.userRating < 1 && i - this.userRating > 0) stars.push(this.userRating % 1 >= 0.25 ? 'star_half' : 'star_border');
+      else stars.push('star_border');
+    }
+    return stars.slice(0, 5);
   }
 
   setActiveTab(tabName: string): void {
     this.activeTab = tabName;
-
-    if (this.profileId && tabName !== 'overview') {
-        if (!this.posts) this.loadPosts(this.profileId);
-        if (!this.sheets) this.loadSheets(this.profileId);
+    if (this.profileId && (tabName !== 'overview')) {
+      if (!this.posts.length) this.loadPosts(this.profileId);
+      if (!this.sheets.length) this.loadSheets(this.profileId);
     }
   }
 
   openEditProfileModal(): void {
-    console.log('Button clicked!');
-    console.log('profileData:', this.profileData);
-
-    const currentUser = this.userStateService.getCurrentUserValue();
-    const profileId = this.profileId;
-
-    if (currentUser && profileId != null) {
-      const isCurrentUser = profileId === Number(currentUser.id);
-
-      if (isCurrentUser) {
-        console.log(`Navigating to edit profile with ID: ${profileId}`);
-        this.router.navigate(['/edit-profil-modal', profileId]);
-      } else {
-        console.warn('Cannot navigate: not current user.');
-      }
-    } else {
-      console.warn('Missing data.');
-    }
+    if (!this.profileId) return;
+    this.router.navigate(['/edit-profil-modal', this.profileId]);
   }
 
   followUser(): void {
@@ -325,29 +167,42 @@ profileData: Users | null = null;
     });
   }
 
-  deleteUser(): void {
-    if (!this.profileId || !this.profileData) {
-        console.error('Missing data.');
-        return;
-    }
+  joinAsStudent(): void {
+    if (!this.currentUserId || !this.profileId || !this.isTeacher) return;
 
-    if (!confirm(`האם אתה בטוח שברצונך למחוק את המשתמש ${this.profileData.name} (ID: ${this.profileId})?`)) {
-        return;
-    }
-
-    this._usersService.deleteUser(this.profileId).subscribe({
-        next: () => {
-            alert(`המשתמש ${this.profileData!.name} נמחק בהצלחה!`);
-            this.router.navigate(['/home-page']);
-        },
-        error: (err) => {
-            console.error('Error:', err);
-            const errorMessage = err.status === 403 
-                ? 'אין הרשאה למחוק משתמשים.'
-                : `שגיאה במהלך המחיקה. קוד: ${err.status}`;
-            alert(errorMessage);
-        }
+    this._usersService.joinTeacher(this.currentUserId, this.profileId).subscribe({
+      next: () => this.isStudentOfThisTeacher = true,
+      error: (err) => console.error(err)
     });
   }
 
+  assignAdminRole(): void {
+    if (!this.profileId) return;
+    this._usersService.updateUserRole(this.profileId, ERole.ROLE_ADMIN).subscribe();
+  }
+
+  assignSuperAdminRole(): void {
+    if (!this.profileId) return;
+    this._usersService.updateUserRole(this.profileId, ERole.ROLE_SUPER_ADMIN).subscribe();
+  }
+
+  handleSignOut(): void {
+    this._usersService.signOut().subscribe({
+      next: () => {
+        this.userStateService.clearUser();
+        this.router.navigate(['/home']);
+      }
+    });
+  }
+
+
+
+    // פונקציה לדוגמה
+  checkTeacherEligibility() {
+    // כאן הקוד שבודק אם המשתמש יכול להפוך למורה
+  }
+
+  deleteUser() {
+    // כאן הקוד שמוחק משתמש (admin action)
+  }
 }

@@ -74,14 +74,12 @@ export class CommentComponent implements OnInit, OnChanges {
       });
   }
 
-  // 📌 גלילה בתוך הקומפוננטה — לא גלילה של כל הדף!
   onScroll(event: Event): void {
     const container = event.target as HTMLElement | null;
 
     if (!(container instanceof HTMLElement)) {
-      return;  // ← מונע את השגיאה של null
+      return;  
     }
-
     const threshold = 100;
 
     const reachedBottom =
@@ -93,9 +91,7 @@ export class CommentComponent implements OnInit, OnChanges {
   }
 
 
-  // ✅ הפונקציה שמחליפה את fileUtils
   getProfileImage(imagePath: string | null): string {
-    // נסי את זה קודם - נתיב בסיסי ברוב הפרויקטים
     return imagePath ? `http://localhost:8080/${imagePath}` : './assets/images/musicians.png';
   }
 

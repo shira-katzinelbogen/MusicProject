@@ -10,6 +10,11 @@
                 <span class="date">{{post.dateUploaded | date:'short'}}</span>
             </div>
 
+            <div class="rating-stars">
+        <mat-icon *ngFor="let star of getStarArray(post.rating)" [class.filled-star]="star === 'star' || star === 'star_half'">
+            {{ star }}
+        </mat-icon>
+    </div>
             <ng-container *ngIf="!isAdmin">
                 <button class="action-btn report-btn" (click)="onReportPost(post.id!)">
                     <mat-icon>report</mat-icon> דווח

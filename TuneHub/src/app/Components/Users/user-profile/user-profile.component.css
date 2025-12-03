@@ -1,19 +1,17 @@
-/* --- מיכל הפרופיל הראשי (User Profile) --- */
 .profile-container {
     padding: 0;
     margin: 0;
-    background-color: #1D2838; /* רקע הדף הכללי */
+    background-color: #1D2838 !important;
     color: #f0f0f0;
     font-family: Arial, sans-serif;
 }
 
-/* --- כותרת וניווט (Header) --- */
 .profile-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
     padding: 15px 30px;
-    background-color: #141d2a; /* כהה יותר מהרקע הכללי להפרדה */
+    background-color: #141d2a;
 }
 
 .back-arrow {
@@ -23,7 +21,7 @@
 }
 
 .edit-profile-btn {
-    background: linear-gradient(to right, #8a2be2, #4169e1); /* שיפוע סגול-כחול */
+    background: linear-gradient(to right, #8a2be2, #4169e1);
     color: white;
     border: none;
     border-radius: 20px;
@@ -32,41 +30,34 @@
     cursor: pointer;
 }
 
-/* --- כרטיס הפרופיל הראשי (עם הקאבר) --- */
 .profile-card {
     position: relative;
-    padding-bottom: 50px; /* מרווח כדי שהתוכן לא יכסה את תמונת הפרופיל */
+    padding-bottom: 50px;
 }
 
-/* --- תמונת הקאבר --- */
 .cover-image-wrapper {
     height: 250px;
     overflow: hidden;
-    background-color: #333; /* צבע גיבוי */
+    background-color: #333;
 }
 
 .cover-image {
     width: 100%;
     height: 100%;
-    object-fit: cover; /* מכסה את כל המיכל */
+    object-fit: cover;
 }
 
-/* --- סקשן המידע האישי והכפתורים --- */
 .profile-info-section {
     display: flex;
-    align-items: flex-end; /* ממקם את האלמנטים בחלק התחתון של השורה */
     justify-content: space-between;
-    padding: 0 30px 20px;
-    transform: translateY(-50px); /* מזיז את הסקשן למעלה כדי לחפוף את הקאבר */
+    transform: translateY(-50px);
 }
 
-/* --- תמונת הפרופיל --- */
 .profile-picture-wrapper {
     position: relative;
     width: 130px;
     height: 130px;
     margin-right: 20px;
-    /* המסגרת לבנה סביב התמונה הכהה */
     border: 5px solid #1D2838; 
     border-radius: 50%;
     background-color: #fff;
@@ -92,11 +83,17 @@
     padding: 2px;
 }
 
-/* --- פרטי המשתמש (שם, האנדל, מיקום) --- */
 .user-details {
-    flex-grow: 1; /* תופס את רוב המקום הפנוי */
+    flex-grow: 1;
     margin-bottom: 10px;
+    margin-top: 90px;
     text-align: left;
+    font-size: 0.8em;
+}
+ul.teacher-info-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
 }
 
 .user-details h2 {
@@ -123,11 +120,11 @@
     text-decoration: none;
 }
 
-/* --- כפתורי פעולה --- */
 .action-buttons {
     display: flex;
     gap: 10px;
-    margin-bottom: 10px;
+    margin-top: 0px;
+    
 }
 
 .message-btn, .follow-btn {
@@ -140,22 +137,18 @@
 }
 
 .message-btn {
-    background: linear-gradient(to right, #8a2be2, #4169e1); /* סגול-כחול */
+    background: linear-gradient(to right, #8a2be2, #4169e1);
 }
 
 .follow-btn {
-    background-color: #364960; /* כפתור כהה יותר */
+    background-color: #364960;
     border: 1px solid #4a617a;
 }
 
-
-
-
-/* --- כפתורי עריכה והתנתקות בפרופיל --- */
 .action-buttons .edit-btn,
 .action-buttons .signout-btn {
     padding: 10px 20px;
-    border-radius: 25px; /* עגול כמו Follow/Message */
+    border-radius: 25px;
     font-weight: bold;
     cursor: pointer;
     display: flex;
@@ -164,50 +157,31 @@
     transition: all 0.2s ease;
     color: white;
     border: none;
+    margin-top: 0px !important;
 }
 
-/* כפתור עריכה */
 .action-buttons .edit-btn {
-    background: linear-gradient(to right, #8a2be2, #4169e1); /* סגנון סגול-כחול */
+    background: linear-gradient(to right, #8a2be2, #4169e1);
+    margin: 0%;
 }
 
-/* כפתור התנתקות */
 .action-buttons .signout-btn {
-    background-color: #dc3545; /* אדום בולט */
+    background-color: #dc3545;
+    margin-top: 0px;
 }
 
-/* אפקט Hover */
 .action-buttons .edit-btn:hover,
 .action-buttons .signout-btn:hover {
     transform: scale(1.05);
     box-shadow: 0 4px 10px rgba(0,0,0,0.2);
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-/* Profile Container */
 .profile-container {
     background-color: #1D2838;
     color: #f0f0f0;
     font-family: Arial, sans-serif;
 }
 
-/* Cover Image */
 .cover-image-wrapper {
     height: 250px;
     overflow: hidden;
@@ -220,7 +194,6 @@
     object-fit: cover;
 }
 
-/* Profile Info Section (overlaps cover) */
 .profile-info-section {
     display: flex;
     align-items: flex-end;
@@ -229,7 +202,6 @@
     transform: translateY(-50px);
 }
 
-/* Profile Picture Wrapper */
 .profile-picture-wrapper {
     position: relative;
     width: 130px;
@@ -240,9 +212,9 @@
     background-color: #fff;
     box-shadow: 0 0 10px rgba(0,0,0,0.5);
     z-index: 10;
+    margin-bottom: 80px;
 }
 
-/* Profile Image */
 .profile-image {
     width: 100%;
     height: 100%;
@@ -250,22 +222,19 @@
     border-radius: 50%;
 }
 
-/* Active/Online Dot */
 .active-dot {
     position: absolute;
-    bottom: 5px;  /* ניתן לשנות למעלה/למטה */
+    bottom: 5px;
     right: 5px;
     width: 20px;
     height: 20px;
-    background-color: #4CAF50; /* ירוק "online" */
-    border: 3px solid #1D2838; /* מסגרת שתבלוט מעל הרקע */
+    background-color: #4CAF50;
+    border: 3px solid #1D2838;
     border-radius: 50%;
     box-shadow: 0 0 5px rgba(0,0,0,0.5);
 }
 
-/* User Details */
 .user-details {
-    flex-grow: 1;
     text-align: left;
 }
 
@@ -286,7 +255,6 @@
     text-decoration: none;
 }
 
-/* Action Buttons */
 .action-buttons {
     display: flex;
     gap: 10px;
@@ -310,26 +278,17 @@
     border: 1px solid #4a617a;
 }
 
+.user-details {
+    flex-grow: 1;
+    margin-bottom: 10px;    
+}
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-/* Description Box */
 .profile-description {
-  background-color: #243245;
+  background-color: #1D2838;
   padding: 15px;
-  margin-top: 15px;
-  border-radius: 10px;
+  margin-top: 0%;
+      list-style: none;
+
   box-shadow: 0 2px 6px rgba(0,0,0,0.2);
 }
 
@@ -344,7 +303,6 @@
   color: #dcdcdc;
 }
 
-/* Followers Stats */
 .followers-stats {
   margin-top: 10px;
   display: flex;
@@ -353,7 +311,6 @@
   color: #cccccc;
 }
 
-/* Navigation Tabs */
 .profile-tabs {
   margin-top: 20px;
   display: flex;
@@ -383,7 +340,6 @@
   background-color: #304055;
 }
 
-/* Main content box */
 .tab-content {
   margin-top: 20px;
   padding: 20px;
@@ -393,29 +349,24 @@
   box-shadow: 0 2px 10px rgba(0,0,0,0.3);
 }
 
-
-
 .follow{
     font-size: 15px;
 }
 
-
-/* Container for the tabs */
 .profile-tabs {
     display: flex;
-    gap: 10px; /* Space between tabs */
-    background-color: #1a1a2e; /* Dark background, similar to the image */
+    gap: 10px;
+    background-color: #1a1a2e;
     padding: 10px 0;
     border-radius: 8px;
     align-items: center;
     justify-content: flex-start;
 }
 
-/* General styling for all buttons/tabs */
 .profile-tabs button {
     background: transparent;
     border: none;
-    color: #9999ff; /* Light purple/blue text for inactive tabs */
+    color: #9999ff;
     padding: 10px 15px;
     font-size: 16px;
     cursor: pointer;
@@ -427,52 +378,37 @@
     font-weight: 500;
 }
 
-/* Hover effect for inactive tabs */
 .profile-tabs button:hover:not(.button) {
-    color: #ffffff; /* White text on hover */
+    color: #ffffff;
     background-color: #2c2c54;
 }
 
-/* Styling for the ACTIVE tab (when it has the 'button' class) */
 .profile-tabs button.button {
-    /* Gradient background for the active tab */
-    background: linear-gradient(to right, #8a2be2, #4169e1); /* Purple to Blue gradient */
-    color: #ffffff; /* White text for contrast */
-    font-weight: 700; /* Bolder text for the active tab */
+    background: linear-gradient(to right, #8a2be2, #4169e1);
+    color: #ffffff;
+    font-weight: 700;
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-    transform: scale(1.05); /* Slightly bigger */
+    transform: scale(1.05);
 }
 
-/* Optional: Style the tab content container */
 .tab-content {
     padding: 20px 0;
     color: #cccccc;
+    margin-top: 0px;
+    border-radius: 0%;
 }
 
-/* To simulate the icon and count appearance */
-/* You would need to add the actual icons and counts to the HTML */
 .profile-tabs button:before {
-    /* This is a placeholder for the icon */
   
     margin-right: 5px;
 }
 
-/* Example to add a count - requires changing the HTML structure to wrap the count */
-/* For example, for the 'Posts' tab, you would change the HTML to:
-<button [class.button]="activeTab==='posts'" (click)="activeTab='posts'">
-    <span class="tab-icon">💬</span>
-    <span class="tab-label">Posts</span>
-    <span class="tab-count">(234)</span>
-</button>
-*/
 .profile-tabs button .tab-count {
     font-weight: 400;
     opacity: 0.8;
     margin-left: 5px;
 }
 
-
-/* Container for the tabs */
 .profile-tabs {
     display: flex;
     gap: 20px;
@@ -480,14 +416,12 @@
     padding: 10px 0;
     border-radius: 8px;
     align-items: center;
-    /* שינוי זה ימרכז את הכרטיסיות */
+    border-radius: 0%;
+    margin-top: 0%;
     justify-content: center;
 }
-/* ... שאר קוד ה-CSS נשאר כפי שהוא ... */
 
-/* סגנון כללי לכפתורים בתוך Action Buttons */
 .action-buttons .button {
-    /* הגדרות עיצוב כלליות */
     padding: 10px 20px;
     border-radius: 25px;
     font-weight: bold;
@@ -496,37 +430,32 @@
     display: flex;
     align-items: center;
     gap: 5px;
+    margin-top: 0px;
 }
 
-/* סגנון כפתור Follow */
 .follow-btn {
-    background-color: #007bff; /* כחול */
+    background-color: #007bff;
     color: white;
     border: none;
 }
 
-/* סגנון כפתור Unfollow */
 .follow-btn.unfollow {
-    background-color: #dc3545; /* אדום/אפור כהה */
+    background-color: #dc3545;
 }
 
-/* סגנון כפתור ערוך ו-התנתק */
 .edit-btn, .signout-btn {
-    background-color: #6c757d; /* אפור ביניים */
+    background-color: #6c757d;
     color: white;
     border: none;
 }
-
 
 .disabled-btn {
   background-color: #ccc;
   cursor: not-allowed;
 }
 
-/* מצב כפתור מושבת: אם המשתנה [disabled] הוא true (כשהמשתמש לא מחובר)
-*/
 .action-buttons .button[disabled] {
-    background-color: #ccc !important; /* גוון אפור בהיר */
+    background-color: #ccc !important;
     color: #888;
     cursor: not-allowed;
     opacity: 0.6;
@@ -551,4 +480,9 @@ button {
 .profile-tabs button.active {
   border-bottom: 3px solid #6366f1;
   color: #fff;
+}
+.overview-content {
+  padding: 20px;
+  text-align: center;
+      list-style: none;
 }

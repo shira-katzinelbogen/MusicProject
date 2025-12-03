@@ -595,7 +595,6 @@ body {
     background-color: #4b2fff;
 }
 
-/* תגובות */
 .comments-section {
     margin-top: 10px;
     color: #fff;
@@ -1397,4 +1396,17 @@ body {
 .filled-star {
   color: gold; /* צבע מלא לכוכב מלא או חצי מלא */
 }
+/* עיצוב כללי לכוכבים */
+.rating-stars mat-icon {
+    font-size: 18px; /* גודל כוכב */
+    width: 18px;
+    height: 18px;
+    color: #b0b0c0; /* צבע ברירת מחדל (ריק או אפור) */
+    vertical-align: middle;
+    margin-inline-end: 2px;
+}
 
+/* 🚨 צבע לכוכבים מלאים וחצויים */
+.rating-stars .filled-star {
+    color: #ffc107; /* צהוב/כתום בולט לדירוג */
+}

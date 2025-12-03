@@ -3,6 +3,7 @@ import { PostService } from '../../../Services/post.service';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { PostResponseDTO, PostUploadDTO } from '../../../Models/Post';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-upload-post',
@@ -29,33 +30,10 @@ export class UploadPostComponent {
   uploadedPost: PostResponseDTO | null = null;
 
 
-  constructor(private postService: PostService) { }
+  constructor(private postService: PostService, private router: Router) { }
 
 
-  onFileChange(event: any, type: 'images' | 'audio' | 'video'): void {
-    const files = event.target.files;
 
-    if (files && files.length > 0) {
-      if (type === 'images') {
-        // עבור תמונות, שומרים רשימה
-        this.selectedImages = Array.from(files);
-      } else if (type === 'audio') {
-        // עבור אודיו ווידאו, שומרים קובץ יחיד
-        this.selectedAudio = files[0];
-      } else if (type === 'video') {
-        this.selectedVideo = files[0];
-      }
-    } else {
-      // אם אין קבצים שנבחרו (ביטול בחירה), מאפסים את המשתנה הרלוונטי
-      if (type === 'images') {
-        this.selectedImages = [];
-      } else if (type === 'audio') {
-        this.selectedAudio = null;
-      } else if (type === 'video') {
-        this.selectedVideo = null;
-      }
-    }
-  }
 
 
   onSubmit(): void {
@@ -67,7 +45,6 @@ export class UploadPostComponent {
       return;
     }
 
-    // יוצרים DTO חדש שמתאים ל־Java
     const dtoToSend = {
       title: this.postData.title,
       content: this.postData.content,
@@ -85,6 +62,8 @@ export class UploadPostComponent {
     ).subscribe({
       next: (response) => {
         this.uploadedPost = response;
+        this.onUploadComplete(response); 
+
         this.uploadSuccess = true;
         this.isUploading = false;
       },
@@ -95,5 +74,57 @@ export class UploadPostComponent {
       }
     });
   }
+  onFileChange(event: any, type: 'images' | 'audio' | 'video'): void {
+    const files = event.target.files;
+
+    if (files && files.length > 0) {
+      if (type === 'images') {
+        this.selectedImages = Array.from(files);
+
+        this.imagePreviews = [];
+        for (let file of this.selectedImages) {
+          const reader = new FileReader();
+          reader.onload = (e: any) => {
+            this.imagePreviews.push(e.target.result);
+          };
+          reader.readAsDataURL(file);
+        }
+
+      } else if (type === 'audio') {
+        this.selectedAudio = files[0];
+
+        if (this.selectedAudio) {
+          this.audioPreviewUrl = URL.createObjectURL(this.selectedAudio);
+        }
+
+      } else if (type === 'video') {
+        this.selectedVideo = files[0];
+
+        if (this.selectedVideo) {
+          this.videoPreviewUrl = URL.createObjectURL(this.selectedVideo);
+        }
+      }
+    } else {
+      if (type === 'images') {
+        this.selectedImages = [];
+        this.imagePreviews = [];
+      } else if (type === 'audio') {
+        this.selectedAudio = null;
+        this.audioPreviewUrl = null;
+      } else if (type === 'video') {
+        this.selectedVideo = null;
+        this.videoPreviewUrl = null;
+      }
+    }
+  }
+
+
+  onUploadComplete(post: any) {
+    this.uploadedPost = post;
+    this.uploadSuccess = true;
+
+    this.router.navigate(['/posts']); 
+  }
+
 
 }

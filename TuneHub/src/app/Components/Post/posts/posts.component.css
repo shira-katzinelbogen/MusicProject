@@ -278,3 +278,67 @@ body::-webkit-scrollbar-thumb:hover {
     
     width: 100%;
 }
+
+
+
+
+/* posts.component.css */
+
+.post-rating {
+    display: flex;
+    align-items: center;
+    margin-right: 15px; /* רווח מהסטאטוס הבא */
+}
+
+.post-rating .rating-value {
+    font-weight: bold;
+    color: #4CAF50; /* צבע ירוק לציון */
+    margin-right: 5px;
+}
+
+.post-rating .star-icon {
+    font-size: 1.2em; /* גודל האייקון */
+    color: #ccc; /* צבע ברירת מחדל לכוכבים ריקים */
+}
+
+.post-rating .star-icon.filled-star {
+    /* ה-ngClass מוסיף מחלקה זו לכוכב מלא או חצי מלא */
+    color: gold; /* צבע זהב/צהוב לדירוג */
+}
+
+.post-rating .separator {
+    margin: 0 10px;
+    color: #ccc;
+}
+/* בתוך קובץ posts.component.css */
+
+.star-icon {
+  color: #ccc; /* צבע ברירת מחדל אפור לכוכב ריק */
+  font-size: 24px; /* גודל סטנדרטי */
+}
+
+.filled-star {
+  color: gold; /* צבע מלא לכוכב מלא או חצי מלא */
+}
+
+/* posts.component.css */
+
+.star-rating {
+    display: flex; /* כדי ליישר את הכוכבים בשורה אחת */
+    align-items: center;
+    gap: 2px; /* מרווח קטן בין כוכב לכוכב */
+    margin-top: 5px; /* מרווח מהשורה שמעל */
+}
+
+.star-icon {
+    /* נותן צבע צהוב/זהב לכוכבים */
+    color: #ffd700; 
+    font-size: 18px; /* גודל מתאים */
+}
+
+/* אפשרות לעיצוב ערך הדירוג המספרי */
+.rating-value {
+    color: #fff;
+    font-size: 14px;
+    margin-left: 5px;
+}

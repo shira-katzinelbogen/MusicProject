@@ -5,11 +5,9 @@ import { BehaviorSubject, Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class FavoritesService {
-  private favoritesOpen = new BehaviorSubject<boolean>(false); 
-  
-  isFavoritesOpen$: Observable<boolean> = this.favoritesOpen.asObservable();
+  private favoritesOpen = new BehaviorSubject<boolean>(false);
 
-  constructor() { }
+  isFavoritesOpen$: Observable<boolean> = this.favoritesOpen.asObservable();
 
   openFavorites(): void {
     this.favoritesOpen.next(true);

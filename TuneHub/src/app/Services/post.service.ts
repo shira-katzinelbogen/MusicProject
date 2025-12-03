@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import Post, { PostResponseDTO, PostUploadDTO } from '../Models/Post';
@@ -28,7 +28,14 @@ export class PostService {
         return this._httpClient.get<Post[]>(`${this.apiUrl}/postsByUserId/${id}`, { withCredentials: true } );
     }
 
-
+getPostsPaged(page: number, size: number): Observable<Post> {
+    const params = new HttpParams()
+        .set('page', page.toString())
+        .set('size', size.toString());
+        
+    // 💡 ודא שה-URL תואם ל-endpoint בשרת
+    return this._httpClient.get<Post>(`${this.apiUrl}/paged`, { params });
+}
     
 uploadPost(
     dto: { title: string; content: string; },
