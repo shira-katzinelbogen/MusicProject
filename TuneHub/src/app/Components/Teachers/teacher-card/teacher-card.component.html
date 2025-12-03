@@ -1,177 +1,162 @@
 <!-- <div class="profile-container">
 
-  <section class="profile-card">
+    <section class="profile-card">
 
-        <div class="cover-image-wrapper">
-      <img src="./assets/images/3.jpg" alt="Cover Image" class="cover-image">
-    </div>
+        <div class="cover-image-wrapper">
+            <img src="./assets/images/3.jpg" alt="Cover Image" class="cover-image">
+        </div>
 
-        <div class="profile-info-section">
+        <div class="profile-info-section">
 
-            <div class="profile-picture-wrapper">
-        <img [src]="fileUtilsService.getImageUrl(profileData?.imageProfilePath)" 
-             alt="Profile Picture" class="profile-image">
-        <span class="active-dot"></span>
-      </div>
+            <div class="profile-picture-wrapper">
+                <img [src]="fileUtilsService.getImageUrl(profileData?.imageProfilePath)" alt="Profile Picture"
+                    class="profile-image">
+                <span class="active-dot"></span>
+            </div>
 
-            <div class="user-details">
-        <h2>{{ profileData?.name }}</h2>
-        <div class="contact-details">
-          <span *ngIf="profileData?.city && profileData?.country" class="location">
-            <mat-icon>location_on</mat-icon>
-            {{ profileData?.city }}, {{ profileData?.country }}
-          </span>
-          <span *ngIf="profileData?.email" class="website">
-            <mat-icon>email</mat-icon>
-            <a [href]="profileData?.email" target="_blank">{{ profileData?.email }}</a>
-          </span>
-        </div>
-      </div>
+            <div class="user-details">
+                <h2>{{ profileData?.name }}</h2>
+                <div class="contact-details">
+                    <span *ngIf="profileData?.city && profileData?.country" class="location">
+                        <mat-icon>location_on</mat-icon>
+                        {{ profileData?.city }}, {{ profileData?.country }}
+                    </span>
+                    <span *ngIf="profileData?.email" class="website">
+                        <mat-icon>email</mat-icon>
+                        <a [href]="'mailto:' + profileData?.email" target="_blank">{{ profileData?.email }}</a>
+                    </span>
+                </div>
+            </div>
 
-            <div class="action-buttons" style="display: flex; gap: 10px; flex-wrap: wrap; margin-top: 10px;">
+            <div class="action-buttons" style="display: flex; gap: 10px; flex-wrap: wrap; margin-top: 10px;">
 
-        <ng-container *ngIf="profileData && isCurrentUserProfile; else notCurrentUser">
-  <button class="edit-btn" (click)="openEditProfileModal()">
-    <mat-icon>edit</mat-icon>
-    ערוך פרופיל
-  </button>
+                <ng-container *ngIf="profileData && isCurrentUserProfile; else notCurrentUser">
+                    <button class="edit-btn" (click)="openEditProfileModal()">
+                        <mat-icon>edit</mat-icon>
+                        Edit Profile
+                    </button>
 
-  <button 
-    *ngIf="!isTeacher"
-    class="teacher-signup-btn" 
-    (click)="checkTeacherEligibility()">
-    <mat-icon>school</mat-icon>
-    הפוך למורה
-  </button>
-  <button class="signout-btn" (click)="handleSignOut()">
-    <mat-icon>logout</mat-icon>
-    התנתק
-  </button>
-</ng-container>
+                    <button *ngIf="!isTeacher" class="teacher-signup-btn" (click)="checkTeacherEligibility()">
+                        <mat-icon>school</mat-icon>
+                        Become Teacher
+                    </button>
+                    <button class="signout-btn" (click)="handleSignOut()">
+                        <mat-icon>logout</mat-icon>
+                        Sign Out
+                    </button>
+                </ng-container>
 
 
-<ng-template #notCurrentUser>
-    <div class="profile-actions-container"> 
-    
-        <button 
-            mat-raised-button 
-            color="accent" 
-            (click)="followUser()"
-            class="action-button follow-button"
-        >
-            <mat-icon>{{ isFollowing ? 'person_remove' : 'person_add' }}</mat-icon>
-            {{ isFollowing ? ' Stop Follow' : 'Follow' }}
-        </button>
+                <ng-template #notCurrentUser>
+                    <div class="profile-actions-container">
 
-        <ng-container *ngIf="canBeStudent">
-            <button 
-                mat-raised-button 
-                color="primary" 
-                (click)="joinAsStudent()"
-                [disabled]="isStudentOfThisTeacher"
-                class="action-button student-button"
-            >
-                <mat-icon>{{ isStudentOfThisTeacher ? 'check_circle' : 'school' }}</mat-icon>
-                {{ isStudentOfThisTeacher ? 'Student Assigned' : 'Join as Student' }}
-            </button>
-        </ng-container>
+                        <button mat-raised-button color="accent" (click)="followUser()"
+                            class="action-button follow-button">
+                            <mat-icon>{{ isFollowing ? 'person_remove' : 'person_add' }}</mat-icon>
+                            {{ isFollowing ? ' Stop Follow' : 'Follow' }}
+                        </button>
 
-        <ng-container *ngIf="showAdminActions">
-            <div class="admin-actions-dropdown">
-                <button mat-icon-button [matMenuTriggerFor]="adminMenu">
-                    <mat-icon>more_vert</mat-icon>
-                </button>
-            </div>
-        </ng-container>
-        
-    </div>
-</ng-template>
+                        <ng-container *ngIf="canBeStudent">
+                            <button mat-raised-button color="primary" (click)="joinAsStudent()"
+                                [disabled]="isStudentOfThisTeacher" class="action-button student-button">
+                                <mat-icon>{{ isStudentOfThisTeacher ? 'check_circle' : 'school' }}</mat-icon>
+                                {{ isStudentOfThisTeacher ? 'Student Assigned' : 'Join as Student' }}
+                            </button>
+                        </ng-container>
 
-<mat-menu #adminMenu="matMenu">
-    <button mat-menu-item (click)="assignAdminRole()">
-        <mat-icon>admin_panel_settings</mat-icon>
-        <span>Make Admin</span>
-    </button>
-    
-    <button mat-menu-item (click)="assignSuperAdminRole()">
-        <mat-icon>verified_user</mat-icon>
-        <span>Make Super Admin</span>
-    </button>
-</mat-menu>
+                        <ng-container *ngIf="showAdminActions">
+                            <div class="admin-actions-dropdown">
+                                <button mat-icon-button [matMenuTriggerFor]="adminMenu">
+                                    <mat-icon>more_vert</mat-icon>
+                                </button>
+                            </div>
+                        </ng-container>
 
-      </div>
+                    </div>
+                </ng-template>
 
-    </div>
+                <mat-menu #adminMenu="matMenu">
+                    <button mat-menu-item (click)="assignAdminRole()">
+                        <mat-icon>admin_panel_settings</mat-icon>
+                        <span>Make Admin</span>
+                    </button>
 
-  </section>
+                    <button mat-menu-item (click)="assignSuperAdminRole()">
+                        <mat-icon>verified_user</mat-icon>
+                        <span>Make Super Admin</span>
+                    </button>
+                </mat-menu>
+
+            </div>
+
+        </div>
+
+    </section>
 
 </div>
 
 <div class="profile-description" *ngIf="profileData?.description || profileData?.teacher">
 
-    <div class="role-section" *ngIf="profileData?.teacher">
-    👨‍🏫 מורה למוזיקה
-  </div>
+    <div class="role-section" *ngIf="profileData?.teacher">
+        👨‍🏫 Music Teacher
+    </div>
 
-    <p class="description-text" *ngIf="profileData?.description">
-    {{ profileData?.description }}
-  </p>
+    <p class="description-text" *ngIf="profileData?.description">
+        {{ profileData?.description }}
+    </p>
 
 </div>
 
 <div class="profile-tabs">
-    <button [class.active]="activeTab==='overview'" (click)="setActiveTab('overview')">
-      <i class="material-icons">person_outline</i> סקירה כללית
-  </button>
-  
-  <button [class.active]="activeTab==='tracks'" (click)="setActiveTab('tracks')">
-      <i class="material-icons">music_note</i> Tracks ({{ tracks?.length || 0 }})
-  </button>
+    <button [class.active]="activeTab==='overview'" (click)="setActiveTab('overview')">
+        <i class="material-icons">person_outline</i> General Overview
+    </button>
 
-  <button [class.active]="activeTab==='movies'" (click)="setActiveTab('movies')">
-      <i class="material-icons">videocam</i> Video ({{ videos?.length || 0 }})
-  </button>
-  
-  <button [class.active]="activeTab==='sheets'" (click)="setActiveTab('sheets')">
-      <i class="material-icons">description</i> Sheets ({{ sheets?.length || 0 }})
-  </button>
-  
-  <button [class.active]="activeTab==='posts'" (click)="setActiveTab('posts')">
-      <i class="material-icons">chat_bubble_outline</i> Posts ({{ posts?.length || 0 }})
-  </button>
+    <button [class.active]="activeTab==='tracks'" (click)="setActiveTab('tracks')">
+        <i class="material-icons">music_note</i> Tracks ({{ tracks?.length || 0 }})
+    </button>
+
+    <button [class.active]="activeTab==='movies'" (click)="setActiveTab('movies')">
+        <i class="material-icons">videocam</i> Videos ({{ videos?.length || 0 }})
+    </button>
+
+    <button [class.active]="activeTab==='sheets'" (click)="setActiveTab('sheets')">
+        <i class="material-icons">description</i> Sheets ({{ sheets?.length || 0 }})
+    </button>
+
+    <button [class.active]="activeTab==='posts'" (click)="setActiveTab('posts')">
+        <i class="material-icons">chat_bubble_outline</i> Posts ({{ posts?.length || 0 }})
+    </button>
 </div>
 <div class="tab-content">
 
-        <div *ngIf="activeTab === 'overview'" class="overview-content">
-        <h3>אודות {{ profileData?.name }}</h3>
-        <p>{{ profileData?.description || 'המשתמש לא הוסיף תיאור עדיין.' }}</p>
-        
-        <div *ngIf="isTeacher">
-            <h4>פרטי הוראה</h4>
-                    </div>
-    </div>
-    
-      <div *ngIf="activeTab === 'posts'">
-            <app-posts [postsFromProfile]="posts ?? []" [isProfileView]="true"></app-posts>
-    </div>
+    <div *ngIf="activeTab === 'overview'" class="overview-content">
+        <h3>About {{ profileData?.name }}</h3>
+        <p>{{ profileData?.description || 'The user has not added a description yet.' }}</p>
 
-       <div *ngIf="activeTab === 'tracks'">
-            <app-posts [postsFromProfile]="tracks ?? []" [showOnlyMedia]="'audio'" [isProfileView]="true"></app-posts>
-    </div>
+        <div *ngIf="isTeacher">
+            <h4>Teaching Details</h4>
+        </div>
+    </div>
 
-     <div *ngIf="activeTab === 'movies'">
-            <app-posts [postsFromProfile]="videos ?? []" [showOnlyMedia]="'video'" [isProfileView]="true"></app-posts>
-    </div>
+    <div *ngIf="activeTab === 'posts'">
+        <app-posts [postsFromProfile]="posts ?? []" [isProfileView]="true"></app-posts>
+    </div>
 
-    <div class="tab-content">
+    <div *ngIf="activeTab === 'tracks'">
+        <app-posts [postsFromProfile]="tracks ?? []" [showOnlyMedia]="'audio'" [isProfileView]="true"></app-posts>
+    </div>
 
-           <div *ngIf="activeTab === 'sheets'">
-                      <app-sheets-music 
-               [sheets]="sheets ?? []"
-               [isProfileView]="true" 
-            ></app-sheets-music>
-    </div>
+    <div *ngIf="activeTab === 'movies'">
+        <app-posts [postsFromProfile]="videos ?? []" [showOnlyMedia]="'video'" [isProfileView]="true"></app-posts>
+    </div>
 
-</div>
+    <div class="tab-content">
+
+        <div *ngIf="activeTab === 'sheets'">
+            <app-sheets-music [sheets]="sheets ?? []" [isProfileView]="true"></app-sheets-music>
+        </div>
+
+    </div>
 
 </div> -->

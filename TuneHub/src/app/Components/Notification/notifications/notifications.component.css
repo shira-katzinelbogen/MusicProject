@@ -730,11 +730,9 @@ body {
     font-weight: 800;
     text-align: center;
     color: #E6E6FF; 
-    margin-left: 270px;
 }
 .text-sm.text-gray-400.mt-0\.5 {
     font-size: 0.95rem; 
-    margin-left: 270px;
 
     color: #A0A0C0; 
     
@@ -748,5 +746,4 @@ body {
     font-weight: 500; 
     
     margin-top: 8px; 
-    margin-left: 270px;
 }
