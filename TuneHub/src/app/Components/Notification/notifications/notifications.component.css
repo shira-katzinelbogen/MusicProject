@@ -1,6 +1,4 @@
-/* --- עיצוב הרקע של הדף ומרכוז הכרטיס --- */
 body {
-    /* הרקע הכללי הכהה */
     background-color: #0d0d1b;
     font-family: 'Inter', sans-serif;
     margin: 0;
@@ -9,10 +7,8 @@ body {
     align-items: center;
     justify-content: center;
     color: #f0f0f0;
-    /* צבע טקסט ברירת מחדל */
 }
 
-/* קונטיינר המרכוז */
 .center-container {
     width: 100%;
     display: flex;
@@ -21,48 +17,36 @@ body {
     box-sizing: border-box;
 }
 
-/* --- עיצוב כרטיס הסטטיסטיקות המיוחד --- */
 .stats-card-container {
-    /* מיקסום רוחב כדי לאפשר מרווחים בדפדפן */
     max-width: 800px;
     width: 100%;
-    /* אפקט הקצה הסגול העדין כמו בתמונה */
     padding: 1px;
-    /* פדינג קטן ליצירת מסגרת הזוהר */
     border-radius: 20px;
-    /* פינות מעוגלות */
 
-    /* המסגרת החיצונית המזוהרת */
     background: linear-gradient(135deg, rgba(142, 68, 173, 0.4) 0%, rgba(26, 188, 156, 0.0) 100%);
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5), 0 0 10px rgba(100, 100, 200, 0.2);
 }
 
 .stats-card {
-    /* הרקע הפנימי הכהה והעמוק */
     background: radial-gradient(circle at 50% 50%, #1e1e3f 0%, #12122a 80%);
     border-radius: 19px;
-    /* מעט קטן יותר מהחיצוני */
     display: flex;
     justify-content: space-around;
     align-items: center;
     padding: 25px 20px;
     text-align: center;
     gap: 15px;
-    /* המסגרת הפנימית הדקה */
     border: 1px solid rgba(255, 255, 255, 0.05);
 }
 
-/* --- עיצוב כל פריט סטטיסטיקה --- */
 .stat-item {
     flex: 1;
-    /* מחלק את הרוחב שווה בשווה */
     min-width: 80px;
     padding: 5px 0;
 }
 
 .stat-number {
     font-size: 32px;
-    /* גודל המספרים */
     font-weight: 700;
     margin-bottom: 5px;
     transition: all 0.3s ease;
@@ -70,51 +54,37 @@ body {
 
 .stat-label {
     font-size: 14px;
-    /* גודל הכיתוב מתחת למספר */
     color: #9ca3af;
-    /* אפור בהיר לכיתוב הכללי */
 }
 
-/* --- צבעים ואפקטי זוהר (ניאון) ספציפיים --- */
-
-/* 1. לבן (הטקסט הכללי זוהר קלות) */
 .white-glow .stat-number {
     color: #ffffff;
     text-shadow: 0 0 3px rgba(255, 255, 255, 0.3);
 }
 
-/* 2. סגול ניאון */
 .purple-glow .stat-number {
     color: #d8b4fe;
-    /* גוון סגול בהיר */
     text-shadow: 0 0 5px #a78bfa, 0 0 15px #a78bfa;
 }
 
-/* 3. כחול ניאון */
 .blue-glow .stat-number {
     color: #93c5fd;
-    /* גוון כחול בהיר */
     text-shadow: 0 0 5px #60a5fa, 0 0 15px #60a5fa;
 }
 
-/* 4. ירוק ניאון */
 .green-glow .stat-number {
     color: #86efac;
-    /* גוון ירוק בהיר */
     text-shadow: 0 0 5px #4ade80, 0 0 15px #4ade80;
 }
 
-/* --- רספונסיביות למובייל --- */
 @media (max-width: 600px) {
     .stats-card {
         flex-wrap: wrap;
-        /* מאפשר גלישה בשורות נוספות */
         padding: 20px 10px;
     }
 
     .stat-item {
         flex: 1 1 50%;
-        /* 2 פריטים בשורה */
         padding: 10px 0;
     }
 
@@ -127,19 +97,13 @@ body {
     }
 }
 
-
-/* --- עיצוב הרקע של הדף ומרכוז הכרטיס --- */
-/* (כללים אלו מתייחסים בדרך כלל ל-body או לרכיב המארח -:host, נשאיר אותם כהערות) */
 :host {
-    /* הרקע הכללי הכהה */
     background-color: #0d0d1b;
     font-family: 'Inter', sans-serif;
     display: block;
-    /* חשוב לרכיב מארח */
     min-height: 100vh;
 }
 
-/* קונטיינר המרכוז - אם נרצה למרכז את הכל בדף */
 .center-container {
     width: 100%;
     display: flex;
@@ -148,52 +112,38 @@ body {
     box-sizing: border-box;
 }
 
-/* --- עיצוב כרטיס הסטטיסטיקות המיוחד --- */
 .stats-card-container {
-    /* מיקסום רוחב כדי לאפשר מרווחים בדפדפן */
     max-width: 800px;
     width: 100%;
     margin: 30px auto;
-    /* מרכוז אוטומטי במקום .center-container */
-    /* אפקט הקצה הסגול העדין כמו בתמונה */
     padding: 1px;
-    /* פדינג קטן ליצירת מסגרת הזוהר */
     border-radius: 20px;
-    /* פינות מעוגלות */
 
-    /* המסגרת החיצונית המזוהרת */
     background: linear-gradient(135deg, rgba(142, 68, 173, 0.4) 0%, rgba(26, 188, 156, 0.0) 100%);
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5), 0 0 10px rgba(100, 100, 200, 0.2);
 }
 
 .stats-card {
-    /* הרקע הפנימי הכהה והעמוק */
     background: radial-gradient(circle at 50% 50%, #1e1e3f 0%, #12122a 80%);
     border-radius: 19px;
-    /* מעט קטן יותר מהחיצוני */
     display: flex;
     justify-content: space-around;
     align-items: center;
     padding: 25px 20px;
     text-align: center;
     gap: 15px;
-    /* המסגרת הפנימית הדקה */
     border: 1px solid rgba(255, 255, 255, 0.05);
 }
 
-/* --- עיצוב כל פריט סטטיסטיקה --- */
 .stat-item {
     flex: 1;
-    /* מחלק את הרוחב שווה בשווה */
     min-width: 80px;
     padding: 5px 0;
     color: #f0f0f0;
-    /* צבע טקסט כללי בפנים */
 }
 
 .stat-number {
     font-size: 32px;
-    /* גודל המספרים */
     font-weight: 700;
     margin-bottom: 5px;
     transition: all 0.3s ease;
@@ -201,51 +151,37 @@ body {
 
 .stat-label {
     font-size: 14px;
-    /* גודל הכיתוב מתחת למספר */
     color: #9ca3af;
-    /* אפור בהיר לכיתוב הכללי */
 }
 
-/* --- צבעים ואפקטי זוהר (ניאון) ספציפיים (נשתמש בהם ישירות על ה-stat-item) --- */
-
-/* 1. לבן (הטקסט הכללי זוהר קלות) */
 .white-glow .stat-number {
     color: #ffffff;
     text-shadow: 0 0 3px rgba(255, 255, 255, 0.3);
 }
 
-/* 2. סגול ניאון */
 .purple-glow .stat-number {
     color: #d8b4fe;
-    /* גוון סגול בהיר */
     text-shadow: 0 0 5px #a78bfa, 0 0 15px #a78bfa;
 }
 
-/* 3. כחול ניאון */
 .blue-glow .stat-number {
     color: #93c5fd;
-    /* גוון כחול בהיר */
     text-shadow: 0 0 5px #60a5fa, 0 0 15px #60a5fa;
 }
 
-/* 4. ירוק ניאון */
 .green-glow .stat-number {
     color: #86efac;
-    /* גוון ירוק בהיר */
     text-shadow: 0 0 5px #4ade80, 0 0 15px #4ade80;
 }
 
-/* --- רספונסיביות למובייל --- */
 @media (max-width: 600px) {
     .stats-card {
         flex-wrap: wrap;
-        /* מאפשר גלישה בשורות נוספות */
         padding: 20px 10px;
     }
 
     .stat-item {
         flex: 1 1 50%;
-        /* 2 פריטים בשורה */
         padding: 10px 0;
     }
 
@@ -258,9 +194,6 @@ body {
     }
 }
 
-/* ----------------------------------------------------
-   ה-CSS של שאר הרכיב (כדי למנוע איבוד עיצוב)
-   ---------------------------------------------------- */
 .musicians {
     color: #ffffff;
 }
@@ -282,67 +215,48 @@ body {
     background-color: #45a049;
 }
 
-
-/* --- הגדרות גלובליות ורקע כללי --- */
 body {
     background-color: #0b0b1a;
-    /* רקע כהה מאוד כמו בתמונות */
     font-family: 'Inter', sans-serif;
-    /* פונט נפוץ לממשקים מודרניים */
     color: #e0e0e0;
-    /* צבע טקסט בהיר כללי */
     margin: 0;
     padding: 0;
     min-height: 100vh;
     direction: rtl;
-    /* כיוון כתיבה מימין לשמאל */
 }
 
 .max-w-4xl {
     max-width: 900px;
-    /* רוחב מרבי מעט גדול יותר לנוחות */
 }
 
-/* --- עיצוב כפתורי הפילטר (Filter by type) --- */
 .filter-button {
     padding: 8px 16px;
     border-radius: 12px;
-    /* פינות מעוגלות יותר */
     font-size: 14px;
     font-weight: 500;
     cursor: pointer;
     transition: all 0.2s ease-in-out;
     white-space: nowrap;
-    /* מונע שבירת שורה */
 }
 
-/* כפתור פילטר רגיל (לא פעיל) */
 .filter-button {
     background-color: #2a2a47;
-    /* רקע כהה יותר */
     color: #a0a0b0;
-    /* טקסט אפרפר */
     border: 1px solid #3a3a5a;
-    /* מסגרת עדינה */
 }
 
 .filter-button:hover:not(.active) {
     background-color: #3b3b5e;
-    /* רקע מעט בהיר יותר בריחוף */
     color: #c0c0d0;
 }
 
-/* כפתור פילטר פעיל (active) */
 .filter-button.active {
     background-color: #6a40df;
-    /* סגול חזק כמו בתמונה */
     color: #ffffff;
     border-color: #6a40df;
     box-shadow: 0 0 10px rgba(106, 64, 223, 0.4);
-    /* זוהר סגול קטן */
 }
 
-/* --- עיצוב כרטיס התראה כללי (בסגנון מועדפים) --- */
 .notification-card {
     display: flex;
     align-items: flex-start;
@@ -355,7 +269,6 @@ body {
     background: linear-gradient(135deg, #1A1A2E 0%, #290E49 100%);
 
     box-shadow: 0 8px 25px rgba(0, 0, 0, 0.5),
-        /* זוהר סגול דקיק ועוטף (הערכים הראשונים הם 0, הערך הרביעי הוא רוחב הזוהר) */
         0 0 5px 1px rgba(160, 51, 224, 0.4);
     border: 1px solid transparent;
 }
@@ -364,17 +277,12 @@ body {
     transform: translateY(-3px);
     box-shadow: 0 12px 30px rgba(0, 0, 0, 0.6),
         0 0 0 2px #A033E0;
-    /* 🚨 גבול סגול בוהק */
 }
 
-/* 🚨 עיצוב להתראות לא נקראו (Unread) */
 .notification-card.is-unread {
-    /* גורם להתראות חדשות לבלוט יותר */
     background: linear-gradient(135deg, #1a1a2e 0%, #301a55 100%);
     border-left: 5px solid #A033E0;
-    /* פס סגול בצד שמאל */
     padding-left: 15px;
-    /* פיצוי על רוחב הפס */
 }
 
 .notification-card.is-unread:hover {
@@ -382,14 +290,11 @@ body {
         0 0 0 2px #A033E0;
 }
 
-/* קונטיינר האייקון והנקודה */
 .notification-icon-wrapper {
     position: relative;
     flex-shrink: 0;
     margin-left: 15px;
-    /* מרווח מצד ימין */
     margin-top: 5px;
-    /* יישור קטן למעלה */
 }
 
 .notification-icon {
@@ -397,7 +302,6 @@ body {
     height: 45px;
     border-radius: 50%;
     background-color: #4a4a70;
-    /* צבע רקע לאייקון (אפור סגול) */
     display: flex;
     align-items: center;
     justify-content: center;
@@ -408,7 +312,6 @@ body {
 
 .notification-icon.music-icon {
     background-color: #8b5cf6;
-    /* צבע סגול לאייקון המוזיקה */
     color: white;
 }
 
@@ -417,8 +320,6 @@ body {
     height: 24px;
 }
 
-
-/* תוכן ההתראה */
 .notification-content {
     flex-grow: 1;
     display: flex;
@@ -426,7 +327,6 @@ body {
     text-align: center;
     margin-left: 500px;
 }
-
 
 .notification-title {
     font-size: 17px;
@@ -446,16 +346,13 @@ body {
     color: #7a7a90;
 }
 
-/* כפתורי פעולה בתוך ההתראה */
 .notification-actions {
     display: flex;
     align-items: center;
     gap: 10px;
     flex-shrink: 0;
     margin-right: 15px;
-    /* מרווח מצד שמאל */
     white-space: nowrap;
-    /* למנוע שבירת שורה בכפתורים */
 }
 
 .notification-actions button {
@@ -467,7 +364,6 @@ body {
     transition: all 0.2s ease;
 }
 
-/* כפתור "Mark as read" */
 .mark-as-read-button {
     background: none;
     border: 1px solid #4a4a70;
@@ -479,10 +375,8 @@ body {
     color: #e0e0e0;
 }
 
-/* כפתור "View Post" / "View Comments" */
 .view-button {
     background-color: #6a40df;
-    /* סגול חזק */
     color: white;
     border: 1px solid #6a40df;
     box-shadow: 0 0 8px rgba(106, 64, 223, 0.3);
@@ -493,7 +387,6 @@ body {
     box-shadow: 0 0 12px rgba(106, 64, 223, 0.5);
 }
 
-/* כפתור מחיקה (X) */
 .delete-button {
     background: none;
     border: none;
@@ -509,68 +402,47 @@ body {
 
 .delete-button:hover {
     color: #ef4444;
-    /* אדום באפקט ריחוף */
     background-color: rgba(239, 68, 68, 0.1);
 }
 
-
-/* --- מצב התראה שלא נקראה (.unread) --- */
 .notification-card.unread {
     background: radial-gradient(circle at 5% 5%, #3a3a5f 0%, #21213a 100%);
-    /* רקע סגול כהה יותר, זוהר עדין */
     border: 1px solid #6a40df;
-    /* מסגרת סגולה */
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3), 0 0 15px rgba(106, 64, 223, 0.3);
-    /* צל וזוהר חזקים יותר */
 }
 
 .notification-card.unread .notification-title {
     color: #ffffff;
-    /* כותרת לבנה בולטת */
 }
 
-/* הנקודה האדומה של התראה שלא נקראה */
 .unread-dot {
     position: absolute;
     top: -2px;
-    /* מיקום למעלה */
     right: -2px;
-    /* מיקום ימינה */
     width: 12px;
     height: 12px;
     background-color: #ef4444;
-    /* אדום */
     border-radius: 50%;
     border: 2px solid #2a2a47;
-    /* מסגרת כהה סביב הנקודה */
 }
 
-/* --- מצב התראה נקראה (.read) --- */
 .notification-card.read {
     background-color: #2a2a47;
-    /* רקע אפור כהה יותר */
     border: 1px solid #3a3a5a;
-    /* מסגרת עדינה יותר */
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-    /* צל עדין יותר */
 }
 
 .notification-card.read .notification-title {
     color: #c0c0d0;
-    /* כותרת אפרפרה עדינה יותר */
 }
 
 .notification-card.read .mark-as-read-button {
     display: none;
-    /* מסתיר את הכפתור "Mark as read" כשנקרא */
 }
 
-
-/* --- רספונסיביות למסכים קטנים יותר --- */
 @media (max-width: 768px) {
     .notification-card {
         flex-direction: column;
-        /* בעמודות במקום בשורות */
         align-items: flex-start;
         padding: 15px;
     }
@@ -578,29 +450,22 @@ body {
     .notification-icon-wrapper {
         margin-left: 0;
         margin-bottom: 15px;
-        /* מרווח מתחת לאייקון */
     }
 
     .notification-actions {
         flex-direction: row;
-        /* כפתורים בשורה גם במובייל */
         justify-content: flex-end;
-        /* יישור לימין */
         margin-top: 15px;
         margin-right: 0;
         width: 100%;
-        /* תופס רוחב מלא */
     }
 
-    /* מזיז את כפתור המחיקה לסוף השורה */
     .notification-actions .delete-button {
         margin-right: auto;
-        /* דוחף אותו הכי שמאלה */
     }
 
     .mark-as-read-button {
         order: 1;
-        /* סדר הכפתורים */
     }
 
     .view-button {
@@ -636,17 +501,12 @@ body {
     }
 }
 
-
-
-
-/* עוטף את כל האזור של הכפתורים ומרכז */
 .categories-center {
     display: flex;
     justify-content: center;
     width: 100%;
 }
 
-/* הקופסא שמכילה את הכפתורים */
 .categories-box {
     display: flex;
     gap: 12px;
@@ -655,7 +515,6 @@ body {
     border-radius: 14px;
 }
 
-/* עיצוב בסיס לכפתורים */
 .category-btn {
     background: #444;
     color: #ccc;
@@ -666,9 +525,6 @@ body {
     cursor: pointer;
     transition: 0.2s;
 }
-
-/* עיצוב בריחוף */
-
 
 .button {
     display: inline-flex;
@@ -691,43 +547,27 @@ body {
     background: rgba(138, 43, 226, 0.1);
 }
 
-/* ----------------------------------------------------
-    7. עיצוב רשימת ההתראות (Notifications)
-    ---------------------------------------------------- */
-
 .notifications-list {
     max-width: 1000px;
-    /* רוחב מרבי לרשימה */
     margin: 40px auto;
-    /* מרכוז */
     padding: 0 15px;
 }
-
-
 
 .notification-card:hover {
     transform: translateY(-2px);
     box-shadow: 0 6px 15px rgba(0, 0, 0, 0.5);
 }
 
-/* 🚨 רקע: התאמה לסגנון הכהה */
 .notification-card.is-read {
     background-color: #1a1a2e;
-    /* רקע כהה קל לקריאה */
     border: 1px solid #2a2a47;
-    /* גבול כהה מאוד */
 }
 
 .notification-card.is-unread {
-    /* רקע קצת יותר כהה/סגול להתראות חדשות */
     background-color: #121226;
     border: 1px solid #5c00b8;
-    /* גבול סגול דק ובולט */
 }
 
-/* ----------------------------------------------------
-    7.1. עיצוב התוכן הפנימי (Icon, Text, Actions)
-    ---------------------------------------------------- */
 .notification {
     display: flex;
     align-items: center;
@@ -735,7 +575,6 @@ body {
 }
 
 .icon-wrapper {
-    /* 🚨 עיגול הרקע של האייקון */
     width: 40px;
     height: 40px;
     min-width: 40px;
@@ -747,15 +586,12 @@ body {
     color: #ffffff;
     margin-inline-end: 15px;
     position: relative;
-    /* צבעי רקע מותאמים */
     background-color: #5c00b8;
-    /* סגול כהה ללא קריאה */
     transition: background-color 0.2s;
 }
 
 .icon-wrapper.bg-gray-darker {
     background-color: #33334d;
-    /* אפור-כחול לנקרא */
 }
 
 .unread-dot {
@@ -765,7 +601,6 @@ body {
     width: 8px;
     height: 8px;
     background-color: #ff4500;
-    /* אדום/כתום בוהק */
     border-radius: 50%;
     border: 2px solid #1a1a2e;
 }
@@ -779,9 +614,7 @@ body {
 
 .header-details {
     text-align: right;
-    /* יישור לימין */
     direction: rtl;
-    /* עברית */
     margin-inline-end: 20px;
     flex-grow: 1;
 }
@@ -790,7 +623,6 @@ body {
     font-weight: 600;
     font-size: 16px;
     color: #ffffff;
-    /* ברירת מחדל */
 }
 
 .message,
@@ -800,9 +632,6 @@ body {
     margin-top: 2px;
 }
 
-/* ----------------------------------------------------
-    7.2. כפתורי פעולה
-    ---------------------------------------------------- */
 .action-buttons-wrapper {
     display: flex;
     gap: 8px;
@@ -821,14 +650,12 @@ body {
 }
 
 .primary-action-btn {
-    /* סמן כנקרא */
     background-color: #a033e0;
     color: #ffffff;
 }
 
 .approve-btn {
     background-color: #1db954;
-    /* ירוק (כמו ספוטיפיי) */
     color: #ffffff;
 }
 
@@ -840,7 +667,6 @@ body {
 
 .delete-btn:hover mat-icon {
     color: #dc3545;
-    /* אדום במעבר עכבר */
 }
 
 .notification {
@@ -855,7 +681,6 @@ body {
     background: linear-gradient(135deg, #1A1A2E 0%, #290E49 100%);
     border-radius: 50px;
     box-shadow: 0 8px 25px rgba(0, 0, 0, 0.5),
-        /* זוהר סגול דקיק ועוטף (הערכים הראשונים הם 0, הערך הרביעי הוא רוחב הזוהר) */
         0 0 5px 1px rgba(160, 51, 224, 0.4);
     border: 1px solid transparent;
     width: 800px;
@@ -867,17 +692,12 @@ body {
     transform: translateY(-3px);
     box-shadow: 0 12px 30px rgba(0, 0, 0, 0.6),
         0 0 0 2px #A033E0;
-    /* 🚨 גבול סגול בוהק */
 }
 
-/* 🚨 עיצוב להתראות לא נקראו (Unread) */
 .notification.is-unread {
-    /* גורם להתראות חדשות לבלוט יותר */
     background: linear-gradient(135deg, #1a1a2e 0%, #301a55 100%);
     border-left: 5px solid #A033E0;
-    /* פס סגול בצד שמאל */
     padding-left: 15px;
-    /* פיצוי על רוחב הפס */
 }
 
 .notification-card.is-unread:hover {
@@ -885,14 +705,11 @@ body {
         0 0 0 2px #A033E0;
 }
 
-/* קונטיינר האייקון והנקודה */
 .notification-icon-wrapper {
     position: relative;
     flex-shrink: 0;
     margin-left: 15px;
-    /* מרווח מצד ימין */
     margin-top: 5px;
-    /* יישור קטן למעלה */
 }
 
 .notification-icon {
@@ -900,7 +717,6 @@ body {
     height: 45px;
     border-radius: 50%;
     background-color: #4a4a70;
-    /* צבע רקע לאייקון (אפור סגול) */
     display: flex;
     align-items: center;
     justify-content: center;
@@ -909,38 +725,28 @@ body {
     color: #e0e0e0;
 }
 .font-semibold.text-lg {
-    /* שינוי גודל הגופן: במקום text-lg */
-    font-size: 1.5rem; /* לדוגמה: גודל של H4 */
+    font-size: 1.5rem;
     
-    /* שינוי משקל הגופן: במקום font-semibold */
-    font-weight: 800; /* לדוגמה: מודגש מאוד (Extra bold) */
+    font-weight: 800;
     text-align: center;
-    /* קביעת צבע (דרוס את text-white/text-gray-300) */
     color: #E6E6FF; 
     margin-left: 270px;
 }
 .text-sm.text-gray-400.mt-0\.5 {
-    /* שינוי גודל הגופן: במקום text-sm */
     font-size: 0.95rem; 
     margin-left: 270px;
 
-    /* שינוי הצבע: במקום text-gray-400 */
-    color: #A0A0C0; /* גוון אפור-סגול */
+    color: #A0A0C0; 
     
-    /* שינוי ריווח עליון: במקום mt-0.5 */
     margin-top: 5px; 
 }
 .text-xs.text-gray-500.mt-2 {
-    /* שינוי גודל הגופן: במקום text-xs */
     font-size: 0.8rem; 
 
-    /* שינוי הצבע: במקום text-gray-500 */
-    color: #6a6a8c !important; /* גוון כחלחל-אפור כהה יותר */
+    color: #6a6a8c !important; 
 
-    /* שינוי משקל הגופן */
-    font-weight: 500; /* הפיכת הגופן למעט יותר עבה */
+    font-weight: 500; 
     
-    /* שינוי ריווח עליון: במקום mt-2 */
     margin-top: 8px; 
     margin-left: 270px;
 }

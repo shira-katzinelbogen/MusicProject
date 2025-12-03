@@ -284,12 +284,12 @@ export class NotificationsComponent implements OnInit, OnDestroy {
 
     this.thisWeekCount = this.notifications.filter(n => {
       const created = new Date(n.createdAt);
-      if (isNaN(created.getTime())) return false; // אם createdAt לא תאריך תקין
+      if (isNaN(created.getTime())) return false; 
 
       const diffMs = now.getTime() - created.getTime();
       const diffDays = diffMs / (1000 * 60 * 60 * 24);
 
-      return diffDays <= 7; // בתוך 7 ימים
+      return diffDays <= 7; 
     }).length;
   }
 

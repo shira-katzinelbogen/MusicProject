@@ -27,13 +27,14 @@
 
 }
 .chat-icon {
-  width: 55px;
+  width: 30px;
   height: 45px;
 }
 
 .chat-icon {
-  width:120px;
+  width:100px;
   height: auto;
+  border-radius: 50%;
 }
 
 /*********************************
