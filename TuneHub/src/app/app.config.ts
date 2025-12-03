@@ -13,13 +13,7 @@ export const appConfig: ApplicationConfig = {
       //withInterceptorsFromDi() // מאפשר שימוש בשיטת הרישום הקלאסית (multi: true)
     ),
 
-    // 2. רישום ה-Interceptor עצמו:
-//     {
-//       provide: HTTP_INTERCEPTORS,
-//       useClass: AuthInterceptor, // שם הקלאס שיצרת לטיפול ב-401
-//       multi: true // מאפשר רישום מספר Interceptors
-//     },
-    
+ 
     // ********* הוספה לפתרון שגיאת HttpClient *********
     provideHttpClient(), 
     // ************************************************

@@ -17,8 +17,8 @@ import { ChangeDetectorRef } from '@angular/core';
   imports: [
         MatIconModule,
         CommonModule,
-        FormsModule,
-        RouterLink // ⬅️ חובה לכלול CommonModule כדי להשתמש ב-*ngIf ו-*ngFor
+        FormsModule
+        // RouterLink
     ],
   styleUrls: ['./sheet-music.component.css']
 })

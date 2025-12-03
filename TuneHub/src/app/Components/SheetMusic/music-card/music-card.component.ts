@@ -23,13 +23,9 @@ export class MusicCardComponent {
   @Input() sheet!: SheetMusic;
   @Input() searchText: string | undefined;
 
-  // תקבל את הנתונים של השיט
-
   constructor(
     private router: Router,
-    private _sheetMusicService: SheetMusicService,
     public fileUtilsService: FileUtilsService,
-    //     private router: Router,
     public navigationService: NavigationService,
     public uploadSheetMusicService: UploadSheetMusicService,
     private cdr: ChangeDetectorRef,
@@ -50,12 +46,10 @@ export class MusicCardComponent {
     if (sheet.imageCoverName != null) {
       return this.fileUtilsService.getImageUrl(sheet.imageCoverName)
     }
-
     return 'assets/images/sheets_music.webp'
   }
 
   toggleLike(sheet: SheetMusic): void {
-
     if (!sheet.isLiked) {
       this._interactionService.addLike('SHEET_MUSIC', sheet.id!).subscribe({
         next: (res) => {
@@ -81,7 +75,7 @@ export class MusicCardComponent {
     if (!sheet.isFavorite) {
       this._interactionService.addFavorite('SHEET_MUSIC', sheet.id!).subscribe({
         next: (res) => {
-          sheet.hearts = res.count; // עכשיו res.count מגיע מהשרת
+          sheet.hearts = res.count;
           sheet.isFavorite = true;
           this.cdr.detectChanges();
         }
@@ -117,5 +111,4 @@ export class MusicCardComponent {
 
     return stars;
   }
-
 }

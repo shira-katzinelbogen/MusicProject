@@ -173,7 +173,7 @@ export class UploadSheetMusicComponent implements OnInit {
   }
 
   applyAIResponseToForm(aiResponse: SheetMusicResponseAI): void {
-    const suggestedCategoriesIds = aiResponse.suggestedCategory?.map(cat => cat.id) || [];
+    const suggestedCategoriesIds = aiResponse.suggestedCategories?.map(cat => cat.id) || [];
     const instrumentsIds = aiResponse.instruments?.map(inst => inst.id) || [];
 
 

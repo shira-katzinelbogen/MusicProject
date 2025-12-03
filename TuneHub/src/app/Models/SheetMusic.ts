@@ -2,26 +2,46 @@ import Instrument from "./Instrument";
 import sheetMusicCategory from "./SheetMusicCategory";
 import Users from "./Users";
 
+
 export enum DifficultyLevel {
     BEGINNER, INTERMEDIATE, ADVANCED
 }
 
+export const DifficultyDisplayMap: Record<DifficultyLevel, string> = {
+    [DifficultyLevel.BEGINNER]: "Beginner",
+    [DifficultyLevel.INTERMEDIATE]: "Intermediate",
+    [DifficultyLevel.ADVANCED]: "Advanced",
+};
 
 export enum Scale {
     C, D, E, F, G, A, B,
-
-    // SHARP = (#)
     C_MAJOR, D_MAJOR, F_MAJOR, G_MAJOR, A_MAJOR,
-
-    // FLAT = (b)
     D_MINOR, E_MINOR, G_MINOR, A_MINOR, B_MINOR
 }
 
+export const ScaleDisplayMap: Record<Scale, string> = {
+    [Scale.C]: "C",
+    [Scale.D]: "D",
+    [Scale.E]: "E",
+    [Scale.F]: "F",
+    [Scale.G]: "G",
+    [Scale.A]: "A",
+    [Scale.B]: "B",
+
+    [Scale.C_MAJOR]: "C Major",
+    [Scale.D_MAJOR]: "D Major",
+    [Scale.F_MAJOR]: "F Major",
+    [Scale.G_MAJOR]: "G Major",
+    [Scale.A_MAJOR]: "A Major",
+
+    [Scale.D_MINOR]: "D Minor",
+    [Scale.E_MINOR]: "E Minor",
+    [Scale.G_MINOR]: "G Minor",
+    [Scale.A_MINOR]: "A Minor",
+    [Scale.B_MINOR]: "B Minor",
+};
 
 export default class SheetMusic {
-    // name(arg0: string, name: any, arg2: string, rating: number | undefined) {
-    //   throw new Error('Method not implemented.');
-    // }
     id?: number;
     title?: string;
     scale?: Scale;
@@ -32,7 +52,6 @@ export default class SheetMusic {
     level?: DifficultyLevel;
     user?: Users;
     instruments?: Instrument[]
-    category?: sheetMusicCategory[]
     categories?: sheetMusicCategory[]
     usersFavorite?: Users[];
     filePath?: string;
@@ -44,5 +63,4 @@ export default class SheetMusic {
     imageCoverName?: string;
     composer?: string;
     lyricist?: string;
-
 }

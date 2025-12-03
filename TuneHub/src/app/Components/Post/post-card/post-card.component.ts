@@ -234,4 +234,7 @@ export class PostCardComponent implements OnChanges, OnInit {
     return this.sanitizer.bypassSecurityTrustResourceUrl(url);
   }
 
+
+
+
 }

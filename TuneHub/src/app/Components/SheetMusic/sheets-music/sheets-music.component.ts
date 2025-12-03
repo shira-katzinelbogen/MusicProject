@@ -14,91 +14,108 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { HighlightPipe } from '../../Shared/highlight/highlight.component';
 import { debounceTime, distinctUntilChanged, Subject } from 'rxjs';
+import { MusicCardComponent } from "../music-card/music-card.component";
 
 @Component({
   selector: 'app-sheets-music',
   standalone: true,
-  imports: [MatIconModule, FormsModule, CommonModule, HighlightPipe, UploadSheetMusicComponent], 
+  imports: [MatIconModule, FormsModule, CommonModule, UploadSheetMusicComponent, MusicCardComponent, HighlightPipe],
   changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: './sheets-music.component.html',
   styleUrl: './sheets-music.component.css'
+
 })
 export class SheetsMusicComponent implements OnInit {
   private searchSubject = new Subject<string>();
   originalSheetMusicList: SheetMusic[] = [];
   sheetMusicList: SheetMusic[] = [];
-  selectedSheet: SheetMusic | null = null;
-  pdfUrl!: SafeResourceUrl;
-  imageCoverUrl: string = 'assets/images/sheets_music.webp';
-  isPdfVisible: boolean = false;  // נשאר, אבל יופעל רק על card ספציפי
-
-  // 🚨 חידוש: משתנה למעקב אחר ה-card הפעיל (לא מודל)
-  selectedSheetId: number | null = null;  // ID של ה-sheet שמציג PDF
-
   selectedInstrument: string = 'All';
   selectedScale: string = 'All';
   selectedLevel: string = 'All';
   showFilters: boolean = false;
   selectedCategory: string = 'All';
-  searchText: string = '';
-
   instruments: string[] = [];
   scales: string[] = [];
   levels: string[] = [];
+  searchText: string = '';
   categories: string[] = [];
   userRating: number = 0;
 
+  categorySearchText: string = '';
+  filteredCategories: string[] = [];
+
+
   @Input() sheets!: SheetMusic[];
   @Input() isProfileView: boolean = false;
+  document: any;
 
   constructor(
     private _sheetMusicService: SheetMusicService,
     public fileUtilsService: FileUtilsService,
-    private router: Router,
     public navigationService: NavigationService,
     public uploadSheetMusicService: UploadSheetMusicService,
     private cdr: ChangeDetectorRef,
     private domSanitizer: DomSanitizer,
-    private _interactionService: InteractionService
   ) { }
+
+
+  allSheetMusicList: SheetMusic[] = [];
 
   ngOnInit(): void {
     if (this.sheets && this.sheets.length > 0) {
-      this.originalSheetMusicList = this.sheets;
-      this.sheetMusicList = [...this.sheets]; 
-      this.extractFilterOptions(this.originalSheetMusicList); 
-      this.applyFilters(); 
-    } else if (!this.isProfileView) { 
+      this.allSheetMusicList = this.sheets;
+      this.originalSheetMusicList = [...this.sheets];
+      this.sheetMusicList = [...this.sheets];
+      this.extractFilterOptions(this.originalSheetMusicList);
+      this.applyFilters();
+    } else if (!this.isProfileView) {
       this.loadSheetMusic();
-    } 
+    }
+
     this.searchSubject.pipe(
       debounceTime(300),
       distinctUntilChanged()
     ).subscribe(() => {
-      this.searchSheetMusic(); 
+      this.searchSheetMusic();
     });
+
+    this.filteredCategories = [...this.categories];
+
   }
 
   loadSheetMusic(): void {
     this._sheetMusicService.getAllSheetMusics().subscribe({
       next: (data) => {
-        this.originalSheetMusicList = data;
-        this.sheetMusicList = data; 
-        console.log('Sheet Music Loaded:', data[0].name, 'Rating:', data[0].rating);
-        this.extractFilterOptions(data); 
-        this.applyFilters(this.originalSheetMusicList); 
+        this.allSheetMusicList = data;
+        this.originalSheetMusicList = [...data];
+        this.sheetMusicList = [...data];
+        this.extractFilterOptions(data);
+        this.applyFilters();
         this.cdr.detectChanges();
-      },
-      error: (err) => {
-        console.error('Failed to load sheet music:', err);
       }
     });
+  }
+
+
+  searchSheetMusic(): void {
+    if (!this.searchText) {
+      this.originalSheetMusicList = [...this.allSheetMusicList];
+      this.applyFilters();
+      return;
+    }
+
+    this.originalSheetMusicList = this.allSheetMusicList.filter(sheet =>
+      sheet.title!.toLowerCase().includes(this.searchText.toLowerCase())
+    );
+
+    this.applyFilters();
+    this.cdr.markForCheck();
   }
 
   extractFilterOptions(sheets: SheetMusic[]): void {
     const instrumentSet = new Set<string>();
     sheets.forEach(sheet => {
-      sheet.instruments?.forEach(inst => instrumentSet.add(inst.name!)); 
+      sheet.instruments?.forEach(inst => instrumentSet.add(inst.name!));
     });
     this.instruments = ['All', ...Array.from(instrumentSet).sort()];
 
@@ -124,122 +141,59 @@ export class SheetsMusicComponent implements OnInit {
 
     const categorySet = new Set<string>();
     sheets.forEach(sheet => {
-      sheet.category?.forEach(category => {
+      sheet.categories?.forEach(category => {
         if (typeof category.name === 'string') {
           categorySet.add(category.name);
         }
       });
     });
     this.categories = ['All', ...Array.from(categorySet).filter(c => c).sort()];
+
+    this.selectedCategory = 'All';
+    this.filteredCategories = [...this.categories];
+
     this.cdr.detectChanges();
   }
 
+
+
   applyFilters(baseList: SheetMusic[] = this.originalSheetMusicList): void {
-    let filteredList = [...baseList]; 
+    let filteredList = [...baseList];
 
     if (this.selectedInstrument !== 'All') {
       filteredList = filteredList.filter(sheet =>
-        sheet.instruments?.some(inst => inst.name === this.selectedInstrument) ?? false
+        sheet.instruments?.some(inst => inst.name === this.selectedInstrument)
       );
     }
 
     if (this.selectedScale !== 'All') {
-      filteredList = filteredList.filter(sheet => {
-        return sheet.scale?.toString() === this.selectedScale;
-      });
-    }
-    if (this.selectedCategory !== 'All') {
-      filteredList = filteredList.filter(sheet => 
-        sheet.category?.some(cat => cat.name === this.selectedCategory) ?? false
+      filteredList = filteredList.filter(sheet =>
+        sheet.scale?.toString() === this.selectedScale
       );
     }
 
     if (this.selectedLevel !== 'All') {
-      filteredList = filteredList.filter(sheet => {
-        return sheet.level?.toString() === this.selectedLevel;
-      });
+      filteredList = filteredList.filter(sheet =>
+        sheet.level?.toString() === this.selectedLevel
+      );
     }
 
-    this.sheetMusicList = filteredList; 
-    this.cdr.detectChanges(); 
-  }
-
-  getImageCoverPath(sheet: SheetMusic) {
-    if (sheet.imageCoverName != null) {
-      return this.fileUtilsService.getImageUrl(sheet.imageCoverName)
+    if (this.selectedCategory !== 'All') {
+      filteredList = filteredList.filter(sheet =>
+        sheet.categories?.some(cat => cat.name === this.selectedCategory)
+      );
     }
-    return 'assets/images/sheets_music.webp'
+
+    this.sheetMusicList = [...filteredList];
+    this.cdr.markForCheck();
   }
 
- openSheet(sheet: SheetMusic) {
-  if (sheet.id !== undefined) {  // 🚨 type guard: בדוק אם id קיים
-    this.selectedSheetId = sheet.id;  // עכשיו זה number
-  } else {
-    console.warn('Sheet without ID:', sheet);  // דיבאג אם אין ID
-    return;  // אל תפתח אם אין ID
-  }
-  
-  this.isPdfVisible = true;  // הצג PDF
-  this.cdr.detectChanges();  // עדכן view
-}
-  // 🚨 חדש: סגור PDF ב-card
-  closePdf(sheetId: number) {
-    this.selectedSheetId = null;
-    this.isPdfVisible = false;
-    this.cdr.detectChanges();
-  }
 
   openUploadModal(): void {
     this.uploadSheetMusicService.open();
     this.cdr.detectChanges();
   }
 
-  toggleLike(sheet: SheetMusic): void {
-    if (!sheet.isLiked) {
-      this._interactionService.addLike('SHEET_MUSIC', sheet.id!).subscribe({
-        next: (res) => {
-          sheet.likes = res.count;
-          sheet.isLiked = true;
-          this.cdr.detectChanges();
-        },
-        error: (err) => console.error('Failed to add like', err)
-      });
-    } else {
-      this._interactionService.removeLike('SHEET_MUSIC', sheet.id!).subscribe({
-        next: (res) => {
-          sheet.likes = res.count;
-          sheet.isLiked = false;
-          this.cdr.detectChanges();
-        },
-        error: (err) => console.error('Failed to remove like', err)
-      });
-    }
-    console.log('like clicked!', sheet);
-  }
-
-  toggleFavorite(sheet: SheetMusic): void {
-    if (!sheet.isFavorite) {
-      this._interactionService.addFavorite('SHEET_MUSIC', sheet.id!).subscribe({
-        next: (res) => {
-          sheet.hearts = res.count;
-          sheet.isFavorite = true;
-          this.cdr.detectChanges();
-        }
-      });
-    } else {
-      this._interactionService.removeFavorite('SHEET_MUSIC', sheet.id!).subscribe({
-        next: (res) => {
-          sheet.hearts = res.count;
-          sheet.isFavorite = false;
-          this.cdr.detectChanges();
-        }
-      });
-    }
-  }
-
-  goToSheetMusic(s: SheetMusic) {
-    this.router.navigate(['/sheet-music', s.id]);
-  }
 
   getSafeMediaUrl(path: string): SafeResourceUrl {
     const url = `http://localhost:8080/api/sheetMusic/documents/${path}`;
@@ -256,7 +210,7 @@ export class SheetsMusicComponent implements OnInit {
     } else {
       this.selectedCategory = category;
     }
-    this.applyFilters(); 
+    this.applyFilters();
   }
 
   getCategoryIcon(categoryName: string): string {
@@ -268,20 +222,20 @@ export class SheetsMusicComponent implements OnInit {
       case 'Blues': return 'queue_music';
       case 'Folk': return 'menu_book';
       case 'Original Compositions': return 'star';
-      default: return 'album';
+      default: return 'folder';
     }
   }
 
   getCategoryColor(categoryName: string): string {
     switch (categoryName) {
       case 'Classical': return '#007bff';
-      case 'Jazz': return '#ffa500';
       case 'Pop': return '#ff69b4';
+      case 'Jazz': return '#007065ff';
       case 'Rock': return '#ff4500';
       case 'Blues': return '#6a5acd';
       case 'Folk': return '#3cb371';
       case 'Original Compositions': return '#9370db';
-      default: return '#555';
+      default: return '#B8860B';
     }
   }
 
@@ -300,81 +254,40 @@ export class SheetsMusicComponent implements OnInit {
 
   countSheetsByCategory(categoryName: string): number {
     return this.originalSheetMusicList.filter(sheet => {
+
       if (categoryName === 'All') {
-        return true; 
+        return true;
       }
-      return sheet.category?.some(cat => cat.name === categoryName) ?? false;
+      return sheet.categories?.some(cat => cat.name === categoryName) ?? false;
+
     }).length;
+
   }
 
-  getStarArray(rating: number | undefined): string[] {
-    const MAX_STARS = 5;
-    const effectiveRating = rating ?? 0;
-    const stars: string[] = [];
-
-    for (let i = 1; i <= MAX_STARS; i++) {
-      if (i <= effectiveRating) {
-        stars.push('star');
-      } else if (effectiveRating > (i - 1)) {
-        stars.push('star_half');
-      } else {
-        stars.push('star_border');
-      }
-    }
-    return stars;
-  }
 
   onSearchChange(searchText: string): void {
-    this.searchText = searchText;
-    if (this.searchText.length === 0) {
-      console.log('Search text empty. Applying full filters.');
-      this.applyFilters(this.originalSheetMusicList); 
-      this.cdr.markForCheck(); 
-      this.searchSubject.next(''); 
+    this.searchText = searchText.trim();
+
+    if (!this.searchText) {
+      this.originalSheetMusicList = [...this.allSheetMusicList];
+      this.applyFilters();
       return;
     }
-    this.searchSubject.next(searchText);
+
+    this.searchSubject.next(this.searchText);
+
   }
 
-  searchSheetMusic(): void {
-    if (this.searchText.length === 0) {
+  filterCategories(): void {
+    if (!this.categorySearchText.trim()) {
+      this.filteredCategories = [...this.categories];
       return;
     }
-    this._sheetMusicService.getSheetsMusicByTitle(this.searchText).subscribe({
-      next: (data) => {
-        this.applyFilters(data); 
-        this.cdr.detectChanges(); 
-      },
-      error: (err) => {
-        console.error('Search failed:', err);
-        this.sheetMusicList = [];
-        this.cdr.detectChanges();
-      }
-    });
-  }
-  downloadPdf(sheet: SheetMusic) {
-    if (sheet.filePath) {
-      const url = `http://localhost:8080/api/sheetMusic/documents/${sheet.filePath}?download=true`;
-      window.open(url, '_blank');  // הורדה בחלון חדש
-    }
-  }
 
-  // 🚨 חדש: הוסף ל-playlist (כמו בתמונה)
-  addToPlaylist(sheet: SheetMusic) {
-    console.log('Added to playlist:', sheet.name);  // התאם ל-API שלך
-    // קריאה ל-service להוספה
-  }
-  shareSheet(sheet: SheetMusic) {
-    if (navigator.share) {
-      navigator.share({
-        title: sheet.name,
-        text: 'Check out this sheet music!',
-        url: window.location.href
-      });
-    } else {
-      // fallback: העתק URL
-      navigator.clipboard.writeText(window.location.href);
-      alert('URL copied to clipboard!');
-    }
+    const search = this.categorySearchText.toLowerCase();
+
+    this.filteredCategories = this.categories.filter(cat =>
+      cat.toLowerCase().includes(search)
+    );
   }
 }

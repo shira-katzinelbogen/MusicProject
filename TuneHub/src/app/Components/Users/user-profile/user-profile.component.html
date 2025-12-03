@@ -400,19 +400,19 @@
     </button>
 
     <button [class.active]="activeTab==='tracks'" (click)="setActiveTab('tracks')">
-        <i class="material-icons">music_note</i> Tracks ({{ tracks?.length || 0 }})
+        <i class="material-icons">music_note</i> Tracks ({{ tracks.length || 0 }})
     </button>
 
     <button [class.active]="activeTab==='movies'" (click)="setActiveTab('movies')">
-        <i class="material-icons">videocam</i> Videos ({{ videos?.length || 0 }})
+        <i class="material-icons">videocam</i> Videos ({{ videos.length || 0 }})
     </button>
 
     <button [class.active]="activeTab==='sheets'" (click)="setActiveTab('sheets')">
-        <i class="material-icons">description</i> Sheets ({{ sheets?.length || 0 }})
+        <i class="material-icons">description</i> Sheets ({{ sheets.length || 0 }})
     </button>
 
     <button [class.active]="activeTab==='posts'" (click)="setActiveTab('posts')">
-        <i class="material-icons">chat_bubble_outline</i> Posts ({{ posts?.length || 0 }})
+        <i class="material-icons">chat_bubble_outline</i> Posts ({{ posts.length || 0 }})
     </button>
 </div>
 

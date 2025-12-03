@@ -24,9 +24,11 @@
     </header>
 
     <section class="search-bar">
+       
         <div class="search-input-group">
             <span class="search-icon">🔍</span>
-            <input type="text" placeholder="Search musicians by name, instrument, or skills..." />
+            <input type="text" placeholder="Search teachers by name" [(ngModel)]="searchText"
+                (ngModelChange)="applyMusicianFilters()" />
         </div>
         <select class="dropdown">
             <option>All</option>
@@ -93,7 +95,7 @@
     <div class="musicians-container">
         @for(u of musicianList; track $index){
         <div (click)="navigationService.goToProfile(u!.profile!.id!)">
-            <h3>name {{u.profile!.name}}</h3>
+            <h3 [innerHTML]="u.profile!.name! | highlight: searchText!"></h3>
             <h3>description {{u.description}}</h3>
             <h3>city {{u.city}}</h3>
             <h3>country {{u.country}}</h3>

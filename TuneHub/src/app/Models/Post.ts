@@ -1,4 +1,3 @@
-
 import Users, { UsersProfileDTO } from "./Users";
 
 export default class Post {
@@ -17,7 +16,7 @@ export default class Post {
     rating?: number;
     isLiked?: boolean;
     isFavorite?: boolean;
-    safeImages?: string[]; // ודא שאתחלת את המערך
+    safeImages?: string[];
     totalPages!: number;
     currentPage!: number;
 

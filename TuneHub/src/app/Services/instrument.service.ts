@@ -18,19 +18,15 @@ export class InstrumentsService {
 
     //Get
   
- // ✅ פונקציה לאחזור כל הכלים
     getInstruments(): Observable<Instrument[]> {
         return this._httpClient.get<Instrument[]>(`${this.apiUrl}/instruments`, { withCredentials: true });
     }
 
-    // ✅ תיקון שמות מתודות דומות (אם נחוץ)
     getInstrumentById(id: number): Observable<Instrument> {
-        // נתיב API דמה לטובת כלי נגינה ב-Java
         return this._httpClient.get<Instrument>(`http://localhost:8080/api/instrument/instrumentById/${id}`);
     }
 
     getInstrumentsByUserId(id: number): Observable<Instrument[]> {
-        // נתיב API דמה לטובת כלי נגינה של משתמש ב-Java
         return this._httpClient.get<Instrument[]>(`http://localhost:8080/api/users/${id}/instruments`)
     }
     getPostById(id: number): Observable<Instrument> {
@@ -48,14 +44,6 @@ export class InstrumentsService {
     private apiUrl = 'http://localhost:8080/api/instrument';
 
   
-
-   
-
-
-    //Post
-    // uploadPost(post: Post): Observable<Post> {
-    //     return this._httpClient.post<Post>(`http://localhost:8080/api/Post/uploadPost`, post);
-    // }
 
 
 }

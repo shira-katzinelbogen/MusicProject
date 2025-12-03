@@ -937,6 +937,10 @@ body {
     box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
     cursor: grab;
 }
+
+
+/* ==================== נגן אודיו: גרסה קומפקטית ==================== */
+
 :root {
     --player-bg: #1c152a; 
     --player-accent: #8e2de2;

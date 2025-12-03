@@ -167,6 +167,11 @@
   height: 100%;
   border: none;
   pointer-events: none;
+  overflow: hidden;
+}
+
+.file-preview-iframe {
+  transform: scale(1.1);
   /* כדי שלא יגלל / יילחץ */
   overflow: hidden;
 }
@@ -197,6 +202,7 @@
   height: 100%;
   border: none;
   pointer-events: none;
+  overflow: hidden;
   /* מבטל אינטראקציה */
   overflow: hidden;
 
@@ -206,8 +212,15 @@
 }
 
 
+.cover-image {
+  width: 100vw;
+  height: 30vh;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  object-fit: cover;
 
-
+}
 
 .cover-image {
   /* 1. רוחב: 80% מרוחב המסך */
@@ -230,19 +243,11 @@
 }
 
 .cover-wrapper {
-  /* נותן נקודת ייחוס למיקום המוחלט של הטקסט והכפתור */
   position: relative;
-
-  /* הגדרת גודל יחסי למסך */
   width: 100vw;
   height: 50vh;
   top: -30px;
-  /* מרכוז ה-Wrapper על המסך (השגת 20% פדינג בצדדים) */
-  /* margin-left: auto;
-    margin-right: auto; */
   width: 100%;
-  /* height: 100%;  */
-  /* הסתרת כל מה שחורג (במידת הצורך) */
   overflow: hidden;
   border-radius: 12px;
   padding: 0;
@@ -266,6 +271,15 @@
   width: 100%;
   height: 100%;
 
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  padding: 0px 40px 100px 40px;
+  background: linear-gradient(to top,
+      rgba(0, 0, 0, 0.803) 0%,
+      rgba(0, 0, 0, 0.807) 50%,
+      transparent 100%
+    );
   /* שימוש ב-Flexbox לפיזור הטקסט והכפתור */
   display: flex;
   justify-content: space-between;
@@ -294,9 +308,6 @@
 
 
 
-
-
-/* כותרת וכפתור Join Network */
 .header {
   display: flex;
   justify-content: space-between;
@@ -368,65 +379,32 @@
 
 
 
-
-
-/* .overlay-content {
-  display: flex;
-  flex-direction: column;
-  align-items:;
-  justify-content: center;
-  text-align: center;
-} */
-
-
-
-
-
-/* מסגרת וסגנון בסיסי לכרטיס */
 .music-card {
   cursor: pointer;
   border: 2px solid #8a2be2;
-  /* סגול */
   border-radius: 12px;
-  /* padding: 15px;
-  margin: 15px; */
+
   transition: all 0.3s ease;
   overflow: hidden;
-  /* כדי שההגדלה לא תחרוג */
-  /* background-color: #fff; */
   background-color: #1e2e40;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
-/* כותרת */
 .music-card .title {
-  /* color: #4b0082; סגול כהה */
   transition: color 0.3s ease;
 }
 
-/* PDF preview */
-/* .music-card .pdf-preview-half iframe {
-  width: 100%;
-  height: 150px;
-  transition: all 0.3s ease;
-} */
-
-/* hover על הקארד */
 .music-card:hover {
   transform: scale(0.98);
-  /* הקארד קטן מעט */
   border-width: 3px;
-  /* המסגרת גדלה */
 }
 
 .music-card:hover .title {
   color: #d8b0ff;
-  /* סגול בהיר */
 }
 
 .music-card:hover .pdf-preview-half iframe {
   height: 200px;
-  /* PDF גדול יותר */
 }
 
 
@@ -685,4 +663,116 @@
   display: grid;
   gap: 18px;
   grid-template-columns: repeat(auto-fill, minmax(290px, 1fr));
+}
+
+
+
+/* 1 & 2. שינוי מבנה האמן/דירוג */
+.artist-mini-profile {
+    display: flex; /* שימוש ב-flexbox */
+    align-items: flex-start; /* יישור למעלה כדי שהתמונה תהיה בקו אחד עם השם */
+    gap: 6px;
+    cursor: pointer;
+}
+
+.profile-info {
+    /* עוטף את השם והדירוג כדי שיוצבו אנכית */
+    display: flex;
+    flex-direction: column;
+}
+
+.artist-mini-profile .profile-info span {
+    /* עיצוב שם המשתמש - הורש מ-artist-mini-profile span הקיים */
+    font-size: 18px; 
+    font-weight: 600;
+}
+
+.sheet-rating-container {
+    /* הדירוג מוצמד מתחת לשם */
+    margin-top: 0px; 
+    display: flex;
+    align-items: center;
+}
+
+
+/* 4. עיצוב תגיות כלי הנגינה */
+.instrument-tag {
+    /* עיצוב המראה הכללי של התגית */
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 12px; /* פינות מעוגלות */
+    font-size: 13px;
+    font-weight: 500;
+    
+    /* הצבע לבקשתך - מעבר בין סגול לכחול */
+    background: linear-gradient(90deg, #6c5ce7, #0984e3); /* סגול ל-כחול */
+    color: #fff;
+    margin-inline-end: 4px; /* רווח קטן אחרי כל תגית */
+}
+
+/* כללי CSS קיימים שצריך לוודא שהם עדיין רלוונטיים/מאותחלים היטב */
+/* קלאסים נוספים שהוספנו ל-Composor ו-Lyricist יירשו את העיצוב מ-detail-tag */
+.detail-tag {
+    /* לדוגמה, נוודא שה-detail-tag מאפשר שורה חדשה במידת הצורך */
+    display: inline-flex;
+    align-items: center;
+}
+
+/* 1. סידור שם המשתמש והדירוג */
+
+/* מבטיח שהפרופיל כולו (תמונה + טקסט) משתמש ב-flex box */
+.artist-mini-profile {
+    display: flex; 
+    align-items: flex-start; /* מיישר את התמונה ואת המידע לראש */
+    gap: 10px; /* רווח בין התמונה לטקסט */
+    cursor: pointer;
+}
+
+/* קלאס חדש לעיטוף השם והדירוג יחד */
+.profile-info-wrapper {
+    display: flex;
+    flex-direction: column; /* הצבת השם והדירוג אנכית */
+    justify-content: center; /* מרכוז אנכי של השם והדירוג ביחס לתמונה */
+}
+
+/* עדכון הדירוג - עכשיו הוא מופיע מתחת לשם */
+.profile-info-wrapper .sheet-rating-container {
+    margin-top: 0px; /* מבטל את המרווח מלמעלה אם היה קיים */
+    /* שאר העיצוב (display: flex, וכו') נשמר מכללי CSS אחרים */
+}
+
+/* 4. עיצוב תגיות כלי נגינה */
+.instrument-tag-wrapper {
+    display: flex;
+    flex-wrap: wrap; /* מאפשר לתגיות לרדת שורה */
+    align-items: center;
+}
+
+.instrument-tag {
+    display: inline-block;
+    padding: 3px 8px;
+    border-radius: 12px;
+    font-size: 13px;
+    font-weight: 500;
+    background:rgb(58, 53, 0); 
+    color: #fff;
+    margin-inline-end: 6px;
+}
+
+.instrument-tag-wrapper span:not(.instrument-tag) {
+    margin-inline-end: 6px;
+}
+
+.button {
+    width: 100%;
+    padding: 10px;
+    border: none;
+    font-weight: 600;
+    color: #fff;
+    border-radius: 10px;
+    cursor: pointer;
+}
+
+.instrument-tag{
+  background-color: #B8860B;
 }

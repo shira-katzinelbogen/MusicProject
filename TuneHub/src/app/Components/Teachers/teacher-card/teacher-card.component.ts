@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { MatIcon } from "@angular/material/icon";
 
 @Component({
   selector: 'app-lesson-card',
@@ -6,6 +7,6 @@ import { Component } from '@angular/core';
   templateUrl: './teacher-card.component.html',
   styleUrl: './teacher-card.component.css'
 })
-export class LessonCardComponent {
+export class TeacherCardComponent {
 
 }

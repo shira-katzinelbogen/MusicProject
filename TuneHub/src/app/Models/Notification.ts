@@ -1,10 +1,10 @@
 import { ERole } from "./Users";
 
 export interface UsersProfileDTO {
-    id: number;           
+    id: number;         
     name: string;
     imageProfilePath: string;
-    roles: ERole[];   
+    roles: ERole[];      
 }
 
  export enum ENotificationCategory {
@@ -15,8 +15,6 @@ export interface UsersProfileDTO {
     FOLLOW_REQUESTS = 'FOLLOW_REQUESTS',
     ADMIN = 'ADMIN'
 }
-
-
 
 export interface NotificationResponseDTO {
     id: number;

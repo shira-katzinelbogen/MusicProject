@@ -3,22 +3,22 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
-import { PostsComponent } from '../../Post/posts/posts.component';
+import { MatMenuModule } from '@angular/material/menu';
 import Users, { ERole, UserType } from '../../../Models/Users';
-import { SheetsMusicComponent } from '../../SheetMusic/sheets-music/sheets-music.component';
+import Post from '../../../Models/Post';
 import { UsersService } from '../../../Services/users.service';
-import { FileUtilsService } from '../../../Services/fileutils.service';
 import { PostService } from '../../../Services/post.service';
 import { SheetMusicService } from '../../../Services/sheetmusic.service';
-import { MatMenuModule } from '@angular/material/menu';  
 import { UserStateService, UserProfile } from '../../../Services/user-state.service';
-import Post from '../../../Models/Post';
 import { EFollowStatus } from '../../../Models/Follow'; // ייבוא ה־enum
 import { InteractionService } from '../../../Services/interaction.service';
 
 import SheetMusic from '../../../Models/SheetMusic';
 import { MusicCardComponent } from '../../SheetMusic/music-card/music-card.component';
 import { PostCardComponent } from '../../Post/post-card/post-card.component';
+import { PostsComponent } from '../../Post/posts/posts.component';
+import { SheetsMusicComponent } from '../../SheetMusic/sheets-music/sheets-music.component';
+import { FileUtilsService } from '../../../Services/fileutils.service';
 
 @Component({
   selector: 'app-user-profile',
@@ -416,6 +416,7 @@ ngOnInit(): void {
         this.isCurrentUserProfile = this.currentUserId ? id === this.currentUserId : false;
 
         const userRoles: ERole[] | undefined = currentUser?.roles as ERole[] | undefined;
+        this.isElevatedAdmin = !!userRoles && userRoles.includes(ERole.ROLE_SUPER_ADMIN);
 
         if (this.profileData.id === this.profileId) {
             this.isStudentOfThisTeacher = true;
@@ -435,6 +436,8 @@ ngOnInit(): void {
         this.userRating = data.rating || 0;
 
         this.showAdminActions = !!currentUser && this.isElevatedAdmin && !this.isCurrentUserProfile;
+        this.isTeacher = this.profileData.userTypes?.includes(UserType.TEACHER) || false;
+        this.canBeStudent = !!currentUser && !this.isCurrentUserProfile && this.isTeacher;
 
         const profileUserTypes: UserType[] = this.profileData.userTypes || [];
         this.isTeacher = profileUserTypes.includes(UserType.TEACHER);
@@ -456,10 +459,10 @@ ngOnInit(): void {
             this.isStudentOfThisTeacher = false;
         }
 
-        if (!this.posts) this.loadPosts(id);
-        if (!this.sheets) this.loadSheets(id);
+        this.loadPosts(id);
+        this.loadSheets(id);
       },
-      error: (err) => console.error('שגיאה בטעינת הפרופיל:', err)
+      error: (err) => console.error('Error loading profile:', err)
     });
   }
 assignAdminRole(): void {
@@ -589,7 +592,7 @@ assignAdminRole(): void {
   loadSheets(userId: number): void {
     this._sheetMusicService.getSheetMusicsByUserId(userId).subscribe({
       next: (res) => this.sheets = res,
-      error: (err) => console.error('Error:', err)
+      error: () => this.sheets = []
     });
   }
 

@@ -8,11 +8,12 @@ import { SafeUrl } from '@angular/platform-browser';
 import { NavigationService } from '../../../Services/navigation.service';
 import { MatIcon } from "@angular/material/icon";
 import { FormsModule } from '@angular/forms';
+import { HighlightPipe } from "../../Shared/highlight/highlight.component";
 
 @Component({
   selector: 'app-musicians',
   standalone: true,
-  imports: [RouterModule, MatIcon,FormsModule],
+  imports: [RouterModule, MatIcon, FormsModule, HighlightPipe],
   templateUrl: './musicians.component.html',
   styleUrl: './musicians.component.css'
 })
@@ -26,6 +27,7 @@ export class MusiciansComponent implements OnInit {
   public isMusician: boolean = false; // האם המשתמש הוא כבר MUSIC_LOVER
   public needsProfileUpdate: boolean = false; // האם חסרים פרטי עיר/תיאור
 private currentUserId: number | null = null;
+public searchText:string = '';
   // --- 1. רשימות נתונים ---
     // הרשימה המקורית המלאה של המוזיקאים (לאחר הטעינה הראשונית). 
     // נשארת מלאה כדי לאפס את הסינון.
@@ -293,6 +295,17 @@ updateUserTypeToMusician(userId: number): void {
             });
         }
 
+         if (this.searchText.trim() !== '') {
+    const text = this.searchText.toLowerCase().trim();
+
+    filteredList = filteredList.filter(m => {
+      return (
+        (m.profile?.name?.toLowerCase().includes(text))
+      );
+    });
+  }
+
+  this.musicianList = filteredList;
         this.musicianList = filteredList;
         // ⭐ חשוב: אם את משתמשת ב-ChangeDetectionStrategy.OnPush, ודאי שהזרקת ChangeDetectorRef
         // וקראת ל-this.cdr.detectChanges();
