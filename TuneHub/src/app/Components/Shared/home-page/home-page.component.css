@@ -241,9 +241,8 @@ html {
 .mission-card-container {
     max-width: 1200px;
     padding: 40px 30px;
-    height: 500px;
-    width: 900px;
-    margin-left: 290px;
+    height: 100vh;
+    width: 100vw;
     margin-top: 40px;
 
     background-color: #12121e;
