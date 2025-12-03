@@ -1,7 +1,7 @@
 <div *ngIf="sheet">
   <h2>{{ sheet.name }}</h2>
 <p>Categories:</p>
-@for (cat of sheet.category; track cat.id) {
+@for (cat of sheet.categories; track cat.id) {
     <span>{{ cat.name }}</span>
 }  <p>Level: {{ sheet.level }}</p>
   <h2>{{ sheet.title }}</h2>

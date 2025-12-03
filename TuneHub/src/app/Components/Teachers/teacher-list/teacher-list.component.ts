@@ -9,12 +9,13 @@ import { NavigationService } from '../../../Services/navigation.service';
 import { MatIcon } from "@angular/material/icon";
 import { FormsModule } from '@angular/forms';
 import Instrument from '../../../Models/Instrument';
+import { HighlightPipe } from "../../Shared/highlight/highlight.component";
 
 
 @Component({
   selector: 'app-teacher-list',
   standalone: true,
-  imports: [RouterModule, MatIcon,FormsModule],
+  imports: [RouterModule, FormsModule, HighlightPipe],
   templateUrl: './teacher-list.component.html',
   styleUrl: './teacher-list.component.css'
 })
@@ -28,6 +29,10 @@ export class TeacherListComponent implements OnInit {
   public isTeacher: boolean = false; // האם המשתמש הוא כבר MUSIC_LOVER
   public needsProfileUpdate: boolean = false; // האם חסרים פרטי עיר/תיאור
 private currentUserId: number | null = null;
+
+    originalTeacherList: Users[] = [];
+
+ searchText: string = '';
 // --- 4. משתני סינון חדשים ---
 selectedLessonDuration: number | 'All' = 'All';
 selectedExperience: number | 'All' = 'All';
@@ -43,7 +48,6 @@ prices: Array<number | 'All'> = ['All'];
   // --- 1. רשימות נתונים ---
     // הרשימה המקורית המלאה של המוזיקאים (לאחר הטעינה הראשונית). 
     // נשארת מלאה כדי לאפס את הסינון.
-    originalTeacherList: Users[] = [];
     
     // הרשימה המוצגת בפועל על המסך (הרשימה המסוננת).
      TeacherList: Users[] = [];
@@ -225,6 +229,21 @@ updateUserTypeToTeacher(userId: number): void {
   });
 }
 
+// searchSheetMusic(): void {
+//   if (!this.searchText) {
+//     this.originalTeacherList = [...this.TeacherList];
+//     this.applyFilters();
+//     return;
+//   }
+
+//   // סינון מקומי בלבד
+//   this.originalTeacherList = this.TeacherList.filter(teacher =>
+//     teacher.name!.toLowerCase().includes(this.searchText.toLowerCase())
+//   );
+
+//   this.applyFilters();
+//   this.cdr.markForCheck();
+// }
 
 
   // פונקציה להחלפת המצב (toggle) בלחיצה על כפתור הפילטרים
@@ -381,28 +400,57 @@ if (this.selectedExperience !== 'All') {
         // אם לא, ניתן להשאיר את הפונקציה ללא השורה הזו.
         // this.cdr.detectChanges();
     }
+
+
+
+updateTeacherList(): void {
+  let filtered = [...this.originalTeacherList];
+
+  // --- סינון עיר ---
+  if (this.selectedCity && this.selectedCity !== 'All') {
+    filtered = filtered.filter(t => t.city === this.selectedCity);
+  }
+
+  // --- סינון מדינה ---
+  if (this.selectedCountry && this.selectedCountry !== 'All') {
+    filtered = filtered.filter(t => t.country === this.selectedCountry);
+  }
+
+  // --- סינון משך שיעור ---
+  if (this.selectedLessonDuration !== 'All') {
+    filtered = filtered.filter(t => t.teacher?.lessonDuration === Number(this.selectedLessonDuration));
+  }
+
+  // --- סינון ניסיון ---
+  if (this.selectedExperience !== 'All') {
+    filtered = filtered.filter(t => t.teacher?.experience === Number(this.selectedExperience));
+  }
+
+  // --- סינון מחיר שיעור ---
+  if (this.selectedPrice !== 'All') {
+    filtered = filtered.filter(t => t.teacher?.pricePerLesson === Number(this.selectedPrice));
+  }
+
+  // --- סינון כלי נגינה ---
+  if (this.selectedInstrumentId !== 'All') {
+    const instrumentId = Number(this.selectedInstrumentId);
+    filtered = filtered.filter(t => t.teacher?.instrumentsIds?.includes(instrumentId));
+  }
+
+  // --- סינון לפי שנת יצירה ---
+  if (this.selectedCreatedYear !== 'All') {
+    const year = Number(this.selectedCreatedYear);
+    filtered = filtered.filter(t => new Date(t.createdAt!).getFullYear() === year);
+  }
+
+  // --- חיפוש רק לפי name (אחרי כל המסננים!) ---
+  if (this.searchText && this.searchText.trim() !== '') {
+    const txt = this.searchText.toLowerCase();
+    filtered = filtered.filter(t =>
+      t.profile!.name!.toLowerCase().includes(txt)   //  👈 רק טקסט בשם!
+    );
+  }
+
+  this.TeacherList = filtered;
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+}

@@ -5,10 +5,8 @@ import { BehaviorSubject, Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class FavoritesService {
-  // BehaviorSubject מאפשר לשמור את המצב הנוכחי
   private favoritesOpen = new BehaviorSubject<boolean>(false); 
   
-  // Observable לקריאה על ידי קומפוננטות אחרות
   isFavoritesOpen$: Observable<boolean> = this.favoritesOpen.asObservable();
 
   constructor() { }

@@ -1,10 +1,10 @@
 import { ERole } from "./Users";
 
 export interface UsersProfileDTO {
-    id: number;           // String ב-Java, עדיף להשתמש ב-number ב-TS
+    id: number;         
     name: string;
     imageProfilePath: string;
-    roles: ERole[];       // Set<Role> ב-Java
+    roles: ERole[];      
 }
 
  export enum ENotificationCategory {
@@ -14,20 +14,17 @@ export interface UsersProfileDTO {
     APPROVED_FOLLOWS = 'APPROVED_FOLLOWS',
     FOLLOW_REQUESTS = 'FOLLOW_REQUESTS',
     ADMIN = 'ADMIN'
-    //    SYSTEM_ANNOUNCEMENT,
 }
-
-
 
 export interface NotificationResponseDTO {
     id: number;
     title: string;
     message: string;
-    createdAt: string; // או Date, תלוי ב-Pipe שלך
+    createdAt: string; 
     isRead: boolean;
     type: ENotificationCategory;
     targetId?: number;
-    actor?: UsersProfileDTO;  // מי יזם את ההתראה
+    actor?: UsersProfileDTO;  
 }
 
 export interface NotificationCategory {

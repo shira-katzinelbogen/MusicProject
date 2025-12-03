@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { ChatWindowComponent } from './chat-window.component';
+import { MusicCardComponent } from './music-card.component';
 
-describe('ChatWindowComponent', () => {
-  let component: ChatWindowComponent;
-  let fixture: ComponentFixture<ChatWindowComponent>;
+describe('MusicCardComponent', () => {
+  let component: MusicCardComponent;
+  let fixture: ComponentFixture<MusicCardComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [ChatWindowComponent]
+      imports: [MusicCardComponent]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(ChatWindowComponent);
+    fixture = TestBed.createComponent(MusicCardComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
