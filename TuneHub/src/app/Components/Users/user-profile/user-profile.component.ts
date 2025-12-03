@@ -57,11 +57,7 @@ export class UserProfileComponent implements OnInit {
     public fileUtilsService: FileUtilsService,
     private userStateService: UserStateService,
     private _interactionService: InteractionService
-<<<<<<< HEAD
   ) {}
-=======
-  ) { }
->>>>>>> caaf7ac293b1e25d9dd957d9f5bf3d10fdfdc096
 
 ngOnInit(): void {
   this.route.paramMap.subscribe(params => {
