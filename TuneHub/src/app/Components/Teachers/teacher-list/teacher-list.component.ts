@@ -24,81 +24,62 @@ export class TeacherListComponent implements OnInit {
   public isShowDetails: boolean = false;
   public selectedUser!: Users;
   showFilters: boolean = false;
-  public user!: Users; // המשתמש הנוכחי (זה שמחובר)
-  public isTeacher: boolean = false; // האם המשתמש הוא כבר MUSIC_LOVER
-  public needsProfileUpdate: boolean = false; // האם חסרים פרטי עיר/תיאור
+  public user!: Users;
+  public isTeacher: boolean = false;
+  public needsProfileUpdate: boolean = false;
 private currentUserId: number | null = null;
-// --- 4. משתני סינון חדשים ---
 selectedLessonDuration: number | 'All' = 'All';
 selectedExperience: number | 'All' = 'All';
 selectedInstrumentId: number | 'All' = 'All';
 selectedPrice: number | 'All' = 'All';
 
-// --- מערכים להצגת אפשרויות בפילטרים ---
 lessonDurations: Array<number | 'All'> = ['All'];
 experiences: Array<number | 'All'> = ['All'];
 instruments: Array<{id: number | 'All', name: string}> = [];
 prices: Array<number | 'All'> = ['All'];
 
-  // --- 1. רשימות נתונים ---
-    // הרשימה המקורית המלאה של המוזיקאים (לאחר הטעינה הראשונית). 
-    // נשארת מלאה כדי לאפס את הסינון.
-    originalTeacherList: Users[] = [];
+originalTeacherList: Users[] = [];
     
-    // הרשימה המוצגת בפועל על המסך (הרשימה המסוננת).
-     TeacherList: Users[] = [];
-    
-    // הזרקת ChangeDetectorRef (נדרש לפונקציה applyMusicianFilters)
-    // אם לא הזרקת עדיין:
-    // constructor(private cdr: ChangeDetectorRef, ...) { }
+TeacherList: Users[] = [];
 
-    // --- 2. אפשרויות ל-Dropdowns/רשימות הסינון (נתונים גולמיים) ---
-    // אפשרויות העיר לסינון
-    cities: string[] = ['All'];
-    // אפשרויות המדינה לסינון
-    countries: string[] = ['All'];
-    // אפשרויות השנה לסינו
-    createdYears: string[] = ['All'];
+cities: string[] = ['All'];
+countries: string[] = ['All'];
+createdYears: string[] = ['All'];
 
-    // --- 3. משתני הבחירה הנוכחית (ערכי ה-Filter שנבחרו על ידי המשתמש) ---
-    selectedCity: string = 'All';
-    selectedCountry: string = 'All';
-    selectedCreatedYear: string = 'All';
+selectedCity: string = 'All';
+selectedCountry: string = 'All';
+selectedCreatedYear: string = 'All';
   constructor(
     private router: Router,
     private _usersService: UsersService,
     private _userStateService: UserStateService,
     public fileUtilsService: FileUtilsService,
     public navigationService: NavigationService,
-    private route: ActivatedRoute // *** הזרקת ActivatedRoute ***
+    private route: ActivatedRoute
   
   ) { }
 ngOnInit(): void {
-  // 1. קבלת המשתמש הנוכחי מהשירות (UserStateService)
   const currentUser = this._userStateService.getCurrentUserValue();
 
     if (!currentUser) {
-      console.error("אין משתמש מחובר");
+      console.error("No logged-in user");
       return;
     }
 
-    // 1. שמור את ה-ID הסינכרוני
     this.currentUserId = currentUser.id; 
     console.log("User ID:", this.currentUserId);
 
-    // 2. טעינת רשימת המוזיקאים
     this.loadTeachers();
 
-  // 3. טעינת המשתמש המלא
   this._usersService.getUserById(this.currentUserId).subscribe({
     next: (fullUser) => {
       this.user = fullUser;
 
       const userTypes: UserType[] = this.user.userTypes || [];
-      this.isTeacher = userTypes.includes(UserType.TEACHER); // בדיקה האם המערך מכיל את הטיפוס
+      this.isTeacher = userTypes.includes(UserType.TEACHER);
       this.needsProfileUpdate = !this.user.city || !this.user.description;
     },
-    error: (err) => console.error('שגיאה בטעינת המשתמש הנוכחי:', err)
+    error: (err) => console.error('Error loading current user:', err)
   });
 }
 
@@ -108,17 +89,16 @@ loadCurrentUser(userId: number): void {
     next: (currentUser: Users) => {
       this.user = currentUser;
 
-      // התאמה מלאה ללוגיקה המקורית שלך
       const userTypes: UserType[] = this.user.userTypes || [];
       this.isTeacher = userTypes.includes(UserType.TEACHER);
       this.needsProfileUpdate =
         !this.user.city ||
         !this.user.description;
 
-      console.log("משתמש נטען:", this.user);
+      console.log("User loaded:", this.user);
     },
     error: (err) => {
-      console.error("שגיאה בטעינת המשתמש הנוכחי:", err);
+      console.error("Error loading current user:", err);
     }
   });
 }
@@ -126,56 +106,50 @@ loadCurrentUser(userId: number): void {
 
 
 loadTeachers(): void {
-    this._usersService.getUsersByUserType(UserType.TEACHER).subscribe({
-      next: (res) => {
-        // 1. רשימה כללית (לא ממש בשימוש ב-HTML שלך, אבל לשם שלמות)
-console.log(' from server:', res);
+    this._usersService.getUsersByUserType(UserType.TEACHER).subscribe({
+      next: (res) => {
+        console.log(' from server:', res);
     console.log('Raw response:', res);
     res.forEach(u => console.log('Teacher for user', u.id, ':', u.teacher));
 
 
-        this.users = res;
+        this.users = res;
         
-        // 2. הרשימה המקורית לסינון - **זה חיוני!**
-        this.originalTeacherList = res; 
+        this.originalTeacherList = res; 
 
-        // 3. חילוץ אפשרויות סינון (אם מישהו חדש מגיע מעיר/מדינה חדשה)
-        this.extractTeachersFilterOptions(res);
+        this.extractTeachersFilterOptions(res);
         
-        // 4. יישום הסינון (זה מעדכן את this.musicianList שמופיעה ב-HTML)
-        this.applyTeacherFilters();
+        this.applyTeacherFilters();
 
-        console.log('נתוני מוזיקאים נטענו ועודכנו. מספר מוזיקאים:', this.users.length);
-        console.log("musicians:", this.users);
+        console.log('Teacher data loaded and updated. Number of teachers:', this.users.length);
+        console.log("teachers:", this.users);
 
 console.log("CreatedAt values:", res.map(u => u.createdAt));
 console.log("CreatedAt values:");
 
 
-      },
-      error: (err) => {
-        console.error('שגיאה בהבאת נתוני מוזיקאים:', err);
-      }
-    });
-  }
+      },
+      error: (err) => {
+        console.error('Error fetching teacher data:', err);
+      }
+    });
+  }
 joinTeacherNetwork(): void {
   if (this.isTeacher) {
-    console.log('המשתמש כבר מוגדר כמוזיקאי.');
+    console.log('The user is already set as a teacher.');
     return;
   }
 
   if (this.needsProfileUpdate) {
     this.router.navigate(['/edit-profil-modal', this.currentUserId]);
   } else {
-    // השתמש ב-currentUserId אם this.user לא מוגדר או אין לו id
     const idToUse = this.user?.id ?? this.currentUserId;
 
     if (!idToUse) {
-      console.error('לא ניתן למצוא את ה-ID של המשתמש.');
+      console.error('Cannot find the user ID.');
       return;
     }
 
-    // אם this.user לא קיים, צור אובייקט מינימלי עם ה-id
     if (!this.user) {
       this.user = { id: idToUse } as Users;
     }
@@ -186,59 +160,49 @@ joinTeacherNetwork(): void {
 
 updateUserTypeToTeacher(userId: number): void {
   if (!userId) {
-    console.error("למשתמש אין ID!");
+    console.error("User has no ID!");
     return;
   }
 
   if (this.isTeacher) {
-    console.log('המשתמש כבר מוגדר fnurv.');
+    console.log('The user is already set as a teacher.');
     return;
   }
 
   if (!this._userStateService.hasRole('ROLE_USER')) {
-    console.error('למשתמש אין הרשאות מתאימות לעדכון סוג משתמש.');
+    console.error('User does not have appropriate permissions to update user type.');
     return;
   }
 
   this._usersService.updateUserType(userId, UserType.TEACHER).subscribe({
     next: () => {
       this.isTeacher = true;
-       alert('ברוך הבא לרשת המורים!');
-      // עדכן את this.user.userType רק אם this.user קיים
+       alert('Welcome to the teachers network!');
       if (this.user) {
           const userTypes: UserType[] = this.user.userTypes || [];
                     
-                    // ודא שהטיפוס TEACHER נוסף לרשימה אם אינו קיים
             if (!userTypes.includes(UserType.TEACHER)) {
                  userTypes.push(UserType.TEACHER);
             }
-                    // נדרש ליצור מערך חדש אם משתמשים ב-OnPush
             this.user.userTypes = [...userTypes]; 
       }
 
       this.loadTeachers();
     },
     error: (err) => {
-      console.error('שגיאה בעדכון סוג המשתמש:', err);
-      alert('שגיאה בעדכון הפרופיל. נסה שוב מאוחר יותר.');
+      console.error('Error updating user type:', err);
+      alert('Error updating profile. Try again later.');
     }
   });
 }
 
 
 
-  // פונקציה להחלפת המצב (toggle) בלחיצה על כפתור הפילטרים
   toggleFilters(): void {
     this.showFilters = !this.showFilters;
   }
 
-  /**
-     * מחלץ את האפשרויות הייחודיות של עיר, מדינה ושנת כניסה מתוך רשימת המוזיקאים.
-     * יש לקרוא לפונקציה זו פעם אחת, לאחר טעינת originalMusicianList מהשרת.
-     */
     extractTeachersFilterOptions(teachers: Users[]): void {
-        // 1. חילוץ ערים ייחודיות
-        
         const citySet = new Set<string>();
         teachers.forEach(teachers => {
             if (teachers.city && teachers.city.trim() !== '') {
@@ -246,9 +210,8 @@ updateUserTypeToTeacher(userId: number): void {
             }
         });
         this.cities = ['All', ...Array.from(citySet).sort()];
-          console.log("musicians:", this.TeacherList);
+          console.log("teachers:", this.TeacherList);
 
-        // 2. חילוץ מדינות ייחודיות
         const countrySet = new Set<string>();
         teachers.forEach(teachers => {
             if (teachers.country && teachers.country.trim() !== '') {
@@ -257,28 +220,24 @@ updateUserTypeToTeacher(userId: number): void {
         });
         this.countries = ['All', ...Array.from(countrySet).sort()];
 
-                            // 4. משך שיעור ייחודי
-        const durationSet = new Set<number>();
+                            const durationSet = new Set<number>();
         teachers.forEach(u => {
             if (u.teacher?.lessonDuration) durationSet.add(u.teacher.lessonDuration);
         });
         this.lessonDurations = ['All', ...Array.from(durationSet).sort((a,b)=>a-b)];
 
-// 5. ניסיון ייחודי
         const experienceSet = new Set<number>();
         teachers.forEach(u => {
             if (u.teacher?.experience) experienceSet.add(u.teacher.experience);
         });
         this.experiences = ['All', ...Array.from(experienceSet).sort((a,b)=>b-a)];
 
-// 6. מחיר לשיעור ייחודי
         const priceSet = new Set<number>();
         teachers.forEach(u => {
             if (u.teacher?.pricePerLesson) priceSet.add(u.teacher.pricePerLesson);
         });
         this.prices = ['All', ...Array.from(priceSet).sort((a,b)=>a-b)];
 
-// 7. כלי נגינה ייחודיים
         const instrumentMap = new Map<number, string>();
         teachers.forEach(u => {
             if (u.teacher?.instrumentsIds) {
@@ -291,12 +250,10 @@ updateUserTypeToTeacher(userId: number): void {
         });
         this.instruments = Array.from(instrumentMap.entries()).map(([id, name]) => ({id, name}));
 
-        // 3. חילוץ שנות כניסה ייחודיות (CreatedAt)
         const yearSet = new Set<number>();
         teachers.forEach(teachers => {
             if (teachers.createdAt) {
                 try {
-                    // חילוץ השנה מהמחרוזת (ISO Date)
                     const year = new Date(teachers.createdAt).getFullYear();
                     if (!isNaN(year)) {
                         yearSet.add(year);
@@ -307,35 +264,26 @@ updateUserTypeToTeacher(userId: number): void {
             }
         });
         
-        // המרת הקבוצה למערך, מיון והוספת 'All'
         this.createdYears = ['All', ...Array.from(yearSet).sort((a, b) => b - a).map(String)];
     }
 
 
-    /**
-     * מיישם את הסינונים שנבחרו על ידי המשתמש על רשימת המוזיקאים המקורית.
-     * יש לקרוא לפונקציה זו בכל פעם שאחד משתני ה-selected משתנה (באמצעות (change) או ngModelChange ב-HTML).
-     */
     applyTeacherFilters(): void {
         let filteredList = this.originalTeacherList;
 
-        // 1. סינון לפי עיר
         if (this.selectedCity !== 'All' && this.selectedCity) {
             filteredList = filteredList.filter(teacher => 
                 teacher.city?.trim() === this.selectedCity
             );
         }
 
-        // 2. סינון לפי מדינה
         if (this.selectedCountry !== 'All' && this.selectedCountry) {
             filteredList = filteredList.filter(teacher => 
                 teacher.country?.trim() === this.selectedCountry
             );
         }
 
-        // סינון לפי משך שיעור
         if (this.selectedLessonDuration !== 'All') {
-        // המרה למספר: אם זה מחרוזת, הופך למספר. אם זה מספר, נשאר מספר.
         const targetDuration = Number(this.selectedLessonDuration); 
         
         filteredList = filteredList.filter(u => u.teacher?.lessonDuration === targetDuration);
@@ -345,21 +293,17 @@ if (this.selectedExperience !== 'All') {
         filteredList = filteredList.filter(u => u.teacher?.experience === targetExperience);
     }
 
-// סינון לפי מחיר לשיעור
         if (this.selectedPrice !== 'All') {
         const targetPrice = Number(this.selectedPrice);
         filteredList = filteredList.filter(u => u.teacher?.pricePerLesson === targetPrice);
     }
 
-// סינון לפי כלי נגינה
        if (this.selectedInstrumentId !== 'All') {
         const targetId = Number(this.selectedInstrumentId); 
         
-        // הלוגיקה פה נראית תקינה - בדיקה אם רשימת ה-IDs של המורה כוללת את ה-ID שנבחר
         filteredList = filteredList.filter(u => u.teacher?.instrumentsIds?.includes(targetId));
     }
 
-        // 3. סינון לפי שנת כניסה (Created Year)
         if (this.selectedCreatedYear !== 'All' && this.selectedCreatedYear) {
             const targetYear = parseInt(this.selectedCreatedYear, 10);
             
@@ -376,19 +320,8 @@ if (this.selectedExperience !== 'All') {
         }
 
         this.TeacherList = filteredList;
-        // ⭐ חשוב: אם את משתמשת ב-ChangeDetectionStrategy.OnPush, ודאי שהזרקת ChangeDetectorRef
-        // וקראת ל-this.cdr.detectChanges();
-        // אם לא, ניתן להשאיר את הפונקציה ללא השורה הזו.
-        // this.cdr.detectChanges();
     }
 }
-
-
-
-
-
-
-
 
 
 

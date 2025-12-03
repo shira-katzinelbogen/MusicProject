@@ -2,7 +2,7 @@
 
 <div class="modal-overlay" (click)="onOverlayClick($event)">
   <div class="auth-modal-content" (click)="$event.stopPropagation()">
-    <!-- כפתור סגירה -->
+    <!-- Close Button -->
     <button class="close-button" (click)="closeWindow()">
         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
     </button>
@@ -11,10 +11,10 @@
       
       <div class="side-panel">
         <div class="logo">
-          <!-- החלפת ה-SVG הכללי באייקון פשוט יותר לצורך דוגמה, או שימוש ב-SVG מלא כפי שסיפקת -->
+          <!-- Replace the general SVG with a simpler icon for demo purposes, or use the full SVG you provided -->
           <svg fill="currentColor" viewBox="0 0 24 24" class="app-icon">
             <path d="M12 2C6.477 2 2 6.477 2 12s4.477 10 10 10 10-4.477 10-10S17.523 2 12 2zm3.879 6.121c.234.234.354.54.354.854 0 .314-.12.62-.354.854l-5 5c-.47.47-1.23.47-1.7 0l-3-3c-.234-.234-.354-.54-.354-.854 0-.314.12-.62.354-.854.47-.47 1.23-.47 1.7 0L8 12.293l4.121-4.121c.47-.47 1.23-.47 1.7 0z"/>
-          </svg> 
+          </svg>
           <div class="app-name">TuneHub</div>
           <p class="slogan">Play. Share. Grow.</p>
         </div>
@@ -60,12 +60,18 @@
           <div class="input-group">
             <label for="login-name">Name</label>
             <input id="login-name" type="text" formControlName="name" placeholder="Enter your user name">
+            <div *ngIf="loginForm.get('name')?.invalid && loginForm.get('name')?.touched" class="error-msg">
+              Username is required.
+            </div>
           </div>
         
           
           <div class="input-group">
             <label for="login-password">Password</label>
             <input id="login-password" type="password" formControlName="password" placeholder="Enter your password">
+            <div *ngIf="loginForm.get('password')?.invalid && loginForm.get('password')?.touched" class="error-msg">
+              Password is required.
+            </div>
           </div>
           
           <div class="options-row">
@@ -114,11 +120,17 @@
           <div class="input-group">
             <label for="signup-name">Full Name</label>
             <input id="signup-name" type="text" formControlName="fullName" placeholder="John Doe">
+            <div *ngIf="signupForm.get('fullName')?.invalid && signupForm.get('fullName')?.touched" class="error-msg">
+              Full name is required.
+            </div>
           </div>
     
           <div class="input-group">
             <label for="signup-email">Email Address</label>
             <input id="signup-email" type="email" formControlName="email" placeholder="your.email@example.com">
+            <div *ngIf="signupForm.get('email')?.invalid && signupForm.get('email')?.touched" class="error-msg">
+              A valid email address is required.
+            </div>
           </div>
 
           <!-- שינוי: מעטפת חדשה לשדות הסיסמה באותה שורה -->
@@ -126,11 +138,17 @@
             <div class="input-group password-field">
               <label for="signup-password">Password</label>
               <input id="signup-password" type="password" formControlName="password" placeholder="8+ characters">
+              <div *ngIf="signupForm.get('password')?.invalid && signupForm.get('password')?.touched" class="error-msg">
+                Password must be at least 8 characters.
+              </div>
             </div>
             
             <div class="input-group password-field">
               <label for="signup-confirm">Confirm Password</label>
               <input id="signup-confirm" type="password" formControlName="confirmPassword" placeholder="Repeat pass">
+              <div *ngIf="signupForm.get('confirmPassword')?.invalid && signupForm.get('confirmPassword')?.touched" class="error-msg">
+                Password confirmation does not match.
+              </div>
             </div>
           </div>
           
