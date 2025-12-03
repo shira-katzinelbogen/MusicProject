@@ -20,7 +20,7 @@ import { NotificationService } from '../../../Services/notification.service';
 export class HeaderComponent {
   unreadCount$!: Observable<number | string>;
   private router = inject(Router);
-  sidebarService = inject(SidebarService); // ← משתמש ב-Signal
+  sidebarService = inject(SidebarService); 
   loginwindowService = inject(LoginwindowService);
   userStateService = inject(UserStateService);
   private notificationService = inject(NotificationService);
@@ -31,10 +31,8 @@ export class HeaderComponent {
   isSearchOpen: boolean = false;
 
  ngOnInit(): void {
-  // הרשמה ל-observable של ספירת ההתראות הלא נקראות
   this.unreadCount$ = this.notificationService.unreadCount$;
 
-  // טוען את הערך הראשוני מהשרת
   this.notificationService.loadUnreadCount();
 }
 
@@ -47,19 +45,18 @@ export class HeaderComponent {
   onSearchInput(event: any) {
     this.searchTerm = event.target.value;
 
-    // פותח חלונית אם יש טקסט
     this.isSearchOpen = this.searchTerm.trim().length > 0;
   }
 
   isLoggedIn$: Observable<boolean> = this.userStateService.currentUser$.pipe(
-    map(user => !!user) // מחזיר true אם יש אובייקט משתמש, אחרת false
+    map(user => !!user) 
   );
   goToHomePage() {
     this.router.navigate(['/home-page']);
   }
 
   goToFindMusicians() {
-    this.sidebarService.close(); // סוגר סיידבר לפני ניווט
+    this.sidebarService.close(); 
     this.router.navigate(['/musicians']);
   }
 
@@ -69,11 +66,9 @@ export class HeaderComponent {
   }
 
   loadUnreadCount(): void {
-    // מקבל את הספירה, ומוסיף פייפ (pipe) כדי לוודא שמוצג מספר, או טקסט ריק
     this.unreadCount$ = this.notificationService.getUnreadCount();
   }
 
-  // פונקציה לניווט - עליך ליישם ניווט Router ביישום שלך
   navigateToNotifications(): void {
     this.router.navigate(['/notifications']);
     console.log('Navigating to Notifications page...');

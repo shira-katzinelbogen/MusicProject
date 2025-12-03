@@ -6,20 +6,16 @@
 
     <h4 class="results-count">{{ resLength }} results found</h4>
 
-    <!-- Posts -->
     <div *ngIf="results.posts.length" class="section">
         <h4 class="section-title">Posts ({{ results.posts.length }})</h4>
 
         <div *ngFor="let post of results.posts" class="result-item row post-item">
-            <!-- left icon -->
             <div class="left-icon">
-                <!-- post SVG icon -->
                 <svg viewBox="0 0 24 24" class="icon">
                     <path d="M3 3h18v14H7l-4 4V3z" />
                 </svg>
             </div>
 
-            <!-- main content -->
             <div class="main-content">
 
                 <div class="title-row">
@@ -38,17 +34,13 @@
             </div>
 
 
-            <!-- right tag -->
-            <!-- <div class="right-tag"><span class="search-tag posts">Posts</span></div> -->
         </div>
     </div>
 
-    <!-- Sheet Music -->
     <div *ngIf="results.sheetMusic.length" class="section">
         <h4 class="section-title">Sheet Music ({{ results.sheetMusic.length }})</h4>
 
         <div *ngFor="let sheet of results.sheetMusic" class="result-item row sheet-item">
-            <!-- cover as circle -->
             <div class="avatar cover-avatar">
                 <img [src]="fileUtilsService.getImageUrl(sheet.imageCoverName)" alt="cover">
             </div>
@@ -70,7 +62,6 @@
 
             </div>
 
-            <!-- <div class="right-tag"><span class="search-tag sheet">Sheet</span></div> -->
         </div>
     </div>
 

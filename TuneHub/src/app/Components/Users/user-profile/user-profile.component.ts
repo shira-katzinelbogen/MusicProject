@@ -658,29 +658,29 @@ assignAdminRole(): void {
   }
 
   deleteUser(): void {
-    if (!this.profileId || !this.profileData) {
-        console.error('Missing data.');
-        return;
-    }
+    if (!this.profileId || !this.profileData) {
+        console.error('Missing data.');
+        return;
+    }
 
-    if (!confirm(`האם אתה בטוח שברצונך למחוק את המשתמש ${this.profileData.name} (ID: ${this.profileId})?`)) {
-        return;
-    }
+    if (!confirm(`Are you sure you want to delete the user ${this.profileData.name} (ID: ${this.profileId})?`)) {
+        return;
+    }
 
-    this._usersService.deleteUser(this.profileId).subscribe({
-        next: () => {
-            alert(`המשתמש ${this.profileData!.name} נמחק בהצלחה!`);
-            this.router.navigate(['/home-page']);
-        },
-        error: (err) => {
-            console.error('Error:', err);
-            const errorMessage = err.status === 403 
-                ? 'אין הרשאה למחוק משתמשים.'
-                : `שגיאה במהלך המחיקה. קוד: ${err.status}`;
-            alert(errorMessage);
-        }
-    });
-  }
+    this._usersService.deleteUser(this.profileId).subscribe({
+        next: () => {
+            alert(`The user ${this.profileData!.name} was successfully deleted!`);
+            this.router.navigate(['/home-page']);
+        },
+        error: (err) => {
+            console.error('Error:', err);
+            const errorMessage = err.status === 403
+                ? 'No permission to delete users.'
+                : `Error during deletion. Code: ${err.status}`;
+            alert(errorMessage);
+        }
+    });
+}
 
 
 }

@@ -40,11 +40,8 @@
                 <select class="dropdown">
             <option>All</option>
         </select>
-        <!-- 
-        <button class="filters-btn" (click)="toggleFilters()">
-            Filters <span class="arrow-icon">{{ showFilters ? '∧' : '∨' }}</span>
-        </button> -->
-           
+      
+    
     </section>
 
 @if (hasMorePosts) {
@@ -57,12 +54,11 @@
 }
 @if(displayedPosts.length===0){
     <div class="empty-posts-container">
-        <p class="empty-message">עדיין לא פורסמו פוסטים. התחל לשתף את המוזיקה שלך עכשיו!</p>
+        <p class="empty-message">no posts uploaded!</p>
 
         <button class="upload-post-button" routerLink="/post">...</button>
         <span style="font-size: 1.5em; margin-left: 10px;">🎶</span>
-        העלה את הפוסט הראשון שלך
-        <span style="font-size: 1.5em; margin-right: 10px;">⬆️</span>
+upload your first post        <span style="font-size: 1.5em; margin-right: 10px;">⬆️</span>
     </div>
 }
 @else{
@@ -79,7 +75,6 @@
 
     }
 
-    <!-- [searchText]="searchText" -->
 
     }
     <br><br><br>
@@ -89,10 +84,9 @@
 
 
 
-<!-- 
 
 
-<header class="post-header">
+<!-- <header class="post-header">
             <img class="avatar" [src]="fileUtils.getImageUrl(post.user?.imageProfilePath)" alt="avatar">
 
             <div class="user-info">
@@ -116,11 +110,11 @@
 
                 <video *ngIf="post.videoPath" controls [src]="getSafeMediaUrl('video/' + post.videoPath)"></video>
             </div>
-        </div>
+        </div> -->
 
 
 
-        <hr>
+        <!-- <hr>
 
         <div class="comments-actions-row">
             <button class="view-comments-btn" (click)="toggleComments(post.id!)">
@@ -136,28 +130,24 @@
             <app-comment [postId]="post.id!"></app-comment>
         </div>
 
-    </div>
+    </div> -->
 
 
     <!-- <footer class="post-footer">
         <div class="stats">
             <span>❤️ {{post.hearts}}</span>
             <span>👍 {{post.likes}}</span>
-        </div> -->
-<!-- 
+        </div>
+
             <app-like-button
         [targetType]="'POST'" 
         [targetId]="post.id"
         [initialLikeCount]="post.likeCount"
         [isLikedByUser]="post.isLikedByCurrentUser"> 
-    </app-like-button> -->
-<!-- </footer> -->
+    </app-like-button>
+</footer>
 
 <hr>
 
 
-<!-- }} -->
-
-<!-- <br><br><br> -->
-
-<br><br><br>
+<br><br><br> -->

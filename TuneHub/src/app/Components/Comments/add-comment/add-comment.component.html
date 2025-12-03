@@ -1,9 +1,9 @@
 <div class="add-comment-page-container">
   <div class="header-section">
     <button class="back-btn" [routerLink]="['/posts']">
-      <mat-icon>arrow_back</mat-icon> חזור לפוסטים
+      <mat-icon>arrow_back</mat-icon> arrow back 
     </button>
-    <h2>הוספת תגובה לפוסט מס' {{ postId }}</h2>
+    <h2>   add comment to post number {{ postId }}</h2>
   </div>
 
   <form (ngSubmit)="submitComment()" class="comment-form">
@@ -15,25 +15,25 @@
         rows="6"
         [(ngModel)]="commentContent"
         name="commentContent"
-        placeholder="שתף את מחשבותיך..."
+        placeholder="write your thinks"
         required
       ></textarea>
     </div>
 
     <button type="submit" [disabled]="isUploading || !commentContent.trim()" class="submit-btn">
       @if(isUploading){
-        <mat-icon class="spinner">autorenew</mat-icon> שולח תגובה...
+        <mat-icon class="spinner">autorenew</mat-icon> send massage...
       } @else {
-        פרסם תגובה <mat-icon>send</mat-icon>
+         publish comment <mat-icon>send</mat-icon>
       }
     </button>
 
     @if(uploadSuccess) {
-      <p class="success-message">🎉 התגובה נשלחה בהצלחה! מנווט בחזרה...</p>
+      <p class="success-message">the comment send succseefuly.</p>
     }
 
     @if(uploadError) {
-      <p class="error-message">⚠️ שגיאה: {{ uploadError }}</p>
+      <p class="error-message">⚠️ error: {{ uploadError }}</p>
     }
 
   </form>

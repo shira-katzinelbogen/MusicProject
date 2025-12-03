@@ -43,13 +43,13 @@ export class AddCommentComponent implements OnInit {
   submitComment(): void {
     const content = this.commentContent.trim();
     if (!content || !this.postId) {
-      this.uploadError = "תוכן תגובה חסר.";
+      this.uploadError = "no content";
       return;
     }
 
     const currentUser = this.userState.getCurrentUserValue();
     if (!currentUser?.id) {
-      this.uploadError = "משתמש לא מחובר. אנא התחבר.";
+      this.uploadError = "user not connect";
       return;
     }
 
@@ -72,8 +72,8 @@ export class AddCommentComponent implements OnInit {
         },
         error: (err) => {
           this.isUploading = false;
-          this.uploadError = 'שגיאה בהוספת תגובה. נסה שוב.';
-          console.error('שגיאה:', err);
+          this.uploadError = 'error in adding comment';
+          console.error('error:', err);
         }
       });
   }

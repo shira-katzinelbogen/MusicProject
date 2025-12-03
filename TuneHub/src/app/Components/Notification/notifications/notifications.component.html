@@ -80,7 +80,6 @@
                                 </div>
 
                                 <div class="flex-shrink-0 ml-4 space-x-2">
-                                    <!-- כפתור סמן כנקרא מתוקן -->
                                     <div class="flex-grow">
                                         <div class="flex justify-between items-start">
                                             <div *ngIf="shouldShowActions(notification)" class="flex-shrink-0">
@@ -114,7 +113,6 @@
                                     </div>
 
 
-                                    <!-- כפתורים מיוחדים לפי סוג התראה -->
                                     <button *ngIf="notification.type === 'ADMIN'"
                                         class="px-3 py-1 bg-green-600 text-white text-sm font-semibold rounded-lg hover:bg-green-700">
                                         Claim Prize

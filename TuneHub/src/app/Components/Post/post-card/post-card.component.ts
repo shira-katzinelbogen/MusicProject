@@ -55,9 +55,8 @@ export class PostCardComponent implements OnChanges, OnInit {
   }
 
   ngOnChanges(): void {
-    // If needed for input changes, e.g., update displayedPosts if multiple
     if (this.post) {
-      this.displayedPosts = [this.post]; // Assuming single post for card
+      this.displayedPosts = [this.post]; 
     }
   }
 
@@ -69,7 +68,6 @@ export class PostCardComponent implements OnChanges, OnInit {
     this.router.navigate(['/add-comment', postId]);
   }
 
-  // ... (אין צורך בפונקציות התגובה המוערות) ...
 
   get mediaTypeToShow(): 'audio' | 'video' | null {
     if (this.showOnlyMedia === 'audio' && this.post.audioPath) return 'audio';
@@ -108,7 +106,7 @@ export class PostCardComponent implements OnChanges, OnInit {
     if (!post.isFavorite) {
       this._interactionService.addFavorite('POST', post.id!).subscribe({
         next: (res) => {
-          post.hearts = res.count; // עכשיו res.count מגיע מהשרת
+          post.hearts = res.count; 
           post.isFavorite = true;
           this.cdr.detectChanges();
         }
@@ -125,7 +123,6 @@ export class PostCardComponent implements OnChanges, OnInit {
   }
 
   toggleAdminActions(postId: number) {
-    // ... לוגיקה קיימת של סגירת אחרים ופתיחת הנוכחי ...
     Object.keys(this.showAdminActions).forEach(key => {
       const id = Number(key);
       if (id !== postId) this.showAdminActions[id] = false;
@@ -138,7 +135,7 @@ export class PostCardComponent implements OnChanges, OnInit {
     if (!this.isAdmin) return;
 
     if (confirm(`Send a content warning notification to the post owner (ID: ${ownerId})?`)) {
-      this._adminService.sendWarningNotification(postId).subscribe({ // <--- קריאה ל-AdminService
+      this._adminService.sendWarningNotification(postId).subscribe({ 
         next: () => {
           alert(`Warning sent for Post ID: ${postId}`);
           this.showAdminActions[postId] = false;
@@ -148,16 +145,13 @@ export class PostCardComponent implements OnChanges, OnInit {
     }
   }
 
-  /**
-   * פעולה חדשה: מחיקת פוסט + שליחת התראת מחיקה למשתמש
-   */
+ 
   onDeletePostWithNotification(postId: number, ownerId: number): void {
     if (!this.isAdmin) return;
 
     if (confirm(`Are you sure you want to DELETE Post ID: ${postId} and notify its owner (ID: ${ownerId})?`)) {
-      this._adminService.deletePostWithNotification(postId).subscribe({ // <--- קריאה ל-AdminService
+      this._adminService.deletePostWithNotification(postId).subscribe({    
         next: () => {
-          // מחיקה מקומית של הפוסט
           this.displayedPosts = this.displayedPosts.filter(p => p.id !== postId);
           alert(`Post ID: ${postId} deleted and owner notified.`);
           this.showAdminActions[postId] = false;
@@ -167,8 +161,6 @@ export class PostCardComponent implements OnChanges, OnInit {
       });
     }
   }
-  // ניתן להסיר את onDeletePost הקודמת או להשאיר אותה אם יש שימוש נוסף
-  // נשאיר אותה למקרה הצורך (למרות שה-HTML עודכן להפעיל את החדשה)
   onDeletePost(postId: number): void {
     console.warn("Using old onDeletePost - should use onDeletePostWithNotification instead.");
     if (!this.isAdmin) return;
@@ -182,9 +174,7 @@ export class PostCardComponent implements OnChanges, OnInit {
     alert("דיווח נשלח על פוסט " + postId);
   }
 
-  // ----------------------------------------------------------------
-  // 1️⃣ טעינת משתמש שמחובר
-  // ----------------------------------------------------------------
+  
   loadCurrentUserRoles(): void {
     const user = this.userState.getCurrentUserValue();
 
@@ -203,21 +193,17 @@ export class PostCardComponent implements OnChanges, OnInit {
 
   getStarArray(rating: number | undefined): string[] {
     const MAX_STARS = 5;
-    // אם הדירוג הוא undefined או null, נשתמש ב-0
     const effectiveRating = rating ?? 0;
     const stars: string[] = [];
 
     for (let i = 1; i <= MAX_STARS; i++) {
 
-      // 1. כוכב מלא
       if (i <= effectiveRating) {
         stars.push('star');
 
-        // 2. חצי כוכב: אם הדירוג גדול מהכוכב הקודם (i-1)
       } else if (effectiveRating > (i - 1)) {
         stars.push('star_half');
 
-        // 3. כוכב ריק
       } else {
         stars.push('star_border');
       }
@@ -226,15 +212,11 @@ export class PostCardComponent implements OnChanges, OnInit {
     return stars;
   }
 
-  // ----------------------------------------------------------------
-  // 4️⃣ הצגת מדיה
-  // ----------------------------------------------------------------
+  
   getSafeMediaUrl(path: string): SafeResourceUrl {
     const url = `http://localhost:8080/api/post/${path}`;
     return this.sanitizer.bypassSecurityTrustResourceUrl(url);
   }
-
-
 
 
 }

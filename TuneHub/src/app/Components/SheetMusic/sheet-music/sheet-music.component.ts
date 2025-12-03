@@ -35,25 +35,7 @@ export class SheetMusicComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    // const id = this.route.snapshot.paramMap.get('id');
-    // if (id) {
-    //   this.sheetService.getSheetMusicById(+id).subscribe({
-    //     next: (data) => {
-    //       this.sheet = data;
-    //       // if (this.sheet.imageCoverName) {
-    //       //   // בהנחה ש-fileUtilsService נמצא בהישג יד או שמחליפים אותו בבנייה ידנית של ה-URL
-    //       //   // נשתמש בנתיב הישיר בהנחה שהשרת מכיל אותו
-    //       //   this.imageCoverUrl = `http://localhost:8080/api/files/image/${this.sheet.imageCoverName}`;
-    //       // }
-    //       // if (this.sheet.filePath) {
-    //       //   this.pdfUrl = this.sanitizer.bypassSecurityTrustResourceUrl(
-    //       //     `http://localhost:8080/api/sheetMusic/documents/${this.sheet.filePath}`
-    //       //   );
-    //       // }
-    //     },
-    //     error: (err) => console.error(err)
-    //   });
-    // }
+    
   }
 
   

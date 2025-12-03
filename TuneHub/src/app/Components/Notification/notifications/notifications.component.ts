@@ -99,7 +99,6 @@ export class NotificationsComponent implements OnInit, OnDestroy {
         this.calculateInteractions();
       });
 
-      // 📌 Mark all as read
       this.stompClient?.subscribe('/user/queue/notifications/mark-all-read', () => {
         this.notifications = this.notifications.map(n => ({
           ...n,

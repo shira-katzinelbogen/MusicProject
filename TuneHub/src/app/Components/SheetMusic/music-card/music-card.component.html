@@ -52,11 +52,7 @@
 
 
                 <span class="detail-tag"><mat-icon>music_note</mat-icon>{{ sheet.scale }}</span>
-                <!-- <span class="detail-tag">
-                    <mat-icon>music_note</mat-icon>
-                    {{ ScaleMap[sheet.scale!] }}
-                </span> -->
-
+               
                 <span class="detail-tag instrument-tag-wrapper">
                     <ng-container *ngFor="let instrument of sheet.instruments; let last = last">
                         <span class="instrument-tag">{{ instrument.name }}</span><span *ngIf="!last">, </span>

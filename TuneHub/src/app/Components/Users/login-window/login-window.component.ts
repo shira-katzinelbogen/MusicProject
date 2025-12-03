@@ -47,14 +47,12 @@ export class LoginWindowComponent implements OnInit{
   }
 
   ngOnInit(): void {
-    // אתחול טופס כניסה
     this.loginForm = this.fb.group({
       name: ['', [Validators.required]],
       password: ['', Validators.required],
       rememberMe: [false]
     });
 
-    // אתחול טופס הרשמה
     this.signupForm = this.fb.group({
       fullName: ['', Validators.required],
       email: ['', [Validators.required, Validators.email]],
@@ -64,12 +62,10 @@ export class LoginWindowComponent implements OnInit{
     }, { validator: this.passwordMatchValidator });
   }
 
-  // פונקציה למעבר בין המצבים
   setMode(mode: AuthMode): void {
     this.currentMode = mode;
   }
 
-  // פונקציה לבדיקת התאמת סיסמאות (בטופס ההרשמה)
   passwordMatchValidator(form: FormGroup) {
     const password = form.get('password')?.value;
     const confirmPassword = form.get('confirmPassword')?.value;
@@ -101,13 +97,11 @@ export class LoginWindowComponent implements OnInit{
             name: response.name,
             hasImageProfilePath: !!response.imageProfilePath,
             imageProfilePath: response.imageProfilePath,
-            // ? 'http://localhost:8080/images/' + response.imageProfilePath
-            // : undefined,
+          
             roles: response.roles ? response.roles.map((r: any) => r.name) : []
           };
           console.log("PROFILE:", response.imageProfilePath);
 
-          // שמירה ב־UserStateService + sessionStorage
           this.userStateService.setUser(userProfile);
           console.log('After setUser:', this.userStateService.getCurrentUserValue());
 
@@ -126,7 +120,6 @@ export class LoginWindowComponent implements OnInit{
   }
 
 
-  // לוגיקה לשליחת טופס הרשמה
   onSignupSubmit(): void {
     // איפוס הודעות
     this.signupErrorMessage = null;

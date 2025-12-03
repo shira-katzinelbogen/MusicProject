@@ -1,6 +1,5 @@
 <div class="post-card">
 
-    <!-- HEADER מוצג רק ב-all -->
     <ng-container *ngIf="!isProfileView || showOnlyMedia === 'all'">
         <header class="post-header">
             <img class="avatar" [src]="fileUtils.getImageUrl(post.user?.imageProfilePath)" alt="avatar">
@@ -46,7 +45,6 @@
 
     <div class="post-body">
 
-        <!-- TITLE + TEXT מוצגים רק ב-all -->
         <ng-container *ngIf="!isProfileView || showOnlyMedia === 'all'">
             <h3 class="post-title" [innerHTML]="post.title! | highlight: searchText!">{{post.title}}</h3>
             <p class="post-content">{{post.content}}</p>
@@ -54,14 +52,12 @@
 
         <div class="post-media">
 
-            <!-- IMAGES רק ב-all -->
             <ng-container *ngIf="!isProfileView || showOnlyMedia === 'all'">
                 <div *ngFor="let image of post.imagesBase64" class="image-container">
                     <img [src]="fileUtils.getImageUrl(image)" class="post-image">
                 </div>
             </ng-container>
 
-            <!-- AUDIO מוצג אם audio או all -->
             <div *ngIf="post.audioPath && (showOnlyMedia === 'all' || showOnlyMedia === 'audio')"
                 class="media-track-wrapper">
 
@@ -70,7 +66,6 @@
                 <audio controls [src]="getSafeMediaUrl('audio/' + post.audioPath)"></audio>
             </div>
 
-            <!-- VIDEO מוצג אם video או all -->
             <div *ngIf="post.videoPath && (showOnlyMedia === 'all' || showOnlyMedia === 'video')"
                 class="media-video-wrapper">
 
@@ -82,7 +77,6 @@
         </div>
     </div>
 
-    <!-- FOOTER + לייקים מוצגים רק ב-all -->
     <ng-container *ngIf="!isProfileView || showOnlyMedia === 'all'">
         <footer class="post-footer">
 
@@ -105,7 +99,6 @@
         <hr>
     </ng-container>
 
-    <!-- COMMENTS מוצגים רק ב-all -->
     <ng-container *ngIf="!isProfileView || showOnlyMedia === 'all'">
         <div class="comments-actions-row">
             <button class="view-comments-btn" (click)="toggleComments(post.id!)">

@@ -25,7 +25,7 @@ export class EditProfilModalComponent implements OnInit, OnDestroy {
   profilePreviewUrl: string | null = null;
     
   private routeSub!: Subscription; 
-  private currentProfileId: number | null = null; // משתנה לשמירת ה-ID מה-URL
+  private currentProfileId: number | null = null;
 
   constructor(
     private fb: FormBuilder,
@@ -40,13 +40,12 @@ export class EditProfilModalComponent implements OnInit, OnDestroy {
       const userId = Number(params.get('id'));
 
       if (userId) {
-        this.currentProfileId = userId; // 📌 שמירת ה-ID מה-URL
+        this.currentProfileId = userId; 
         
         this._usersService.getUserById(userId).subscribe({
           next: (user: Users) => {
             this.profileData = user;
             
-            // השלמת ה-ID באובייקט הנתונים אם חסר (למקרה שהשרת לא מחזיר אותו)
             if (!this.profileData.id) {
                 this.profileData.id = userId; 
             }
@@ -65,7 +64,6 @@ export class EditProfilModalComponent implements OnInit, OnDestroy {
   }
   
   ngOnDestroy(): void {
-    // ניקוי ה-Subscription כדי למנוע דליפת זיכרון
     if (this.routeSub) {
       this.routeSub.unsubscribe();
     }
@@ -81,11 +79,9 @@ export class EditProfilModalComponent implements OnInit, OnDestroy {
       imageProfilePath: [this.profileData?.imageProfilePath || '']
     });
 
-    // בדיקת ה-URL לתמונת פרופיל
     const url = this.fileUtilsService.getImageUrl(this.profileData?.imageProfilePath);
     this.profilePreviewUrl = typeof url === 'string' ? url : null;
     
-    // לוג לבדיקת תקינות הטופס: חשוב לאיתור בעיות שאינן נראות
     if (this.editForm.invalid) {
         console.warn('EDIT FORM INITIALIZED AS INVALID. Checking controls for errors:');
         Object.keys(this.editForm.controls).forEach(key => {
@@ -116,11 +112,8 @@ saveChanges(): void {
   const updatedData: Partial<Users> = { ...this.editForm.value };
   const fileToUpload: File | undefined = this.selectedFile || undefined;
 
-  // 💡 קריאה לפונקציה המעודכנת
   this._usersService.updateUser(this.currentProfileId, updatedData, fileToUpload).subscribe({
     next: () => {
-      // 💡 נראה שהמשתמש שלך משתמש ב-UserStateService,
-      // כדאי לעדכן את המשתמש שם לאחר העריכה המוצלחת אם זה משתמש הפרופיל הנוכחי
       this.router.navigate(['/user-profile', this.currentProfileId]);
     },
     error: (err) => {

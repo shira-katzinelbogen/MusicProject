@@ -41,11 +41,10 @@ export class CommentComponent implements OnInit, OnChanges {
 
   ngOnChanges(): void {
     if (this.postId) {
-      this.resetAndLoad();  // ← תיקון: לא לטעון על קודמים, תמיד מאפסין
+      this.resetAndLoad(); 
     }
   }
 
-  // 🔄 מאפס הכול בפתיחה מחדש
   resetAndLoad(): void {
     this.comments = [];
     this.page = 0;

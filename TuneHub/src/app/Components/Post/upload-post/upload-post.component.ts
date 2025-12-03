@@ -41,7 +41,6 @@ export class UploadPostComponent {
     console.log(currentUser);
 
     if (!currentUser || !currentUser.id) {
-      console.error('❌ לא נמצא משתמש מחובר או שאין לו id!');
       return;
     }
 

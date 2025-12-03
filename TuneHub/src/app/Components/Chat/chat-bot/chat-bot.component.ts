@@ -9,7 +9,7 @@ import { StorageService } from '../../../Services/storage.service';
 interface Message {
   text: string;
   sender: 'user' | 'bot';
-  avatar: string;  // ← ✔ חדש!
+  avatar: string;  
 }
 
 @Component({
@@ -63,7 +63,6 @@ export class ChatBotComponent implements OnInit, AfterViewChecked {
     const text = this.userInput.trim();
     if (!text) return;
 
-    // ✔ הודעת משתמש עם תמונה שלו
     this.addMessage({
       text,
       sender: 'user',
@@ -76,7 +75,6 @@ export class ChatBotComponent implements OnInit, AfterViewChecked {
       .subscribe({
         next: (res: string) => {
 
-          // ✔ הודעת בוט עם התמונה של הבוט
           this.addMessage({
             text: res,
             sender: 'bot',
@@ -94,7 +92,6 @@ export class ChatBotComponent implements OnInit, AfterViewChecked {
       });
   }
 
-  // ⭐⭐⭐ פונקציה משודרגת — שומרת *גם* את האווטאר ⭐⭐⭐
   private addMessage(msg: Message) {
     this.messages.push(msg);
     this.storageService.setItem(this.conversationId, JSON.stringify(this.messages));

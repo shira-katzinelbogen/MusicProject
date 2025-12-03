@@ -11,7 +11,6 @@
       
       <div class="side-panel">
         <div class="logo">
-          <!-- Replace the general SVG with a simpler icon for demo purposes, or use the full SVG you provided -->
           <svg fill="currentColor" viewBox="0 0 24 24" class="app-icon">
             <path d="M12 2C6.477 2 2 6.477 2 12s4.477 10 10 10 10-4.477 10-10S17.523 2 12 2zm3.879 6.121c.234.234.354.54.354.854 0 .314-.12.62-.354.854l-5 5c-.47.47-1.23.47-1.7 0l-3-3c-.234-.234-.354-.54-.354-.854 0-.314.12-.62.354-.854.47-.47 1.23-.47 1.7 0L8 12.293l4.121-4.121c.47-.47 1.23-.47 1.7 0z"/>
           </svg>
@@ -133,7 +132,6 @@
             </div>
           </div>
 
-          <!-- שינוי: מעטפת חדשה לשדות הסיסמה באותה שורה -->
           <div class="form-row-group">
             <div class="input-group password-field">
               <label for="signup-password">Password</label>
@@ -152,7 +150,6 @@
             </div>
           </div>
           
-          <!-- העברת הודעת השגיאה למקום המתאים מתחת לשני השדות -->
           <div *ngIf="signupForm.errors?.['mismatch'] && signupForm.get('confirmPassword')?.touched" class="error-msg full-width-error">Passwords do not match.</div>
 
           
