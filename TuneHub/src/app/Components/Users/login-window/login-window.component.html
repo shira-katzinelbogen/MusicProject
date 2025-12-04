@@ -83,12 +83,7 @@
           
           <button type="submit" [disabled]="loginForm.invalid" class="submit-btn login-btn">Sign In</button>
     
-          <div class="social-divider">or continue with</div>
           
-          <div class="social-login">
-            <button type="button" class="social-btn">G Google</button>
-            <button type="button" class="social-btn">git GitHub</button>
-          </div>
         </form>
     
         <form *ngIf="currentMode === 'signup'" [formGroup]="signupForm" (ngSubmit)="onSignupSubmit()" class="auth-form">

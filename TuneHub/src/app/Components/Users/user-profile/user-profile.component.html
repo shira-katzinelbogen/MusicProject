@@ -331,11 +331,11 @@
                 <ng-template #notCurrentUser>
                     <div class="profile-actions-container">
 
-                        <button mat-raised-button color="accent" (click)="followUser()"
+                        <!-- <button mat-raised-button color="accent" (click)="followUser()"
                             class="action-button follow-button">
                             <mat-icon>{{ isFollowing ? 'person_remove' : 'person_add' }}</mat-icon>
                             {{ isFollowing ? ' Stop Follow' : 'Follow' }}
-                        </button>
+                        </button> -->
 
                         <ng-container *ngIf="canBeStudent">
                             <button mat-raised-button color="primary" (click)="joinAsStudent()"

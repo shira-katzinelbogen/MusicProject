@@ -16,7 +16,7 @@
     </div>
             <ng-container *ngIf="!isAdmin">
                 <button class="action-btn report-btn" (click)="onReportPost(post.id!)">
-                    <mat-icon>report</mat-icon> דווח
+                    <mat-icon>report</mat-icon> 
                 </button>
             </ng-container>
 
@@ -101,8 +101,8 @@
 
     <ng-container *ngIf="!isProfileView || showOnlyMedia === 'all'">
         <div class="comments-actions-row">
-            <button class="view-comments-btn" (click)="toggleComments(post.id!)">
-                {{ showComments[post.id!] ? 'סגור תגובות' : 'צפייה בתגובות' }}
+            <button class="button" (click)="toggleComments(post.id!)">
+                {{ showComments[post.id!] ? 'close comments' : 'view comments' }}
             </button>
             <button class="button" (click)="navigateToAddComment(post.id!)">
                  add comment <mat-icon>add_comment</mat-icon>
