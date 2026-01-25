@@ -14,8 +14,8 @@ export default class Post {
     videoPath?: string;
     title?: string;
     rating?: number;
-    isLiked?: boolean;
-    isFavorite?: boolean;
+    liked?: boolean;
+    favorite?: boolean;
     safeImages?: string[];
     totalPages!: number;
     currentPage!: number;
@@ -32,10 +32,10 @@ export interface PostResponseDTO {
     audioPath?: string;
     videoPath?: string;
     imagesBase64?: string[];
-    dateUploaded: string; 
-       isLiked?: boolean;
-    isFavorite?: boolean;
-    
+    dateUploaded: string;
+    liked: boolean;
+    favorite: boolean;
+
 }
 
 export interface PostUploadDTO {

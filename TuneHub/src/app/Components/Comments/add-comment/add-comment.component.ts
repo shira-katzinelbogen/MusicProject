@@ -1,80 +1,86 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Router, RouterModule } from '@angular/router';
+import { Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { MatIconModule } from '@angular/material/icon';
 import { CommentService } from '../../../Services/comment.service';
-import { UserStateService } from '../../../Services/user-state.service';
-
+import { CommentModalService } from '../../../Services/CommentModalService';
 
 
 @Component({
   selector: 'app-add-comment',
   standalone: true,
-  imports: [CommonModule, FormsModule, MatIconModule, RouterModule],
+  imports: [CommonModule, FormsModule, MatIconModule],
   templateUrl: './add-comment.component.html',
-  styleUrl: './add-comment.component.css'
+  styleUrls: ['./add-comment.component.css']
 })
+
+
 export class AddCommentComponent implements OnInit {
-  postId!: number;
   commentContent: string = '';
   isUploading: boolean = false;
-  uploadSuccess: boolean = false;
   uploadError: string | null = null;
 
+  currentPostId: number | null = null;
+
   constructor(
-    private route: ActivatedRoute,
-    private router: Router,
     private commentService: CommentService,
-    private userState: UserStateService
+    private commentModal: CommentModalService,
+    private router: Router
   ) { }
 
-  ngOnInit(): void {
-    this.route.paramMap.subscribe(params => {
-      const id = params.get('postId');
-      if (id) {
-        this.postId = +id; 
-      } else {
-        this.router.navigate(['/posts']);
-      }
-    });
+  ngOnInit() {
+    this.commentModal.postId$.subscribe(id => this.currentPostId = id);
   }
 
-  submitComment(): void {
-    const content = this.commentContent.trim();
-    if (!content || !this.postId) {
-      this.uploadError = "no content";
-      return;
+  submitCommentWrapper() {
+    if (this.currentPostId !== null) {
+      this.submitComment(this.currentPostId);
     }
+  }
 
-    const currentUser = this.userState.getCurrentUserValue();
-    if (!currentUser?.id) {
-      this.uploadError = "user not connect";
+  submitComment(postId: number) {
+    const content = this.commentContent.trim();
+
+    if (!content) {
+      this.uploadError = 'Comment cannot be empty';
       return;
     }
 
     this.isUploading = true;
-    this.uploadSuccess = false;
     this.uploadError = null;
 
-    const dto = { content, postId: this.postId };
+    const dto = { content, postId };
 
-    this.commentService.uploadComment(dto)
-      .subscribe({
-        next: () => {
-          this.isUploading = false;
-          this.uploadSuccess = true;
-          this.commentContent = ''; 
-          
-          setTimeout(() => {
-            this.router.navigate(['/posts']); 
-          }, 1000);
-        },
-        error: (err) => {
-          this.isUploading = false;
-          this.uploadError = 'error in adding comment';
-          console.error('error:', err);
-        }
-      });
+    this.commentService.uploadComment(dto).subscribe({
+      next: () => {
+        this.isUploading = false;
+        // this.commentModal.notifyCommentAdded(newComment);
+        this.commentContent = '';
+        this.commentModal.close();
+
+      },
+      error: (err) => {
+        this.isUploading = false;
+        this.uploadError = 'Error sending comment';
+        console.error('Upload comment error:', err);
+      }
+    });
   }
+
+  close() {
+    this.commentModal.close();
+    this.router.navigate(['/posts']);
+  }
+
+  get isOpen$() {
+    return this.commentModal.isOpen$;
+  }
+
+  get postId$() {
+    return this.commentModal.postId$;
+  }
+
+
+
 }

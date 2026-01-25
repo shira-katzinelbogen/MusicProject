@@ -119,3 +119,87 @@
   color: salmon;
   font-weight: bold;
 }
+
+
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.6); 
+  z-index: 1000; 
+}
+
+.add-comment-modal {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%); 
+   background-color: #26354c;
+  border-radius: 20px;
+  padding: 20px;
+  width: 400px; 
+  max-width: 90%;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+  z-index: 1010; 
+}
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 15px;
+}
+
+.modal-header h2 {
+  font-size: 18px;
+  margin: 0;
+}
+
+.close-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 20px;
+}
+
+/* textarea */
+.add-comment-modal textarea {
+  all:unset;
+  width: 94%;
+  padding: 10px;
+  font-size: 14px;
+  border-radius: 5px;
+   background-color: #26354c;
+   color: #ffffff;
+  border: 1px solid #7867ff;
+  resize: vertical;
+  margin-bottom: 15px;
+}
+
+.add-comment-modal textarea:hover{
+  border: 3px solid #7867ff;
+}
+
+.add-comment-modal button[type="submit"] {
+  width: 100%;
+  padding: 10px;
+  font-size: 15px;
+  border: none;
+  border-radius: 5px;
+  background-color: #1e90ff;
+  color: white;
+  cursor: pointer;
+}
+
+.add-comment-modal button[type="submit"]:disabled {
+  background-color: #aaa;
+  cursor: not-allowed;
+}
+
+.error {
+  color: #f85e5e;
+  margin-top: 10px;
+  font-size: 14px;
+}

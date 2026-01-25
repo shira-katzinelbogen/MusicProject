@@ -1,35 +1,31 @@
-/* --- פריסה גלובלית וכותרת --- */
-/* (מותאם לצבע הרקע הכהה של ה-body) */
-
+/* Page Header */
 .page-header {
     padding: 20px;
     text-align: center;
-    border-bottom: 2px solid #364960; /* גבול כהה יותר */
+    border-bottom: 2px solid #364960;
     margin-bottom: 20px;
 }
 
 .page-header h3 {
     margin: 5px 0;
     font-size: 1.8em;
-    color: #f0f0f0; /* צבע טקסט בהיר */
+    color: #f0f0f0;
     font-weight: 700;
 }
 
-/* --- מיכל הכרטיסים (Grid) --- */
+/* Musicians Grid Container */
 .musicians-container {
     display: grid;
-    /* מציג 3 עמודות אוטומטיות, ניתן לשנות */
     grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); 
     gap: 30px;
     padding: 0 20px 40px;
 }
 
-/* --- עיצוב הכרטיס היחיד (ה-div שבתוך ה-@for) --- */
+/* Musicians Card */
 .musicians-container > div {
-    /* **שינוי:** רקע כהה תואם במקום לבן (#fff) */
-    background-color: #1e2e40; /* צבע כהה שונה מעט מה-body */
+    background-color: #1e2e40;
     border-radius: 12px;
-    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.4); /* צל כהה יותר */
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.4);
     padding: 20px;
     transition: transform 0.3s ease, box-shadow 0.3s ease;
     cursor: pointer;
@@ -37,7 +33,6 @@
     flex-direction: column;
     align-items: center; 
     text-align: center;
-    /* **שינוי:** גבול כהה תואם */
     border: 1px solid #364960; 
 }
 
@@ -46,7 +41,7 @@
     box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
 }
 
-/* --- עיצוב מיכל התמונה (.image-p) --- */
+/* Image Container */
 .image-p {
     width: 100px;
     height: 100px;
@@ -54,11 +49,11 @@
     overflow: hidden; 
     margin-bottom: 15px;
     margin-top: 10px;
-    border: 4px solid #4a90e2;  /* נשאר כחול בולט */
-    box-shadow: 0 0 0 2px #1e2e40; /* שינוי: רקע פנימי כהה */
+    border: 2px solid #ffffff;
+    box-shadow: 0 0 12px rgba(0,0,0,0.5);
 }
 
-/* --- עיצוב תג ה-<img> (.profile-image) --- */
+/* Profile Image */
 .profile-image {
     width: 100%;
     height: 100%;
@@ -66,50 +61,44 @@
     display: block;
 }
 
-/* --- עיצוב הטקסט בתוך הכרטיס (מותאם לרקע הכהה) --- */
+/* Card Text */
 .musicians-container h3 {
     margin: 4px 0;
     font-size: 1em; 
-    color: #cccccc; /* טקסט בהיר */
+    color: #cccccc;
     font-weight: 400;
 }
 
 .musicians-container h3:first-child {
-    /* שם המשתמש */
     font-size: 1.4em;
     font-weight: 700;
-    color: #e0e0e0; /* דגש בהיר */
+    color: #e0e0e0;
     margin-bottom: 8px;
 }
 
-/* --- עיצוב שדות ספציפיים --- */
+/* Field Styling - Description */
 .musicians-container h3:nth-of-type(2) {
-    /* תיאור (description) */
-    color: #00bcd4; /* צבע בהיר ובולט */
+    color: #00bcd4;
     font-style: italic;
     font-size: 0.95em;
     margin-bottom: 10px;
 }
 
 .musicians-container h3:last-of-type {
-    /* מדינה (country) */
     font-size: 0.9em;
-    color: #aaaaaa; /* אפור בהיר */
+    color: #aaaaaa;
     margin-top: 8px;
-    /* שינוי: גבול עליון כהה תואם */
     border-top: 1px dashed #364960; 
     padding-top: 8px;
     width: 100%; 
 }
 
-/* --- הודעה כשאין משתמשים --- */
+/* No Users Message */
 .have-no-users {
     padding: 30px;
     margin: 20px auto;
     max-width: 600px;
-    /* **שינוי:** רקע כהה במקום בהיר (#f7fafc) */
     background-color: #1e1e2d; 
-    /* **שינוי:** גבול וטקסט תואמים */
     border: 1px solid #364960; 
     border-radius: 8px;
     color: #f0f0f0; 
@@ -117,11 +106,7 @@
     text-align: center;
 }
 
-
-/* מבנה כללי ורקע כהה */
-
-
-/* כותרת וכפתור Join Network */
+/* Header and Join Network Button */
 .header {
     display: flex;
     justify-content: space-between;
@@ -162,12 +147,12 @@
     margin-right: 5px;
 }
 
-/* שורת החיפוש הראשית */
+/* Search Bar */
 .search-bar {
     display: grid;
     grid-template-columns: 2fr repeat(2, 1fr) 0.5fr; 
     gap: 10px;
-    background-color: #1e1e2d; /* רקע כהה ספציפי (לשמירה על ההפרדה מה-body) */
+    background-color: #1e1e2d;
     padding: 15px;
     border-radius: 8px;
     align-items: center;
@@ -202,7 +187,7 @@
     cursor: pointer;
 }
 
-/* כפתור הפילטרים */
+/* Filters Button */
 .filters-btn {
     font-weight: bold;
     display: flex;
@@ -210,14 +195,14 @@
     align-items: center;
 }
 
-/* שורת המסננים הנוספים (השורה הנסתרת/מוצגת) */
+/* Additional Filters */
 .additional-filters {
     display: grid;
     grid-template-columns: repeat(4, 1fr); 
     gap: 20px;
     padding: 20px 15px;
     margin-top: 10px;
-    background-color: #1e1e2d; /* רקע כהה ספציפי (לשמירה על ההפרדה מה-body) */
+    background-color: #1e1e2d;
     border-radius: 8px;
 }
 
@@ -228,13 +213,16 @@
 }
 
 .filter-group .dropdown {
-    
     width: 100%;
 }
 
-
-
-
-
-
+/* Profile Picture Wrapper */
+.profile-picture-wrapper {
+    position: relative;
+    height: 115px;
+    border-radius: 50%;
+    background-color: transparent;
+    z-index: 10;
+    margin-bottom: 0;
+}
 

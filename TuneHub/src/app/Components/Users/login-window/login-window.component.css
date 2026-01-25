@@ -1,95 +1,85 @@
-/* משתני צבעים (כדי לשמור על עקביות) */
+/* CSS Variables */
 :root {
-  --background-dark: #0f0a1f; /* רקע כהה מאוד */
-  --panel-background: #1c1437; /* רקע פאנל כהה */
-  --primary-color-start: #6a11cb; /* סגול כהה לתחילת מעבר צבע */
-  --primary-color-end: #2575fc; /* כחול בהיר לסוף מעבר צבע */
-  --text-light: #e0e0e0; /* טקסט בהיר */
-  --text-faded: #a0a0a0; /* טקסט מעומעם */
-  --input-background: #2b224d; /* רקע שדה קלט */
-  --social-btn-bg: #3c326b; /* רקע כפתור חברתי */
+  --background-dark: #0f0a1f;
+  --panel-background: #1c1437;
+  --primary-color-start: #6a11cb;
+  --primary-color-end: #2575fc;
+  --text-light: #e0e0e0;
+  --text-faded: #a0a0a0;
+  --input-background: #2b224d;
+  --social-btn-bg: #3c326b;
 }
 
-/* ------------------------------------------- */
-/* סגנונות המודאל (הוספות עבור אוברליי ומרכוז) */
-/* ------------------------------------------- */
-
-/* אוברליי (שכבה שחורה שקופה שמכסה את כל המסך) */
+/* Modal Overlay */
 .modal-overlay {
-    position: fixed; /* נשאר קבוע גם בגלילה */
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.879); /* שחור עם שקיפות */
-    display: flex;
-    justify-content: center; /* מרכוז אופקי */
-    align-items: center; /* מרכוז אנכי */
-    z-index: 1000; /* ודא שהוא מעל כל שאר האלמנטים */
-    /* אנימציה קלה לכניסה */
-    opacity: 1;
-    transition: opacity 0.3s ease;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.879);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  opacity: 1;
+  transition: opacity 0.3s ease;
+  overflow-y: auto;
 }
 
-/* מעטפת תוכן האימות בתוך האוברליי */
+/* Modal Content */
 .auth-modal-content {
-    position: relative;
-    max-height: 90vh; /* מונע גלילה אנכית מיותרת */
-   
+  position: relative;
+  max-height: 90vh;
+  overflow-y: auto;
 }
 
-/* כפתור סגירה */
+/* Close Button */
 .close-button {
-    position: absolute;
-    top: 15px;
-    right: 20px;
-    background: none;
-    border: none;
-    color: var(--text-faded);
-    cursor: pointer;
-    z-index: 1001; /* ודא שהוא מעל כל רכיבי החלון */
-    padding: 5px;
-    border-radius: 50%;
-    transition: color 0.2s;
+  position: absolute;
+  top: 40px;
+  right: 25px;
+  background: none;
+  border: none;
+  color: var(--text-faded);
+  cursor: pointer;
+  z-index: 1001;
+  padding: 8px;
+  border-radius: 50%;
+  transition: color 0.2s;
 }
 
 .close-button:hover {
-    color: white;
-    background-color: rgba(255, 255, 255, 0.1);
+  color: white;
+  background-color: rgba(255, 255, 255, 0.1);
 }
 
-/* ------------------------------------------- */
-/* סגנונות הטופס (משתמשים כעת בתוך ה-modal-content) */
-/* ------------------------------------------- */
-
-/* הערה: הסגנון של body הוסר כיוון שהמודאל הוא מרכז הבקרה כעת */
-/* body { ... } */
-
-/* הקונטיינר הראשי של האימות (מועתק מ-CSS הקודם) */
+/* Auth Container */
 .auth-container {
   display: flex;
-  width: 900px; /* רוחב החלונית כולה */
+  width: 950px;
   max-width: 90%;
   border-radius: 20px;
   overflow: hidden;
   box-shadow: 0 15px 50px rgba(0, 0, 0, 0.5);
-  background: var(--panel-background);
-  transition: all 0.3s ease;
-   background-color: #1D2838;
+  background-color: #1D2838;
+  border: 3px solid #700aff;
+  margin-top: 10px;
 }
 
-/* --- פאנל צדדי (Side Panel) --- */
+/* Side Panel */
 .side-panel {
   flex: 1;
   background: linear-gradient(135deg, var(--primary-color-start), var(--primary-color-end));
-  padding: 40px;
+  padding: 30px;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  color: white; /* כל הטקסט על הרקע הזה יהיה לבן */
+  color: white;
   position: relative;
 }
 
+/* Logo */
 .logo {
   margin-bottom: 30px;
 }
@@ -115,39 +105,38 @@
   margin-top: 5px;
 }
 
-.welcome-text, .intro-text {
-  margin-top: 0;
-}
-
+/* Welcome Text */
 .welcome-text {
-  font-size: 2.2em;
+  font-size: 1.8em;
   font-weight: 700;
-  margin-bottom: 10px;
+  margin-bottom: 8px;
 }
 
+/* Intro Text */
 .intro-text {
-  font-size: 1.1em;
-  line-height: 1.5;
-  margin-bottom: 30px;
+  font-size: 0.95em;
+  line-height: 1.4;
+  margin-bottom: 20px;
   opacity: 0.9;
 }
 
+/* Features List */
 .features-list {
   list-style: none;
   padding: 0;
-  margin: 0 0 50px 0;
+  margin: 0 0 30px 0;
 }
 
 .features-list li {
-  font-size: 1em;
-  margin-bottom: 15px;
+  font-size: 0.9em;
+  margin-bottom: 10px;
   display: flex;
   align-items: flex-start;
-  line-height: 1.4;
+  line-height: 1.3;
 }
 
 .features-list li::before {
-  content: '★'; /* סמל כללי */
+  content: '★';
   color: #fff;
   font-weight: 900;
   display: inline-block;
@@ -156,15 +145,24 @@
   font-size: 1.2em;
   transform: translateY(-2px);
 }
-/* התאמה לאייקונים ספציפיים בתמונה אם רוצים דיוק רב יותר */
-.features-list li:nth-child(1)::before { content: '👥'; /* Global Network */ }
-.features-list li:nth-child(2)::before { content: '⭐'; /* Professional Growth */ }
-.features-list li:nth-child(3)::before { content: '🔒'; /* Secure Platform */ }
 
-.features-list strong {
-    font-weight: 600;
+.features-list li:nth-child(1)::before {
+  content: '👥';
 }
 
+.features-list li:nth-child(2)::before {
+  content: '⭐';
+}
+
+.features-list li:nth-child(3)::before {
+  content: '🔒';
+}
+
+.features-list strong {
+  font-weight: 600;
+}
+
+/* Terms Footer */
 .terms-footer {
   font-size: 0.85em;
   opacity: 0.7;
@@ -175,17 +173,20 @@
   text-decoration: none;
   font-weight: bold;
 }
+
 .terms-footer a:hover {
   text-decoration: underline;
 }
 
-/* --- פאנל טופס (Form Panel) --- */
+/* Form Panel */
 .form-panel {
   flex: 1;
-  padding: 40px;
+  padding: 30px;
   background-color: var(--panel-background);
+  overflow-y: auto;
 }
 
+/* Auth Tabs */
 .auth-tabs {
   display: flex;
   justify-content: flex-end;
@@ -210,22 +211,28 @@
   box-shadow: 0 4px 10px rgba(106, 17, 203, 0.4);
 }
 
+/* Auth Form */
 .auth-form {
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  gap: 15px;
+}
+
+/* Input Group */
+.input-group {
+  position: relative;
 }
 
 .input-group label {
   display: block;
-  margin-bottom: 8px;
-  font-size: 0.9em;
+  margin-bottom: 5px;
+  font-size: 0.85em;
   color: var(--text-faded);
 }
 
 .input-group input {
   width: 100%;
-  padding: 15px 15px 15px 45px; /* מרווח משמאל כדי לפנות מקום לאייקון */
+  padding: 12px 12px 12px 45px;
   border: 1px solid #3c326b;
   border-radius: 10px;
   background-color: var(--input-background);
@@ -241,55 +248,82 @@
   box-shadow: 0 0 5px rgba(37, 117, 252, 0.5);
 }
 
-/* התאמה למקום האייקונים בתוך שדה הקלט */
-.input-group {
-    position: relative;
-}
-
-.input-group input[placeholder*="Doe"] {
-    background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="%23a0a0a0" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>');
-    background-repeat: no-repeat;
-    background-position: 15px center;
-    background-size: 20px;
-}
-
-.input-group input[placeholder*="@example.com"] {
-    background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="%23a0a0a0" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>');
-    background-repeat: no-repeat;
-    background-position: 15px center;
-    background-size: 20px;
-}
-
-.input-group input[type="password"] {
-    background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="%23a0a0a0" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>');
-    background-repeat: no-repeat;
-    background-position: 15px center;
-    background-size: 20px;
-}
-
-
-/* כפתור העלאת תמונה (Sign Up) */
+/* Upload Photo */
 .upload-photo {
   background-color: var(--input-background);
   border: 2px dashed #4e408d;
-  border-radius: 15px;
-  padding: 25px;
+  border-radius: 25px;
+  padding: 10px;
   text-align: center;
-  color: var(--text-faded);
-  font-size: 0.9em;
+  color: #848484;
+  font-size: 0.7em;
   cursor: pointer;
   transition: border-color 0.3s;
-  background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="%23a0a0a0" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" y1="3" x2="12" y2="15"></line></svg>');
-  background-repeat: no-repeat;
-  background-position: center 10px;
-  padding-top: 50px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  width: 90px;
+  height: 90px;
+  overflow: hidden;
 }
 
 .upload-photo:hover {
   border-color: var(--primary-color-start);
 }
 
-/* שורה של אפשרויות (Remember Me, Forgot Password) */
+/* Uploaded Image Preview */
+.uploaded-image-preview {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 13px;
+  z-index: 1;
+}
+
+.upload-photo .upload-icon {
+  width: 25px;
+  height: 25px;
+  color: var(--text-faded);
+  margin-bottom: 10px;
+  z-index: 2;
+}
+
+.upload-photo span {
+  z-index: 2;
+}
+
+/* Upload Container */
+.upload-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 15px;
+  width: 100%;
+  margin-bottom: 20px;
+}
+
+/* Profile Preview */
+.profile-preview {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  overflow: hidden;
+  border: 3px solid #700aff;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+}
+
+.profile-preview img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Options Row */
 .options-row {
   display: flex;
   justify-content: space-between;
@@ -297,20 +331,22 @@
   font-size: 0.9em;
 }
 
+/* Forgot Link */
 .forgot-link {
   color: var(--text-faded);
   text-decoration: none;
 }
+
 .forgot-link:hover {
   color: var(--primary-color-end);
 }
 
-/* צ'קבוקסים מותאמים אישית */
+/* Checkbox */
 .checkbox-container {
   display: block;
   position: relative;
   padding-left: 0;
-  margin-bottom: 0; /* נשלט ע"י ה-gap של הטופס */
+  margin-bottom: 0;
   cursor: pointer;
   font-size: 0.9em;
   user-select: none;
@@ -318,26 +354,28 @@
 }
 
 .checkbox-container input[type="checkbox"] {
-    opacity: 1;
-    position: static;
-    margin-right: 10px;
-    width: 18px;
-    height: 18px;
-    border-radius: 4px;
-    border: 1px solid var(--text-faded);
-    background-color: var(--input-background);
-    vertical-align: middle;
-}
-.checkbox-container.terms-agree a {
-    color: var(--primary-color-end);
-    text-decoration: none;
-    font-weight: 500;
-}
-.checkbox-container.terms-agree a:hover {
-    text-decoration: underline;
+  opacity: 1;
+  position: static;
+  margin-right: 10px;
+  width: 18px;
+  height: 18px;
+  border-radius: 4px;
+  border: 1px solid var(--text-faded);
+  background-color: var(--input-background);
+  vertical-align: middle;
 }
 
-/* כפתורי שליחה (Submit Button) */
+.checkbox-container.terms-agree a {
+  color: var(--primary-color-end);
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.checkbox-container.terms-agree a:hover {
+  text-decoration: underline;
+}
+
+/* Submit Button */
 .submit-btn {
   padding: 15px;
   border: none;
@@ -361,7 +399,7 @@
   box-shadow: 0 5px 15px rgba(37, 117, 252, 0.4);
 }
 
-/* מפריד כניסה חברתית */
+/* Social Divider */
 .social-divider {
   text-align: center;
   margin: 10px 0;
@@ -388,13 +426,14 @@
   right: 0;
 }
 
-/* כפתורי כניסה חברתית */
+/* Social Login */
 .social-login {
   display: flex;
   gap: 15px;
   justify-content: space-between;
 }
 
+/* Social Button */
 .social-btn {
   flex: 1;
   padding: 12px;
@@ -412,192 +451,37 @@
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
 }
 
-/* הודעות שגיאה */
-.error-msg {
-    color: #ff6b6b;
-    font-size: 0.85em;
-    margin-top: -15px;
-    margin-bottom: -5px;
-    padding-left: 5px;
-}
-
-/* מדיה קוואריז להתאמה למסכים קטנים */
+/* Responsive Design */
 @media (max-width: 950px) {
   .auth-container {
     flex-direction: column;
-    width: 450px; /* רוחב יחיד */
+    width: 450px;
   }
 
   .side-panel {
-    padding-bottom: 20px; /* פחות רווח בתחתית */
+    padding-bottom: 20px;
     border-radius: 20px 20px 0 0;
     text-align: center;
   }
-  
+
   .logo {
     display: flex;
     justify-content: center;
     align-items: center;
     margin-bottom: 20px;
   }
-  
+
   .auth-tabs {
     justify-content: center;
     margin-top: 10px;
   }
-  
+
   .form-panel {
     padding: 30px;
   }
 
   .terms-footer {
-    /* הסתרת הפוטר כדי לא לחזור על עצמו פעמיים (יש בטופס) */
-    display: none; 
+    display: none;
   }
 }
 
-/* 
-**סיכום השינויים:**
-
-1.  **HTML:**
-    * עטפנו את `auth-container` במעטפת `modal-overlay`.
-    * הגדרנו על `modal-overlay` את ה-event `(click)="onOverlayClick($event)"` לסגירת החלון בלחיצה על הרקע.
-    * הוספנו כפתור `close-button` עם הפונקציה `(click)="closeWindow()"` בתוך החלון.
-    * הוספנו ל-`auth-modal-content` את ה-event `(click)="$event.stopPropagation()"` כדי למנוע סגירה כאשר לוחצים על התוכן הפנימי של החלון.
-2.  **TypeScript:**
-    * נוספה הפונקציה `closeWindow()` שקוראת ל-`this.loginwindowService.close()`.
-    * נוספה הפונקציה `onOverlayClick(event: MouseEvent)` המשתמשת בבדיקה `event.target === event.currentTarget` כדי לוודא שרק לחיצה ישירה על האוברליי סוגרת את המודאל.
-3.  **CSS:**
-    * הגדרנו את `modal-overlay` עם `position: fixed`, `width: 100%`, `height: 100%`, `background-color: rgba(0, 0, 0, 0.7)`, ו-`display: flex` לטובת מרכוז אוטומטי.
-    * עיצבנו את `close-button` כך שימוקם בפינה העליונה-ימנית של החלון. */
-
-
-    /* אם זה קובץ CSS של רכיב ספציפי */
-/* .side-panel {
-  position: relative;
-  overflow: hidden;
-  background: transparent; 
-  z-index: 0; 
-}
-
-
-.side-panel::before {
-  content: "";
-  position: absolute;
-  inset: -30px; 
-  background: linear-gradient(160deg,#71009e,#4900af,  #4215f6,#001971  );
-  filter: blur(35px); 
-  opacity: 0.85;
-  z-index: -1; 
-  transform: scale(1.2); 
-} */
-
-.auth-container{
-  
-  border: 3px solid #700aff; 
-}
-
-/* מעטפת הכפתור והתמונה */
-.upload-container {
-    display: flex;
-    flex-direction: column; /* מסדר את הכפתור מעל התמונה */
-    align-items: center;    /* מרכז אופקית */
-    gap: 15px;              /* רווח בין הכפתור לתמונה */
-    width: 100%;            /* מתאם לרוחב הפאנל */
-    margin-bottom: 20px;    /* רווח מתחת */
-}
-
-/* סגנון לתצוגה מקדימה של התמונה */
-.profile-preview {
-    width: 120px;           /* רוחב קבוע */
-    height: 120px;          /* גובה קבוע */
-    border-radius: 50%;     /* הופך אותה לעיגול */
-    overflow: hidden;       /* חותך כל מה שמחוץ לעיגול */
-    border: 3px solid #700aff; /* מסגרת סגולה תואמת למסגרת הכללית */
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3); /* צל קל */
-}
-
-.profile-preview img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover; /* מוודא שהתמונה מתאימה לעיגול בלי לעוות */
-}
-
-
-
-/* מעטפת הכפתור והתמונה - לא השתנה מהותית */
-.upload-container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 15px; /* אולי נרצה להוריד את זה אם אין אלמנטים מתחת לכפתור */
-    width: 100%;
-    margin-bottom: 20px;
-}
-
-/* כפתור העלאת תמונה (Sign Up) - נעדכן */
-/* כפתור העלאת תמונה (Sign Up) - נעדכן */
-.upload-photo {
-    background-color: var(--input-background);
-    border: 2px dashed #4e408d;
-    border-radius: 25px; /* הגדלה לעיגול קצת יותר */
-    padding: 10px;
-    text-align: center;
-    color: var(--text-faded);
-    font-size: 0.7em;
-    cursor: pointer;
-    transition: border-color 0.3s;
-    background-image: none; 
-    padding-top: 10px;
-    color: #848484;
-    
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    position: relative;
-    width: 90px;
-    height: 90px; /* **הקטנת הגובה ל-100px** */
-    overflow: hidden;
-}
-
-.upload-photo:hover {
-    border-color: var(--primary-color-start);
-}
-
-/* סגנון חדש לתמונה שנטענה בתוך כפתור ההעלאה */
-.uploaded-image-preview {
-    position: absolute; /* ממקם את התמונה באופן אבסולוטי בתוך הכפתור */
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    object-fit: cover; /* ממלא את כל שטח הכפתור תוך שמירה על יחס גובה-רוחב */
-    border-radius: 13px; /* מעט פחות מריבוע הכפתור כדי שלא ייצא החוצה */
-    z-index: 1; /* ודא שהתמונה מעל הרקע של הכפתור */
-}
-
-/* סגנון לאייקון העלאה בתוך הכפתור, שיוצג רק כשאין תמונה */
-.upload-photo .upload-icon {
-    width: 25px;
-    height: 25px;
-    color: var(--text-faded);
-    margin-bottom: 10px;
-    z-index: 2; /* ודא שהאייקון מעל התמונה אם הן חופפות בטעות */
-}
-
-/* סגנון לטקסט בתוך הכפתור, שיוצג רק כשאין תמונה */
-.upload-photo span {
-    z-index: 2; /* ודא שהטקסט מעל התמונה אם הן חופפות בטעות */
-}
-
-/* הסר את הסגנונות הקודמים של .profile-preview אם עדיין קיימים */
-/*
-.profile-preview {
-    display: none; // או למחוק לגמרי
-}
-
-.profile-preview img {
-    display: none; // או למחוק לגמרי
-}
-*/

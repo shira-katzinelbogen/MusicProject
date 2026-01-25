@@ -1,37 +1,30 @@
-<div class="overlay" [class.open]="isOpen">
+<div class="overlay" *ngIf="favoritesService.isOpen()">
   <div class="panel-container">
     <div class="panel-header">
       <mat-icon class="header-icon">favorite</mat-icon>
       <div class="header-text">
-        <h2>My Favorites</h2>
-        <p class="subtitle">Your saved music content</p>
+        <p id="title">My Favorites</p>
       </div>
-      <button class="close-btn" (click)="isOpen = false">
+      <button class="close-btn" (click)="favoritesService.close()">
         <mat-icon>close</mat-icon>
       </button>
     </div>
 
-    <div class="search-container">
-      <mat-icon>search</mat-icon>
-      <input id="qf"
-             class="search-input"
-             type="search"
-             placeholder="Search your favorites..."
-             [(ngModel)]="searchText"
-             (input)="onSearch($event)"
-             aria-label="search" />
-    </div>
-
+    <br>
     <div class="category-buttons">
-      <button *ngFor="let cat of categories; let i = index"
-              [class.active]="selectedCategory === cat"
-              (click)="selectCategory(cat)">
+      <button *ngFor="let cat of categories; let i = index" [class.active]="selectedCategory === cat"
+        (click)="selectCategory(cat)">
         <mat-icon>{{ getCategoryIcon(cat) }}</mat-icon>
-        {{ cat }}
+        {{ cat }} ({{count(cat)}})
       </button>
     </div>
 
-    <hr>
+
+    <div class="search-container">
+      <mat-icon>search</mat-icon>
+      <input id="qf" class="search-input" type="search" placeholder="Search your favorites..." [(ngModel)]="searchText"
+        (input)="onSearch($event)" aria-label="search" />
+    </div>
 
     <div class="favorites-scroll-container">
       <div class="favorites-content">
@@ -40,16 +33,17 @@
         </div>
 
         <div *ngIf="!isLoading && currentFavorites.length > 0" class="favorites-list">
-          <div *ngFor="let item of currentFavorites" class="favorite-item">
+          <div *ngFor="let item of currentFavorites" class="favorite-item" (click)="goToItem(item)">
             <div class="item-info">
-              <strong *ngIf="item.targetType === 'POST' || item.targetType === 'USER'"
-                      class="item-title">
-                {{ getFavoriteName(item) }}
-              </strong>
+              <p *ngIf="item.targetType === 'POST'" class="item-title"
+                [innerHTML]="getFavoriteName(item) | highlight: searchText">
 
-              <strong *ngIf="item.targetType === 'SHEET_MUSIC'" class="item-title">
-                {{ getFavoriteName(item) }}
-              </strong>
+              </p>
+
+              <p *ngIf="item.targetType === 'SHEET_MUSIC'" class="item-title"
+                [innerHTML]="getFavoriteName(item) | highlight: searchText">
+
+              </p>
 
               <p *ngIf="item.targetType === 'POST'" class="item-snippet">
                 {{ getPostContentSnippet(item) }}
@@ -65,9 +59,7 @@
             </div>
 
             <div class="item-actions">
-              <span *ngIf="item.targetType === 'SHEET_MUSIC' && getLevel(item)"
-                    class="item-level"
-                    [ngClass]="{
+              <span *ngIf="item.targetType === 'SHEET_MUSIC' && getLevel(item)" class="item-level" [ngClass]="{
                       'level-advanced': getLevel(item) === 'Advanced',
                       'level-intermediate': getLevel(item) === 'Intermediate',
                       'level-beginner': getLevel(item) === 'Beginner'
@@ -75,14 +67,16 @@
                 {{ getLevel(item) }}
               </span>
 
-              <mat-icon class="favorite-icon">favorite</mat-icon>
+              <mat-icon class="favorite-icon"
+                (click)="removeFavorite(item); $event.stopPropagation()">favorite</mat-icon>
             </div>
           </div>
         </div>
 
-        <div *ngIf="!isLoading && currentFavorites.length === 0" class="no-results">
-          <p>No favorite {{ selectedCategory | lowercase }} found.</p>
-        </div>
+        @if(!isLoading && currentFavorites.length === 0){
+        <br><br><br>
+        <app-no-results></app-no-results>
+        }
       </div>
     </div>
   </div>

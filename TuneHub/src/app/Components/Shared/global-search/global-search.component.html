@@ -1,13 +1,11 @@
-<div class="search-results-container">
-
-    <div *ngIf="loading" class="loading">Loading...</div>
+<div class="search-results-container" (click)="$event.stopPropagation()">
 
     @if(results){
 
-    <h4 class="results-count">{{ resLength }} results found</h4>
+    <h4 class="results-count">{{ resLength }} results found </h4>
 
     <div *ngIf="results.posts.length" class="section">
-        <h4 class="section-title">Posts ({{ results.posts.length }})</h4>
+        <h4 class="section-title"><mat-icon>description</mat-icon> Posts ({{ results.posts.length }})</h4>
 
         <div *ngFor="let post of results.posts" class="result-item row post-item">
             <div class="left-icon">
@@ -38,15 +36,15 @@
     </div>
 
     <div *ngIf="results.sheetMusic.length" class="section">
-        <h4 class="section-title">Sheet Music ({{ results.sheetMusic.length }})</h4>
+        <h4 class="section-title"><mat-icon>description</mat-icon> Sheets Music ({{ results.sheetMusic.length }})</h4>
 
-        <div *ngFor="let sheet of results.sheetMusic" class="result-item row sheet-item">
+        <div *ngFor="let sheet of results.sheetMusic" class="result-item row sheet-item"
+            (click)="goToSheetMusic(sheet)">
             <div class="avatar cover-avatar">
                 <img [src]="fileUtilsService.getImageUrl(sheet.imageCoverName)" alt="cover">
             </div>
 
             <div class="main-content">
-
                 <div class="title-row">
                     <div class="title" [innerHTML]="sheet.title | highlight: query"></div>
                     <div class="right-tag">
@@ -67,23 +65,22 @@
 
     <!-- Musicians -->
     <div *ngIf="results.musicians.length" class="section">
-        <h4 class="section-title">Musicians ({{ results.musicians.length }})</h4>
+        <h4 class="section-title"><mat-icon>people</mat-icon> Musicians ({{ results.musicians.length }})</h4>
 
-        <div *ngFor="let musician of results.musicians" class="result-item row musician-item">
-            <div class="avatar profile-avatar" (click)="navigationService.goToProfile(musician.profile.id)">
+        <div *ngFor="let musician of results.musicians" class="result-item row musician-item"
+            (click)="goToProfile(musician.profile.id)">
+            <div class="avatar profile-avatar">
                 <img [src]="fileUtilsService.getImageUrl(musician.profile.imageProfilePath)" alt="profile">
-                <span class="active-dot"></span>
             </div>
 
             <div class="main-content">
                 <div class="title-row column">
-                    <div class="title clickable" (click)="navigationService.goToProfile(musician.profile.id)"
-                        [innerHTML]="musician.profile.name | highlight: query">
+                    <div class="title clickable" [innerHTML]="musician.profile.name | highlight: query">
                     </div>
 
                     <div class="location">
                         <span class="city">{{ musician.city }}</span>
-                        <span *ngIf="musician.city && musician.country" class="comma">,</span>
+                        <span *ngIf="musician.city && musician.country" class="comma">, </span>
                         <span class="country">{{ musician.country }}</span>
                     </div>
                 </div>
@@ -95,22 +92,22 @@
 
     <!-- Teachers -->
     <div *ngIf="results.teachers.length" class="section">
-        <h4 class="section-title">Teachers ({{ results.teachers.length }})</h4>
+        <h4 class="section-title"><mat-icon>people</mat-icon> Teachers ({{ results.teachers.length }})</h4>
 
-        <div *ngFor="let teacher of results.teachers" class="result-item row teacher-item">
-            <div class="avatar profile-avatar" (click)="navigationService.goToProfile(teacher.profile.id)">
+        <div *ngFor="let teacher of results.teachers" class="result-item row teacher-item"
+            (click)="goToProfile(teacher.profile.id)">
+            <div class="avatar profile-avatar">
                 <img [src]="fileUtilsService.getImageUrl(teacher.profile.imageProfilePath)" alt="profile">
             </div>
 
             <div class="main-content">
                 <div class="title-row column">
-                    <div class="title clickable" (click)="navigationService.goToProfile(teacher.profile.id)"
-                        [innerHTML]="teacher.profile.name | highlight: query">
+                    <div class="title clickable" [innerHTML]="teacher.profile.name | highlight: query">
                     </div>
 
                     <div class="location">
                         <span class="city">{{ teacher.city }}</span>
-                        <span *ngIf="teacher.city && teacher.country" class="comma">,</span>
+                        <span *ngIf="teacher.city && teacher.country" class="comma">, </span>
                         <span class="country">{{ teacher.country }}</span>
                     </div>
                 </div>
@@ -120,15 +117,36 @@
         </div>
     </div>
 
-    <!-- </div> -->
-    }@else {
-    <div class="no-results-container">
-        <div class="icon-circle">
-            <i class="material-icons">search</i>
-        </div>
-        <div class="message-text">
-            No results found
+    <!-- PAGE -->
+    <div *ngIf="filteredPages.length" class="section">
+        <h4 class="section-title">
+            <mat-icon>travel_explore</mat-icon>
+            Pages ({{ filteredPages.length }})
+        </h4>
+
+        <div *ngFor="let page of filteredPages" class="result-item row page-item" (click)="goToPage(page)">
+            <div class="left-icon">
+                <mat-icon>public</mat-icon>
+            </div>
+
+            <div class="main-content">
+                <div class="title-row">
+                    <div class="title clickable" [innerHTML]="page.title | highlight: query"></div>
+                </div>
+
+                <div class="subline" [innerHTML]="page.keywords.join(', ')| highlight: query">
+                </div>
+            </div>
+
+            <div class="right-tag">
+                <span class="search-tag page">PAGE</span>
+            </div>
         </div>
     </div>
+
+    }@else {
+    <br><br>
+    <app-no-results></app-no-results>
+    <br><br>
     }
 </div>

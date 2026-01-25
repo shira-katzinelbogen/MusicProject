@@ -1,287 +1,272 @@
-/* 🔑 פוטר – מיקום מדויק כמו בתמונה: לוגו שמאל, טורים ימין, סוציאל שמאל תחתון מתחת לטורים, 2 כפתורים מרכז, hover סגול עם הזזה ימנית */
+/* Footer Base */
 .tunehub-footer {
-  background-color: #1D2B3C !important; /* רקע כהה */
-  color: #ffffff !important; /* טקסט לבן */
-  width: 100% !important; /* 🔑 חדש: רוחב מלא לעמוד, כמו בתמונה */
-  font-family: 'Roboto', sans-serif !important; /* גופן */
-  font-size: 0.85rem !important; /* גודל אותיות */
-  line-height: 1.4 !important; /* מרווח שורות */
-  margin-top: auto !important; /* דוחף לתחתית */
+  background-color: #1D2B3C;
+  color: #ffffff;
+  width: 100%;
+  font-family: 'Roboto', sans-serif;
+  font-size: 0.85rem;
+  line-height: 1.4;
+  margin-top: auto; 
 }
 
+/* Main Section */
 .footer-main {
-  display: flex !important; /* 🔑 חדש: לוגו שמאל + טורים ימין, מיקום מדויק, ללא חפיפה */
-  justify-content: space-between !important; /* שמאל (לוגו) + ימין (טורים) */
-  align-items: flex-start !important; /* מיישר למעלה */
-  padding: 20px 0 0 !important; /* 🔑 חדש: padding עליון בלבד, ללא צדדי – מאפשר הצמדה מלאה */
-  max-width: 1200px !important; /* רוחב מקס */
-  margin: 0 auto !important; /* מרכוז */
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  padding: 20px 0 0;
+  max-width: 1200px;
+  margin: 0 auto;
 }
 
+/* Logo Section */
 .footer-logo-section {
-  flex: 0 0 35% !important; /* 🔑 חדש: הקטנה ל-35% כדי להצמיד יותר שמאלה, טורים 65% */
-  display: flex !important; /* לוגו + טקסט – מיקום שמאלי */
-  align-items: flex-start !important; /* מיישר למעלה */
-  gap: 8px !important; /* מרווח בין לוגו לטקסט */
-  padding-left: 0 !important; /* 🔑 חדש: הצמדה מלאה שמאלה (ללא פדינג), כדי להדביק לקצה */
+  flex: 0 0 35%;
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  padding-left: 0;
 }
 
 .footer-logo-icon {
-  font-size: 40px !important; /* 🔑 חדש: גודל גדול יותר (מ-32px ל-40px), mat-icon מלא */
-  width: 50px !important; /* ריבוע מושלם */
-  height: 50px !important;
-  color: #A03FFB !important; /* סגול, כמו בתמונה */
-  flex-shrink: 0 !important; /* לא מתכווץ */
+  font-size: 40px;
+  width: 50px;
+  height: 50px;
+  color: #A03FFB;
+  flex-shrink: 0;
 }
 
 .footer-tagline {
-  max-width: 280px !important; /* 🔑 חדש: רוחב מעט קטן יותר (מ-300px ל-280px) כדי להתאים להצמדה */
+  max-width: 280px;
 }
 
 .footer-tagline h1 {
-  font-size: 1.3rem !important; /* 🔑 חדש: גודל גדול יותר (מ-1.1rem ל-1.3rem) */
-  font-weight: 700 !important; /* כבד */
-  margin: 0 0 4px 0 !important; /* מרווח */
-  color: #ffffff !important; /* לבן */
+  font-size: 1.3rem;
+  font-weight: 700;
+  margin: 0 0 4px 0;
+  color: #ffffff;
 }
 
 .footer-tagline p:first-of-type {
-  font-size: 1rem !important; /* 🔑 חדש: גודל גדול יותר (מ-0.9rem ל-1rem) */
-  color: #A03FFB !important; /* סגול, כמו בתמונה */
-  margin: 0 0 8px 0 !important; /* מרווח */
+  font-size: 1rem;
+  color: #A03FFB;
+  margin: 0 0 8px 0;
 }
 
 .footer-tagline p:last-of-type {
-  font-size: 0.85rem !important; /* 🔑 חדש: גודל גדול יותר (מ-0.8rem ל-0.85rem) */
-  color: #a0a4a9 !important; /* אפור */
-  margin: 0 !important;
-  line-height: 1.3 !important; /* מרווח שורות */
+  font-size: 0.85rem;
+  color: #a0a4a9;
+  margin: 0;
+  line-height: 1.3;
 }
 
+/* Columns Section */
 .footer-columns {
-  flex: 0 0 65% !important; /* 🔑 חדש: הגדלה ל-65% כדי להצמיד יותר ימינה */
-  display: flex !important; /* 4 עמודות */
-  justify-content: flex-end !important; /* 🔑 הצמדה ימנית מלאה, עם רווחים פנימיים */
-  padding-right: 0 !important; /* 🔑 הצמדה מלאה ימינה (ללא פדינג) */
-  padding-left: 0 !important; /* 🔑 ללא פדינג שמאלי, space-between של main מטפל ברווח */
+  flex: 0 0 65%;
+  display: flex;
+  justify-content: flex-end;
+  padding: 0;
 }
 
 .footer-column {
-  flex: 1 !important; /* עמודות שוות */
-  margin-right: 20px !important; /* מרווח בין עמודות – נשמר */
+  flex: 1;
+  margin-right: 20px;
 }
 
 .footer-column:last-child {
-  margin-right: 0 !important; /* 🔑 הסרת margin מהטור האחרון – Marketplace צמוד ימינה */
+  margin-right: 0;
 }
 
 .footer-column h4 {
-  font-size: 0.9rem !important; /* גודל כותרת */
-  font-weight: 600 !important; /* כבד */
-  color: #ffffff !important; /* לבן */
-  margin-bottom: 16px !important; /* מרווח */
-  text-transform: uppercase !important; /* גדול */
-  letter-spacing: 0.5px !important; /* ריווח */
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #ffffff;
+  margin-bottom: 16px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
 }
 
 .footer-column ul {
-  list-style: none !important; /* ללא נקודות */
-  padding: 0 !important; /* ללא padding */
-  margin: 0 !important;
+  list-style: none;
+  padding: 0;
+  margin: 0;
 }
 
 .footer-column li {
-  margin-bottom: 8px !important; /* מרווח בין פריטים */
+  margin-bottom: 8px;
 }
 
 .footer-column a {
-  color: #a0a4a9 !important; /* אפור */
-  text-decoration: none !important; /* ללא קו */
-  font-size: 0.8rem !important; /* גודל */
-  transition: all 0.2s ease-in-out !important; /* מעבר */
-  display: flex !important; /* flex לנקודה */
-  align-items: center !important; /* מיישר */
+  color: #a0a4a9;
+  text-decoration: none;
+  font-size: 0.8rem;
+  display: flex;
+  align-items: center;
+  transition: all 0.2s ease-in-out;
 }
 
 .footer-column a::before {
-  content: '•' !important; /* נקודה */
-  color: #a0a4a9 !important; /* אפור */
-  margin-right: 8px !important; /* מרווח */
-  font-size: 1rem !important; /* גודל נקודה */
+  content: '•';
+  color: #a0a4a9;
+  margin-right: 8px;
+  font-size: 1rem;
 }
 
 .footer-column a:hover {
-  color: #A03FFB !important; /* סגול בהובר, כמו בתמונה */
-  transform: translateX(4px) !important; /* 🔑 חדש: הזזה ימנית קלה, כמו בתמונה */
+  color: #A03FFB;
+  transform: translateX(4px);
 }
 
 .footer-column a:hover::before {
-  color: #A03FFB !important; /* נקודה סגולה */
+  color: #A03FFB;
 }
 
+/* Social Icons */
 .footer-social {
-  display: flex !important; /* 🔑 חדש: סוציאל שמאל תחתון, מתחת לטורים */
-  justify-content: flex-start !important; /* שמאל */
-  max-width: 1200px !important; /* רוחב מקס */
-  margin: 0 auto 0 !important; /* מרכוז */
-  padding: 0 20px 20px !important; /* פדינג */
+  display: flex;
+  justify-content: flex-start;
+  max-width: 1200px;
+  margin: 0 auto 0;
+  padding: 0 20px 20px;
 }
 
 .social-icons {
-  display: flex !important; /* אייקונים שמאליים */
-  gap: 12px !important; /* מרווח */
-  align-items: center !important; /* מיישר */
+  display: flex;
+  gap: 12px;
+  align-items: center;
 }
 
 .social-icons a {
-  display: flex !important; /* flex לאייקון mat-icon */
-  align-items: center !important;
-  justify-content: center !important;
-  width: 36px !important; /* 🔑 חדש: גודל מעט גדול יותר (מ-32px ל-36px), ריבוע מושלם */
-  height: 36px !important;
-  border-radius: 50% !important; /* עגול */
-  background-color: rgba(255, 255, 255, 0.1) !important; /* שקוף */
-  transition: all 0.2s ease-in-out !important; /* מעבר */
-  text-decoration: none !important; /* ללא קו */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background-color: rgba(255, 255, 255, 0.1);
+  transition: all 0.2s ease-in-out;
 }
 
 .social-icons mat-icon {
-  font-size: 20px !important; /* 🔑 חדש: גודל גדול יותר (מ-18px ל-20px), mat-icon מלא */
-  width: 20px !important;
-  height: 20px !important;
-  color: #a0a4a9 !important; /* אפור בהתחלה, כמו בתמונה */
+  font-size: 20px;
+  width: 20px;
+  height: 20px;
+  color: #a0a4a9;
 }
 
 .social-icons a:hover mat-icon {
-  color: #ffffff !important; /* לבן בהובר */
+  color: #ffffff;
 }
 
 .social-icons a:hover {
-  background-color: #A03FFB !important; /* סגול בהובר */
-  transform: translateX(2px) !important; /* 🔑 חדש: הזזה ימנית קלה, כמו בתמונה */
+  background-color: #A03FFB;
+  transform: translateX(2px);
 }
 
+/* Download Section */
 .footer-download {
-  display: flex !important; /* 2 חלקים: טקסט + כפתורים */
-  justify-content: space-between !important; /* מרווח, ללא חפיפה */
-  align-items: center !important; /* מיישר */
-  max-width: 1200px !important; /* רוחב מקס */
-  margin: 0 auto !important; /* מרכוז */
-  padding: 0 20px 20px !important; /* פדינג */
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px 20px;
 }
 
 .download-text {
-  flex: 1 !important; /* תופס חלק שמאלי */
-  text-align: left !important; /* שמאל */
+  flex: 1;
+  text-align: left;
 }
 
 .download-text h4 {
-  font-size: 1rem !important; /* גודל כותרת */
-  color: #ffffff !important; /* לבן */
-  margin: 0 !important; /* ללא מרווח */
+  font-size: 1rem;
+  color: #ffffff;
+  margin: 0;
 }
 
 .download-buttons {
-  display: flex !important; /* 2 כפתורים */
-  gap: 16px !important; /* מרווח */
+  display: flex;
+  gap: 16px;
 }
 
 .download-btn {
-  display: flex !important; /* flex */
-  align-items: center !important; /* מיישר */
-  padding: 12px 20px !important; /* פדינג */
-  border-radius: 8px !important; /* שוליים */
-  text-decoration: none !important; /* ללא קו */
-  font-size: 0.85rem !important; /* גודל */
-  color: #ffffff !important; /* לבן */
-  transition: all 0.2s ease-in-out !important; /* מעבר */
-  min-width: 140px !important; /* רוחב מינימלי */
-}
-
-.app-store {
-  background-color: #000000 !important; /* שחור */
-}
-
-.google-play {
-  background-color: #00C853 !important; /* ירוק */
-}
-
-.download-btn mat-icon {
-  font-size: 22px !important; /* 🔑 חדש: גודל גדול יותר (מ-20px ל-22px), mat-icon מלא */
-  width: 22px !important;
-  height: 22px !important;
-  margin-right: 8px !important; /* מרווח */
-  color: #ffffff !important; /* לבן */
+  display: flex;
+  align-items: center;
+  padding: 12px 20px;
+  border-radius: 8px;
+  text-decoration: none;
+  font-size: 0.85rem;
+  color: #ffffff;
+  transition: all 0.2s ease-in-out;
+  min-width: 140px;
 }
 
 .download-btn:hover {
-  background-color: #A03FFB !important; /* סגול בהובר, כמו בתמונה */
-  transform: translateX(4px) !important; /* 🔑 חדש: הזזה ימנית קלה, כמו בתמונה */
+  background-color: #A03FFB;
+  transform: translateX(4px);
 }
 
-.download-btn:hover mat-icon {
-  color: #ffffff !important; /* לבן בהובר */
+.download-btn mat-icon {
+  font-size: 22px;
+  width: 22px;
+  height: 22px;
+  margin-right: 8px;
+  color: #ffffff;
 }
 
+/* Footer Bottom */
 .footer-bottom {
-  text-align: center !important; /* מרכוז */
-  padding: 16px 20px !important; /* פדינג */
-  border-top: 1px solid rgba(255, 255, 255, 0.1) !important; /* קו עליון */
-  font-size: 0.75rem !important; /* גודל */
-  color: #a0a4a9 !important; /* אפור */
+  text-align: center;
+  padding: 16px 20px;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  font-size: 0.75rem;
+  color: #a0a4a9;
 }
 
 .footer-bottom p {
-  margin: 0 !important; /* ללא מרווח */
-  line-height: 1.2 !important; /* מרווח שורות */
+  margin: 0;
+  line-height: 1.2;
 }
 
-/* 🔑 מובייל – עמודות אנכיות, ללא חפיפה */
+/* Mobile */
 @media (max-width: 768px) {
-  .footer-top {
-    flex-direction: column !important; /* אנכי */
-    gap: 16px !important;
-    text-align: center !important; /* מרכוז */
+  .footer-main {
+    flex-direction: column;
+    gap: 20px;
+    padding: 20px 20px 0;
   }
 
   .footer-logo-section {
-    flex-direction: column !important; /* אנכי */
-    text-align: center !important;
-    padding-left: 0 !important; /* הצמדה שמאלה גם במובייל */
-    flex: none !important; /* ללא flex בשורה */
-  }
-
-  .footer-main {
-    flex-direction: column !important; /* לוגו + טורים אנכיים */
-    gap: 20px !important; /* מרווח */
-    padding: 20px 20px 0 !important; /* חזרה לפדינג צדדי במובייל למרכוז */
+    flex-direction: column;
+    text-align: center;
+    padding-left: 0;
+    flex: none;
   }
 
   .footer-columns {
-    flex-direction: column !important; /* 4 עמודות אנכיות */
-    gap: 24px !important; /* מרווח */
-    justify-content: flex-start !important; /* start במובייל */
-    padding-left: 0 !important; /* ללא פדינג */
-    padding-right: 0 !important; /* ללא פדינג */
-    flex: none !important; /* ללא flex בשורה */
-  }
-
-  .footer-column:last-child {
-    margin-right: 0 !important; /* נשמר */
+    flex-direction: column;
+    gap: 24px;
+    justify-content: flex-start;
+    padding: 0;
+    flex: none;
   }
 
   .footer-social {
-    justify-content: center !important; /* מרכוז */
+    justify-content: center;
   }
 
   .footer-download {
-    flex-direction: column !important; /* 2 חלקים אנכיים */
-    gap: 12px !important;
-    text-align: center !important; /* מרכוז */
+    flex-direction: column;
+    gap: 12px;
+    text-align: center;
   }
 
   .download-buttons {
-    justify-content: center !important; /* מרכוז */
+    justify-content: center;
   }
 }
 
+/* Global pointer for links */
+a {
+  cursor: pointer;
+}

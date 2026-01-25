@@ -1,44 +1,55 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatIconModule } from '@angular/material/icon';
-import { Favorite, FavoriteType } from '../../../Models/favorite';
+
 import { FavoritesService } from '../../../Services/favorites.service';
 import { FormsModule } from '@angular/forms';
-import { map } from 'rxjs'; 
-import { RouterModule } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 import { InteractionService } from '../../../Services/interaction.service';
-
+import { UserStateService } from '../../../Services/user-state.service';
+import { UsersProfileDTO } from '../../../Models/Users';
+import { HighlightPipe } from "../../../Pipes/highlight.pipe";
+import { NoResultsComponent } from "../../Shared/no-results/no-results.component";
+import { Favorite, FavoriteType } from '../../../Models/Favorite';
 
 type DisplayCategory = 'Post' | 'Sheet Music';
 
 @Component({
   selector: 'app-favorites',
   standalone: true,
-  imports: [CommonModule, MatIconModule, FormsModule, RouterModule],
+  imports: [CommonModule, MatIconModule, FormsModule, RouterModule, HighlightPipe, NoResultsComponent],
   templateUrl: './favorites.component.html',
   styleUrl: './favorites.component.css'
 })
 export class FavoritesComponent implements OnInit {
 
-  @Input() isOpen: boolean | null = false;
 
   readonly categories: DisplayCategory[] = ['Post', 'Sheet Music'];
 
   selectedCategory: DisplayCategory = 'Post';
   currentFavorites: Favorite[] = [];
+  postCount = 0;
+  sheetCount = 0;
   isLoading: boolean = false;
   searchText: string = '';
+  currentUser!: UsersProfileDTO | null;
 
-  constructor(private InteractionService: InteractionService) { }
+  constructor(
+    private _interactionService: InteractionService,
+    private _userStateService: UserStateService,
+    public favoritesService: FavoritesService,
+    private router: Router) { }
 
   ngOnInit(): void {
+    this._userStateService.currentUser$.subscribe(user => {
+      this.currentUser = user;
+    });
+
     this.loadFavorites();
   }
+
   getUsername(item: Favorite): string {
-    if (item.details && item.details.username) {
-      return item.details.username;
-    }
-    return '';
+    return this.currentUser?.name ?? '';
   }
 
   selectCategory(category: DisplayCategory): void {
@@ -46,18 +57,12 @@ export class FavoritesComponent implements OnInit {
     this.loadFavorites();
   }
 
-  getCategoryIcon(category: string): string {
+  getCategoryIcon(category: DisplayCategory): string {
     switch (category) {
+      case 'Post':
+        return 'library_music';
       case 'Sheet Music':
         return 'description';
-      case 'Posts':
-        return 'library_music';
-      case 'Musicians':
-        return 'people';
-      case 'Challenges':
-        return 'emoji_events';
-      default:
-        return 'category';
     }
   }
 
@@ -66,16 +71,15 @@ export class FavoritesComponent implements OnInit {
     this.loadFavorites();
   }
 
-  private getTargetTypeForServer(displayCategory: DisplayCategory): string {
+  private getTargetTypeForServer(displayCategory: DisplayCategory): FavoriteType {
     switch (displayCategory) {
       case 'Post':
         return 'POST';
       case 'Sheet Music':
         return 'SHEET_MUSIC';
-      default:
-        return '';
     }
   }
+
 
   loadFavorites(): void {
     this.isLoading = true;
@@ -87,10 +91,15 @@ export class FavoritesComponent implements OnInit {
       return;
     }
 
-    this.InteractionService.getFavoritesByType(serverType as FavoriteType, this.searchText).subscribe({
+    this._interactionService.getFavoritesByType(serverType as FavoriteType, this.searchText).subscribe({
       next: (data) => {
         this.currentFavorites = data;
         this.isLoading = false;
+        if (serverType === "POST") {
+          this.postCount = data.length;
+        } else {
+          this.sheetCount = data.length;
+        }
       },
       error: (err) => {
         this.isLoading = false;
@@ -109,11 +118,7 @@ export class FavoritesComponent implements OnInit {
       return item.details.title;
     }
 
-    if (item.targetType === 'USER' && item.details && item.details.name) {
-      return item.details.name;
-    }
-
-    return `[${item.targetType}] ID: ${item.targetId}`; 
+    return `[${item.targetType}] ID: ${item.targetId}`;
   }
 
   getPostContentSnippet(item: Favorite): string {
@@ -126,6 +131,7 @@ export class FavoritesComponent implements OnInit {
     }
     return '';
   }
+  
   getPostLink(item: Favorite): string {
     if (item.targetType === 'POST' && item.details && item.details.id) {
       return `/posts/${item.details.id}`;
@@ -147,5 +153,42 @@ export class FavoritesComponent implements OnInit {
     return '';
   }
 
+  removeFavorite(item: Favorite) {
+    if (!item.targetId) return;
 
+    this._interactionService.removeFavorite(item.targetType, item.targetId).subscribe({
+      next: () => {
+        this.currentFavorites = this.currentFavorites.filter(fav => fav !== item);
+        if (item.targetType === "POST") {
+          this.postCount -= 1;
+        } else {
+          this.sheetCount -= 1;
+        }
+      },
+      error: (err) => {
+        console.error('Error removing favorite:', err);
+      }
+    });
+  }
+
+  goToItem(item: Favorite) {
+    if (!item.targetId) return;
+    this.favoritesService.close();
+    const singleItemList = [item];
+    switch (item.targetType) {
+      case 'POST':
+        this.router.navigate(['/posts'], { state: { items: singleItemList } });
+        break;
+      case 'SHEET_MUSIC':
+        this.router.navigate([`/sheet-music/${item.targetId}`], { state: { items: singleItemList } });
+        break;
+    }
+  }
+
+  count(cat: string): number {
+    if (cat === "Post") {
+      return this.postCount;
+    }
+    return this.sheetCount;
+  }
 }

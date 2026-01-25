@@ -1,9 +1,7 @@
-<div class="music-card">
+<div *ngIf="sheet" class="music-card">
     <div class="sheet-cover-header">
         <div class="cover-image">
             <img [src]="getImageCoverPath(sheet)" class="file-preview-iframe" />
-            <iframe *ngIf="sheet.filePath" [src]="getSafeMediaUrl(sheet.filePath)" class="file-preview-iframe"
-                title="תצוגה מקדימה של {{ sheet.name }}" allowfullscreen></iframe>
         </div>
     </div>
 
@@ -52,31 +50,34 @@
 
 
                 <span class="detail-tag"><mat-icon>music_note</mat-icon>{{ sheet.scale }}</span>
-               
-                <span class="detail-tag instrument-tag-wrapper">
-                    <ng-container *ngFor="let instrument of sheet.instruments; let last = last">
-                        <span class="instrument-tag">{{ instrument.name }}</span><span *ngIf="!last">, </span>
+
+                <span class="instrument-tags">
+                    <ng-container *ngFor="let instrument of sheet.instruments;">
+                        <span class="tag">{{ instrument.name }}</span>
                     </ng-container>
                 </span>
+
             </div>
         </div>
 
         <div class="stats-row">
-            <span class="stat-item"><mat-icon>download</mat-icon>{{ sheet.downloads }}</span>
+            <!-- <span class="stat-item"><mat-icon>download</mat-icon>{{ sheet.downloads }}</span> -->
             <span class="stat-item likes" (click)="toggleLike(sheet)">
                 <mat-icon style="color:#f0ff6c" [ngClass]="sheet.liked ? 'liked' : 'not-liked'">
                     {{ sheet.liked ? 'thumb_up' : 'thumb_up_off_alt' }}
                 </mat-icon>
-                <span class="like-count">{{ sheet.likes }}</span>
+                <span class="like-count">{{ sheet.likes || 0}}</span>
             </span>
+
             <span class="stat-item hearts" (click)="toggleFavorite(sheet)">
-                <mat-icon style="color:#f85e5e" [ngClass]="sheet.favorited ? 'liked' : 'not-liked'">
-                    {{ sheet.favorited ? 'favorite' : 'favorite_border' }}
+                <mat-icon style="color:#f85e5e" [ngClass]="sheet.favorite ? 'liked' : 'not-liked'">
+                    {{ sheet.favorite ? 'favorite' : 'favorite_border' }}
                 </mat-icon>
-                <span class="hearts-count">{{ sheet.hearts }}</span>
+                <span class="hearts-count">{{ sheet.hearts || 0}}</span>
             </span>
+
         </div>
 
-        <button class="button" (click)="goToSheetMusic(sheet)">VIEW</button>
+        <button class="button" (click)="goToSheetMusic(sheet)">View</button>
     </div>
 </div>

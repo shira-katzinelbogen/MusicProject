@@ -11,7 +11,6 @@ export class StorageService {
     this.isBrowser = isPlatformBrowser(platformId);
   }
 
-  // מקבל נתונים מ-sessionStorage
   getItem(key: string): string | null {
     if (this.isBrowser) {
       return sessionStorage.getItem(key);
@@ -19,7 +18,6 @@ export class StorageService {
     return null;
   }
 
-  // שומר נתונים ב-sessionStorage
   setItem(key: string, value: string): void {
     if (this.isBrowser) {
       sessionStorage.setItem(key, value);

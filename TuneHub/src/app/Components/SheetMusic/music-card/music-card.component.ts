@@ -1,15 +1,13 @@
 import { ChangeDetectorRef, Component, Input } from '@angular/core';
 import SheetMusic from '../../../Models/SheetMusic';
-import { Router, RouterLink } from '@angular/router';
-import { HighlightPipe } from '../../Shared/highlight/highlight.component';
+import { Router } from '@angular/router';
+import { HighlightPipe } from '../../../Pipes/highlight.pipe';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { MatIconModule } from '@angular/material/icon';
-import { SheetMusicService } from '../../../Services/sheetmusic.service';
 import { FileUtilsService } from '../../../Services/fileutils.service';
 import { NavigationService } from '../../../Services/navigation.service';
 import { UploadSheetMusicService } from '../../../Services/uploadsheetmusic.service';
-import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { InteractionService } from '../../../Services/interaction.service';
 
 @Component({
@@ -19,6 +17,7 @@ import { InteractionService } from '../../../Services/interaction.service';
   templateUrl: './music-card.component.html',
   styleUrl: './music-card.component.css'
 })
+
 export class MusicCardComponent {
   @Input() sheet!: SheetMusic;
   @Input() searchText: string | undefined;
@@ -29,31 +28,23 @@ export class MusicCardComponent {
     public navigationService: NavigationService,
     public uploadSheetMusicService: UploadSheetMusicService,
     private cdr: ChangeDetectorRef,
-    private domSanitizer: DomSanitizer,
     private _interactionService: InteractionService
   ) { }
 
-  getSafeMediaUrl(path: string): SafeResourceUrl {
-    const url = `http://localhost:8080/api/sheetMusic/documents/${path}`;
-    return this.domSanitizer.bypassSecurityTrustResourceUrl(url);
-  }
 
   goToSheetMusic(s: SheetMusic) {
     this.router.navigate(['/sheet-music', s.id]);
   }
 
   getImageCoverPath(sheet: SheetMusic) {
-    if (sheet.imageCoverName != null) {
       return this.fileUtilsService.getImageUrl(sheet.imageCoverName)
-    }
-    return 'assets/images/sheets_music.webp'
   }
 
   toggleLike(sheet: SheetMusic): void {
     if (!sheet.liked) {
       this._interactionService.addLike('SHEET_MUSIC', sheet.id!).subscribe({
         next: (res) => {
-          sheet.likes = res.count;
+         sheet.likes = (sheet.likes ?? 0) + 1;
           sheet.liked = true;
           this.cdr.detectChanges();
         },
@@ -62,7 +53,7 @@ export class MusicCardComponent {
     } else {
       this._interactionService.removeLike('SHEET_MUSIC', sheet.id!).subscribe({
         next: (res) => {
-          sheet.likes = res.count;
+        sheet.likes = (sheet.likes ?? 1) - 1;
           sheet.liked = false;
           this.cdr.detectChanges();
         },
@@ -71,12 +62,13 @@ export class MusicCardComponent {
     } console.log('like clicked!', sheet);
   }
 
+ 
   toggleFavorite(sheet: SheetMusic): void {
-    if (!sheet.favorited) {
+    if (!sheet.favorite) {
       this._interactionService.addFavorite('SHEET_MUSIC', sheet.id!).subscribe({
         next: (res) => {
           sheet.hearts = res.count;
-          sheet.favorited = true;
+          sheet.favorite = true;
           this.cdr.detectChanges();
         }
       });
@@ -84,7 +76,7 @@ export class MusicCardComponent {
       this._interactionService.removeFavorite('SHEET_MUSIC', sheet.id!).subscribe({
         next: (res) => {
           sheet.hearts = res.count;
-          sheet.favorited = false;
+          sheet.favorite = false;
           this.cdr.detectChanges();
         }
       });

@@ -4,75 +4,86 @@
   <div class="auth-modal-content" (click)="$event.stopPropagation()">
     <!-- Close Button -->
     <button class="close-button" (click)="closeWindow()">
-        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <line x1="18" y1="6" x2="6" y2="18"></line>
+        <line x1="6" y1="6" x2="18" y2="18"></line>
+      </svg>
     </button>
-    
+       <br><br>
     <div class="auth-container">
-      
+
       <div class="side-panel">
-        <div class="logo">
-          <svg fill="currentColor" viewBox="0 0 24 24" class="app-icon">
-            <path d="M12 2C6.477 2 2 6.477 2 12s4.477 10 10 10 10-4.477 10-10S17.523 2 12 2zm3.879 6.121c.234.234.354.54.354.854 0 .314-.12.62-.354.854l-5 5c-.47.47-1.23.47-1.7 0l-3-3c-.234-.234-.354-.54-.354-.854 0-.314.12-.62.354-.854.47-.47 1.23-.47 1.7 0L8 12.293l4.121-4.121c.47-.47 1.23-.47 1.7 0z"/>
-          </svg>
-          <div class="app-name">TuneHub</div>
-          <p class="slogan">Play. Share. Grow.</p>
-        </div>
-    
         <h2 class="welcome-text">
           {{ currentMode === 'login' ? 'Welcome Back!' : 'Join Our Community' }}
         </h2>
-        
+
         <p class="intro-text">
-          {{ currentMode === 'login' ? 
-            'Sign in to continue your musical journey and connect with musicians worldwide.' : 
-            'Create your account and become part of the world\'s fastest-growing music platform.' 
+          {{ currentMode === 'login' ?
+          'Sign in to continue your musical journey and connect with musicians worldwide.' :
+          'Create your account and become part of the world\'s fastest-growing music platform.'
           }}
         </p>
-    
+
         <ul class="features-list">
           <li>**Global Network** - Connect with 45K+ musicians worldwide</li>
           <li>**Professional Growth** - Access exclusive lessons and challenges</li>
           <li>**Secure Platform** - Your data is protected and encrypted</li>
         </ul>
-    
+
         <div class="terms-footer">
           By continuing, you agree to our <a href="#">**Terms**</a> and <a href="#">**Privacy Policy**</a>
         </div>
       </div>
-    
+
       <div class="form-panel">
         <div class="auth-tabs">
-          <button 
-            [class.active]="currentMode === 'login'" 
-            (click)="setMode('login')">
+          <button [class.active]="currentMode === 'login'" (click)="setMode('login')">
             Login
           </button>
-          <button 
-            [class.active]="currentMode === 'signup'" 
-            (click)="setMode('signup')">
+          <button [class.active]="currentMode === 'signup'" (click)="setMode('signup')">
             Sign Up
           </button>
         </div>
-    
+
         <form *ngIf="currentMode === 'login'" [formGroup]="loginForm" (ngSubmit)="onLoginSubmit()" class="auth-form">
-          
+          @if(serverError){
+          <span class="error-msg">
+            {{ serverError}}
+          </span>
+          }
           <div class="input-group">
-            <label for="login-name">Name</label>
-            <input id="login-name" type="text" formControlName="name" placeholder="Enter your user name">
+            <label for="login-name">Username</label>
+            <input id="login-name" type="text" formControlName="name" placeholder="Enter your username/email">
             <div *ngIf="loginForm.get('name')?.invalid && loginForm.get('name')?.touched" class="error-msg">
-              Username is required.
+              <span *ngIf="loginForm.get('name')?.errors?.['required']">Username is required.</span>
+              <span
+                *ngIf="loginForm.get('name')?.errors?.['minlength'] || loginForm.get('name')?.errors?.['maxlength']">Username/email
+                length is invalid (3-100 chars).</span>
             </div>
+            @if(usernameError){
+            <span class="error-msg">
+              {{ usernameError}}
+            </span>
+            }
           </div>
-        
-          
+
+
           <div class="input-group">
             <label for="login-password">Password</label>
             <input id="login-password" type="password" formControlName="password" placeholder="Enter your password">
             <div *ngIf="loginForm.get('password')?.invalid && loginForm.get('password')?.touched" class="error-msg">
-              Password is required.
+              <span *ngIf="loginForm.get('password')?.errors?.['required']">Password is required.</span>
+              <span *ngIf="loginForm.get('password')?.errors?.['minlength']">Password must be at least 8
+                characters.</span>
             </div>
+            @if(passwordError){
+            <span class="error-msg">
+              {{ passwordError}}
+            </span>
+            }
           </div>
-          
+
           <div class="options-row">
             <label class="checkbox-container">
               <input type="checkbox" formControlName="rememberMe">
@@ -80,88 +91,89 @@
             </label>
             <a href="#" class="forgot-link">Forgot password?</a>
           </div>
-          
+
           <button type="submit" [disabled]="loginForm.invalid" class="submit-btn login-btn">Sign In</button>
-    
-          
+
+
         </form>
-    
         <form *ngIf="currentMode === 'signup'" [formGroup]="signupForm" (ngSubmit)="onSignupSubmit()" class="auth-form">
-          
-<div class="upload-container">
-    <input
-        type="file"
-        id="profile-image-input"
-        accept="image/*"
-        (change)="onFileSelected($event)"
-        style="display: none"
-        #fileInput
-    />
-    
-    <button
-        type="button"
-        class="upload-photo"
-        (click)="fileInput.click()"
-    >
-        <img *ngIf="profilePreviewUrl" [src]="profilePreviewUrl" alt="Profile Preview" class="uploaded-image-preview"/>
-        
-        <ng-container *ngIf="!profilePreviewUrl">
-            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="upload-icon"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" y1="3" x2="12" y2="15"></line></svg>
-            <span>{{ selectedFile ? (selectedFile.name + ' | Change') : 'Upload Photo' }}</span>
-        </ng-container>
-    </button>
-</div>          
+
+          <div class="upload-container">
+            <input type="file" id="profile-image-input" accept="image/*" (change)="onFileSelected($event)"
+              style="display: none" #fileInput />
+
+            <button type="button" class="upload-photo" (click)="fileInput.click()">
+              <img *ngIf="profilePreviewUrl" [src]="profilePreviewUrl" alt="Profile Preview"
+                class="uploaded-image-preview" />
+
+              <ng-container *ngIf="!profilePreviewUrl">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                  stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                  class="upload-icon">
+                  <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                  <polyline points="17 8 12 3 7 8"></polyline>
+                  <line x1="12" y1="3" x2="12" y2="15"></line>
+                </svg>
+                <span>{{ selectedFile ? (selectedFile.name + ' | Change') : 'Upload Photo' }}</span>
+              </ng-container>
+            </button>
+          </div>
           <div class="input-group">
             <label for="signup-name">Full Name</label>
             <input id="signup-name" type="text" formControlName="fullName" placeholder="John Doe">
             <div *ngIf="signupForm.get('fullName')?.invalid && signupForm.get('fullName')?.touched" class="error-msg">
-              Full name is required.
+              <span *ngIf="signupForm.get('fullName')?.errors?.['required']">Name is required.</span>
+              <span
+                *ngIf="signupForm.get('fullName')?.errors?.['minlength'] || signupForm.get('fullName')?.errors?.['maxlength']">Name
+                must be between 3 and 50 characters.</span>
             </div>
+
+            @if(signupErrorMessage){
+            <span class="error-msg">
+              {{ signupErrorMessage}}
+            </span>
+            }
           </div>
-    
+
           <div class="input-group">
             <label for="signup-email">Email Address</label>
             <input id="signup-email" type="email" formControlName="email" placeholder="your.email@example.com">
             <div *ngIf="signupForm.get('email')?.invalid && signupForm.get('email')?.touched" class="error-msg">
-              A valid email address is required.
+              <span *ngIf="signupForm.get('email')?.errors?.['required']">Email is required.</span>
+              <span *ngIf="signupForm.get('email')?.errors?.['email']">Email must be a valid format.</span>
+              <span *ngIf="signupForm.get('email')?.errors?.['maxlength']">Email cannot exceed 100 characters.</span>
             </div>
           </div>
 
-          <div class="form-row-group">
-            <div class="input-group password-field">
-              <label for="signup-password">Password</label>
-              <input id="signup-password" type="password" formControlName="password" placeholder="8+ characters">
-              <div *ngIf="signupForm.get('password')?.invalid && signupForm.get('password')?.touched" class="error-msg">
-                Password must be at least 8 characters.
-              </div>
-            </div>
-            
-            <div class="input-group password-field">
-              <label for="signup-confirm">Confirm Password</label>
-              <input id="signup-confirm" type="password" formControlName="confirmPassword" placeholder="Repeat pass">
-              <div *ngIf="signupForm.get('confirmPassword')?.invalid && signupForm.get('confirmPassword')?.touched" class="error-msg">
-                Password confirmation does not match.
-              </div>
+          <div class="input-group password-field">
+            <label for="signup-password">Password</label>
+            <input id="signup-password" type="password" formControlName="password" placeholder="8+ characters">
+            <div *ngIf="signupForm.get('password')?.invalid && signupForm.get('password')?.touched" class="error-msg">
+              <span *ngIf="signupForm.get('password')?.errors?.['required']">Password is required.</span>
+              <span *ngIf="signupForm.get('password')?.errors?.['minlength']">Password must be at least 8 characters
+                long.</span>
             </div>
           </div>
-          
-          <div *ngIf="signupForm.errors?.['mismatch'] && signupForm.get('confirmPassword')?.touched" class="error-msg full-width-error">Passwords do not match.</div>
 
-          
+          <!-- <div class="input-group password-field">
+            <label for="signup-confirm">Confirm Password</label>
+            <input id="signup-confirm" type="password" formControlName="confirmPassword" placeholder="Repeat password">
+            <div *ngIf="signupForm.errors?.['mismatch'] && signupForm.get('confirmPassword')?.touched"
+              class="error-msg">
+              Password confirmation does not match.
+            </div>
+          </div> -->
+
           <label class="checkbox-container terms-agree">
             <input type="checkbox" formControlName="agreeToTerms">
-            I agree to the <a href="#">**Terms of Service**</a> and <a href="#">**Privacy Policy**</a>
+            I agree to the <a href="#">Terms of Service</a> and <a href="#">Privacy Policy</a>
           </label>
-          <div *ngIf="signupForm.get('agreeToTerms')?.errors?.['required'] && signupForm.get('agreeToTerms')?.touched" class="error-msg">You must agree to the terms.</div>
-          
-          <button type="submit" [disabled]="signupForm.invalid" class="submit-btn signup-btn">Create Account</button>
-    
-          <div class="social-divider">or sign up with</div>
-    
-          <div class="social-login">
-            <button type="button" class="social-btn">G Google</button>
-            <button type="button" class="social-btn">git GitHub</button>
+          <div *ngIf="signupForm.get('agreeToTerms')?.errors?.['required'] && signupForm.get('agreeToTerms')?.touched"
+            class="error-msg">
+            You must agree to the terms.
           </div>
+
+          <button type="submit" [disabled]="signupForm.invalid" class="submit-btn signup-btn">Create Account</button>
         </form>
       </div>
     </div>

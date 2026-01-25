@@ -1,33 +1,37 @@
-import { Component, OnInit } from '@angular/core';
-import { MatIcon } from '@angular/material/icon';
-import { Router } from '@angular/router';
+import { Component } from '@angular/core';
+import {  MatIconModule } from '@angular/material/icon';
 import { UsersService } from '../../../Services/users.service';
+import { take } from 'rxjs';
+import { LoginwindowService } from '../../../Services/loginwindow.service';
 
 
 @Component({
   selector: 'app-home-page',
-  imports: [MatIcon],
+  imports: [MatIconModule],
   templateUrl: './home-page.component.html',
   styleUrl: './home-page.component.css'
 })
 
+
 export class HomePageComponent {
-  // activeUsersCount: number = 0;
+  activeUsersCount: number = 0;
 
-  // constructor(private usersService: UsersService, private router: Router) { }
+  constructor(
+    private _loginwindowService: LoginwindowService,
+    private _usersService: UsersService,
+  ) { }
 
-    constructor( private router: Router) { }
-  // ngOnInit(): void {
-  //   this.usersService.getActiveUsersCount().subscribe({
-  //     next: (count) => this.activeUsersCount = count,
-  //     error: (err) => console.error('Failed to load active users count', err)
-  //   });
-  // }
-  goToSignUp() {
-    this.router.navigate(['/signup']);
+  ngOnInit(): void {
+    this._usersService.getActiveUsersCount()
+      .pipe(take(1))
+      .subscribe({
+        next: count => this.activeUsersCount = count,
+        error: () => this.activeUsersCount = 0
+      });
   }
-  goToEditProfile() {
-    this.router.navigate(['/edit-profil-modal']);
+
+  goToLogInWindow() {
+    this._loginwindowService.open();
   }
 }
 

@@ -1,6 +1,101 @@
-<div class="upload-post-container">
+<!-- <div class="upload-post-container">
   <div class="post-card">
     <form (submit)="onSubmit()">
+
+      <div class="post-header">
+        <div class="user-avatar">UM</div>
+        <div class="user-info">
+          <div class="user-name">
+            Current User
+            <span class="verification-badge">✔</span>
+          </div>
+          <div class="post-meta">
+            <span>Creating a new post</span>
+          </div>
+        </div>
+        <div class="more-options">...</div>
+      </div>
+
+      <hr>
+
+      <div class="post-text">
+        <label for="title">Post Title:</label>
+        <input id="title" [(ngModel)]="postData.title" name="title" required placeholder="Enter a relevant title">
+      </div>
+
+      <div class="post-text">
+        <label for="content">Content:</label>
+        <textarea id="content" [(ngModel)]="postData.content" name="content" required
+          placeholder="Write your post content here"></textarea>
+      </div>
+
+      <hr>
+
+      <div class="media-inputs">
+        <h3>Add Media:</h3>
+
+        <div class="upload-zone" (click)="images.click()">
+          @if (imagePreviews.length > 0) {
+          <div class="image-previews-container">
+            @for (url of imagePreviews; track url) {
+            <img [src]="url" alt="Image preview" class="preview-image">
+            }
+          </div>
+          } @else {
+          <i class="fas fa-image"></i>
+          <p>Upload Images (Multiple)</p>
+          }
+          <input #images id="images" type="file" (change)="onFileChange($event, 'images')" multiple accept="image/*"
+            hidden>
+        </div>
+
+        <div class="upload-zone" (click)="audio.click()">
+          @if (audioPreviewUrl) {
+          <audio [src]="audioPreviewUrl" controls class="preview-audio"></audio>
+          } @else {
+          <i class="fas fa-music"></i>
+          <p>Upload Audio (Single)</p>
+          }
+          <input #audio id="audio" type="file" (change)="onFileChange($event, 'audio')" accept="audio/*" hidden>
+        </div>
+
+        <div class="upload-zone" (click)="video.click()">
+          @if (videoPreviewUrl) {
+          <video [src]="videoPreviewUrl" controls class="preview-video"></video>
+          } @else {
+          <i class="fas fa-video"></i>
+          <p>Upload Video (Single)</p>
+          }
+          <input #video id="video" type="file" (change)="onFileChange($event, 'video')" accept="video/*" hidden>
+        </div>
+      </div>
+
+      <hr>
+
+      <div class="post-actions upload-footer">
+        <button type="submit" [disabled]="isUploading" class="publish-btn">
+          {{ isUploading ? 'Uploading...' : 'Publish Post' }}
+        </button>
+
+        <div class="upload-status">
+          @if (isUploading) {
+          <p>Uploading...</p>
+          }
+          @if (uploadSuccess) {
+          Upload successful! ID: {{uploadedPost?.id}}
+          }
+          @if (uploadError) {
+          <p class="error">Upload failed.</p>
+          }
+        </div>
+      </div>
+    </form>
+  </div>
+</div> -->
+
+<div class="upload-post-container">
+  <div class="post-card">
+    <form  (ngSubmit)="onSubmit()">
 
       <div class="post-header">
         <div class="user-avatar">UM</div>

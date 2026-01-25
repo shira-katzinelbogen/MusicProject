@@ -1,9 +1,9 @@
 .profile-avatar-container {
-  position: relative; /* מאפשר למיקום מוחלט בתוך המכולה */
-  width: 50px; /* גודל התמונה */
+  position: relative; 
+  width: 50px; 
   height: 50px;
-  border-radius: 50%; /* עיגול */
-  overflow: visible; /* חשוב - לא לחתוך את האלמנטים שמחוץ לגבול */
+  border-radius: 50%; 
+  overflow: visible; 
   cursor: pointer;
 }
 
@@ -13,9 +13,10 @@
   border-radius: 50%;
   object-fit: cover;
 }
+
 .online-indicator {
   position: absolute;
-  bottom: 2px; /* עכשיו התרוממה מעל התחתית */
+  bottom: 2px; 
   right: -2px;
   width: 12px;
   height: 12px;

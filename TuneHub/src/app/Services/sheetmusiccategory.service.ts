@@ -27,8 +27,4 @@ export class SheetMusicCategoryService {
     getSheetsMusicCategoryByName(name: String): Observable<SheetMusicCategory[]> {
         return this._httpClient.get<SheetMusicCategory[]>(`http://localhost:8080/api/sheetMusic/sheetsMusicCategoryByName/${name}`, { withCredentials: true })
     }
-
-    
-   
-
 }

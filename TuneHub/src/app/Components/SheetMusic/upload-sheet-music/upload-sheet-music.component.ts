@@ -6,8 +6,8 @@ import { SheetMusicService } from '../../../Services/sheetmusic.service';
 import { InstrumentsService } from '../../../Services/instrument.service';
 import { SheetMusicCategoryService } from '../../../Services/sheetmusiccategory.service';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
-import { SheetMusicResponseAI, InstrumentResponseDTO, SheetMusicCategoryResponseDTO } from '../../../Models/SheetMusicResponseAI';
-import SheetMusic, { DifficultyLevel } from '../../../Models/SheetMusic';
+import { SheetMusicResponseAI } from '../../../Models/SheetMusicResponseAI';
+import { DifficultyLevel } from '../../../Models/SheetMusic';
 import SheetMusicCategory from '../../../Models/SheetMusicCategory';
 import Instrument from '../../../Models/Instrument';
 import { MatIconModule } from '@angular/material/icon';
@@ -20,6 +20,7 @@ import { MatIconModule } from '@angular/material/icon';
   styleUrl: './upload-sheet-music.component.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
+
 export class UploadSheetMusicComponent implements OnInit {
 
   private fb = inject(FormBuilder);
@@ -70,16 +71,16 @@ export class UploadSheetMusicComponent implements OnInit {
 
 
   loadDependenciesAfterAI(): void {
-  this.categoryService.getSheetMusicCategories().subscribe({
-    next: data => this.categories = data,
-    error: err => console.error('Failed to load categories', err)
-  });
+    this.categoryService.getSheetMusicCategories().subscribe({
+      next: data => this.categories = data,
+      error: err => console.error('Failed to load categories', err)
+    });
 
-  this.instrumentService.getInstruments().subscribe({
-    next: data => this.instrumentsList = data,
-    error: err => console.error('Failed to load instruments', err)
-  });
-}
+    this.instrumentService.getInstruments().subscribe({
+      next: data => this.instrumentsList = data,
+      error: err => console.error('Failed to load instruments', err)
+    });
+  }
 
 
   disableAIFields(): void {
@@ -99,7 +100,7 @@ export class UploadSheetMusicComponent implements OnInit {
       this.handleFile(event.target.files[0]);
     }
   }
- 
+
   handleFile(file: File): void {
     if (file.type !== 'application/pdf') {
       this.uploadError = 'Only PDF files are supported.';
@@ -121,7 +122,7 @@ export class UploadSheetMusicComponent implements OnInit {
     this.uploadForm.get('file')?.markAsTouched();
   }
 
- 
+
 
   onFileDrop(event: DragEvent): void {
     event.preventDefault();
@@ -137,7 +138,7 @@ export class UploadSheetMusicComponent implements OnInit {
   }
 
 
-   onImageSelected(event: any): void {
+  onImageSelected(event: any): void {
     if (event.target.files && event.target.files[0]) {
       this.selectedImageCover = event.target.files[0];
       const reader = new FileReader();
@@ -157,10 +158,10 @@ export class UploadSheetMusicComponent implements OnInit {
       next: (aiResponse: SheetMusicResponseAI) => {
         this.isLoading = false;
         this.aiDataAnalyzed = true;
-            this.loadDependenciesAfterAI();
+        this.loadDependenciesAfterAI();
         this.enableAIFields();
         this.applyAIResponseToForm(aiResponse);
-        
+
       },
       error: (err) => {
         console.error('AI analysis failed:', err);
@@ -204,60 +205,57 @@ export class UploadSheetMusicComponent implements OnInit {
   }
 
   onSubmit(): void {
-  this.uploadError = null;
-  this.uploadForm.markAllAsTouched();
+    this.uploadError = null;
+    this.uploadForm.markAllAsTouched();
 
-  if (!this.uploadForm.valid || !this.selectedFile) {
-    this.uploadError = 'Please fill out all required fields and select a PDF file.';
-    return;
-  }
-
-  this.isLoading = true;
-  const formValue = this.uploadForm.getRawValue();
-
-  const categoriesIds = formValue.categories?.map((cat: any) => Number(cat)) || [];
-  const instrumentIds = formValue.instruments?.map((instr: any) => Number(instr)) || [];
-
-  const uploadDto = {
-    title: formValue.title,
-    level: formValue.level,
-    scale: formValue.scale,
-    composer: formValue.composer,
-    lyricist: formValue.lyricist,
-    categories: categoriesIds.map((id: Number) => ({ id })), 
-    instruments: instrumentIds.map((id: Number) => ({ id })), 
-  };
-const formData = new FormData();
-console.log(this.selectedFile)
-if (this.selectedFile) {  
-    formData.append('file', this.selectedFile);
-} else {
-    this.uploadError = "Please select a PDF file!";
-    
-    return;
-}
-if (this.selectedImageCover) {
-  formData.append('image', this.selectedImageCover); 
-}
-const blob = new Blob([JSON.stringify(uploadDto)], { type: 'application/json' });
-formData.append('data', blob);                      
-
-
-  this.sheetMusicService.uploadSheetMusic(formData).subscribe({
-    next: () => {
-      this.uploadSuccess.emit();
-      this.onCancel();
-    },
-    error: (err) => {
-      console.error('Upload failed:', err);
-      this.uploadError = err.error?.message || 'Upload failed.';
-      this.isLoading = false;
+    if (!this.uploadForm.valid || !this.selectedFile) {
+      this.uploadError = 'Please fill out all required fields and select a PDF file.';
+      return;
     }
-  });
-}
+
+    this.isLoading = true;
+    const formValue = this.uploadForm.getRawValue();
+
+    const categoriesIds = formValue.categories?.map((cat: any) => Number(cat)) || [];
+    const instrumentIds = formValue.instruments?.map((instr: any) => Number(instr)) || [];
+
+    const uploadDto = {
+      title: formValue.title,
+      level: formValue.level,
+      scale: formValue.scale,
+      composer: formValue.composer,
+      lyricist: formValue.lyricist,
+      categories: categoriesIds.map((id: Number) => ({ id })),
+      instruments: instrumentIds.map((id: Number) => ({ id })),
+    };
+    const formData = new FormData();
+    console.log(this.selectedFile)
+    if (this.selectedFile) {
+      formData.append('file', this.selectedFile);
+    } else {
+      this.uploadError = "Please select a PDF file!";
+
+      return;
+    }
+    if (this.selectedImageCover) {
+      formData.append('image', this.selectedImageCover);
+    }
+    const blob = new Blob([JSON.stringify(uploadDto)], { type: 'application/json' });
+    formData.append('data', blob);
 
 
- 
+    this.sheetMusicService.uploadSheetMusic(formData).subscribe({
+      next: () => {
+        this.uploadSuccess.emit();
+        this.onCancel();
+      },
+      error: (err) => {
+        console.error('Upload failed:', err);
+        this.uploadError = err.error?.message || 'Upload failed.';
+        this.isLoading = false;
+      }
+    });
+  }
 }
 
 

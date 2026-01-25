@@ -6,7 +6,6 @@ html {
   height: 100%;
   width: 100%;
   overflow-x: hidden;
-
   font-family: Arial, sans-serif;
 }
 
@@ -62,9 +61,7 @@ html {
   }
 }
 
-
-
-/* --- Main Content Centered --- */
+/* --- Main Content --- */
 .main-content {
   position: relative;
   z-index: 10;
@@ -83,14 +80,13 @@ html {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  padding: 0px 20px;
+  padding: 0 20px;
   background: #1D2838;
   color: #3CFF6E;
   font-size: 18px;
   height: 40px;
   border-radius: 30px;
   border: 1.5px solid #5301ab;
-  /* margin-bottom: 20px; */
 }
 
 #live-dot {
@@ -115,7 +111,7 @@ html {
   }
 }
 
-/* --- Title --- */
+/* --- Titles & Slogan --- */
 #title {
   font-size: 4vw;
   font-weight: 600;
@@ -125,8 +121,7 @@ html {
   font-size: clamp(2rem, 4vw, 5rem);
   font-weight: 800;
   background: linear-gradient(90deg, #a653fe 0%, #599afd 100%);
-
-  color: black;
+  color: transparent;
   -webkit-mask-image: linear-gradient(90deg, #fff, #fff);
   -webkit-mask-clip: text;
   -webkit-mask-repeat: no-repeat;
@@ -135,33 +130,29 @@ html {
   mask-clip: text;
   mask-repeat: no-repeat;
   mask-size: 100%;
-  color: transparent;
-
-  color: transparent;
   -webkit-text-fill-color: transparent;
-
   display: inline-block;
   line-height: 1.1;
   letter-spacing: 1px;
   text-shadow: 0 0 20px rgba(166, 83, 254, 0.3);
 }
 
-
-/* --- Slogan --- */
 .slogan {
   font-size: 2.3vw;
   font-weight: bold;
   margin-top: 1.5vw;
 }
 
-/* --- Paragraphs --- */
 #p1,
 #p2 {
   width: 70%;
-  font-size: 1.45vw;
-  line-height: 1.6;
   text-align: center;
   margin-top: 0.5vw;
+  line-height: 1.6;
+}
+
+#p1 {
+  font-size: 1.45vw;
 }
 
 #p2 {
@@ -169,49 +160,18 @@ html {
   color: rgb(160, 160, 160);
 }
 
-/* --- Button --- */
+/* --- Buttons --- */
 .button {
-  margin-top: 2.5vw;
-  /* background: linear-gradient(90deg, #a653fe 0%, #599afd 100%);
-  color: white;
-  
-  font-weight: bold;
-  cursor: pointer;
-  transition: opacity 0.3s ease; */
   font-size: 18px;
   border-radius: 15px;
   padding: 15px 40px;
-}
-
-/* 
-.button:hover {
-  opacity: 0.85;
-} */
-/* 
-.button {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-
-  border-radius: 2rem;
-  margin: 0.5rem;
   cursor: pointer;
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
-} */
+  transition: all 0.3s ease;
+}
 
 .button:hover {
   transform: translateY(-3px);
   box-shadow: 0 5px 15px rgba(89, 154, 253, 0.4);
-}
-
-/* עוטף את הכפתורים כך שיישבו בשורה */
-.buttons-container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 1rem;
-  flex-wrap: wrap;
-  /* כדי שירד שורה במסך קטן */
 }
 
 #b2 {
@@ -226,7 +186,6 @@ html {
   transform: translateY(-3px);
 }
 
-/* --- Container for both buttons --- */
 .buttons-container {
   display: flex;
   justify-content: center;
@@ -235,119 +194,453 @@ html {
   flex-wrap: wrap;
 }
 
-/* ----------------------------------------------------
-    6. עיצוב כרטיס המשימה (מתחת ל-Hero Section)
-    ---------------------------------------------------- */
+
+
+/* --- Mission Card --- */
 .mission-card-container {
-    max-width: 1200px;
-    padding: 40px 30px;
-    margin-top: 40px;
-
-    background-color: #12121e;
-    border-radius: 16px;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
-
-    display: flex;               /* ⭐ מאפשר יישור אנכי */
-    flex-direction: column;
-    justify-content: center;     /* ⭐ מרכז את כל התוכן אנכית */
-    align-items: center;         /* ⭐ מרכז אופקית */
-    text-align: center;
+  max-width: 1200px;
+  padding: 40px 30px;
+  margin-top: 40px;
+  background-color: #2d2d43dc;
+  border-radius: 16px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
 }
 
-
 .mission-card-container h2 {
-    font-size: 24px;
-    font-weight: 700;
-    color: #ffffff;
-    margin-bottom: 10px;
+  font-size: 24px;
+  font-weight: 700;
+  color: #ffffff;
+  margin-bottom: 10px;
 }
 
 .mission-card-container p {
-    font-size: 15px;
-    color: #b0b0c0;
-    max-width: 600px;
-    margin: 0 auto 25px auto;
+  font-size: 15px;
+  color: #b0b0c0;
+  max-width: 600px;
+  margin: 0 auto 25px auto;
 }
 
-/* ----------------------------------------------------
-    6.1. כפתורי הכרטיס (Mission Buttons)
-    ---------------------------------------------------- */
+/* --- Mission Buttons --- */
 .mission-buttons-row {
-    display: flex;
-    justify-content: center;
-    gap: 20px;
-    margin-bottom: 35px;   /* ⭐ מרווח מתחת לכותרת */
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  margin-bottom: 35px;
+  flex-wrap: wrap;
 }
-
 
 .mission-buttons-row button {
-    padding: 10px 20px;
-    border-radius: 8px;
-    font-weight: 600;
-    cursor: pointer;
-    font-size: 15px;
-    transition: all 0.2s;
+  padding: 10px 20px;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  font-size: 15px;
+  transition: all 0.2s;
 }
 
 .primary-btn {
-    background: linear-gradient(45deg, #a033e0, #5c00b8); 
-    color: #ffffff;
-    border: none;
-    box-shadow: 0 3px 10px rgba(160, 51, 224, 0.3);
+  background: linear-gradient(45deg, #a033e0, #5c00b8);
+  color: #ffffff;
+  border: none;
+  box-shadow: 0 3px 10px rgba(160, 51, 224, 0.3);
 }
 
 .secondary-btn {
-    background-color: transparent;
-    color: #a033e0; 
-    border: 2px solid #a033e0;
+  background-color: transparent;
+  color: #a033e0;
+  border: 2px solid #a033e0;
 }
 
-/* ----------------------------------------------------
-    6.2. שורת התכונות (Features Row)
-    ---------------------------------------------------- */
+/* --- Features Row --- */
 .mission-features-row {
-    display: flex;
-    justify-content: space-around;
-    gap: 30px;
-    margin-top: 25px;
+  display: flex;
+  justify-content: space-around;
+  gap: 30px;
+  margin-top: 25px;
+  flex-wrap: wrap;
 }
-
 
 .feature-item {
-    flex: 1; /* מאפשר לכל עמודה להיות ברוחב שווה */
-    text-align: center;
+  flex: 1;
+  text-align: center;
 }
 
-/* עיצוב האייקונים (mat-icon) */
 .feature-icon {
-    font-size: 40px;
-    height: 40px;
-    width: 40px;
-    color: #a033e0; /* סגול בולט */
-    /* עיצוב הרקע העגול (כמו בתמונה) */
-    background-color: rgba(160, 51, 224, 0.15); 
-    border-radius: 12px; /* 🚨 הפינות העגולות של הריבוע */
-    padding: 10px;
-    margin-bottom: 10px;
-    display: inline-block; /* כדי שהריבוע יעבוד */
+  font-size: 40px;
+  width: 40px;
+  height: 40px;
+  color: #a033e0;
+  background-color: rgba(160, 51, 224, 0.15);
+  border-radius: 12px;
+  padding: 10px;
+  margin-bottom: 10px;
+  display: inline-block;
 }
 
 .feature-item h3 {
-    font-size: 16px;
-    font-weight: 600;
-    color: #ffffff;
-    margin: 0 0 5px 0;
+  font-size: 16px;
+  font-weight: 600;
+  color: #ffffff;
+  margin: 0 0 5px 0;
 }
 
 .feature-item p {
-    font-size: 13px;
-    color: #b0b0c0;
-    margin: 0;
+  font-size: 13px;
+  color: #b0b0c0;
+  margin: 0;
 }
+
+/* --- Home Page / Footer --- */
 .home-page-container {
-   background-color: #0A0A16;
+  background-color: #0A0A16;
 }
+
 .footer {
-   height: 100px;
-   background-color: #0A0A16;
+  height: 100px;
+  background-color: #0A0A16;
+}
+
+/* --- Search Results --- */
+.search-results-container {
+  position: absolute;
+  top: 70px;
+  left: 33.2vw;
+  width: 31.4vw;
+  min-width: 300px;
+  height: 500px;
+  max-height: 3550px;
+  overflow-y: auto;
+  overflow-x: hidden;
+  background-color: #1D2838;
+  border: 3px solid #08111e;
+  color: #e9eef3;
+  font-family: "Segoe UI", Roboto, Arial, sans-serif;
+  border-radius: 8px;
+  padding: 16px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+  z-index: 10000;
+  margin-top: 5px;
+}
+
+.search-results-container h4 {
+  margin: 5px 0;
+  font-size: 14px;
+  font-weight: bold;
+}
+
+.search-results-container div {
+  padding: 5px 8px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.file-preview-iframe {
+  width: 100%;
+  height: 300px;
+  border: none;
+  pointer-events: none;
+  overflow: hidden;
+  scrollbar-width: none;
+}
+
+.file-preview-iframe::-webkit-scrollbar {
+  display: none;
+}
+
+.artist-mini-img {
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+}
+
+.artist-mini-profile span {
+  font-size: 18px;
+  font-weight: 600;
+}
+
+.section {
+  margin-top: 18px;
+}
+
+.section-title {
+  color: #9fb7c7;
+  margin-bottom: 8px;
+  font-weight: 600;
+}
+
+.results-count {
+  color: #b9d6e6;
+  margin-bottom: 10px;
+}
+
+.result-item {
+  display: flex;
+  align-items: center;
+  padding: 10px;
+  gap: 12px;
+  border-radius: 10px;
+  margin-bottom: 8px;
+  background: rgba(255, 255, 255, 0.02);
+  position: relative;
+}
+
+.row {
+  flex-direction: row;
+}
+
+.column {
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.left-icon {
+  width: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.left-icon .icon {
+  width: 22px;
+  height: 22px;
+  fill: #6ed0ff;
+  opacity: 0.95;
+}
+
+.avatar,
+.profile-avatar {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.04), rgba(255, 255, 255, 0.01));
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.5);
+}
+
+.avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.cover-avatar {
+  width: 72px;
+  height: 72px;
+}
+
+.profile-avatar .active-dot {
+  position: absolute;
+  right: 4px;
+  bottom: 4px;
+  width: 12px;
+  height: 12px;
+  background: #39ff7a;
+  border-radius: 50%;
+  box-shadow: 0 0 8px rgba(57, 255, 122, 0.6);
+  border: 2px solid rgba(11, 15, 18, 0.6);
+}
+
+.main-content {
+  flex: 1 1 auto;
+  display: flex;
+  flex-direction: column;
+}
+
+.title-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 8px;
+  width: 100%;
+}
+
+.title-row.column {
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 4px;
+}
+
+.title {
+  font-size: 16px;
+  font-weight: 700;
+  color: #e8f7ff;
+  line-height: 1.05;
+}
+
+.title.clickable {
+  cursor: pointer;
+}
+
+.title.clickable:hover {
+  text-decoration: underline;
+}
+
+.meta {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #9fb7c7;
+  font-size: 13px;
+}
+
+.meta.small {
+  font-size: 12px;
+  color: #9bb0bf;
+  margin-top: 4px;
+}
+
+.username {
+  font-weight: 600;
+  color: #dff6ff;
+}
+
+.dot {
+  color: #6b93a0;
+  margin: 0 6px;
+}
+
+.time {
+  color: #98b1bd;
+  font-size: 12px;
+}
+
+.location {
+  color: #a9c1cc;
+  font-size: 13px;
+  margin-top: 2px;
+}
+
+.right-tag {
+  margin-left: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  min-width: 88px;
+}
+
+.search-tag {
+  padding: 6px 10px;
+  border-radius: 999px;
+  font-weight: 700;
+  font-size: 12px;
+  color: #061017;
+  text-transform: uppercase;
+  letter-spacing: 0.6px;
+  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.6);
+}
+
+.search-tag.posts {
+  background: linear-gradient(90deg, #8ee7ff, #6ed0ff);
+  box-shadow: 0 6px 24px rgba(110, 208, 255, 0.18);
+}
+
+.search-tag.sheet {
+  background: linear-gradient(90deg, #ffd36e, #ff9f6e);
+  box-shadow: 0 6px 24px rgba(255, 159, 110, 0.16);
+}
+
+.search-tag.musician {
+  background: linear-gradient(90deg, #b26eff, #7e6eff);
+  box-shadow: 0 6px 24px rgba(126, 110, 255, 0.16);
+}
+
+.search-tag.teacher {
+  background: linear-gradient(90deg, #6effb2, #6ef2d4);
+  box-shadow: 0 6px 24px rgba(110, 242, 212, 0.12);
+}
+
+.subline {
+  color: #9fb7c7;
+  font-size: 13px;
+  margin-top: 6px;
+}
+
+.icon-circle {
+  border-radius: 50px;
+}
+
+/* --- Responsive --- */
+@media (max-width: 1024px) {
+  .image-slider img {
+    object-fit: cover;
+  }
+
+  .mission-features-row {
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  .mission-buttons-row {
+    flex-direction: column;
+    gap: 15px;
+  }
+
+  .buttons-container {
+    gap: 1rem;
+    flex-wrap: wrap;
+  }
+}
+
+@media (max-width: 768px) {
+  .title {
+    font-size: 15px;
+  }
+
+  #title {
+    font-size: 6vw;
+  }
+
+  .cover-avatar {
+    width: 56px;
+    height: 56px;
+  }
+
+  .main-content {
+    padding: 10px;
+  }
+
+  .mission-card-container {
+    padding: 30px 20px;
+    margin-top: 30px;
+  }
+
+  .search-results-container {
+    width: 90%;
+    left: 5vw;
+    top: 60px;
+    height: auto;
+    max-height: 70vh;
+  }
+}
+
+@media (max-width: 480px) {
+  .search-results-container {
+    width: 95%;
+    left: 2.5vw;
+    padding: 12px;
+  }
+
+  #p1,
+  #p2 {
+    width: 90%;
+    font-size: 14px;
+  }
+
+  .slogan {
+    font-size: 4vw;
+  }
+
+  .mission-card-container {
+    padding: 20px 15px;
+  }
 }

@@ -26,12 +26,11 @@ import { AddCommentComponent } from './Components/Comments/add-comment/add-comme
 
 // Chat Bot 
 import { ChatBotComponent } from './Components/Chat/chat-bot/chat-bot.component';
-import { TeacherSignupComponent } from './teacher-signup/teacher-signup.component';
+import { TeacherSignupComponent } from './Components/Teachers/teacher-signup/teacher-signup.component';
 import { TeacherListComponent } from './Components/Teachers/teacher-list/teacher-list.component';
 
 // Notification
-import { NotificationsComponent } from './Components/Notification/notifications/notifications.component';
-
+// import { NotificationsComponent } from './Components/Notification/notifications/notifications.component';
 
 
 export const routes: Routes = [
@@ -77,7 +76,7 @@ export const routes: Routes = [
   { path: 'teacher-list', component: TeacherListComponent },
 
   // Notification
-  { path: 'notifications', component: NotificationsComponent },
+  // { path: 'notifications', component: NotificationsComponent },
 
   // Chat Bot 
   { path: 'chat-bot', component: ChatBotComponent },

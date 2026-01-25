@@ -1,35 +1,32 @@
-<div class="chat-toggle" (click)="toggleChat()">
+<div class="chat-toggle" (click)="chatBotService.toggle()">
   <img src="assets/images/chat-ai.webp" alt="chat" class="chat-icon" />
 </div>
 
-<div class="chat-container" [class.open]="isOpen">
-  @if (isOpen) {
-    <div class="chat-header">
-      <span>Music Chat</span>
-      <button class="close-btn" (click)="toggleChat()">✖</button>
+<div class="chat-container" [class.open]="chatBotService.isOpen()">
+  @if (chatBotService.isOpen()) {
+  <div class="chat-header">
+    <div class="button" (click)="chatBotService.close()">✖</div>
+    <span class="musicians">Chat Bot</span>
+     <img src="assets/images/chat-ai.webp" alt="chat" class="icon" />
+  </div>
+
+  <div class="messages" #messagesContainer>
+    @for (msg of messages; track $index) {
+    <div class="message-row" [ngClass]="msg.sender">
+      <div class="message-text" [innerHTML]="msg.text"></div>
     </div>
 
-    <div class="messages" #messagesContainer>
-      @for (msg of messages; track $index) {
-     <div class="message-row" [ngClass]="msg.sender">
-  
-  <div class="message-text" [innerHTML]="msg.text"></div> 
-</div>
-         
-      } @empty {
-        <div class="system-message">start a new conversation</div>
-      }
-    </div>
+    } @empty {
+    <div class="system-message">start a new conversation</div>
+    }
+  </div>
 
-    <form (submit)="sendMessage($event)" class="input-area">
-      <input
-        type="text"
-        [(ngModel)]="userInput"
-        name="userInput"
-        placeholder="write your message..."
-        autocomplete="off"
-      />
-      <button type="submit">send</button>
-    </form>
+  <form (submit)="sendMessage($event)" class="input-area">
+     <div class = "button" type="submit"> 
+      <mat-icon>send</mat-icon>
+     </div>
+    <input type="text" [(ngModel)]="userInput" name="userInput" placeholder="...Write your message"
+      autocomplete="off" />
+  </form>
   }
 </div>

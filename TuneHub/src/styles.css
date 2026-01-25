@@ -1,56 +1,41 @@
-/* ==============================
-   Global & Body Styles
-   ============================== */
+/* Global & Body Styles */
 html,
 body {
     margin: 0;
     padding: 0;
-    height: 100%;
+    height: auto;
     min-height: 100vh;
     width: 100%;
     font-family: 'Inter', 'Roboto', 'Open Sans', sans-serif;
     color: white;
     background: linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 40%, #2b2b2b 100%);
     background-color: #1D2838;
-    overflow: auto;
+    overflow-x: hidden;
+    overflow-y: auto;
 }
 
-/* ==============================
-   Scrollbar
-   ============================== */
-*::-webkit-scrollbar { width: 15px; }
+
+/* Scrollbar */
+*::-webkit-scrollbar {
+    width: 15px;
+}
+
 *::-webkit-scrollbar-track {
     background: #1D2838;
     border-radius: 10px;
 }
+
 *::-webkit-scrollbar-thumb {
     background: linear-gradient(to bottom, #9430ff 0%, #3888ff 100%);
     border-radius: 10px;
     border: 3px solid #2c3e50;
 }
+
 *::-webkit-scrollbar-thumb:hover {
     background: linear-gradient(to bottom, #8413fe 0%, #1b76ff);
 }
 
-/* ==============================
-   Buttons
-   ============================== */
-   /* button {
-  all: unset;           
-  display: inline-block;   
-  cursor: pointer;       
-  font: inherit;          
-  color: inherit;       
-  background: none;      
-  border: none;          
-  padding: 0;              
-  margin: 0;               
-  border-radius: 0;        
-  text-align: inherit;     
-} */
-
-
-/* button, */
+/* Buttons */
 .button {
     display: inline-flex;
     align-items: center;
@@ -68,7 +53,9 @@ body {
     position: relative;
 }
 
-.button mat-icon { font-size: 25px; }
+.button mat-icon {
+    font-size: 25px;
+}
 
 .button:hover {
     transform: scale(1.05);
@@ -89,20 +76,30 @@ body {
     pointer-events: none;
 }
 
-.button:active::after { opacity: 1; }
+.button:active::after {
+    opacity: 1;
+}
+
 .button:active {
     transform: scale(0.95);
     box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
 }
 
 /* Button color variants */
-.play { color: #B97FFF; }
-.share { color: #3BB2FF; margin: 0 10px; }
-.grow { color: #3CFF6E; }
+.play {
+    color: #B97FFF;
+}
 
-/* ==============================
-   Header & Title Section
-   ============================== */
+.share {
+    color: #3BB2FF;
+    margin: 0 10px;
+}
+
+.grow {
+    color: #3CFF6E;
+}
+
+/* Header & Title Section */
 .header {
     display: flex;
     justify-content: space-between;
@@ -127,9 +124,7 @@ body {
     display: inline-block;
 }
 
-/* ==============================
-   Logo
-   ============================== */
+/* Logo */
 .logo {
     display: flex;
     align-items: center;
@@ -144,22 +139,15 @@ body {
     margin-right: 0px;
 }
 
-/* ==============================
-   Container
-   ============================== */
+/* Container */
 .container {
     min-height: 400px;
     color: #f0f0f0;
-    background-color:#1d2837 ;
+    background-color: #1d2837;
     font-family: Arial, sans-serif;
-/* #1d2837 */
-/* #1D2838 */
-    /* padding: 30px; */
 }
 
-/* ==============================
-   Overlay
-   ============================== */
+/* Overlay */
 .overlay {
     position: absolute;
     top: 0;
@@ -170,9 +158,7 @@ body {
     z-index: 2;
 }
 
-/* ==============================
-   Musicians Text
-   ============================== */
+/* Musicians Text */
 .musicians {
     font-size: clamp(2rem, 4vw, 5rem);
     font-weight: 800;
@@ -193,9 +179,7 @@ body {
     text-shadow: 0 0 20px rgba(166, 83, 254, 0.3);
 }
 
-/* ==============================
-   Cover Image & Wrapper
-   ============================== */
+/* Cover Image & Wrapper  */
 .cover-wrapper {
     position: relative;
     width: 100%;
@@ -214,9 +198,7 @@ body {
     border-radius: 12px;
 }
 
-/* ==============================
-   Overlay Content on Cover
-   ============================== */
+/* Overlay Content on Cover */
 .overlay-content {
     position: absolute;
     top: 0;
@@ -227,12 +209,10 @@ body {
     justify-content: space-between;
     align-items: flex-end;
     padding: 0px 40px 100px 40px;
-    background: linear-gradient(
-        to top,
-        rgba(0, 0, 0, 0.803) 0%,
-        rgba(0, 0, 0, 0.807) 50%,
-        transparent 100%
-    );
+    background: linear-gradient(to top,
+            rgba(0, 0, 0, 0.803) 0%,
+            rgba(0, 0, 0, 0.807) 50%,
+            transparent 100%);
     color: white;
     text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.7);
     gap: -50px;
@@ -245,312 +225,205 @@ body {
 
 
 .cover-wrapper {
-    background-color: #1D2838; /* הצבע הרצוי שלך */
+    background-color: #1D2838;
     position: relative;
     width: 100%;
     height: 50vh;
 }
-/* ==================== 1. מבנה כללי: כיסוי ויישור לראש הקונטיינר ==================== */
+
 .overlay-content {
-    /* הכללים האלה נשארים: מכסה את התמונה */
-    background: rgba(29, 40, 56, 0.5); 
+    background: rgba(29, 40, 56, 0.5);
     position: absolute;
-    top: 0; 
+    top: 0;
     left: 0;
-    width: 100%; 
+    width: 100%;
     height: 100%;
     z-index: 2;
-    
-    /* שינוי קריטי: יישור אנכי לראש הקונטיינר */
     display: flex;
-    align-items: flex-start; /* מצמיד את התוכן לראש הקונטיינר */ 
-    
-    /* יישור אופקי: מרכז את התוכן על פני רוחב הדף */
-    justify-content: center; 
-
-    /* אפס את השוליים וודא שההגדרות נקיות */
+    align-items: flex-start;
+    justify-content: center;
     margin: 0;
     padding: 0;
 }
 
-/* ==================== 2. מיכל פנימי למרכוז התוכן ==================== */
 .header-inner-content {
     display: flex;
-    justify-content: space-between; /* מפריד בין שמאל לימין */
-    align-items: flex-start; /* יישור אנכי של האלמנטים הפנימיים לראש הקו */
-    
-    max-width: 900px; /* רוחב המקסימלי הרצוי */
+    justify-content: space-between;
+    align-items: flex-start;
+    max-width: 900px;
     width: 100%;
-    
-    /* פאדינג מהצדדים ומהחלק העליון - קובע את המיקום האנכי הראשוני */
-    padding: 20px 20px 0; /* 20px למעלה, 20px בצדדים, 0 למטה */
+    padding: 20px 20px 0;
 }
 
-/* ==================== 3. כפתור: הזזה שמאלה ==================== */
 .button.join-network-btn {
     display: flex;
     align-items: center;
-    gap: 5px; 
+    gap: 5px;
     padding: 10px 20px;
-    background: linear-gradient(135deg, #8E2DE2 0%, #4A00E0 100%); 
+    background: linear-gradient(135deg, #8E2DE2 0%, #4A00E0 100%);
     color: white;
     border: none;
     border-radius: 8px;
     font-size: 1.1rem;
     cursor: pointer;
     flex-shrink: 0;
-    
-    /* הוספת שוליים שליליים כדי להזיז אותו מעט שמאלה מעבר לגבול ה-900px */
-    margin-right: -20px; 
+    margin-right: -20px;
 }
 
-
-
-
-
-/* ==================== Overlay Content: מכיל את הכל ומצמיד לתחתית ==================== */
+/* Overlay Content */
 .overlay-content {
     position: absolute;
-    top: 0; 
+    top: 0;
     left: 0;
-    width: 100%; 
+    width: 100%;
     height: 100%;
     z-index: 2;
-    
-    /* הכלל הכי חשוב: שימוש ב-Flexbox */
     display: flex;
-    /* יישור אנכי: מצמיד את התוכן הפנימי (header-inner-content) לתחתית */
-    align-items: flex-end; 
-    /* יישור אופקי: מרכז את התוכן הפנימי על פני רוחב הדף */
-    justify-content: center; 
+    align-items: flex-end;
+    justify-content: center;
+    background: linear-gradient(to top,
+            rgba(0, 0, 0, 0.8) 0%,
+            rgba(0, 0, 0, 0.4) 50%,
+            transparent 100%);
 
-    /* רקע כהה עם גרדיאנט שמושך צל כלפי מטה */
-    background: linear-gradient(
-        to top,
-        rgba(0, 0, 0, 0.8) 0%, /* חזק למטה */
-        rgba(0, 0, 0, 0.4) 50%, 
-        transparent 100% /* נעלם למעלה */
-    );
-
-    /* פאדינג גלובלי שמבטיח ריווח אנכי מהכפתור */
-    padding-bottom: 30px; /* פאדינג מלמטה כדי להרחיק את הכפתור מהשפה התחתונה */
+    padding-bottom: 30px;
 }
 
-/* ==================== Wrapper פנימי: מחזיק כותרת וכפתור בשורה ==================== */
+/* Wrapper */
 .header-inner-content {
-    /* הופך את ה-wrapper להיות רכיב Flexbox שמפריד בין הפריטים */
     display: flex;
-    justify-content: space-between; /* דוחף שמאל לימין */
-    align-items: center; /* מיישר אנכית את הכותרות והכפתור */
-    
-    /* מגדיר את רוחב התוכן על פני הדף */
-    max-width: 900px; 
+    justify-content: space-between;
+    align-items: center;
+    max-width: 900px;
     width: 100%;
-
-    /* פאדינג מהצדדים כדי לוודא שיש ריווח מהקצוות של הדף */
-    padding: 0 20px; 
+    padding: 0 20px;
 }
 
-/* ==================== 3. כפתור: הסרת margin שלילי ==================== */
 .button.join-network-btn {
-    /* הסר את כל ה-margin שאינו נחוץ! */
-    margin: 0; 
-    
-    /* שאר העיצוב (ה-gradient) נשאר נכון */
-    background: linear-gradient(135deg, #A03FFB 0%, #5271FF 100%); 
+    margin: 0;
+    background: linear-gradient(135deg, #A03FFB 0%, #5271FF 100%);
     display: flex;
     align-items: center;
-    padding: 12px 18px; 
-    /* ... שאר העיצוב מהקוד שלך ... */
-    flex-shrink: 0; 
+    padding: 12px 18px;
+    flex-shrink: 0;
 }
 
-/* ==================== Overlay Content: מכיל את הכל ומצמיד לתחתית ==================== */
 .overlay-content {
     position: absolute;
-    top: 0; 
+    top: 0;
     left: 0;
-    width: 100%; 
+    width: 100%;
     height: 100%;
     z-index: 2;
-    
-    /* הצמדה לתחתית */
     display: flex;
-    align-items: flex-end; 
-    
-    /* מרכוז אופקי של ה-header-inner-content */
-    justify-content: center; 
-
-    /* שאר הכללים ל-background ו-padding-bottom נשארים נכונים */
-    padding-bottom: 30px; /* ריווח מהשפה התחתונה */
-    /* ... */
+    align-items: flex-end;
+    justify-content: center;
+    padding-bottom: 30px;
 }
 
-/* ==================== Wrapper פנימי: מחזיק כותרת וכפתור בשורה ==================== */
+
 .header-inner-content {
     display: flex;
-    justify-content: space-between; /* דוחף שמאל לימין */
-    align-items: center; 
-    
-    /* הגבלת הרוחב המרבי וודא שהכל מרוכז */
-    max-width: 1410px; 
+    justify-content: space-between;
+    align-items: center;
+    max-width: 1410px;
     width: 100%;
-
-    /* פאדינג ששומר על ריווח מהצדדים כאשר המסך קטן מ-900px */
-    padding: 0 20px; 
+    padding: 0 20px;
 }
 
 
 app-header {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  z-index: 9999;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 9999;
 }
 
 mat-sidenav-container {
-  transform: none !important;
+    transform: none !important;
 }
 
-
-
-
-
-/* קונטיינר התיבה */
+/* Search */
 .search-container {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  width: 360px;
-
-  padding: 10px 18px;
-  border-radius: 10px;
-  background-color: #2b3a52;
-  border: 3px solid rgba(0, 0, 0, 0.08);
-  transition: border-color 180ms ease, box-shadow 180ms ease, transform 120ms ease;
-  box-shadow: 0 1px 2px rgba(16, 24, 40, 0.04);
-  cursor: text;
-  /* מרמז שמשתמש יכול להקליד */
-
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    width: 360px;
+    padding: 10px 18px;
+    border-radius: 10px;
+    background-color: #2b3a52;
+    border: 3px solid rgba(0, 0, 0, 0.08);
+    transition: border-color 180ms ease, box-shadow 180ms ease, transform 120ms ease;
+    box-shadow: 0 1px 2px rgba(16, 24, 40, 0.04);
+    cursor: text;
 }
 
-/* כשהשדה בפנים מקבל פוקוס או כשהקונטיינר נבחר - הגבול סגול + הילה */
 .search-container:focus-within {
-  border-color: #A03FFB;
+    border-color: #A03FFB;
 
-  box-shadow: 0 6px 20px var(--bg-alpha);
-  transform: translateY(-1px);
+    box-shadow: 0 6px 20px var(--bg-alpha);
+    transform: translateY(-1px);
 }
 
-/* אייקון זכוכית מגדלת פשוט */
 .search-icon {
-  width: 20px;
-  height: 20px;
-  flex: 0 0 20px;
-  display: inline-block;
-  opacity: 1;
+    width: 20px;
+    height: 20px;
+    flex: 0 0 20px;
+    display: inline-block;
+    opacity: 1;
 }
 
-
-
-
-
-/* שדה הקלט עצמו */
 .search-input {
-  border: none;
-  outline: none;
-  background: transparent;
-  font-size: 18px;
-  font-weight: 500;
-
-  width: 100%;
-  caret-color: var(--purple-1);
-  color: white;
+    border: none;
+    outline: none;
+    background: transparent;
+    font-size: 18px;
+    font-weight: 500;
+    width: 100%;
+    caret-color: var(--purple-1);
+    color: white;
 }
 
 .search-input::placeholder {
-  color: #94a3b8;
-  font-weight: 500;
+    color: #94a3b8;
+    font-weight: 500;
 }
-
-
 
 .search-container:hover {
-  box-shadow: 0 6px 18px rgba(15, 23, 36, 0.04);
+    box-shadow: 0 6px 18px rgba(15, 23, 36, 0.04);
 }
 
-/* תמיכה באנשים שמשתמשים במקלדת: גבול בולט יותר בעת focus-visible */
 .search-input:focus-visible {
-
-  outline: none;
+    outline: none;
 }
 
-
-
-
+/* HighLight Text */
 .highlighted-text {
-  /* מעבר צבע בזווית 45 מעלות: זהב עתיק לזהב בהיר */
-  background: linear-gradient(45deg, #B8860B 0%, #FFD700 80%, #FFF8DC 100%);
-  
-  /* צבע טקסט: שחור קלאסי */
-  color: #000; 
-  font-weight: 700;
-  padding: 0 4px;
-  border-radius: 4px;
-  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.4); /* הוספת צל קל לבליטה */
+    background: linear-gradient(45deg, #B8860B 0%, #FFD700 80%, #FFF8DC 100%);
+    color: #000;
+    font-weight: 700;
+    padding: 0 4px;
+    border-radius: 4px;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.4);
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-body{
-    padding: 0;
-    margin: 0;
-}
 .cover-image {
-    /* 1. רוחב: 80% מרוחב המסך */
-    width: 100vw; 
-    
-    /* 2. גובה: 15% מגובה המסך */
-    height: 30vh; 
-    
-    /* 3. מרכוז האלמנט בתוך האב (הנותר 20% מתחלק שווה בשווה) */
-    /* חייב להיות display: block כדי ש-margin: auto יעבוד */
-    display: block; 
+    width: 100vw;
+    height: 30vh;
+    display: block;
     margin-left: auto;
     margin-right: auto;
-    
-    /* 4. מיקוד: מבטיח שמרכז התמונה ייראה */
-    object-fit: cover; 
-    
-    /* מאפיינים נוספים: */
+    object-fit: cover;
     border-radius: 12px;
 }
 
 .title-section {
-    /* מבטיח שהטקסט נשאר בצד שמאל */
-    /* נטרל שוליים שמוגדרים אוטומטית על H1/P */
-    margin: 0; 
+    margin: 0;
 }
 
 .join-network-btn {
-    /* עיצוב הכפתור - ודא שצבע הרקע שלו שונה אם צריך */
-    background-color: #6a1b9a; /* סגול בולט */
+    background-color: #6a1b9a;
     color: white;
     padding: 10px 20px;
     border: none;
@@ -562,289 +435,471 @@ body{
 
 
 .cover-wrapper {
-    /* נותן נקודת ייחוס למיקום המוחלט של הטקסט והכפתור */
-    position: relative; 
-    
-    /* הגדרת גודל יחסי למסך */
-    width: 100vw; 
+    position: relative;
+    width: 100vw;
     height: 50vh;
     top: -30px;
-    /* מרכוז ה-Wrapper על המסך (השגת 20% פדינג בצדדים) */
     margin-left: auto;
     margin-right: auto;
-      width: 100%; 
-    /* height: 100%;  */
-    /* הסתרת כל מה שחורג (במידת הצורך) */
-    overflow: hidden; 
+    width: 100%;
+    overflow: hidden;
     border-radius: 12px;
     padding: 0;
 }
 
 .cover-image {
-    /* z-index: -1; */
-    width: 100%; 
-    height: 100%; 
-    object-fit: cover; /* מבטיח שמרכז התמונה ייראה */
-    display: block; 
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
 }
 
 
 .overlay-content {
-    /* מיקום מוחלט מעל התמונה */
-    position: absolute; 
+    position: absolute;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    
-    /* שימוש ב-Flexbox לפיזור הטקסט והכפתור */
     display: flex;
-    justify-content: space-between; /* הטקסט משמאל, הכפתור מימין */
-    align-items: flex-end; /* ממקם את האלמנטים בתחתית */
-    
-    /* *התיקון:* איחוד כללי ה-padding */
-    /* סדר: למעלה 0, ימין 40px, למטה 100px, שמאל 40px */
-    padding: 0 40px 100px 40px; 
-    background: linear-gradient(
-        to top, 
-        rgba(0, 0, 0, 0.803) 0%, /* שחור שקוף בולט בתחתית */
-        rgba(0, 0, 0, 0.807) 50%, /* מעבר לצבע בהיר יותר באמצע */
-        transparent 100% /* שקוף לחלוטין בחלק העליון */
-    );
-    /* ודא שהטקסט קריא */
+    justify-content: space-between;
+    align-items: flex-end;
+    padding: 0 40px 100px 40px;
+    background: linear-gradient(to top,
+            rgba(0, 0, 0, 0.803) 0%,
+            rgba(0, 0, 0, 0.807) 50%,
+            transparent 100%);
     color: white;
     text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.7);
 }
 
-/* --- עיצוב כרטיס הסטטיסטיקות המיוחד --- */
 .stats-card-container {
-    /* מיקסום רוחב כדי לאפשר מרווחים בדפדפן */
     max-width: 800px;
     width: 100%;
-    margin: 20px auto; /* מרכוז אוטומטי במקום .center-container */
-    /* אפקט הקצה הסגול העדין כמו בתמונה */
-    padding: 1px; /* פדינג קטן ליצירת מסגרת הזוהר */
-    border-radius: 20px; /* פינות מעוגלות */
-    
-    /* המסגרת החיצונית המזוהרת */
+    margin: 20px auto;
+    padding: 1px;
+    border-radius: 20px;
     background: linear-gradient(135deg, rgba(142, 68, 173, 0.4) 0%, rgba(26, 188, 156, 0.0) 100%);
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5), 0 0 10px rgba(100, 100, 200, 0.2);
     margin-top: -80px;
 }
 
 .stats-card {
-    /* הרקע הפנימי הכהה והעמוק */
     background: radial-gradient(circle at 50% 50%, #1e1e3f 0%, #12122a 80%);
-    border-radius: 19px; /* מעט קטן יותר מהחיצוני */
+    border-radius: 19px;
     display: flex;
     justify-content: space-around;
     align-items: center;
     padding: 25px 20px;
     text-align: center;
     gap: 10px;
-    /* המסגרת הפנימית הדקה */
-    border: 1px solid rgba(255, 255, 255, 0.05); 
+    border: 1px solid rgba(255, 255, 255, 0.05);
 }
 
-/* --- עיצוב כל פריט סטטיסטיקה --- */
 .stat-item {
-    flex: 1; /* מחלק את הרוחב שווה בשווה */
+    flex: 1;
     min-width: 80px;
     padding: 5px 0;
-    color: #f0f0f0; /* צבע טקסט כללי בפנים */
+    color: #f0f0f0;
 }
 
 .stat-number {
-    font-size: 32px; /* גודל המספרים */
+    font-size: 32px;
     font-weight: 700;
     margin-bottom: 5px;
     transition: all 0.3s ease;
 }
 
 .stat-label {
-    font-size: 14px; /* גודל הכיתוב מתחת למספר */
-    color: #9ca3af; /* אפור בהיר לכיתוב הכללי */
+    font-size: 14px;
+    color: #9ca3af;
 }
 
-/* --- צבעים ואפקטי זוהר (ניאון) ספציפיים (נשתמש בהם ישירות על ה-stat-item) --- */
 
-/* 1. לבן (הטקסט הכללי זוהר קלות) */
 .white-glow .stat-number {
     color: #ffffff;
     text-shadow: 0 0 3px rgba(255, 255, 255, 0.3);
 }
 
-/* 2. סגול ניאון */
 .purple-glow .stat-number {
-    color: #d8b4fe; /* גוון סגול בהיר */
+    color: #d8b4fe;
     text-shadow: 0 0 5px #a78bfa, 0 0 15px #a78bfa;
 }
 
-/* 3. כחול ניאון */
 .blue-glow .stat-number {
-    color: #93c5fd; /* גוון כחול בהיר */
+    color: #93c5fd;
     text-shadow: 0 0 5px #60a5fa, 0 0 15px #60a5fa;
 }
 
-/* 4. ירוק ניאון */
 .green-glow .stat-number {
-    color: #86efac; /* גוון ירוק בהיר */
+    color: #86efac;
     text-shadow: 0 0 5px #4ade80, 0 0 15px #4ade80;
 }
 
-/* --- רספונסיביות למובייל --- */
 @media (max-width: 600px) {
     .stats-card {
-        flex-wrap: wrap; /* מאפשר גלישה בשורות נוספות */
+        flex-wrap: wrap;
         padding: 20px 10px;
     }
-    
+
     .stat-item {
-        flex: 1 1 50%; /* 2 פריטים בשורה */
+        flex: 1 1 50%;
         padding: 10px 0;
     }
-    
+
     .stat-number {
         font-size: 28px;
     }
-    
+
     .stat-label {
         font-size: 12px;
     }
 }
 
-.container2{
+.container2 {
     align-items: center;
     padding: 80px;
     padding-top: -50px;
 
 }
 
+/* Active Dot */
+.inactive-dot,
+.active-dot {
+    position: absolute;
+    bottom: 5px;
+    right: 5px;
+    width: 20px;
+    height: 20px;
+    background-color: #4CAF50;
+    border: 1.5px solid #ffffff;
+    border-radius: 50%;
+    box-shadow: 0 0 5px #535b67;
+}
+
+.inactive-dot {
+    background-color: #243041;
+}
 
 
-
-
-
-/* קונטיינר כולל לפילטרים */
+/* Filters CSS */
 .filter-bar {
-  display: flex;
-  gap: 10px;
-  background-color: #1e1e2d; /* רקע כהה כמו שורת החיפוש */
-  padding: 12px 16px;
-  border-radius: 10px;
-  align-items: center;
-  width: 100%;
-  max-width: 900px; /* להתאים לרוחב הדף או שורת החיפוש */
-  margin-bottom: 20px;
+    display: flex;
+    gap: 10px;
+    background-color: #1e1e2d;
+    padding: 12px 16px;
+    border-radius: 10px;
+    align-items: center;
+    width: 100%;
+    max-width: 900px;
+    margin-bottom: 20px;
 }
 
-/* כל קומבובוקס (select) */
 .filter-bar .dropdown {
-  flex: 1; /* מחלק את השטח באופן שווה בין הפילטרים */
-  padding: 10px 12px;
-  border-radius: 10px;
-  border: none;
-  background-color: #2b3a52; /* כמו שורת החיפוש */
-  color: #f0f0f0;
-  font-size: 16px;
-  cursor: pointer;
-  transition: all 0.15s ease;
+    flex: 1;
+    padding: 10px 12px;
+    border-radius: 10px;
+    border: none;
+    background-color: #2b3a52;
+    color: #f0f0f0;
+    font-size: 16px;
+    cursor: pointer;
+    transition: all 0.15s ease;
 }
 
-/* אפקט בעת ריחוף מעל או פוקוס */
 .filter-bar .dropdown:hover,
 .filter-bar .dropdown:focus {
-  border: 2px solid #A03FFB; /* גבול סגול כמו בשורת החיפוש */
-  box-shadow: 0 6px 20px rgba(160, 63, 251, 0.3);
-  outline: none;
+    border: 2px solid #A03FFB;
+    box-shadow: 0 6px 20px rgba(160, 63, 251, 0.3);
+    outline: none;
 }
 
-/* להבטיח שהקונטיינר יתיישר כמו שורת החיפוש */
-.search-bar + .filter-bar {
-  margin-top: 15px;
+.search-bar+.filter-bar {
+    margin-top: 15px;
 }
-/* קופסה חיצונית */
+
 .custom-select {
-  position: relative;
-  width: 200px;
-  cursor: pointer;
+    position: relative;
+    width: 200px;
+    cursor: pointer;
 }
 
-/* הכפתור שמראה את הערך הנבחר */
 .select-selected {
-  background-color: #fff;
-  border: 1px solid #ccc;
-  padding: 10px;
-  border-radius: 8px;
+    background-color: #fff;
+    border: 1px solid #ccc;
+    padding: 10px;
+    border-radius: 8px;
 }
 
-/* הרשימה המוסתרת */
 .select-items {
-  position: absolute;
-  background-color: #fff;
-  border: 1px solid #8694ff;
-  border-radius: 8px;
-  width: 100%;
-  max-height: 150px;
-  overflow-y: auto;
-  display: none; /* נסתר כברירת מחדל */
-  z-index: 99;
+    position: absolute;
+    background-color: #fff;
+    border: 1px solid #8694ff;
+    border-radius: 8px;
+    width: 100%;
+    max-height: 150px;
+    overflow-y: auto;
+    display: none;
+    z-index: 99;
 }
 
-/* כל פריט ברשימה */
 .select-items div {
-  padding: 10px;
+    padding: 10px;
 }
 
 .select-items div:hover {
-  background-color: #f0f0f0;
+    background-color: #f0f0f0;
 }
 
 
 
 
 
-
-
-
-
-
-/* קונטיינר מרכזי לאייקון ולטקסט */
-.no-results-container {
+.search-filters-wrapper {
     display: flex;
-    flex-direction: column; 
-    align-items: center; 
-    text-align: center;
-}
-
-/* עיצוב העיגול המכיל את האייקון */
-.icon-circle {
-    width: 80px; 
-    height: 80px;
-    border-radius: 50%;
-    background-color: #3e4453; /* צבע רקע של העיגול */
-    
-    /* מרכוז האייקון בתוך העיגול */
-    display: flex;
+    flex-wrap: wrap;
     justify-content: center;
     align-items: center;
-    margin-bottom: 20px; 
+    gap: 15px;
+    margin: 20px 0;
+    background-color: #1e1e1e00;
 }
 
-/* עיצוב האייקון עצמו (Material Icons) */
-/* שימו לב: הקלאס הוא "material-icons" */
-.icon-circle .material-icons {
-    font-size: 30px; /* גודל האייקון */
-    color: #8c929e; /* צבע האייקון */
+.search-filters-wrapper .search-container {
+    flex: 2 1 400px;
+    display: flex;
+    align-items: center;
+    background-color: #2b3a52;
+    border-radius: 10px;
+    padding: 10px 15px;
 }
 
-/* עיצוב הטקסט "No results found" */
-.message-text {
-    font-size: 20px;
-    font-weight: 500; 
-    color: #646c73; 
+.search-filters-wrapper .search-container mat-icon {
+    margin-right: 10px;
+    color: #f0f0f0;
+}
+
+.search-filters-wrapper .search-container input {
+    background: none;
+    border: none;
+    color: #f0f0f0;
+    flex-grow: 1;
+    font-size: 18px;
+    padding: 8px 10px;
+    outline: none;
+}
+
+/* פילטר-בר */
+.search-filters-wrapper .filter-bar {
+    display: flex;
+    flex-wrap: nowrap;
+    justify-content: flex-start;
+    align-items: center;
+    width: 100%;
+    max-width: 1200px;
+    padding: 15px 20px;
+    background-color: rgba(128, 255, 0, 0);
+    /* שקוף */
+    border-radius: 12px;
+    gap: 15px;
+    box-sizing: border-box;
+    overflow-x: auto;
+    scrollbar-width: thin;
+    scrollbar-color: #A03FFB #1e1e2d;
+}
+
+.search-filters-wrapper .filter-bar::-webkit-scrollbar {
+    height: 8px;
+}
+
+.search-filters-wrapper .filter-bar::-webkit-scrollbar-track {
+    background: #1e1e2d;
+    border-radius: 12px;
+}
+
+.search-filters-wrapper .filter-bar::-webkit-scrollbar-thumb {
+    background-color: #A03FFB;
+    border-radius: 12px;
+    border: 2px solid #1e1e2d;
+}
+
+.search-filters-wrapper .filter-bar .dropdown {
+    flex: 0 0 auto;
+    width: 220px;
+    font-size: 17px;
+    padding: 12px 15px;
+    border-radius: 10px;
+    border: none;
+    background-color: #2b3a52;
+    color: #f0f0f0;
+    cursor: pointer;
+    transition: all 0.15s ease;
+}
+
+.search-filters-wrapper .filter-bar .dropdown:hover,
+.search-filters-wrapper .filter-bar .dropdown:focus {
+    border: 2px solid #A03FFB;
+    box-shadow: 0 6px 20px rgba(160, 63, 251, 0.3);
+    outline: none;
+}
+
+/* Custom Select */
+.custom-select {
+    position: relative;
+    width: 200px;
+    cursor: pointer;
+}
+
+.select-selected {
+    background-color: #fff;
+    border: 1px solid #ccc;
+    padding: 10px;
+    border-radius: 8px;
+}
+
+.select-items {
+    position: absolute;
+    background-color: #fff;
+    border: 1px solid #8694ff;
+    border-radius: 8px;
+    width: 100%;
+    max-height: 150px;
+    overflow-y: auto;
+    display: none;
+    z-index: 99;
+}
+
+.select-items div {
+    padding: 10px;
+}
+
+.select-items div:hover {
+    background-color: #f0f0f0;
+}
+
+/* כותרות והדבקות */
+.header-wrapper {
+    height: auto;
+}
+
+.headerPages {
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+}
+
+.section-title {
+    font-size: 25px;
     font-weight: bold;
 }
 
+.search-filters-wrapper .filter-bar {
+    display: flex;
+    flex-wrap: nowrap;
+    justify-content: flex-start;
+    align-items: center;
+    width: 100%;
+    max-width: 1200px;
+    padding: 15px 20px;
+    background-color: #1e1e2d;
+    border-radius: 12px;
+    gap: 15px;
+    box-sizing: border-box;
+    overflow-x: auto;
+    scrollbar-width: thin;
+    scrollbar-color: #A03FFB #1e1e2d;
+}
+
+.search-filters-wrapper .filter-bar .dropdown {
+    flex: 0 0 auto;
+    width: 220px;
+    font-size: 17px;
+    padding: 12px 15px;
+    border-radius: 10px;
+    border: none;
+    background-color: #2b3a52;
+    color: #f0f0f0;
+    cursor: pointer;
+    transition: all 0.15s ease;
+}
+
+.search-filters-wrapper .filter-bar .dropdown option {
+    color: #000;
+    background-color: #fff;
+}
+
+.filter-field {
+    display: flex;
+    flex-direction: column;
+    min-width: 180px;
+}
+
+.filter-label {
+    color: #f0f0f0;
+    font-size: 14px;
+    margin-bottom: 4px;
+}
+
+.filter-field input.search-input {
+    width: 100%;
+    padding: 12px 15px;
+    border-radius: 10px;
+    border: none;
+    background-color: #2b3a52;
+    color: #f0f0f0;
+    font-size: 17px;
+    cursor: text;
+    box-sizing: border-box;
+    transition: all 0.15s ease;
+}
+
+.filter-field input.search-input:focus {
+    outline: none;
+    border: 2px solid #A03FFB;
+    box-shadow: 0 6px 20px rgba(160, 63, 251, 0.3);
+}
+
+.filter-field input.search-input {
+    padding: 10px 12px;
+    height: 42px;
+    font-size: 16px;
+    box-sizing: border-box;
+}
+
+.search-filters-wrapper .filter-bar .dropdown {
+    height: 42px;
+    padding: 0 12px;
+    font-size: 16px;
+}
+
+
+.cdk-overlay-backdrop.mat-drawer-backdrop {
+    background-color: rgba(0, 0, 0, 0.962) !important;
+}
+
+
+/* Instruments Tags */
+.instrument-tags {
+  display: flex;      
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-left: 5px;
+  line-height: 1;      
+  vertical-align: top; 
+}
+
+.instrument-tags .tag {
+  display: flex;       
+  align-items: center;
+  justify-content: center; 
+  background-color: #B8860B;
+  color: #01233c;
+  padding: 2px 8px;
+  border-radius: 12px;
+  font-size: 0.85em;
+  font-weight: 600;
+  line-height: 1;      
+  margin-bottom: 0;  
+}
 
 

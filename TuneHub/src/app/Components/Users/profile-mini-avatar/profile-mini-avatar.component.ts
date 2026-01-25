@@ -1,23 +1,23 @@
 import { Component, OnInit, OnDestroy, HostListener, ElementRef, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Observable, Subscription } from 'rxjs';
+import { Observable } from 'rxjs';
 import { Router } from '@angular/router';
-import { LoginService } from '../../../Services/login.service';
-import { UserProfile, UserStateService } from '../../../Services/user-state.service';
+import {  UserStateService } from '../../../Services/user-state.service';
 import { UsersService } from '../../../Services/users.service';
 import { FileUtilsService } from '../../../Services/fileutils.service';
 import { NavigationService } from '../../../Services/navigation.service';
-
+import { UsersProfileDTO } from '../../../Models/Users';
 
 @Component({
-  selector: 'app-profile-mini-avatar', // הסלקטור החדש
+  selector: 'app-profile-mini-avatar', 
   standalone: true,
   imports: [CommonModule],
-  templateUrl: './profile-mini-avatar.component.html', // נשתמש בקובץ HTML נפרד
-  styleUrls: ['./profile-mini-avatar.component.css'] // נשתמש בקובץ CSS נפרד
+  templateUrl: './profile-mini-avatar.component.html', 
+  styleUrls: ['./profile-mini-avatar.component.css'] 
 })
+
 export class ProfileMiniAvatarComponent implements OnInit, OnDestroy {
-  currentUser$: Observable<UserProfile | null> | undefined;
+  currentUser$: Observable<UsersProfileDTO | null> | undefined;
   isDropdownOpen: boolean = false;
 
   userStateService = inject(UserStateService);
@@ -32,7 +32,6 @@ export class ProfileMiniAvatarComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    // אם לא משתמשים ב-subscribe ידני, אפשר להסיר.
   }
 
   toggleDropdown(event: Event): void {
@@ -63,10 +62,8 @@ export class ProfileMiniAvatarComponent implements OnInit, OnDestroy {
     });
   }
 
-  // פונקציה לניווט לעמוד הפרופיל המלא
   navigateToProfile(name: string): void {
     this.isDropdownOpen = false;
-    // נניח שאתה מנתב לפי שם/handle/ID:
     this.router.navigate(['/profile', name]);
   }
 }

@@ -9,3 +9,8 @@ export default class Instrument {
     teachers?: Teacher[];
     sheetsMusic?: SheetMusic[];
 }
+
+export interface InstrumentResponseDTO {
+    id: number | null;
+    name: string;
+}

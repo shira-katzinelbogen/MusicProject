@@ -1,15 +1,9 @@
-<div *ngIf="sheet">
-  <h2>{{ sheet.name }}</h2>
-  <div *ngIf="pdfUrl; else noPreview">
-    <iframe
-      [src]="pdfUrl"  width="100%"
-      height="600px"
-      style="border: 1px solid #ccc;"
-      title="PDF Preview of {{ sheet.title }}"
-    ></iframe>
-  </div>
-
-  <ng-template #noPreview>
-    <p>No preview available</p>
-  </ng-template>
+<div class="pdf-container">
+  <iframe
+    *ngIf="pdfUrl"
+    [src]="pdfUrl"
+    title="PDF Preview"
+    width="100%"
+    height="100vh"
+  ></iframe>
 </div>

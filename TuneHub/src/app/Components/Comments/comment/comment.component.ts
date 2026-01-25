@@ -1,15 +1,17 @@
 import { Component, Input, OnInit, OnChanges, ChangeDetectorRef } from '@angular/core';
 import { CommentService } from '../../../Services/comment.service';
 import { CommonModule } from '@angular/common';
-
 import { InteractionService } from '../../../Services/interaction.service';
 import Comment from '../../../Models/Comment';
 import { MatIconModule } from '@angular/material/icon';
 import { FileUtilsService } from '../../../Services/fileutils.service';
+import { TimeAgoPipe } from "../../../Pipes/time-ago.pipe";
+import { NoResultsComponent } from "../../Shared/no-results/no-results.component";
+import { NavigationService } from '../../../Services/navigation.service';
 
 @Component({
   selector: 'app-comment',
-  imports: [MatIconModule, CommonModule],
+  imports: [MatIconModule, CommonModule, TimeAgoPipe, NoResultsComponent],
   standalone: true,
   templateUrl: './comment.component.html',
   styleUrl: './comment.component.css'
@@ -27,8 +29,9 @@ export class CommentComponent implements OnInit, OnChanges {
   loading: boolean = false;
 
   constructor(
-    private commentService: CommentService, 
-    public fileUtilsService: FileUtilsService, 
+    private commentService: CommentService,
+    public fileUtilsService: FileUtilsService,
+    public navigationService: NavigationService,
     private cdr: ChangeDetectorRef,
     private _interactionService: InteractionService
   ) { }
@@ -41,7 +44,7 @@ export class CommentComponent implements OnInit, OnChanges {
 
   ngOnChanges(): void {
     if (this.postId) {
-      this.resetAndLoad(); 
+      this.resetAndLoad();
     }
   }
 
@@ -59,10 +62,17 @@ export class CommentComponent implements OnInit, OnChanges {
     this.commentService.getCommentsPaged(this.postId, this.page, this.size)
       .subscribe({
         next: response => {
-          this.comments = [...this.comments, ...response.comments];
+          const newComments = response.comments.map((c: Comment) => ({
+            ...c,
+            likes: c.likes ?? 0,
+            isLiked: c.isLiked ?? false,
+            dateUploaded: c.dateUploaded ? new Date(c.dateUploaded) : null
+          }));
+
+         this.comments.push(...newComments);
+
 
           this.totalPages = response.totalPages;
-
           this.page++;
           this.loading = false;
         },
@@ -73,11 +83,12 @@ export class CommentComponent implements OnInit, OnChanges {
       });
   }
 
+
   onScroll(event: Event): void {
     const container = event.target as HTMLElement | null;
 
     if (!(container instanceof HTMLElement)) {
-      return;  
+      return;
     }
     const threshold = 100;
 
@@ -89,32 +100,29 @@ export class CommentComponent implements OnInit, OnChanges {
     }
   }
 
-
-  getProfileImage(imagePath: string | null): string {
-    return imagePath ? `http://localhost:8080/${imagePath}` : './assets/images/musicians.png';
+toggleLike(comment: Comment): void {
+  if (!comment.isLiked) {
+    this._interactionService.addLike('COMMENT', comment.id!).subscribe({
+      next: (res: any) => {
+        comment.likes = Number(res);
+        comment.isLiked = true;
+        this.cdr.detectChanges(); 
+      }
+    });
+  } else {
+    this._interactionService.removeLike('COMMENT', comment.id!).subscribe({
+      next: (res: any) => {
+        comment.likes = Number(res);
+        comment.isLiked = false;
+        this.cdr.detectChanges();
+      }
+    });
   }
+}
 
-  toggleLike(comment: Comment): void {
 
-    if (!comment.isLiked) {
-      this._interactionService.addLike('COMMENT', comment.id!).subscribe({
-        next: (res) => {
-          comment.likes = res.count;
-          comment.isLiked = true;
-          this.cdr.detectChanges();
-        },
-        error: (err) => console.error('Failed to add like', err)
-      });
-    } else {
-      this._interactionService.removeLike('COMMENT', comment.id!).subscribe({
-        next: (res) => {
-          comment.likes = res.count;
-          comment.isLiked = false;
-          this.cdr.detectChanges();
-        },
-        error: (err) => console.error('Failed to remove like', err)
-      });
-    } console.log('like clicked!', comment);
-  }
+  trackByCommentId(index: number, comment: Comment) {
+  return comment.id; // מזהה ייחודי לכל תגובה
+}
 
 }

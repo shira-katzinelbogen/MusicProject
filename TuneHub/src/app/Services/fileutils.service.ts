@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
+import { DomSanitizer, SafeResourceUrl, SafeUrl } from '@angular/platform-browser';
 
 @Injectable({
     providedIn: 'root'
@@ -17,11 +17,9 @@ export class FileUtilsService {
         return 'assets/images/sheets_music.webp';
     }
 
-
-    getPDFUrl(fileName: string): string {
-        return `/api/sheetMusic/docs/${fileName}`;
+    getPDFUrl(base64: string): SafeResourceUrl {
+        return this.sanitizer.bypassSecurityTrustResourceUrl(`data:application/pdf;base64,${base64}`);
     }
-
 
     getMediaUrl(path?: string): SafeUrl {
         if (path && path.trim()) {

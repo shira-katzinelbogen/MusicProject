@@ -168,7 +168,8 @@
 }
 .modal-content {
   
-  max-height: 85vh;     /* גובה מקסימלי של החלון */
-  overflow-y: auto;     /* גלילה אנכית רק בתוך הטופס */
-  padding-right: 20px;  /* מקום לבר־גלילה שלא יחתוך טקסט */
+  max-height: 85vh;     
+  overflow-y: auto;  
+   overflow-x: hidden;  
+  padding-right: 20px; 
 }

@@ -46,19 +46,21 @@
     height: 100%;
     object-fit: cover;
 }
-
 .profile-info-section {
+    z-index: 500000;
+    margin-bottom: -100px;
     display: flex;
     justify-content: space-between;
     transform: translateY(-50px);
 }
 
 .profile-picture-wrapper {
+    z-index: 500000;
     position: relative;
     width: 130px;
     height: 130px;
     margin-right: 20px;
-    border: 5px solid #1D2838; 
+    border: 5px solid #1D2838;
     border-radius: 50%;
     background-color: #fff;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
@@ -90,6 +92,7 @@
     text-align: left;
     font-size: 0.8em;
 }
+
 ul.teacher-info-list {
     list-style: none;
     padding: 0;
@@ -123,11 +126,12 @@ ul.teacher-info-list {
 .action-buttons {
     display: flex;
     gap: 10px;
-    margin-top: 0px;
-    
+    margin-bottom: -50px;
+    margin-right: -54;
 }
 
-.message-btn, .follow-btn {
+.message-btn,
+.follow-btn {
     padding: 10px 20px;
     border-radius: 20px;
     font-weight: bold;
@@ -145,36 +149,6 @@ ul.teacher-info-list {
     border: 1px solid #4a617a;
 }
 
-.action-buttons .edit-btn,
-.action-buttons .signout-btn {
-    padding: 10px 20px;
-    border-radius: 25px;
-    font-weight: bold;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    gap: 5px;
-    transition: all 0.2s ease;
-    color: white;
-    border: none;
-    margin-top: 0px !important;
-}
-
-.action-buttons .edit-btn {
-    background: linear-gradient(to right, #8a2be2, #4169e1);
-    margin: 0%;
-}
-
-.action-buttons .signout-btn {
-    background-color: #dc3545;
-    margin-top: 0px;
-}
-
-.action-buttons .edit-btn:hover,
-.action-buttons .signout-btn:hover {
-    transform: scale(1.05);
-    box-shadow: 0 4px 10px rgba(0,0,0,0.2);
-}
 
 .profile-container {
     background-color: #1D2838;
@@ -210,7 +184,7 @@ ul.teacher-info-list {
     border: 5px solid #1D2838;
     border-radius: 50%;
     background-color: #fff;
-    box-shadow: 0 0 10px rgba(0,0,0,0.5);
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
     z-index: 10;
     margin-bottom: 80px;
 }
@@ -222,17 +196,7 @@ ul.teacher-info-list {
     border-radius: 50%;
 }
 
-.active-dot {
-    position: absolute;
-    bottom: 5px;
-    right: 5px;
-    width: 20px;
-    height: 20px;
-    background-color: #4CAF50;
-    border: 3px solid #1D2838;
-    border-radius: 50%;
-    box-shadow: 0 0 5px rgba(0,0,0,0.5);
-}
+
 
 .user-details {
     text-align: left;
@@ -260,7 +224,8 @@ ul.teacher-info-list {
     gap: 10px;
 }
 
-.message-btn, .follow-btn {
+.message-btn,
+.follow-btn {
     padding: 10px 20px;
     border-radius: 20px;
     font-weight: bold;
@@ -280,76 +245,76 @@ ul.teacher-info-list {
 
 .user-details {
     flex-grow: 1;
-    margin-bottom: 10px;    
+    margin-bottom: 10px;
 }
 
 .profile-description {
-  background-color: #1D2838;
-  padding: 15px;
-  margin-top: 0%;
-      list-style: none;
+    background-color: #1D2838;
+    padding: 15px;
+    margin-top: 0%;
+    list-style: none;
 
-  box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
 }
 
 .role-section {
-  font-weight: bold;
-  margin-bottom: 5px;
-  color: #A5D6A7;
+    font-weight: bold;
+    margin-bottom: 5px;
+    color: #A5D6A7;
 }
 
 .description-text {
-  line-height: 1.5;
-  color: #dcdcdc;
+    line-height: 1.5;
+    color: #dcdcdc;
 }
 
 .followers-stats {
-  margin-top: 10px;
-  display: flex;
-  gap: 15px;
-  font-size: 1.1em;
-  color: #cccccc;
+    margin-top: 10px;
+    display: flex;
+    gap: 15px;
+    font-size: 1.1em;
+    color: #cccccc;
 }
 
 .profile-tabs {
-  margin-top: 20px;
-  display: flex;
-  gap: 10px;
-  overflow-x: auto;
-  padding-bottom: 10px;
+    margin-top: 20px;
+    display: flex;
+    gap: 10px;
+    overflow-x: auto;
+    padding-bottom: 10px;
 }
 
 .profile-tabs button {
-  background-color: #233040;
-  border: none;
-  padding: 10px 20px;
-  color: #ddd;
-  border-radius: 20px;
-  cursor: pointer;
-  font-weight: bold;
-  white-space: nowrap;
-  transition: 0.2s;
+    background-color: #233040;
+    border: none;
+    padding: 10px 20px;
+    color: #ddd;
+    border-radius: 20px;
+    cursor: pointer;
+    font-weight: bold;
+    white-space: nowrap;
+    transition: 0.2s;
 }
 
 .profile-tabs button.active {
-  background-color: #556cd6;
-  color: white;
+    background-color: #556cd6;
+    color: white;
 }
 
 .profile-tabs button:hover {
-  background-color: #304055;
+    background-color: #304055;
 }
 
 .tab-content {
-  margin-top: 20px;
-  padding: 20px;
-  background-color: #1A2433;
-  border-radius: 15px;
-  min-height: 300px;
-  box-shadow: 0 2px 10px rgba(0,0,0,0.3);
+    margin-top: 20px;
+    padding: 20px;
+    background-color: #1A2433;
+    border-radius: 15px;
+    min-height: 300px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
 }
 
-.follow{
+.follow {
     font-size: 15px;
 }
 
@@ -399,7 +364,7 @@ ul.teacher-info-list {
 }
 
 .profile-tabs button:before {
-  
+
     margin-right: 5px;
 }
 
@@ -443,15 +408,16 @@ ul.teacher-info-list {
     background-color: #dc3545;
 }
 
-.edit-btn, .signout-btn {
+.edit-btn,
+.signout-btn {
     background-color: #6c757d;
     color: white;
     border: none;
 }
 
 .disabled-btn {
-  background-color: #ccc;
-  cursor: not-allowed;
+    background-color: #ccc;
+    cursor: not-allowed;
 }
 
 .action-buttons .button[disabled] {
@@ -463,26 +429,365 @@ ul.teacher-info-list {
 }
 
 button {
-  z-index: 1000;
-  position: relative;
-  pointer-events: auto;
+    z-index: 1000;
+    position: relative;
+    pointer-events: auto;
 }
 
 .profile-tabs button {
-  background: transparent;
-  border: none;
-  padding: 10px 15px;
-  cursor: pointer;
-  font-weight: 500;
-  color: #9ca3af;
+    background: transparent;
+    border: none;
+    padding: 10px 15px;
+    cursor: pointer;
+    font-weight: 500;
+    color: #9ca3af;
 }
 
 .profile-tabs button.active {
-  border-bottom: 3px solid #6366f1;
-  color: #fff;
+    border-bottom: 3px solid #6366f1;
+    color: #fff;
 }
+
 .overview-content {
-  padding: 20px;
-  text-align: center;
-      list-style: none;
+    padding: 20px;
+    text-align: center;
+    list-style: none;
+}
+
+
+app-music-card {
+    width: 350px;
+    height: auto;
+    max-width: 100%;
+    margin: 10px;
+    display: inline-block;
+}
+
+.tab-content {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 20px;
+}
+
+
+/* Neon user type tags */
+.user-tags span {
+    padding: 6px 10px;
+    border-radius: 999px;
+    font-weight: 700;
+    font-size: 12px;
+    color: #01233c;
+    text-transform: uppercase;
+    letter-spacing: 0.6px;
+
+    text-shadow: 0 0 2px rgba(0, 0, 0, 0.5);
+    box-shadow: 0 6px 24px rgba(0, 0, 0, 0.18);
+}
+
+
+.user-tags .STUDENT {
+    background: linear-gradient(90deg, #8ee7ff, #6ed0ff);
+    box-shadow: 0 6px 24px rgba(110, 208, 255, 0.18);
+}
+
+.user-tags .MANAGER {
+    background: linear-gradient(145deg, #ffd066, #ff9900);
+    box-shadow: 0 6px 24px rgba(255, 159, 110, 0.16);
+}
+
+.user-tags .TEACHER {
+    background: linear-gradient(90deg, #6effb2, #6ef2d4);
+    box-shadow: 0 6px 24px rgba(110, 242, 212, 0.12);
+}
+
+.user-tags .MUSICIAN {
+    background: linear-gradient(90deg, #b26eff, #7e6eff);
+    box-shadow: 0 6px 24px rgba(126, 110, 255, 0.16);
+}
+
+.user-tags .MUSIC_LOVER {
+    background: linear-gradient(90deg, #fd86ba, #fd6ea2);
+    box-shadow: 0 6px 24px rgba(255, 77, 141, 0.22);
+}
+
+
+/* Buttons */
+.action-buttons {
+    display: flex;
+    gap: 10px;
+    margin-top: 40px;
+    justify-content: flex-start;
+}
+
+.profile-info-section {
+    z-index: 500000;
+    display: flex;
+    align-items: flex-start;
+    gap: 20px;
+    padding: 0 30px;
+    transform: translateY(-50px);
+}
+
+.user-details {
+    flex-grow: 1;
+    margin-top: 30px;
+}
+
+.user-tags {
+    z-index: 500000000000000000000000;
+    margin-top: 10px;
+    display: flex;
+    flex-wrap: wrap;
+    font-weight: 600;
+    gap: 5px;
+}
+
+
+
+
+
+
+
+
+
+
+
+.students-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.student-card {
+    cursor: pointer;
+    text-align: center;
+    width: 100px;
+}
+
+.student-image {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-bottom: 10px;
+}
+
+.student-name {
+    font-size: 0.9rem;
+    color: #ffffff;
+}
+
+/* .container2{
+    margin-top: -95px;
+}
+ */
+
+.action-buttons {
+    display: flex;
+    gap: 10px;
+    margin-bottom: -50px;
+    margin-right: -54;
+}
+
+.header-inner-content {
+    width: 100%;
+}
+
+.action-buttons {
+    display: flex;
+    gap: 10px;
+    justify-content: flex-end;
+    margin-top: 85px;
+    margin-left: 360px;
+}
+
+.contact-details {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+    align-items: center;
+    color: #cccccc;
+}
+
+.contact-details span {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.contact-details a {
+    color: #00bcd4;
+    text-decoration: none;
+}
+
+.button {
+    width: 109px;
+    font-size: 15px;
+    height: 24px;
+    border-radius: 12px !important;
+}
+
+.user-details,
+.profile-picture-wrapper {
+    width: 100%;
+}
+
+.profile-picture-wrapper {
+    width: 60%;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+.profile-info-section {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 24px;
+    padding: 0 32px;
+    transform: translateY(-50px);
+}
+
+.profile-left {
+
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    flex: 1;
+}
+
+.profile-picture-wrapper {
+    width: 130px;
+    height: 130px;
+    min-width: 130px;
+    border: 5px solid #1D2838;
+    background: #fff;
+}
+
+.user-details {
+    margin-top: -50px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 6px;
+}
+
+.contact-details {
+    display: flex;
+    gap: 16px;
+    flex-wrap: wrap;
+}
+
+.user-tags {
+    margin-top: 6px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+}
+
+.action-buttons {
+    margin-top: -50px;
+    display: flex;
+    gap: 10px;
+    justify-content: flex-end;
+    margin-left: auto;
+    margin-right: -1360px;
+    align-items: center;
+}
+
+.name {
+    margin-bottom: -10px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex-wrap: wrap;
+}
+
+.name p {
+    margin-top: 5px;
+    margin-bottom: 2px;
+    color: rgb(168, 168, 168);
+}
+
+.description {
+    white-space: pre-line;
+    line-height: 1.6;
+}
+
+.student {
+    width: 130px;
+}
+
+.teacher-details p {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin: 6px 0;
+}
+
+.teacher-details mat-icon {
+    font-size: 20px;
+    color: #cccccc;
+}
+
+.teacher-name {
+    color: #8a2be2;
+}
+
+/* Base Container */
+.profile-container {
+    padding: 0;
+    margin: 0;
+    background-color: #1D2838 !important;
+    color: #f0f0f0;
+    font-family: Arial, sans-serif;
+}
+
+/* Page Header (Top Bar) */
+.profile-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 30px;
+    background-color: #141d2a;
+}
+
+/* Back Arrow (Navigation) */
+.back-arrow {
+    cursor: pointer;
+    color: #cccccc;
+    font-size: 1em;
+}
+
+/* Profile Card Structure */
+.profile-card {
+    position: relative;
+    padding-bottom: 50px;
+}
+
+/* Sticky Header (Navigation Tabs) */
+header.header {
+    position: sticky;
+    top: 0;
+    z-index: 200;
+    width: 100%;
+    background-color: #1D2838;
+    box-sizing: border-box;
+    padding: 10px 0;
+}
+
+.header-inner-content {
+    width: 100%;
 }

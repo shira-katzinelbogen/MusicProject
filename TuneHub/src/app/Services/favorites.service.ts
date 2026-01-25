@@ -1,23 +1,13 @@
-import { Injectable } from '@angular/core';
-import { BehaviorSubject, Observable } from 'rxjs';
+import { Injectable, signal } from '@angular/core';
 
 @Injectable({
   providedIn: 'root'
 })
 export class FavoritesService {
-  private favoritesOpen = new BehaviorSubject<boolean>(false);
+  private _isOpen = signal(false);
+  isOpen = this._isOpen.asReadonly();
 
-  isFavoritesOpen$: Observable<boolean> = this.favoritesOpen.asObservable();
-
-  openFavorites(): void {
-    this.favoritesOpen.next(true);
-  }
-
-  closeFavorites(): void {
-    this.favoritesOpen.next(false);
-  }
-
-  toggleFavorites(): void {
-    this.favoritesOpen.next(!this.favoritesOpen.value);
-  }
+  toggle() { this._isOpen.update(v => !v); }
+  open() { this._isOpen.set(true); }
+  close() { this._isOpen.set(false); }
 }

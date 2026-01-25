@@ -13,98 +13,107 @@
                     </div>
 
                     @if (!isMusician) {
-                        <button class="button" (click)="joinMusicianNetwork()" [disabled]="!user">
-                            Join Network
-                            <mat-icon>person</mat-icon>
-                        </button>
+                    <button class="button" (click)="joinMusicianNetwork()" [disabled]="!user">
+                        Join Network
+                        <mat-icon>person</mat-icon>
+                    </button>
                     }
                 </div>
             </div>
         </div>
     </header>
 
-    <section class="search-bar">
-       
-        <div class="search-input-group">
-            <span class="search-icon">🔍</span>
-            <input type="text" placeholder="Search teachers by name" [(ngModel)]="searchText"
-                (ngModelChange)="applyMusicianFilters()" />
-        </div>
-        <select class="dropdown">
-            <option>All</option>
-        </select>
-        <select class="dropdown">
-            <option>All</option>
-        </select>
+    <div class="container2">
+        <div class="stats-wrapper">
+            <div class="stats-card-container">
+                <div class="stats-card" dir="ltr">
+                    <app-stats-counter [number]="originalMusicianList.length" label="Total Musicians"
+                        glowClass="purple-glow">
+                    </app-stats-counter>
 
-        <button class="filters-btn" (click)="toggleFilters()">
-            Filters <span class="arrow-icon">{{ showFilters ? '∧' : '∨' }}</span>
-        </button>
-    </section>
+                    <app-stats-counter [number]="getUsersJoinedThisYear()" label="Join This Year" glowClass="blue-glow">
+                    </app-stats-counter>
 
-    @if (showFilters) {
-    <section class="additional-filters">
-        
-        <div class="filter-group">
-            <label>מדינה</label>
-            <select class="dropdown" 
-                    [(ngModel)]="selectedCountry" 
-                    (change)="applyMusicianFilters()">
-                @for (country of countries; track country) {
-                    <option [value]="country">{{ country }}</option>
-                }
-            </select>
-        </div>
+                    <app-stats-counter [number]="usersInMyCityAndCountry" label="In Your Area" glowClass="green-glow">
+                    </app-stats-counter>
 
-        <div class="filter-group">
-            <label>עיר</label>
-            <select class="dropdown" 
-                    [(ngModel)]="selectedCity" 
-                    (change)="applyMusicianFilters()">
-                @for (city of cities; track city) {
-                    <option [value]="city">{{ city }}</option>
-                }
-            </select>
-        </div>
-
-        <div class="filter-group">
-            <label>שנת כניסה</label>
-            <select class="dropdown" 
-                    [(ngModel)]="selectedCreatedYear" 
-                    (change)="applyMusicianFilters()">
-                @for (year of createdYears; track year) {
-                    <option [value]="year">{{ year }}</option>
-                }
-            </select>
-        </div>
-        
-    </section>
-    }
-    @if(musicianList.length===0){
-    <p class="have-no-users">
-        <b>There are currently no users to display.</b><br>
-        Add new users to manage your work efficiently and neatly.<br><br>
-
-        Take advantage of this tool to organize your day in the best way and achieve the goals you have set for
-        yourself<br>
-    </p>
-    }
-
-    @else{
-    <br><br>
-    <div class="musicians-container">
-        @for(u of musicianList; track $index){
-        <div (click)="navigationService.goToProfile(u!.profile!.id!)">
-            <h3 [innerHTML]="u.profile!.name! | highlight: searchText!"></h3>
-            <h3>description {{u.description}}</h3>
-            <h3>city {{u.city}}</h3>
-            <h3>country {{u.country}}</h3>
-            <div class="image-p">
-                <img [src]="fileUtilsService.getImageUrl(u!.profile!.imageProfilePath!)" class="profile-image">
+                </div>
             </div>
         </div>
-        }
-    </div>
-    }
 
-</div>
+        <h2 class="section-title "> <mat-icon style=" color: #B8860B;">filter_alt</mat-icon> Advanced filters </h2>
+
+        <div class="search-filters-wrapper">
+            <div class="filter-bar">
+                <section class="search-bar">
+
+
+                    <div class="search-container" onclick="document.getElementById('q6').focus()">
+                        <mat-icon>search</mat-icon>
+                        <input id="q6" class="search-input" type="text" placeholder="Search musicians by name"
+                            [(ngModel)]="searchText" (ngModelChange)="applyMusicianFilters()" />
+                    </div>
+
+                    <div class="filter-field">
+                        <label class="filter-label">country</label>
+                        <select class="dropdown" [(ngModel)]="selectedCountry" (change)="applyMusicianFilters()">
+                            @for (country of countries; track country) {
+                            <option [value]="country">{{ country }}</option>
+                            }
+                        </select>
+                    </div>
+
+                    <div class="filter-field">
+                        <label class="filter-label">city</label>
+                        <select class="dropdown" [(ngModel)]="selectedCity" (change)="applyMusicianFilters()">
+                            @for (city of cities; track city) {
+                            <option [value]="city">{{ city }}</option>
+                            }
+                        </select>
+                    </div>
+
+
+                    <div class="filter-field">
+                        <label class="filter-label">Year of entry</label>
+                        <select class="dropdown" [(ngModel)]="selectedCreatedYear" (change)="applyMusicianFilters()">
+                            @for (year of createdYears; track year) {
+                            <option [value]="year">{{ year }}</option>
+                            }
+                        </select>
+                    </div>
+                </section>
+            </div>
+        </div>
+
+        <h2 class="section-title "> <mat-icon style=" color: #B8860B;">people</mat-icon> Musicians </h2>
+        @if(musicianList.length===0){
+        <br>
+        <app-no-results></app-no-results>
+        <br>
+        }
+
+        @else{
+
+        <br><br>
+        <div class="musicians-container">
+            @for(u of musicianList; track $index){
+
+            <div (click)="navigationService.goToProfile(u!.profile!.id!)">
+
+                <div class="profile-picture-wrapper">
+                    <div class="image-p">
+                        <img [src]="fileUtilsService.getImageUrl(u!.profile!.imageProfilePath!)" class="profile-image">
+                    </div>
+                    <span [ngClass]="u.isActive ? 'active-dot' : 'inactive-dot'"></span>
+                </div>
+                <h3 [innerHTML]="u.profile!.name! | highlight: searchText!"></h3>
+                <h3>description {{u.description}}</h3>
+                <h3>city {{u.city}}</h3>
+                <h3>country {{u.country}}</h3>
+
+            </div>
+            }
+        </div>
+        }
+
+    </div>

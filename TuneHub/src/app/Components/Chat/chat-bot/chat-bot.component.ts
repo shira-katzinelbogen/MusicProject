@@ -1,45 +1,44 @@
 import { Component, AfterViewChecked, ElementRef, ViewChild, OnInit, Inject } from '@angular/core';
-import { CommonModule } from '@angular/common'; 
+import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 
-import { HttpClientModule } from '@angular/common/http';
 import { ChatService } from '../../../Services/chat.service';
 import { StorageService } from '../../../Services/storage.service';
+import { MatIconModule } from '@angular/material/icon';
+import { ChatBotService } from '../../../Services/chatBot.service';
+
 
 interface Message {
   text: string;
   sender: 'user' | 'bot';
-  avatar: string;  
+  avatar: string;
 }
 
 @Component({
   selector: 'app-chat-bot',
-  standalone: true, 
+  standalone: true,
   templateUrl: './chat-bot.component.html',
   imports: [
-    CommonModule, 
+    CommonModule,
     FormsModule,
-    HttpClientModule
+    MatIconModule
   ],
   styleUrls: ['./chat-bot.component.css']
 })
+
 export class ChatBotComponent implements OnInit, AfterViewChecked {
-  
+
   messages: Message[] = [];
   userInput: string = '';
-  conversationId: string = '1234';
+  conversationId = crypto.randomUUID();
   isOpen: boolean = false;
 
-  private chatService: ChatService;
-  private storageService: StorageService;
 
   constructor(
-    @Inject(ChatService) chatService: ChatService,
-    @Inject(StorageService) storageService: StorageService
-  ) {
-    this.chatService = chatService;
-    this.storageService = storageService;
-  }
+    private chatService: ChatService,
+    private storageService: StorageService,
+    public chatBotService: ChatBotService
+  ) { }
 
   @ViewChild('messagesContainer') private messagesContainer!: ElementRef;
 
@@ -82,9 +81,17 @@ export class ChatBotComponent implements OnInit, AfterViewChecked {
           });
 
         },
-        error: () => {
+        error: (e) => {
+          let errorText = '';
+
+          if (e.status === 401) {
+            errorText = '.Please log in to use the chat bot';
+          } else {
+            errorText = '.Error sending message. Check the server';
+          }
+
           this.addMessage({
-            text: 'שגיאה בשליחת ההודעה. בדוק את השרת.',
+            text: errorText,
             sender: 'bot',
             avatar: 'assets/images/chat-ai.webp'
           });
@@ -101,6 +108,6 @@ export class ChatBotComponent implements OnInit, AfterViewChecked {
     try {
       this.messagesContainer.nativeElement.scrollTop =
         this.messagesContainer.nativeElement.scrollHeight;
-    } catch {}
+    } catch { }
   }
 }

@@ -1,0 +1,13 @@
+  .stat-item {
+      flex: 1;
+      min-width: 80px;
+      padding: 5px 0;
+      color: #f0f0f0;
+      text-align: center;
+  }
+
+  .stat-number {
+      font-size: 32px;
+      font-weight: 700;
+      transition: all 0.3s ease;
+  }

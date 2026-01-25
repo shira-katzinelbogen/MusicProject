@@ -1,115 +1,112 @@
-// src/app/services/user-state.service.ts
-
-import { Injectable, PLATFORM_ID, inject } from '@angular/core';
-import { isPlatformBrowser } from '@angular/common';
-import { BehaviorSubject, Observable } from 'rxjs';
-import { log } from 'node:console';
+import { Injectable } from '@angular/core';
+import { BehaviorSubject, Observable, map } from 'rxjs';
 import { UsersService } from './users.service';
 import { Router } from '@angular/router';
-
-
-export interface UserProfile {
-  id: number;
-  name: string;
-  hasImageProfilePath: boolean;
-  imageProfilePath?: string;
-  roles: string[]; // ← רולים
-}
-
-const STORAGE_KEY = 'currentUserProfile';
+import {  UsersProfileDTO, EUserType } from '../Models/Users';
+import { Inject, PLATFORM_ID } from '@angular/core';
+import { isPlatformBrowser } from '@angular/common';
+import { ERole } from '../Models/Role';
 
 @Injectable({
   providedIn: 'root'
 })
 
 export class UserStateService {
- clearUser(): void {
-        if (this.isBrowser) {
-            sessionStorage.removeItem(STORAGE_KEY);
-        }
+
+  public currentUserSubject: BehaviorSubject<UsersProfileDTO | null> = new BehaviorSubject<UsersProfileDTO | null>(null);
+  public currentUser$: Observable<UsersProfileDTO | null> = this.currentUserSubject.asObservable();
+  public isAdmin$: Observable<boolean> = this.currentUser$.pipe(
+  map(user =>
+    !!user?.roles?.some(r =>
+      r?.name === ERole.ROLE_ADMIN ||
+      r?.name === ERole.ROLE_SUPER_ADMIN
+    )
+  )
+);
+
+
+  constructor(
+    private _usersService: UsersService,
+    private router: Router,
+    @Inject(PLATFORM_ID) private platformId: Object
+  ) { }
+
+
+  loadCurrentUser(): void {
+    if (!isPlatformBrowser(this.platformId)) {
+      return;
+    }
+
+    this._usersService.getCurrentUserProfile().subscribe({
+      next: (user: UsersProfileDTO) => {
+        this.currentUserSubject.next(user);
+      },
+      error: (err) => {
         this.currentUserSubject.next(null);
-    }
-
-  private currentUserSubject: BehaviorSubject<UserProfile | null>;
-  public currentUser$: Observable<UserProfile | null>;
-
-  private platformId = inject(PLATFORM_ID);
-  private isBrowser: boolean;
-
-constructor(
-  private _usersService: UsersService,
-  private router: Router,
-  // private platformId: Object
-) {
-  this.isBrowser = isPlatformBrowser(this.platformId);
-  
-  let initialUser: UserProfile | null = null;
-  if (this.isBrowser) {
-    const storedUser = sessionStorage.getItem(STORAGE_KEY);
-    if (storedUser) {
-      try {
-        initialUser = JSON.parse(storedUser);
-      } catch (e) {
-        console.error("Failed to parse user profile from session storage", e);
-        sessionStorage.removeItem(STORAGE_KEY);
       }
-    }
+    });
   }
 
-  this.currentUserSubject = new BehaviorSubject<UserProfile | null>(initialUser);
-  this.currentUser$ = this.currentUserSubject.asObservable();
-}
-
-  /** שמירת המשתמש וההרשאות */
-  setUser(user: UserProfile): void {
-    if (this.isBrowser) {
-      sessionStorage.setItem(STORAGE_KEY, JSON.stringify(user));
-    }
-    this.currentUserSubject.next(user);
-    
-  }
-logout(): void {
-  if (!this.isBrowser) return;
-
-  // קוראים קודם לשרת
-  this._usersService.signOut().subscribe({
-    next: () => {
-      // אחרי שהשרת אישר את הסיין אאוט
-      sessionStorage.removeItem(STORAGE_KEY);
-      this.currentUserSubject.next(null);
-
-      this.router.navigate(['/home']);
-    },
-    error: (err) => console.error('Sign out failed:', err)
-  });
-}
-
-
-  /** מחזיר את המשתמש הנוכחי באופן סינכרוני */
-  getCurrentUserValue(): UserProfile | null {
-    console.log(this.currentUserSubject.getValue());
-    
+  getCurrentUserValue(): UsersProfileDTO | null {
     return this.currentUserSubject.getValue();
   }
 
-  /** האם למשתמש יש רול מסוים */
-  hasRole(role: string): boolean {
+  hasRole(role: ERole): boolean {
     const user = this.currentUserSubject.getValue();
-    return !!user?.roles?.includes(role);
+    if (!user?.roles) return false;
+    
+    const hasIt = user.roles.some((r: any) => {
+      return r?.name === role;
+    });
+    
+    return hasIt;
   }
 
-  /** האם המשתמש הוא אדמין לדוגמה */
+  hasUserType(type: EUserType): boolean {
+    const user = this.currentUserSubject.getValue();
+    return !!user?.userTypes?.includes(type);
+  }
+
+
+  isMusician(): boolean {
+    return this.hasUserType(EUserType.MUSICIAN);
+  }
+
+  isTeacher(): boolean {
+    return this.hasUserType(EUserType.TEACHER);
+  }
+
+  canBecomeTeacher(): boolean {
+    return this.isMusician() && !this.isTeacher();
+  }
+
+
   isAdmin(): boolean {
-    return this.hasRole('ADMIN');
+    return this.hasRole(ERole.ROLE_ADMIN) || this.hasRole(ERole.ROLE_SUPER_ADMIN);
   }
 
-  /** האות הראשונה של שם המשתמש */
+  isSuperAdmin(): boolean {
+    return this.hasRole(ERole.ROLE_SUPER_ADMIN);
+  }
+
   getFirstLetter(): string | null {
     const user = this.currentUserSubject.getValue();
-    if (user?.name) {
-      return user.name.charAt(0).toUpperCase();
-    }
-    return null;
+    return user?.name?.charAt(0).toUpperCase() ?? null;
   }
-  
+
+  clear(): void {
+    this.currentUserSubject.next(null);
+  }
+
+  logout(): void {
+    this._usersService.signOut().subscribe({
+      next: () => {
+        this.clear();
+        this.router.navigate(['/home']);
+      },
+      error: (err) => console.error('Sign out failed:', err)
+    });
+  }
 }
+
+

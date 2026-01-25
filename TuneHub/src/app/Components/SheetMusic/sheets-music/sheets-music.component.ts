@@ -1,30 +1,28 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, Input, OnInit } from '@angular/core';
 import { SheetMusicService } from '../../../Services/sheetmusic.service';
 import SheetMusic, { DifficultyLevel, Scale } from '../../../Models/SheetMusic';
 import { FileUtilsService } from '../../../Services/fileutils.service';
-import { Router } from '@angular/router';
 import { NavigationService } from '../../../Services/navigation.service';
 import { MatIconModule } from '@angular/material/icon';
 import { UploadSheetMusicService } from '../../../Services/uploadsheetmusic.service';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { UploadSheetMusicComponent } from "../upload-sheet-music/upload-sheet-music.component";
 import { FormsModule } from '@angular/forms';
-import { InteractionService } from '../../../Services/interaction.service';
-import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { HighlightPipe } from '../../Shared/highlight/highlight.component';
+import { HighlightPipe } from '../../../Pipes/highlight.pipe';
 import { debounceTime, distinctUntilChanged, Subject } from 'rxjs';
 import { MusicCardComponent } from "../music-card/music-card.component";
+import { NoResultsComponent } from "../../Shared/no-results/no-results.component";
+import { StatsCounterComponent } from "../../Shared/stats-counter/stats-counter.component";
 
 @Component({
   selector: 'app-sheets-music',
   standalone: true,
-  imports: [MatIconModule, FormsModule, CommonModule, UploadSheetMusicComponent, MusicCardComponent, HighlightPipe],
-  changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [MatIconModule, FormsModule, CommonModule, UploadSheetMusicComponent, MusicCardComponent, HighlightPipe, NoResultsComponent, StatsCounterComponent],
   templateUrl: './sheets-music.component.html',
   styleUrl: './sheets-music.component.css'
-
 })
+
 export class SheetsMusicComponent implements OnInit {
   private searchSubject = new Subject<string>();
   originalSheetMusicList: SheetMusic[] = [];
@@ -44,10 +42,10 @@ export class SheetsMusicComponent implements OnInit {
   categorySearchText: string = '';
   filteredCategories: string[] = [];
 
-
   @Input() sheets!: SheetMusic[];
   @Input() isProfileView: boolean = false;
   document: any;
+  Math: any;
 
   constructor(
     private _sheetMusicService: SheetMusicService,
@@ -290,4 +288,14 @@ export class SheetsMusicComponent implements OnInit {
       cat.toLowerCase().includes(search)
     );
   }
+
+
+  get categoriesCount(): number {
+    return this.categories.filter(c => c !== 'All').length;
+  }
+  get instrumentsCount(): number {
+    return this.instruments.filter(i => i !== 'All').length;
+  }
+
+
 }

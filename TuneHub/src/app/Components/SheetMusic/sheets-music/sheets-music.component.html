@@ -37,149 +37,137 @@
 
       <div class="stats-card-container">
         <div class="stats-card" dir="ltr">
-  
-          <div></div>
-          <div class="stat-item purple-glow">
-            <div class="stat-number">{{ allSheetMusicList.length }}</div>
-            <div class="stat-label">Total Sheets</div>
-          </div>
-          <div class="stat-item blue-glow">
-            <div class="stat-number">{{categories.length}}</div>
-            <div class="stat-label">Categories</div>
-          </div>
-          <div class="stat-item green-glow">
-            <div class="stat-number">{{instruments.length}}</div>
-            <div class="stat-label">Instruments</div>
-          </div>
+
+          <app-stats-counter [number]="allSheetMusicList.length" label="Total Sheets" glowClass="purple-glow">
+          </app-stats-counter>
+
+          <app-stats-counter [number]="categoriesCount" label="Categories" glowClass="blue-glow">
+          </app-stats-counter>
+
+          <app-stats-counter [number]="instrumentsCount" label="Instruments" glowClass="green-glow">
+          </app-stats-counter>
         </div>
       </div>
-    </div>
 
 
+      <!-- CATEGORIES -->
+      <section class="browse-categories-section">
+        <h2 class="section-title "> <mat-icon style=" color: #B8860B;">folder</mat-icon> Browse by Category </h2>
 
-    <!-- CATEGORIES -->
-
-    <section class="browse-categories-section">
-
-
-      <h2 class="section-title "> <mat-icon style=" color: #B8860B;">folder</mat-icon> Browse by Category </h2>
-
-
-      <div class="search-container" onclick="document.getElementById('q4').focus()">
-        <mat-icon>search</mat-icon>
-        <input id="q4" class="search-input" type="search" placeholder="Search categories..."
-          [(ngModel)]="categorySearchText" (ngModelChange)="filterCategories()" />
+        <div class="search-container" onclick="document.getElementById('q4').focus()">
+          <mat-icon>search</mat-icon>
+          <input id="q4" class="search-input" type="search" placeholder="Search categories..."
+            [(ngModel)]="categorySearchText" (ngModelChange)="filterCategories()" />
 
 
-      </div> <br>
+        </div> <br>
 
-      <div class="category-grid">
+        <div class="category-grid">
 
-        <!-- All Categories -->
-        <div class="category-card all-categories-card" [class.selected]="selectedCategory === 'All'"
-          (click)="selectCategory('All')">
+          <!-- All Categories -->
+          <div class="category-card all-categories-card" [class.selected]="selectedCategory === 'All'"
+            (click)="selectCategory('All')">
 
-          <div class="category-icon-wrapper">
-            <mat-icon>folder</mat-icon>
-          </div>
+            <div class="category-icon-wrapper">
+              <mat-icon>folder</mat-icon>
+            </div>
 
-          <div class="category-details">
-            <h3 class="category-name">All Categories</h3>
-            <p class="category-desc">Browse all sheet music</p>
-            <span class="sheet-count">{{ originalSheetMusicList.length }} sheets</span>
-          </div>
+            <div class="category-details">
+              <h3 class="category-name">All Categories</h3>
+              <p class="category-desc">Browse all sheet music</p>
+              <span class="sheet-count">{{ originalSheetMusicList.length }} sheets</span>
+            </div>
 
-          <mat-icon *ngIf="selectedCategory === 'All'" class="check-icon">
-            check_circle
-          </mat-icon>
-        </div>
-
-        <!-- Specific Categories -->
-        @for (categoryName of filteredCategories; track categoryName) {
-        @if (categoryName !== 'All') {
-        <div class="category-card" [class.selected]="selectedCategory === categoryName"
-          (click)="selectCategory(categoryName)">
-
-          <div class="category-icon-wrapper" [style.background-color]="getCategoryColor(categoryName)">
-            <mat-icon class="category-icon">
-              {{ getCategoryIcon(categoryName) }}
+            <mat-icon *ngIf="selectedCategory === 'All'" class="check-icon">
+              check_circle
             </mat-icon>
           </div>
 
-          <div class="category-details">
+          <!-- Specific Categories -->
+          @for (categoryName of filteredCategories; track categoryName) {
+          @if (categoryName !== 'All') {
+          <div class="category-card" [class.selected]="selectedCategory === categoryName"
+            (click)="selectCategory(categoryName)">
 
-            <h3 class="category-name" [innerHTML]="categoryName! | highlight: categorySearchText!"></h3>
+            <div class="category-icon-wrapper" [style.background-color]="getCategoryColor(categoryName)">
+              <mat-icon class="category-icon">
+                {{ getCategoryIcon(categoryName) }}
+              </mat-icon>
+            </div>
 
-            <p class="category-desc">{{ getCategoryDescription(categoryName) }}</p>
-            <span class="sheet-count">
-              {{ countSheetsByCategory(categoryName) }} sheets
-            </span>
+            <div class="category-details">
+
+              <h3 class="category-name" [innerHTML]="categoryName! | highlight: categorySearchText!"></h3>
+
+              <p class="category-desc">{{ getCategoryDescription(categoryName) }}</p>
+              <span class="sheet-count">
+                {{ countSheetsByCategory(categoryName) }} sheets
+              </span>
+            </div>
+
+            <mat-icon *ngIf="selectedCategory === categoryName" class="check-icon">
+              check_circle
+            </mat-icon>
+
+          </div>
+          }
+          }
+
+        </div>
+      </section>
+      <h2 class="section-title "> <mat-icon style=" color: #B8860B;">filter_alt</mat-icon> Advanced filters </h2>
+
+
+      <!-- SEARCH & FILTERS -->
+      <div class="search-filters-wrapper">
+        <div class="filter-bar">
+
+
+
+          <div class="search-container" onclick="document.getElementById('q5').focus()">
+            <mat-icon>search</mat-icon>
+            <input id="q5" class="search-input" type="text" placeholder="Search sheet music..." [(ngModel)]="searchText"
+              (ngModelChange)="onSearchChange($event)" />
           </div>
 
-          <mat-icon *ngIf="selectedCategory === categoryName" class="check-icon">
-            check_circle
-          </mat-icon>
+          <div class="filter-field">
+            <label class="filter-label">Instrument</label>
+            <select class="dropdown" [(ngModel)]="selectedInstrument" (change)="applyFilters()">
+              <option *ngFor="let instrument of instruments" [value]="instrument">{{ instrument }}</option>
+            </select>
+          </div>
 
+          <div class="filter-field">
+            <label class="filter-label">Scale</label>
+            <select class="dropdown" [(ngModel)]="selectedScale" (change)="applyFilters()">
+              <option *ngFor="let scale of scales" [value]="scale">{{ scale }}</option>
+            </select>
+          </div>
+
+          <div class="filter-field">
+            <label class="filter-label">Level</label>
+            <select class="dropdown" [(ngModel)]="selectedLevel" (change)="applyFilters()">
+              <option *ngFor="let level of levels" [value]="level">{{ level }}</option>
+            </select>
+          </div>
         </div>
+
+      </div>
+
+      <h2 class="section-title "> <mat-icon style=" color: #B8860B;">description</mat-icon> Sheets </h2>
+
+      <!-- SHEET MUSIC LIST -->
+      <div class="sheet-music-container">
+
+        @for (sheet of sheetMusicList; track sheet.id) {
+        <app-music-card [sheet]="sheet" [searchText]="searchText">
+        </app-music-card>
         }
+        @empty {
+        <app-no-results></app-no-results>
         }
 
       </div>
-    </section>
-    <h2 class="section-title "> <mat-icon style=" color: #B8860B;">filter_alt</mat-icon> Advanced filters </h2>
-
-
-    <!-- SEARCH & FILTERS -->
-    <div class="search-filters-wrapper">
-      <div class="filter-bar">
-
-
-
-
-        <div class="search-container" onclick="document.getElementById('q5').focus()">
-          <mat-icon>search</mat-icon>
-          <input id="q5" class="search-input" type="text" placeholder="Search sheet music..." [(ngModel)]="searchText"
-            (ngModelChange)="onSearchChange($event)" />
-
-
-        </div>
-
-        <select class="dropdown" [(ngModel)]="selectedInstrument" (change)="applyFilters()">
-          <option *ngFor="let instrument of instruments" [value]="instrument">{{ instrument }}</option>
-        </select>
-
-        <select class="dropdown" [(ngModel)]="selectedScale" (change)="applyFilters()">
-          <option *ngFor="let scale of scales" [value]="scale">{{ scale }}</option>
-        </select>
-
-        <select class="dropdown" [(ngModel)]="selectedLevel" (change)="applyFilters()">
-          <option *ngFor="let level of levels" [value]="level">{{ level }}</option>
-        </select>
-      </div>
-    </div>
-
-    <h2 class="section-title "> <mat-icon style=" color: #B8860B;">description</mat-icon> Sheets </h2>
-
-    <!-- SHEET MUSIC LIST -->
-    <div class="sheet-music-container">
-
-      @for (sheet of sheetMusicList; track sheet.id) {
-      <app-music-card [sheet]="sheet" [searchText]="searchText">
-      </app-music-card>
-      }
-
-      @empty {
-      <div class="no-results-container">
-        <div class="icon-circle">
-          <i class="material-icons">search</i>
-        </div>
-        <div class="message-text">
-          No results found
-        </div>
-      </div>
-      }
 
     </div>
-
   </div>
-</div>

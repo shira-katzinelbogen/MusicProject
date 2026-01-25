@@ -1,6 +1,4 @@
-import { HttpClient } from '@angular/common/http';
 import { Injectable, signal } from '@angular/core';
-import { Observable } from 'rxjs/internal/Observable';
 
 @Injectable({ providedIn: 'root' })
 export class LoginService {

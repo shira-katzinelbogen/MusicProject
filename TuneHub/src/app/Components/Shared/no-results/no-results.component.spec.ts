@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { TimeAgoPipeComponent } from './time-ago-pipe.component';
+import { NoResultsComponent } from './no-results.component';
 
-describe('TimeAgoPipeComponent', () => {
-  let component: TimeAgoPipeComponent;
-  let fixture: ComponentFixture<TimeAgoPipeComponent>;
+describe('NoResultsComponent', () => {
+  let component: NoResultsComponent;
+  let fixture: ComponentFixture<NoResultsComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [TimeAgoPipeComponent]
+      imports: [NoResultsComponent]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(TimeAgoPipeComponent);
+    fixture = TestBed.createComponent(NoResultsComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

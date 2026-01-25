@@ -1,18 +1,12 @@
-import Instrument from './Instrument'; 
+import Instrument from './Instrument';
 import Post from './Post';
 import SheetMusic from './SheetMusic';
 import type Teacher from './Teacher';
 import Comment from './Comment';
+import Role, { ERole } from './Role';
 
 
-export enum ERole {
-    ROLE_USER = 'ROLE_USER',
-    ROLE_ADMIN = 'ROLE_ADMIN',
-    ROLE_SUPER_ADMIN = 'ROLE_SUPER_ADMIN',
-}
-
-
-export enum UserType {
+export enum EUserType {
     STUDENT = 'STUDENT',
     MANAGER = 'MANAGER',
     TEACHER = 'TEACHER',
@@ -24,9 +18,9 @@ export interface UsersProfileDTO {
     id: number;
     name: string;
     imageProfilePath: string;
-    roles: ERole[];
+    roles: Role[];
+    userTypes?: EUserType[];
 }
-
 
 export interface UsersSignUpDTO {
     name: string;
@@ -56,17 +50,17 @@ export default class Users {
         roles?: string[]
     }
 
-    roles?: ERole[];
+    roles?: Role[];
     id?: number;
     imageProfilePath?: string;
     name?: string;
     password?: string;
     email?: string;
     description?: string;
-    userTypes?: UserType[];
+    userTypes?: EUserType[];
     createdAt?: Date | string;
     editedIn?: Date;
-    active?: boolean;
+    isActive?: boolean;
     city?: string;
     country?: string;
     rating?: number;
@@ -83,3 +77,46 @@ export default class Users {
 
 
 
+export interface UsersProfileCompleteDTO {
+    id: number;
+    name: string;
+    email: string;
+    createdAt: string;
+    editedIn: string;
+    active: boolean;
+    description: string;
+    rating: number;
+    city: string;
+    country: string;
+    imageProfilePath: string;
+    userTypes: string[];
+    instruments: InstrumentResponseDTO[];
+    sheetsMusic: SheetMusic[];
+    posts: Post[];
+    teacher: UsersProfileDTO;
+    ownProfile: boolean;
+    canBeMyStudent: boolean;
+    myStudent: boolean;
+    canEditRoles: boolean;
+    canDelete: boolean;
+    teacherDetails?: TeacherListingDTO;
+    totalLikes: number;
+    totalHearts: number;
+    totalCommentsWritten: number;
+    totalCommentsReceived: number;
+}
+
+export interface InstrumentResponseDTO {
+    id: number;
+    name: string;
+}
+
+
+export interface TeacherListingDTO {
+    id: number;
+    pricePerLesson: number;
+    experience: number;
+    lessonDuration: number;
+    instruments: InstrumentResponseDTO[];
+    students: UsersProfileDTO[];
+}

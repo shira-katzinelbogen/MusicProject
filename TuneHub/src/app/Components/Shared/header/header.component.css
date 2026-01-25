@@ -1,64 +1,49 @@
 :host {
   position: fixed;
-  /* נשאר מעל הכל */
   top: 0;
   left: 0;
   width: 100%;
-  
-  /* גבוה מאוד */
-  /* background: rgba(255,255,255,0.3); שקוף */
 }
 
 :root {
   --purple-1: #8A3FFC;
-  /* צבע הסגול העיקרי */
   --purple-2: #A03FFB;
-  /* גוון משלים */
   --blue-1: #3B82F6;
-  /* כחול למעבר */
   --bg-alpha: rgba(160, 63, 251, 0.06);
-  /* הילה חצי־שקופה */
 }
 
 body {
-  font-family: 'Inter', system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
-  background: #f3f5f9;
+  font-family: 'Inter', system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  background: linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 40%, #2b2b2b 100%);
+  color: #e0e0e0;
   display: flex;
   align-items: center;
   justify-content: center;
   height: 100vh;
   margin: 0;
   direction: rtl;
-  /* עברית */
 }
 
-/* קונטיינר התיבה */
 .search-container {
   display: flex;
   align-items: center;
   gap: 10px;
   width: 460px;
-
   padding: 10px 18px;
   border-radius: 10px;
   background-color: #2b3a52;
   border: 3px solid rgba(0, 0, 0, 0.08);
-  transition: border-color 180ms ease, box-shadow 180ms ease, transform 120ms ease;
   box-shadow: 0 1px 2px rgba(16, 24, 40, 0.04);
   cursor: text;
-  /* מרמז שמשתמש יכול להקליד */
-
+  transition: border-color 180ms ease, box-shadow 180ms ease, transform 120ms ease;
 }
 
-/* כשהשדה בפנים מקבל פוקוס או כשהקונטיינר נבחר - הגבול סגול + הילה */
 .search-container:focus-within {
   border-color: #A03FFB;
-
   box-shadow: 0 6px 20px var(--bg-alpha);
   transform: translateY(-1px);
 }
 
-/* אייקון זכוכית מגדלת פשוט */
 .search-icon {
   width: 20px;
   height: 20px;
@@ -67,28 +52,20 @@ body {
   opacity: 1;
 }
 
-
-
-
-
-
-
-
-
-
-
-
-/* גוף האתר */
-body {
-  margin: 0;
-  font-family: Arial, sans-serif;
-  background: linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 40%, #2b2b2b 100%);
-  color: #e0e0e0;
+header {
+  color: #ffffff;
+  padding: 18px 45px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-radius: 0 0 45px 45px;
+  background-color: rgba(29, 42, 59, 0.937);
+  -webkit-backdrop-filter: blur(12px);
+  backdrop-filter: blur(12px);
+  z-index: 1000000000;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.6);
+  border: 1px solid rgba(255, 255, 255, 0.1);
 }
-
-
-
-
 
 header::after {
   content: '';
@@ -97,20 +74,11 @@ header::after {
   left: 0;
   width: 100%;
   height: 100%;
-  /* הצל הדרמטי */
-  /* background: linear-gradient(to bottom, rgba(0, 0, 0, 0.7) 0%, rgba(0, 0, 0, 0) 50%); */
   pointer-events: none;
-  /* לא חוסם אינטראקציה */
 }
 
-
-
 .menu-icon {
-
   font-size: 35px;
-
-
-  /* font-weight: bold; */
 }
 
 .right-icons {
@@ -132,7 +100,6 @@ header::after {
   cursor: pointer;
 }
 
-/* Overlay */
 .overlay {
   position: relative;
   top: 0;
@@ -140,7 +107,6 @@ header::after {
   width: 100%;
   height: 100%;
   background: rgba(0, 0, 0, 0.603);
-  /* display: none; */
   z-index: 998;
 }
 
@@ -148,29 +114,10 @@ header::after {
   display: block;
 }
 
-/* Sidebar */
-/* .sidebar {
-  width: 260px;
-  height: 100vh;
-  background: linear-gradient(180deg, #121212 0%, #1c1c1c 100%);
-  position: fixed;
-  top: 0;
-  left: -300px; */
-  /* מוסתר בהתחלה בצד שמאל */
-  /* transition: left 0.3s ease;
-  padding: 60px 20px 20px;
-  z-index: 999;
-} */
-
 .sidebar.open {
   left: 0;
-  /* נכנס פנימה מצד שמאל */
 }
 
-
-
-
-/* כפתור סגירה */
 .close-btn {
   font-size: 24px;
   color: #ffffff;
@@ -182,7 +129,6 @@ header::after {
   right: 15px;
 }
 
-/* לינקים בתפריט */
 .sidebar a {
   display: block;
   padding: 12px 15px;
@@ -199,140 +145,74 @@ header::after {
   transform: translateX(-4px);
 }
 
-
-
-
 #logo-name {
   line-height: 0.9;
-  /* text-align: center; */
-  /* מרכז את הלוגו */
   padding: 0;
-  /* רווח מהצדדים */
 }
 
 #app-name {
   font-size: 33px;
-  /* שם גדול יותר */
   font-weight: 450;
-
   margin: 0;
-  /* ביטול מרווח אוטומטי */
   line-height: 1;
 }
 
 #app-slogan {
-
   font-size: 10px;
-  /* סלוגן קטן יותר */
-  /* margin: 66px 0 0 0; */
-  /* מרווח קטן מעל */
   color: #a969dd;
-  /* צבע כהה יותר אבל לא שחור */
 }
-
-
-
-
-/* Header */
-header {
-  color: #ffffff;
-  padding: 18px 45px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-
-  /* margin: 15px 15px; */
-  /* margin-top: 16px; */
-  border-radius: 0 0 45px 45px;
-  
-  
-  background: rgba(0,0,0,0.55);
-    background-color: rgba(29, 42, 59, 0.937); /* חצי שקוף */
-  -webkit-backdrop-filter: blur(12px);
-
-  backdrop-filter: blur(12px);
-  
-     z-index: 100000000000000 !important;
-  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.6);
-  border: 1px solid rgba(255, 255, 255, 0.1);   /* קו לבן דק ושקוף */
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 .notification-icon-container {
-    /* ה-Tailwind כבר מטפל בעיצוב הראשי (relative, cursor-pointer) */
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 5px; /* מוסיף אזור לחיצה (Touch Target) נוח יותר */
-    border-radius: 50%;
-    transition: background-color 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 5px;
+  border-radius: 50%;
+  transition: background-color 0.2s;
 }
 
 .notification-icon-container:hover {
-    background-color: #2a2a2a; /* רקע קל בריחוף */
+  background-color: #2a2a2a;
 }
 
-
-/* ----------------------------------------------------------------
-/* מיכל הפעמון */
 .notification-wrapper {
-    position: relative;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin-right: -160px;
-      margin-left: 55px;
-     margin-top: 11px;  /* הצמדה לפרופיל */
-    cursor: pointer;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: -160px;
+  margin-left: 55px;
+  margin-top: 11px;
+  cursor: pointer;
 }
 
-/* אייקון הפעמון */
 .notification-wrapper mat-icon {
-    font-size: 32px !important;   /* הגדלת האייקון */
-    width: 40px !important;
-    height: 40px !important;
-    color: #d1d1d1;
-    transition: 0.2s;
+  font-size: 32px !important;
+  width: 40px !important;
+  height: 40px !important;
+  color: #d1d1d1;
+  transition: 0.2s;
 }
 
 .notification-wrapper mat-icon:hover {
-    color: #d16fff;
+  color: #d16fff;
 }
 
-/* עיגול ההתראות */
 .notification-badge {
-    position: absolute;
-    top: -4px;        /* מיקום מדויק מעל הפעמון */
-    right: -2px;
-    background-color: #8e00e6;
-    color: #ffffff;
-    width: 20px;
-    height: 20px;
-    font-size: 11px;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-weight: bold;
-
-    border: 1px solid #c300ff; /* קו שמפריד מהרקע */
-    box-shadow: 0 0 6px rgba(0,0,0,0.6);
-    z-index: 10;
+  position: absolute;
+  top: -4px;
+  right: -2px;
+  background-color: #8e00e6;
+  color: #ffffff;
+  width: 20px;
+  height: 20px;
+  font-size: 11px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  border: 1px solid #c300ff;
+  box-shadow: 0 0 6px rgba(0,0,0,0.6);
+  z-index: 10;
 }

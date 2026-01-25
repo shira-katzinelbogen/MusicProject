@@ -5,7 +5,8 @@
       <div class="footer-tagline">
         <h1>TuneHub</h1>
         <p>Play. Share. Grow.</p>
-        <p>The professional platform connecting musicians worldwide. Create, collaborate, and grow your musical career.</p>
+        <p>The professional platform connecting musicians worldwide. Create, collaborate, and grow your musical career.
+        </p>
       </div>
     </div>
 
@@ -14,30 +15,27 @@
         <h4>Platform</h4>
         <ul>
           <li><a routerLink="/home-page" routerLinkActive="active-link">Home</a></li>
-          <li><a routerLink="/posts" routerLinkActive="active-link">Posts & Tracks</a></li>
-          <li><a routerLink="/sheets-music" routerLinkActive="active-link">Sheet Music</a></li>
-        </ul>
-      </div>
-
-      <div class="footer-column">
-        <h4>Community</h4>
-        <ul>
-          <li><a routerLink="/musicians" routerLinkActive="active-link">Find Musicians</a></li>
-          <li><a routerLink="/favorite" routerLinkActive="active-link">Favorites</a></li>
-          <li><a routerLink="/notification" routerLinkActive="active-link">Notification</a></li>
+          <li><a routerLink="/posts" routerLinkActive="active-link">Posts & Vibes</a></li>
+          <li><a routerLink="/sheets-music" routerLinkActive="active-link">Sheets Music</a></li>
         </ul>
       </div>
 
       <div class="footer-column">
         <h4>Learn & Grow</h4>
         <ul>
-          <li><a routerLink="/teacher-list" routerLinkActive="active-link">Teachers & Lessons</a></li>
-          <li><a routerLink="/musicians" routerLinkActive="active-link">Musicians</a></li>
-          <li><a routerLink="/chat-bot" routerLinkActive="active-link">Chat Bot</a></li>
+          <li><a routerLink="/teacher-list" routerLinkActive="active-link">Teachers</a></li>
+          <li><a routerLink="/musicians" routerLinkActive="active-link">Find Musicians</a></li>
         </ul>
       </div>
 
-      
+      <div class="footer-column">
+        <h4>Extras</h4>
+        <ul>
+          <li><a (click)="favoritesService.open()">Favorites</a></li>
+          <li><a (click)="chatBotService.toggle()">Chat Bot</a></li>
+          <!-- <li><a routerLink="/notification" routerLinkActive="active-link">Notification</a></li> -->
+        </ul>
+      </div>
     </div>
   </div>
 

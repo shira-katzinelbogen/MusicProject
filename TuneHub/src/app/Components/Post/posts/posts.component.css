@@ -1,5 +1,4 @@
-
-/* ----------------- Body & Global Styles for POSTS ----------------- */
+/* Body & Global Styles for POSTS */
 html,
 body {
     margin: 0;
@@ -9,7 +8,7 @@ body {
     width: 100%;
     font-family: 'Inter', 'Roboto', 'Open Sans', sans-serif;
     color: white;
-    background-color: #1D2838; /* הרקע הכהה של הפוסטים */
+    background-color: #1D2838;
 }
 
 app-root {
@@ -18,7 +17,7 @@ app-root {
     width: 100%;
 }
 
-/* ----------------- Buttons ----------------- */
+/* Buttons */
 .button {
     display: inline-flex;
     align-items: center;
@@ -35,7 +34,9 @@ app-root {
     transition: transform 0.15s ease, box-shadow 0.15s ease;
 }
 
-.button mat-icon { font-size: 25px; }
+.button mat-icon {
+    font-size: 25px;
+}
 
 .button:hover {
     transform: scale(1.05);
@@ -56,18 +57,30 @@ app-root {
     pointer-events: none;
 }
 
-.button:active::after { opacity: 1; }
+.button:active::after {
+    opacity: 1;
+}
+
 .button:active {
     transform: scale(0.95);
     box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
 }
 
 /* Button color variants */
-.play { color: #B97FFF; }
-.share { color: #3BB2FF; margin: 0 10px; }
-.grow { color: #3CFF6E; }
+.play {
+    color: #B97FFF;
+}
 
-/* ----------------- Overlay ----------------- */
+.share {
+    color: #3BB2FF;
+    margin: 0 10px;
+}
+
+.grow {
+    color: #3CFF6E;
+}
+
+/* Overlay */
 .overlay {
     position: absolute;
     top: 0;
@@ -78,7 +91,7 @@ app-root {
     z-index: 2;
 }
 
-/* ----------------- Cover Image & Wrapper ----------------- */
+/* Cover Image & Wrapper */
 .cover-wrapper {
     position: relative;
     width: 100%;
@@ -116,22 +129,27 @@ app-root {
     text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.7);
 }
 
-/* ----------------- Scrollbar ----------------- */
-body::-webkit-scrollbar { width: 15px; }
+/* Scrollbar */
+body::-webkit-scrollbar {
+    width: 15px;
+}
+
 body::-webkit-scrollbar-track {
     background: #1D2838;
     border-radius: 10px;
 }
+
 body::-webkit-scrollbar-thumb {
     background: linear-gradient(to bottom, #9430ff 0%, #3888ff 100%);
     border-radius: 10px;
     border: 3px solid #2c3e50;
 }
+
 body::-webkit-scrollbar-thumb:hover {
     background: linear-gradient(to bottom, #8413fe 0%, #1b76ff);
 }
 
-/* ----------------- Container ----------------- */
+/* Container */
 .container {
     color: #f0f0f0;
     background-color: #1D2838;
@@ -139,7 +157,7 @@ body::-webkit-scrollbar-thumb:hover {
     font-family: Arial, sans-serif;
 }
 
-/* ----------------- Musicians Gradient Text ----------------- */
+/* Musicians Gradient Text */
 .musicians {
     font-size: clamp(2rem, 4vw, 5rem);
     font-weight: 800;
@@ -160,7 +178,7 @@ body::-webkit-scrollbar-thumb:hover {
     text-shadow: 0 0 20px rgba(166, 83, 254, 0.3);
 }
 
-/* ----------------- Logo ----------------- */
+/* Logo */
 .logo {
     display: flex;
     align-items: center;
@@ -175,7 +193,7 @@ body::-webkit-scrollbar-thumb:hover {
     margin-right: 100px;
 }
 
-/* ----------------- Header ----------------- */
+/* Header */
 .header {
     display: flex;
     justify-content: space-between;
@@ -200,21 +218,12 @@ body::-webkit-scrollbar-thumb:hover {
     display: inline-block;
 }
 
-
-
-
-
-
-
-
-
-
-
+/* Search Bar */
 .search-bar {
     display: grid;
-    grid-template-columns: 2fr repeat(2, 1fr) 0.5fr; 
+    grid-template-columns: 2fr repeat(2, 1fr) 0.5fr;
     gap: 10px;
-    background-color: #1e1e2d; /* רקע כהה ספציפי (לשמירה על ההפרדה מה-body) */
+    background-color: #1e1e2d;
     padding: 15px;
     border-radius: 8px;
     align-items: center;
@@ -223,7 +232,7 @@ body::-webkit-scrollbar-thumb:hover {
 .search-input-group {
     display: flex;
     align-items: center;
-   background-color: #2b3a52;
+    background-color: #2b3a52;
     border-radius: 4px;
     padding: 5px 10px;
 }
@@ -240,7 +249,8 @@ body::-webkit-scrollbar-thumb:hover {
     margin-right: 10px;
 }
 
-.dropdown, .filters-btn {
+.dropdown,
+.filters-btn {
     padding: 10px;
     border-radius: 4px;
     border: none;
@@ -249,7 +259,7 @@ body::-webkit-scrollbar-thumb:hover {
     cursor: pointer;
 }
 
-/* כפתור הפילטרים */
+/* Filters Button */
 .filters-btn {
     font-weight: bold;
     display: flex;
@@ -257,14 +267,14 @@ body::-webkit-scrollbar-thumb:hover {
     align-items: center;
 }
 
-/* שורת המסננים הנוספים (השורה הנסתרת/מוצגת) */
+/* Additional Filters */
 .additional-filters {
     display: grid;
-    grid-template-columns: repeat(4, 1fr); 
+    grid-template-columns: repeat(4, 1fr);
     gap: 20px;
     padding: 20px 15px;
     margin-top: 10px;
-    background-color: #1e1e2d; /* רקע כהה ספציפי (לשמירה על ההפרדה מה-body) */
+    background-color: #1e1e2d;
     border-radius: 8px;
 }
 
@@ -275,70 +285,46 @@ body::-webkit-scrollbar-thumb:hover {
 }
 
 .filter-group .dropdown {
-    
     width: 100%;
 }
 
-
-
-
-/* posts.component.css */
-
+/* Post Rating */
 .post-rating {
     display: flex;
     align-items: center;
-    margin-right: 15px; /* רווח מהסטאטוס הבא */
-}
-
-.post-rating .rating-value {
-    font-weight: bold;
-    color: #4CAF50; /* צבע ירוק לציון */
-    margin-right: 5px;
-}
-
-.post-rating .star-icon {
-    font-size: 1.2em; /* גודל האייקון */
-    color: #ccc; /* צבע ברירת מחדל לכוכבים ריקים */
-}
-
-.post-rating .star-icon.filled-star {
-    /* ה-ngClass מוסיף מחלקה זו לכוכב מלא או חצי מלא */
-    color: gold; /* צבע זהב/צהוב לדירוג */
+    margin-right: 15px;
 }
 
 .post-rating .separator {
     margin: 0 10px;
     color: #ccc;
 }
-/* בתוך קובץ posts.component.css */
+
+.post-rating .star-icon.filled-star {
+    color: gold;
+}
+
+/* Star Rating */
+.star-rating {
+    display: flex;
+    align-items: center;
+    gap: 2px;
+    margin-top: 5px;
+}
 
 .star-icon {
-  color: #ccc; /* צבע ברירת מחדל אפור לכוכב ריק */
-  font-size: 24px; /* גודל סטנדרטי */
+    color: #ffd700;
+    font-size: 18px;
 }
 
 .filled-star {
-  color: gold; /* צבע מלא לכוכב מלא או חצי מלא */
+    color: gold;
 }
 
-/* posts.component.css */
-
-.star-rating {
-    display: flex; /* כדי ליישר את הכוכבים בשורה אחת */
-    align-items: center;
-    gap: 2px; /* מרווח קטן בין כוכב לכוכב */
-    margin-top: 5px; /* מרווח מהשורה שמעל */
-}
-
-.star-icon {
-    /* נותן צבע צהוב/זהב לכוכבים */
-    color: #ffd700; 
-    font-size: 18px; /* גודל מתאים */
-}
-
-/* אפשרות לעיצוב ערך הדירוג המספרי */
+/* Rating Value */
 .rating-value {
     color: #fff;
     font-size: 14px;
     margin-left: 5px;
 }
+

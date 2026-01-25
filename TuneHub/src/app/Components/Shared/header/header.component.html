@@ -1,54 +1,39 @@
 <header>
-
-
   <mat-icon (click)="sidebarService.toggle(); $event.stopPropagation()"
     style="color: rgb(65, 126, 231);">menu</mat-icon>
   <div class="logo" (click)="goToHomePage()">
     <img class="logo-pic" src="./assets/images/LOGO.png" alt="Logo" />
-    
-
   </div>
 
   <div class="right-icons">
-   
-
-
     <div class="search-container" onclick="document.getElementById('q').focus()">
       <mat-icon>search</mat-icon>
-      <input id="q" class="search-input" type="search" placeholder="Search musicians, teachers, sheets music, posts"
-        (input)="onSearchInput($event)" />
-
-
+      <input id="q" class="search-input" type="search"
+       placeholder="Search musicians, teachers, sheets music, posts"
+       [(ngModel)]="searchTerm"
+       (input)="onSearchInput($event)" />
     </div>
 
     <div id="musicans" class="button" (click)="goToFindMusicians()">
       Find Musicians <mat-icon>group</mat-icon>
     </div>
-
-
-
-
   </div>
 
 
   @if (isLoggedIn$ | async) {
-    <!-- <div class="notification-wrapper" (click)="navigateToNotifications()"> -->
+  <!-- <div class="notification-wrapper" (click)="navigateToNotifications()"> -->
 
-    <!-- <mat-icon>notifications_none</mat-icon> -->
+  <!-- <mat-icon>notifications_none</mat-icon> -->
 
-    <!-- <ng-container *ngIf="(unreadCount$ | async) as count">
+  <!-- <ng-container *ngIf="(unreadCount$ | async) as count">
         <div *ngIf="+count > 0" class="notification-badge">
             {{ count }}
         </div>
     </ng-container> -->
-
-
-
-
-<!-- </div> -->
+  <!-- </div> -->
   <app-profile-mini-avatar></app-profile-mini-avatar>
-       
   }
+
   @else {
   <div id="get-started" class="button" (click)="loginwindowService.open()">
     Get Started
@@ -57,7 +42,6 @@
 
 </header>
 
-
-@if (isSearchOpen) {
-<app-global-search [query]="searchTerm"></app-global-search>
+@if (isSearchOpen$ | async) {
+<app-global-search [query]="searchTerm"  (clearQuery)="onClearSearch()"></app-global-search>
 }

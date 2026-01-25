@@ -18,135 +18,66 @@
         </div>
     </header>
 
+    <div class="container2">
+        <div class="stats-wrapper">
+            <div class="stats-card-container">
+                <div class="stats-card" dir="ltr">
 
-    <section class="search-bar">
+                    <app-stats-counter [number]="originalPosts.length" label="Total Post" glowClass="purple-glow">
+                    </app-stats-counter>
 
-        <div class="search-container" onclick="document.getElementById('q2').focus()">
-            <mat-icon>search</mat-icon>
-            <input id="q2" class="search-input" type="search" placeholder="Search posts" [(ngModel)]="searchText"
-                (ngModelChange)="onSearchChange($event)" />
-
-
-
-        </div>
-
-        <select class="dropdown"           [(ngModel)]="selectedTimeRange"             (change)="applyAllFilters()">
-                            <option value="All">All times</option>
-                            <option value="Today">Current Day</option>
-                            <option value="Week">Current Week</option>
-                            <option value="Month">Current Month</option>
-                    </select>
-
-                <select class="dropdown">
-            <option>All</option>
-        </select>
-      
-    
-    </section>
-
-@if (hasMorePosts) {
-    <div class="load-more-container">
-        <button class="button load-more-btn" (click)="loadMore()">
-load more posts            <mat-icon>expand_more</mat-icon>
-        </button>
-    </div>
-}
-@if(displayedPosts.length===0){
-    <div class="empty-posts-container">
-        <p class="empty-message">no posts uploaded!</p>
-
-        <button class="upload-post-button" routerLink="/post">...</button>
-        <span style="font-size: 1.5em; margin-left: 10px;">🎶</span>
-upload your first post        <span style="font-size: 1.5em; margin-right: 10px;">⬆️</span>
-    </div>
-}
-@else{
-
-    @for(post of displayedPosts; track $index){
-   <app-post-card
-    [post]="post"
-    [isProfileView]="isProfileView"
-    [showOnlyMedia]="showOnlyMedia"
-    [searchText]="searchText"
-    [isAdmin]="isAdmin">
-</app-post-card>
-
-
-    }
-
-
-    }
-    <br><br><br>
-</div>
-
-
-
-
-
-
-
-<!-- <header class="post-header">
-            <img class="avatar" [src]="fileUtils.getImageUrl(post.user?.imageProfilePath)" alt="avatar">
-
-            <div class="user-info">
-                <span class="username">{{post.user?.name}}</span>
-                <span class="date">{{post.dateUploaded | date:'short'}}</span>
-            </div>
-
-           
-        </header>
-
-        <div class="post-body">
-            <h3 class="post-title">{{post.title}}</h3>
-            <p class="post-content">{{post.content}}</p>
-
-            <div class="post-media">
-                <div *ngFor="let image of post.imagesBase64" class="image-container">
-                    <img [src]="fileUtils.getImageUrl(image)" class="post-image">
+                    <app-stats-counter [number]="getTodaysPostsCount()" label="New From Today" glowClass="blue-glow">
+                    </app-stats-counter>
                 </div>
-
-                <audio *ngIf="post.audioPath" controls [src]="getSafeMediaUrl('audio/' + post.audioPath)"></audio>
-
-                <video *ngIf="post.videoPath" controls [src]="getSafeMediaUrl('video/' + post.videoPath)"></video>
             </div>
-        </div> -->
+        </div>
+        <h2 class="section-title "> <mat-icon style=" color: #B8860B;">filter_alt</mat-icon> Advanced filters </h2>
+        <section class="search-bar">
+
+            <div class="search-container" onclick="document.getElementById('q2').focus()">
+                <mat-icon>search</mat-icon>
+                <input id="q2" class="search-input" type="search" placeholder="Search posts" [(ngModel)]="searchText"
+                    (ngModelChange)="onSearchChange($event)" />
 
 
 
-        <!-- <hr>
+            </div>
 
-        <div class="comments-actions-row">
-            <button class="view-comments-btn" (click)="toggleComments(post.id!)">
-                {{ showComments[post.id!] ? 'סגור תגובות' : 'צפייה בתגובות' }}
+            <select class="dropdown"           [(ngModel)]="selectedTimeRange"             (change)="applyAllFilters()">
+                                <option value="All">All times</option>
+                                <option value="Today">Current Day</option>
+                                <option value="Week">Current Week</option>
+                                <option value="Month">Current Month</option>
+                        </select>
+
+            <!--         <select class="dropdown">
+                <option>All</option>
+            </select> -->
+
+
+        </section>
+
+        @if (hasMorePosts) {
+        <div class="load-more-container">
+            <button class="button load-more-btn" (click)="loadMore()">
+                load more posts <mat-icon>expand_more</mat-icon>
             </button>
-            <button class="add-comment-page-btn" (click)="navigateToAddComment(post.id!)">
-                הוסף תגובה <mat-icon>add_comment</mat-icon>
-            </button>
         </div>
+        }
+        <h2 class="section-title "> <mat-icon style=" color: #B8860B;">description</mat-icon> Posts </h2>
 
-        <div class="comments-wrapper" *ngIf="showComments[post.id!]" [class.open]="showComments[post.id!]">
+        @if(displayedPosts.length===0){
+        <app-no-results></app-no-results>
+        }
+        @else{
 
-            <app-comment [postId]="post.id!"></app-comment>
-        </div>
+        @for (post of displayedPosts; track post.id) {
+        <app-post-card [post]="post" [isProfileView]="isProfileView" [showOnlyMedia]="showOnlyMedia"
+            [searchText]="searchText">
+        </app-post-card>
 
-    </div> -->
-
-
-    <!-- <footer class="post-footer">
-        <div class="stats">
-            <span>❤️ {{post.hearts}}</span>
-            <span>👍 {{post.likes}}</span>
-        </div>
-
-            <app-like-button
-        [targetType]="'POST'" 
-        [targetId]="post.id"
-        [initialLikeCount]="post.likeCount"
-        [isLikedByUser]="post.isLikedByCurrentUser"> 
-    </app-like-button>
-</footer>
-
-<hr>
-
-
-<br><br><br> -->
+        <br><br>
+        }
+        }
+        <br><br><br>
+    </div>

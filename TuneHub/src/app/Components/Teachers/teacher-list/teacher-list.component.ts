@@ -1,35 +1,36 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Router, RouterModule } from '@angular/router';
-import Users, { UserType } from '../../../Models/Users';
+import { Router, RouterModule } from '@angular/router';
+import Users, { EUserType } from '../../../Models/Users';
 import { UsersService } from '../../../Services/users.service';
 import { UserStateService } from '../../../Services/user-state.service';
 import { FileUtilsService } from '../../../Services/fileutils.service';
-import { SafeUrl } from '@angular/platform-browser';
 import { NavigationService } from '../../../Services/navigation.service';
-import { MatIcon } from "@angular/material/icon";
+import { MatIconModule } from "@angular/material/icon";
 import { FormsModule } from '@angular/forms';
-import Instrument from '../../../Models/Instrument';
-import { HighlightPipe } from "../../Shared/highlight/highlight.component";
-
+import { HighlightPipe } from "../../../Pipes/highlight.pipe";
+import { NoResultsComponent } from "../../Shared/no-results/no-results.component";
+import { StatsCounterComponent } from "../../Shared/stats-counter/stats-counter.component";
 
 @Component({
   selector: 'app-teacher-list',
   standalone: true,
-  imports: [RouterModule, FormsModule, HighlightPipe],
+  imports: [RouterModule, FormsModule, HighlightPipe, MatIconModule, NoResultsComponent, StatsCounterComponent],
   templateUrl: './teacher-list.component.html',
   styleUrl: './teacher-list.component.css'
 })
+
 export class TeacherListComponent implements OnInit {
 
   public users: Users[] = [];
   public isShowDetails: boolean = false;
   public selectedUser!: Users;
-  showFilters: boolean = false;
+  public showFilters: boolean = false;
   public user!: Users;
-  public isTeacher: boolean = false;
-  public needsProfileUpdate: boolean = false;
+  // public isTeacher: boolean = false;
+  // public needsProfileUpdate: boolean = false;
   private currentUserId: number | null = null;
 
+  instrumentsCount: number | 0 = 0;
   originalTeacherList: Users[] = [];
   searchText: string = '';
   selectedLessonDuration: number | 'All' = 'All';
@@ -48,65 +49,64 @@ export class TeacherListComponent implements OnInit {
   selectedCountry: string = 'All';
   selectedCreatedYear: string = 'All';
 
+
   constructor(
     private router: Router,
     private _usersService: UsersService,
-    private _userStateService: UserStateService,
+    public userStateService: UserStateService,
     public fileUtilsService: FileUtilsService,
     public navigationService: NavigationService,
-    private route: ActivatedRoute
-
   ) { }
 
+
+
   ngOnInit(): void {
-    const currentUser = this._userStateService.getCurrentUserValue();
+    const currentUser = this.userStateService.getCurrentUserValue();
 
     if (!currentUser) {
-      console.error("No logged-in user");
       return;
     }
 
     this.currentUserId = currentUser.id;
-    console.log("User ID:", this.currentUserId);
 
     this.loadTeachers();
 
-    this._usersService.getUserById(this.currentUserId).subscribe({
-      next: (fullUser) => {
-        this.user = fullUser;
+    // this._usersService.getUserById(this.currentUserId).subscribe({
+    //   next: (fullUser) => {
+    //     this.user = fullUser;
 
-        const userTypes: UserType[] = this.user.userTypes || [];
-        this.isTeacher = userTypes.includes(UserType.TEACHER);
-        this.needsProfileUpdate = !this.user.city || !this.user.description;
-      },
-      error: (err) => console.error('Error loading current user:', err)
-    });
+    //     const userTypes: EUserType[] = this.user.userTypes || [];
+    //     this.isTeacher = userTypes.includes(EUserType.TEACHER);
+    //     this.needsProfileUpdate = !this.user.city || !this.user.description;
+    //   },
+    //   error: (err) => console.error('Error loading current user:', err)
+    // });
   }
 
 
-  loadCurrentUser(userId: number): void {
-    this._usersService.getUserById(userId).subscribe({
-      next: (currentUser: Users) => {
-        this.user = currentUser;
+  // loadCurrentUser(userId: number): void {
+  //   this._usersService.getUserById(userId).subscribe({
+  //     next: (currentUser: Users) => {
+  //       this.user = currentUser;
 
-        const userTypes: UserType[] = this.user.userTypes || [];
-        this.isTeacher = userTypes.includes(UserType.TEACHER);
-        this.needsProfileUpdate =
-          !this.user.city ||
-          !this.user.description;
+  //       const userTypes: EUserType[] = this.user.userTypes || [];
+  //       this.isTeacher = userTypes.includes(EUserType.TEACHER);
+  //       this.needsProfileUpdate =
+  //         !this.user.city ||
+  //         !this.user.description;
 
-        console.log("User loaded:", this.user);
-      },
-      error: (err) => {
-        console.error("Error loading current user:", err);
-      }
-    });
-  }
+  //       console.log("User loaded:", this.user);
+  //     },
+  //     error: (err) => {
+  //       console.error("Error loading current user:", err);
+  //     }
+  //   });
+  // }
 
 
 
   loadTeachers(): void {
-    this._usersService.getUsersByUserType(UserType.TEACHER).subscribe({
+    this._usersService.getUsersByUserType(EUserType.TEACHER).subscribe({
       next: (res) => {
         console.log(' from server:', res);
         console.log('Raw response:', res);
@@ -121,12 +121,6 @@ export class TeacherListComponent implements OnInit {
 
         this.applyTeacherFilters();
 
-        console.log('Teacher data loaded and updated. Number of teachers:', this.users.length);
-        console.log("teachers:", this.users);
-
-        console.log("CreatedAt values:", res.map(u => u.createdAt));
-        console.log("CreatedAt values:");
-
 
       },
       error: (err) => {
@@ -134,67 +128,62 @@ export class TeacherListComponent implements OnInit {
       }
     });
   }
-  joinTeacherNetwork(): void {
-    if (this.isTeacher) {
-      console.log('The user is already set as a teacher.');
-      return;
-    }
+  // joinTeacherNetwork(): void {
+  //   if (this.isTeacher) {
+  //     console.log('The user is already set as a teacher.');
+  //     return;
+  //   }
 
-    if (this.needsProfileUpdate) {
-      this.router.navigate(['/edit-profil-modal', this.currentUserId]);
-    } else {
-      const idToUse = this.user?.id ?? this.currentUserId;
+  //   if (this.needsProfileUpdate) {
+  //     this.router.navigate(['/edit-profil-modal', this.currentUserId]);
+  //   } else {
+  //     const idToUse = this.user?.id ?? this.currentUserId;
 
-      if (!idToUse) {
-        console.error('Cannot find the user ID.');
-        return;
-      }
+  //     if (!idToUse) {
+  //       console.error('Cannot find the user ID.');
+  //       return;
+  //     }
 
-      if (!this.user) {
-        this.user = { id: idToUse } as Users;
-      }
+  //     if (!this.user) {
+  //       this.user = { id: idToUse } as Users;
+  //     }
 
-      this.updateUserTypeToTeacher(idToUse);
-    }
-  }
+  //     this.updateUserTypeToTeacher(idToUse);
+  //   }
+  // }
 
-  updateUserTypeToTeacher(userId: number): void {
-    if (!userId) {
-      console.error("User has no ID!");
-      return;
-    }
+  // updateUserTypeToTeacher(userId: number): void {
+  //   if (!userId) {
+  //     console.error("User has no ID!");
+  //     return;
+  //   }
 
-    if (this.isTeacher) {
-      console.log('The user is already set as a teacher.');
-      return;
-    }
+  //   if (this.isTeacher) {
+  //     console.log('The user is already set as a teacher.');
+  //     return;
+  //   }
 
-    if (!this._userStateService.hasRole('ROLE_USER')) {
-      console.error('User does not have appropriate permissions to update user type.');
-      return;
-    }
+  //   this._usersService.updateUserType(userId, EUserType.TEACHER).subscribe({
+  //     next: () => {
+  //       this.isTeacher = true;
+  //       alert('Welcome to the teachers network!');
+  //       if (this.user) {
+  //         const userTypes: EUserType[] = this.user.userTypes || [];
 
-    this._usersService.updateUserType(userId, UserType.TEACHER).subscribe({
-      next: () => {
-        this.isTeacher = true;
-        alert('Welcome to the teachers network!');
-        if (this.user) {
-          const userTypes: UserType[] = this.user.userTypes || [];
+  //         if (!userTypes.includes(EUserType.TEACHER)) {
+  //           userTypes.push(EUserType.TEACHER);
+  //         }
+  //         this.user.userTypes = [...userTypes];
+  //       }
 
-          if (!userTypes.includes(UserType.TEACHER)) {
-            userTypes.push(UserType.TEACHER);
-          }
-          this.user.userTypes = [...userTypes];
-        }
-
-        this.loadTeachers();
-      },
-      error: (err) => {
-        console.error('Error updating user type:', err);
-        alert('Error updating profile. Try again later.');
-      }
-    });
-  }
+  //       this.loadTeachers();
+  //     },
+  //     error: (err) => {
+  //       console.error('Error updating user type:', err);
+  //       alert('Error updating profile. Try again later.');
+  //     }
+  //   });
+  // }
 
   toggleFilters(): void {
     this.showFilters = !this.showFilters;
@@ -208,7 +197,6 @@ export class TeacherListComponent implements OnInit {
       }
     });
     this.cities = ['All', ...Array.from(citySet).sort()];
-    console.log("teachers:", this.TeacherList);
 
     const countrySet = new Set<string>();
     teachers.forEach(teachers => {
@@ -238,15 +226,21 @@ export class TeacherListComponent implements OnInit {
 
     const instrumentMap = new Map<number, string>();
     teachers.forEach(u => {
-      if (u.teacher?.instrumentsIds) {
-        u.teacher.instrumentsIds.forEach(id => {
-          if (!instrumentMap.has(id)) {
-            instrumentMap.set(id, `Instrument ${id}`);
+      if (u.teacher?.instruments) {
+        u.teacher.instruments.forEach(inst => {
+          if (inst.id != null && inst.name != null && !instrumentMap.has(inst.id)) {
+            instrumentMap.set(inst.id, inst.name);
           }
         });
       }
     });
-    this.instruments = Array.from(instrumentMap.entries()).map(([id, name]) => ({ id, name }));
+
+    this.instrumentsCount = Array.from(instrumentMap.entries()).map(([id, name]) => ({ id, name })).length;
+
+    this.instruments = [
+      { id: 'All', name: 'All' },
+      ...Array.from(instrumentMap.entries()).map(([id, name]) => ({ id, name }))
+    ];
 
     const yearSet = new Set<number>();
     teachers.forEach(teachers => {
@@ -298,10 +292,10 @@ export class TeacherListComponent implements OnInit {
 
     if (this.selectedInstrumentId !== 'All') {
       const targetId = Number(this.selectedInstrumentId);
-
-      filteredList = filteredList.filter(u => u.teacher?.instrumentsIds?.includes(targetId));
+      filteredList = filteredList.filter(u =>
+        u.teacher?.instruments?.some(inst => inst.id === targetId)
+      );
     }
-
     if (this.selectedCreatedYear !== 'All' && this.selectedCreatedYear) {
       const targetYear = parseInt(this.selectedCreatedYear, 10);
 
@@ -347,9 +341,10 @@ export class TeacherListComponent implements OnInit {
 
     if (this.selectedInstrumentId !== 'All') {
       const instrumentId = Number(this.selectedInstrumentId);
-      filtered = filtered.filter(t => t.teacher?.instrumentsIds?.includes(instrumentId));
+      filtered = filtered.filter(t =>
+        t.teacher?.instruments?.some(inst => inst.id === instrumentId)  // שנה כאן
+      );
     }
-
     if (this.selectedCreatedYear !== 'All') {
       const year = Number(this.selectedCreatedYear);
       filtered = filtered.filter(t => new Date(t.createdAt!).getFullYear() === year);
@@ -358,10 +353,19 @@ export class TeacherListComponent implements OnInit {
     if (this.searchText && this.searchText.trim() !== '') {
       const txt = this.searchText.toLowerCase();
       filtered = filtered.filter(t =>
-        t.profile!.name!.toLowerCase().includes(txt)   
+        t.profile!.name!.toLowerCase().includes(txt)
       );
     }
 
     this.TeacherList = filtered;
   }
+
+  fillOutTheForm(): void {
+    this.router.navigate(['/teacher-signup', this.currentUserId])
+  }
+
+  getExperiencedTeachersCount(minExperience: number = 5): number {
+    return this.originalTeacherList.filter(teacher => teacher.teacher?.experience! >= minExperience).length;
+  }
+
 }

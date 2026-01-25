@@ -2,44 +2,54 @@
 
     <ng-container *ngIf="!isProfileView || showOnlyMedia === 'all'">
         <header class="post-header">
-            <img class="avatar" [src]="fileUtils.getImageUrl(post.user?.imageProfilePath)" alt="avatar">
+            <img class="avatar" [src]="fileUtils.getImageUrl(post.user?.imageProfilePath)" alt="avatar"
+                (click)="navigationService.goToProfile(post.user!.id!)">
 
             <div class="user-info">
                 <span class="username">{{post.user?.name}}</span>
-                <span class="date">{{post.dateUploaded | date:'short'}}</span>
+                <span class="date">{{post.dateUploaded! | timeAgo}}</span>
             </div>
 
             <div class="rating-stars">
-        <mat-icon *ngFor="let star of getStarArray(post.rating)" [class.filled-star]="star === 'star' || star === 'star_half'">
-            {{ star }}
-        </mat-icon>
-    </div>
-            <ng-container *ngIf="!isAdmin">
-                <button class="action-btn report-btn" (click)="onReportPost(post.id!)">
-                    <mat-icon>report</mat-icon> 
-                </button>
-            </ng-container>
-
-            <div *ngIf="isAdmin" class="post-actions-wrapper">
-
-                <button class="action-btn more-actions-btn" (click)="toggleAdminActions(post.id!)">
-                    <mat-icon>more_horiz</mat-icon>
-                </button>
-
-                <div *ngIf="showAdminActions[post.id!]" class="admin-actions-dropdown">
-
-                    <button class="action-btn" (click)="onSendWarningNotification(post.id!, post.user!.id!)">
-                        <mat-icon>campaign</mat-icon> Send Warning
-                    </button>
-
-                    <button class="action-btn delete-btn"
-                        (click)="onDeletePostWithNotification(post.id!, post.user!.id!)">
-                        <mat-icon>delete_forever</mat-icon> Delete & Notify
-                    </button>
-
-                </div>
+                <mat-icon *ngFor="let star of getStarArray(post.rating)"
+                    [class.filled-star]="star === 'star' || star === 'star_half'">
+                    {{ star }}
+                </mat-icon>
             </div>
+            <!-- <ng-container *ngIf="!isAdmin">
+                <button class="action-btn report-btn" (click)="onReportPost(post.id!)">
+                    <mat-icon>report</mat-icon>
+                </button>
+            </ng-container> -->
+            @if(isAdmin$ | async) {
+            <button class="action-btn delete-btn" (click)="onDeletePost(post.id!)">
+                <mat-icon>delete_forever</mat-icon> Delete
+                <!-- & Notify -->
+            </button>
 
+            }
+            <!-- @if(isAdmin$ | async){
+            <div class="post-actions-wrapper"> -->
+
+            <!-- <button class="action-btn more-actions-btn" (click)="toggleAdminActions(post.id!)">
+                    <mat-icon>more_horiz</mat-icon>
+                </button> -->
+
+            <!-- <div *ngIf="showAdminActions[post.id!]" class="admin-actions-dropdown"> -->
+
+            <!-- <button class="action-btn" (click)="onSendWarningNotification(post.id!, post.user!.id!)">
+                        <mat-icon>campaign</mat-icon> Send Warning
+                    </button> -->
+
+            <!-- <button class="action-btn delete-btn" -->
+            <!-- (click)="onDeletePostWithNotification(post.id!, post.user!.id!)"> -->
+            <!-- <mat-icon>delete_forever</mat-icon> Delete -->
+            <!-- & Notify -->
+            <!-- </button> -->
+
+            <!-- </div>
+            </div>
+            } -->
         </header>
     </ng-container>
 
@@ -81,37 +91,41 @@
         <footer class="post-footer">
 
             <span class="stat-item likes" (click)="toggleLike(post)">
-                <mat-icon style="color: #f0ff6c;" [ngClass]="post.isLiked ? 'liked' : 'not-liked'">
-                    {{ post.isLiked ? 'thumb_up' : 'thumb_up_off_alt' }}
+                <mat-icon style="color: #f0ff6c;" [ngClass]="post.liked ? 'liked' : 'not-liked'">
+                    {{ post.liked ? 'thumb_up' : 'thumb_up_off_alt' }}
                 </mat-icon>
-                <span class="like-count">{{ post.likes }}</span>
+                <span class="like-count">{{ post.likes || 0 }}</span>
             </span>
 
             <span class="stat-item hearts" (click)="toggleFavorite(post)">
-                <mat-icon style="color: #f85e5e;" [ngClass]="post.isFavorite ? 'liked' : 'not-liked'">
-                    {{ post.isFavorite ? 'favorite' : 'favorite_border' }}
+                <mat-icon style="color: #f85e5e;" [ngClass]="post.favorite ? 'liked' : 'not-liked'">
+                    {{ post.favorite ? 'favorite' : 'favorite_border' }}
                 </mat-icon>
-
-                <span class="hearts-count">{{ post.hearts }}</span>
+                <span class="hearts-count">{{ post.hearts || 0}}</span>
             </span>
 
         </footer>
-        <hr>
+        <!-- <hr> -->
     </ng-container>
 
     <ng-container *ngIf="!isProfileView || showOnlyMedia === 'all'">
         <div class="comments-actions-row">
+            <!-- @if(post.comments!.length != 0){ -->
             <button class="button" (click)="toggleComments(post.id!)">
                 {{ showComments[post.id!] ? 'close comments' : 'view comments' }}
             </button>
-            <button class="button" (click)="navigateToAddComment(post.id!)">
-                 add comment <mat-icon>add_comment</mat-icon>
+            <!-- } -->
+
+            <button class="button" (click)="openAddCommentWindow(post.id!)">
+                add comment <mat-icon>add_comment</mat-icon>
             </button>
         </div>
 
-        <div class="comments-wrapper" *ngIf="showComments[post.id!]" [class.open]="showComments[post.id!]">
+        <div class="comments-wrapper" *ngIf="showComments[post.id!]">
             <app-comment [postId]="post.id!"></app-comment>
         </div>
+
+
     </ng-container>
 
 </div>

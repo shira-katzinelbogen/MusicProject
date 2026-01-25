@@ -14,7 +14,6 @@ export class NotificationWebsocketService {
     const socket = new SockJS('http://localhost:8080/ws-notifications');
     this.stompClient = Stomp.over(socket);
 
-    // קריאה ל-JWT מהקוקי
     const jwt = this.getJwtFromCookie('securitySample');
 
     const headers: any = {};

@@ -1,40 +1,17 @@
-<div class="add-comment-page-container">
-  <div class="header-section">
-    <button class="back-btn" [routerLink]="['/posts']">
-      <mat-icon>arrow_back</mat-icon> arrow back 
+<div class="modal-overlay" [hidden]="!(isOpen$ | async)" (click)="close()"></div>
+<div class="add-comment-modal" [hidden]="!(isOpen$ | async)">
+  <div class="modal-header">
+    <h2>Add comment</h2>
+    <button class="close-btn" (click)="close()">
+      <mat-icon style="color: #7867ff;">close</mat-icon>
     </button>
-    <h2>   add comment to post number {{ postId }}</h2>
   </div>
 
-  <form (ngSubmit)="submitComment()" class="comment-form">
-
-    <div class="form-group">
-      <label for="comment-text">content</label>
-      <textarea
-        id="comment-text"
-        rows="6"
-        [(ngModel)]="commentContent"
-        name="commentContent"
-        placeholder="write your thinks"
-        required
-      ></textarea>
-    </div>
-
-    <button type="submit" [disabled]="isUploading || !commentContent.trim()" class="submit-btn">
-      @if(isUploading){
-        <mat-icon class="spinner">autorenew</mat-icon> send massage...
-      } @else {
-         publish comment <mat-icon>send</mat-icon>
-      }
-    </button>
-
-    @if(uploadSuccess) {
-      <p class="success-message">the comment send succseefuly.</p>
-    }
-
-    @if(uploadError) {
-      <p class="error-message">⚠️ error: {{ uploadError }}</p>
-    }
-
-  </form>
+<form (ngSubmit)="submitCommentWrapper()">
+  <textarea [(ngModel)]="commentContent" name="commentContent" rows="6" required></textarea>
+  <button class="button" type="submit" [disabled]="isUploading || !commentContent.trim()">
+    {{ isUploading ? 'Sending...' : 'Publish Comment' }}
+  </button>
+</form>
 </div>
+

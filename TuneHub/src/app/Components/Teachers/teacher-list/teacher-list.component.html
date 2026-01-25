@@ -7,144 +7,170 @@
                 <div class="header-inner-content">
 
                     <div class="title-section">
-                        <h1 class="teachers" style="font-size: 60px;">Find Teachers</h1>
+                        <h1 class="musicians" style="font-size: 60px;">Find Teachers</h1>
                         <p style="font-size: 25px;color: #ffffff;">Connect with talented professionals for your next
                             project</p>
                     </div>
-
-
+                    @if (userStateService.canBecomeTeacher()) {
+                    <div class="button" (click)="fillOutTheForm()">
+                        Become A Teacher
+                        <mat-icon>school</mat-icon>
+                    </div>
+                    }
                 </div>
             </div>
         </div>
     </header>
 
-    <section class="search-bar">
+    <div class="container2">
+        <div class="stats-wrapper">
+            <div class="stats-card-container">
+                <div class="stats-card" dir="ltr">
+                    <app-stats-counter [number]="originalTeacherList.length" label="Total Teachers"
+                        glowClass="purple-glow">
+                    </app-stats-counter>
 
-        <div class="search-input-group">
-            <span class="search-icon">🔍</span>
-            <input type="text" placeholder="Search teachers by name" [(ngModel)]="searchText"
-                (ngModelChange)="updateTeacherList()" />
-        </div>
-        <select class="dropdown">
-            <option>All</option>
-        </select>
-        <select class="dropdown">
-            <option>All</option>
-        </select>
+                    <app-stats-counter [number]="instrumentsCount" label="Instruments" glowClass="blue-glow">
+                    </app-stats-counter>
 
-        <button class="filters-btn" (click)="toggleFilters()">
-            Filters <span class="arrow-icon">{{ showFilters ? '∧' : '∨' }}</span>
-        </button>
-    </section>
-
-    @if (showFilters) {
-    <section class="additional-filters">
-
-        <div class="filter-group">
-            <label>Country</label>
-            <select class="dropdown" [(ngModel)]="selectedCountry" (change)="applyTeacherFilters()">
-                @for (country of countries; track country) {
-                <option [value]="country">{{ country }}</option>
-                }
-            </select>
-        </div>
-
-        <div class="filter-group">
-            <label>city</label>
-            <select class="dropdown" [(ngModel)]="selectedCity" (change)="applyTeacherFilters()">
-                @for (city of cities; track city) {
-                <option [value]="city">{{ city }}</option>
-                }
-            </select>
-        </div>
-
-        <div class="filter-group">
-                <label>Lesson Duration (minutes)</label>
-                <select class="dropdown"             [(ngModel)]="selectedLessonDuration"            
-                (change)="applyTeacherFilters()">
-                                @for (duration of lessonDurations; track $index) {
-                            <option [value]="duration">{{ duration }}</option>
-                        }
-                    </select>
-        </div>
-
-        <div class="filter-group">
-                <label>Experience (years)</label>
-                <select class="dropdown"             [(ngModel)]="selectedExperience"            
-                (change)="applyTeacherFilters()">
-                                @for (exp of experiences; track $index) {
-                            <option [value]="exp">{{ exp }}</option>
-                        }
-                    </select>
-        </div>
-
-        <div class="filter-group">
-                <label>Instruments</label>
-                <select class="dropdown"             [(ngModel)]="selectedInstrumentId"            
-                (change)="applyTeacherFilters()">
-                                @for (instrument of instruments; track instrument.id) {
-                            <option [value]="instrument.id">{{ instrument.name }}</option>
-                        }
-                    </select>
-        </div>
-
-        <div class="filter-group">
-                <label>Price Per Lesson</label>
-                <select class="dropdown"             [(ngModel)]="selectedPrice"            
-                (change)="applyTeacherFilters()">
-                                @for (price of prices; track $index) {
-                            <option [value]="price">{{ price }}</option>
-                        }
-                    </select>
-        </div>
-
-        <div class="filter-group">
-            <label>Year Joined</label>
-            <select class="dropdown" [(ngModel)]="selectedCreatedYear" (change)="applyTeacherFilters()">
-                @for (year of createdYears; track year) {
-                <option [value]="year">{{ year }}</option>
-                }
-            </select>
-        </div>
-
-    </section>
-    }
-    @if(TeacherList.length===0){
-    <p class="have-no-users">
-        <b>There are currently no users to display.</b><br>
-        Add new users to manage your work efficiently and neatly.<br><br>
-
-        Take advantage of this tool to organize your day in the best way and achieve the goals you have set for
-        yourself<br>
-    </p>
-    }
-
-    @else{
-    <br><br>
-    <div class="musicians-container">
-        @for(u of TeacherList; track $index){
-        <div (click)="navigationService.goToProfile(u!.profile!.id!)">
-            <h3 [innerHTML]="u.profile!.name! | highlight: searchText!"></h3>
-
-            <h3>description {{u.description}}</h3>
-            <h3>city {{u.city}}</h3>
-            <h3>country {{u.country}}</h3>
-            <h3>pricePerLesson {{u.teacher?.pricePerLesson}}</h3>
-            <h3>lessonDuration {{u.teacher?.lessonDuration}}</h3>
-            <h3>experience {{u.teacher?.experience}}</h3>
-            <h3>instrumentsUsers
-                @for(instrumentId of u.teacher?.instrumentsIds; track $index){
-                {{instrumentId}}
-                }
-            </h3>
-
-
-            <div class="image-p">
-                <img [src]="fileUtilsService.getImageUrl(u!.profile!.imageProfilePath!)" class="profile-image">
+                    <app-stats-counter [number]="getExperiencedTeachersCount()" label="5 Experience +"
+                        glowClass="green-glow">
+                    </app-stats-counter>
+                </div>
             </div>
         </div>
-        }
-    </div>
-    }
+        <h2 class="section-title "> <mat-icon style=" color: #B8860B;">filter_alt</mat-icon> Advanced filters </h2>
+        <div class="search-filters-wrapper">
+            <div class="filter-bar">
 
-</div>
+                <section class="search-bar">
+
+
+                    <div class="search-container" onclick="document.getElementById('q7').focus()">
+                        <mat-icon>search</mat-icon>
+                        <input id="q7" class="search-input" type="text" placeholder="Search teachers by name"
+                            [(ngModel)]="searchText" (ngModelChange)="updateTeacherList()" />
+                    </div>
+
+
+
+                    <div class="filter-field">
+                        <label>Country</label>
+                        <select class="dropdown" [(ngModel)]="selectedCountry" (change)="applyTeacherFilters()">
+                            @for (country of countries; track country) {
+                            <option [value]="country">{{ country }}</option>
+                            }
+                        </select>
+                    </div>
+                    <div class="filter-field">
+                        <label>city</label>
+                        <select class="dropdown" [(ngModel)]="selectedCity" (change)="applyTeacherFilters()">
+                            @for (city of cities; track city) {
+                            <option [value]="city">{{ city }}</option>
+                            }
+                        </select>
+                    </div>
+
+                    <!--           
+                    <button class="filters-btn" (click)="toggleFilters()">
+                        Filters
+                    </button> -->
+                    <div class="filter-field" (click)="toggleFilters()">
+                        <label>more filters</label>
+                        <div class="dropdown" id="filter">
+                            <mat-icon>{{ showFilters ? 'arrow_drop_up' : 'arrow_drop_down' }}</mat-icon>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </div>
+
+        @if (showFilters) {
+
+        <section class="filter-bar">
+            <section class="search-bar additional">
+                <div class="filter-field">
+                    <label>Experience (years)</label>
+                    <select class="dropdown" [(ngModel)]="selectedExperience" (change)="applyTeacherFilters()">
+                        @for (exp of experiences; track $index) {
+                        <option [value]="exp">{{ exp }}</option>
+                        }
+                    </select>
+                </div>
+
+                <div class="filter-field">
+                    <label>Lesson Duration (minutes)</label>
+                    <select class="dropdown" [(ngModel)]="selectedLessonDuration" (change)="applyTeacherFilters()">
+                        @for (duration of lessonDurations; track $index) {
+                        <option [value]="duration">{{ duration }}</option>
+                        }
+                    </select>
+                </div>
+
+
+                <div class="filter-field">
+                    <label>Instruments</label>
+                    <select class="dropdown" [(ngModel)]="selectedInstrumentId" (change)="applyTeacherFilters()">
+                        @for (instrument of instruments; track instrument.id) {
+                        <option [value]="instrument.id">{{ instrument.name }}</option>
+                        }
+                    </select>
+                </div>
+
+                <div class="filter-field">
+                    <label>Price Per Lesson</label>
+                    <select class="dropdown" [(ngModel)]="selectedPrice" (change)="applyTeacherFilters()">
+                        @for (price of prices; track $index) {
+                        <option [value]="price">{{ price }}</option>
+                        }
+                    </select>
+                </div>
+
+                <!-- <div class="filter-bar">
+                <label>Year Joined</label>
+                <select class="dropdown" [(ngModel)]="selectedCreatedYear" (change)="applyTeacherFilters()">
+                    @for (year of createdYears; track year) {
+                    <option [value]="year">{{ year }}</option>
+                    }
+                </select>
+            </div> -->
+            </section>
+        </section>
+        }
+
+        <h2 class="section-title "> <mat-icon style=" color: #B8860B;">people</mat-icon> Teachers </h2>
+        @if(TeacherList.length===0){
+        <app-no-results></app-no-results>
+        }
+
+        @else{
+        <br><br>
+        <div class="musicians-container">
+            @for(u of TeacherList; track $index){
+            <div (click)="navigationService.goToProfile(u!.profile!.id!)">
+                <div class="image-p">
+                    <img [src]="fileUtilsService.getImageUrl(u!.profile!.imageProfilePath!)" class="profile-image">
+                </div>
+                <h3 [innerHTML]="u.profile!.name! | highlight: searchText!"></h3>
+
+                <h3>Description {{u.description}}</h3>
+                <h3>City {{u.city}}</h3>
+                <h3>Country {{u.country}}</h3>
+                <h3>PricePerLesson {{u.teacher?.pricePerLesson}}</h3>
+                <h3>LessonDuration {{u.teacher?.lessonDuration}}</h3>
+                <h3>Experience {{u.teacher?.experience}}</h3>
+                <h3>Teaches
+                    <span class="instrument-tags">
+                        @for (instrument of u.teacher?.instruments; track instrument.id) {
+                        <span class="tag">
+                            {{ instrument.name }}
+                        </span>
+                        }
+                    </span>
+                </h3>
+            </div>
+            }
+        </div>
+        }
+
+    </div>

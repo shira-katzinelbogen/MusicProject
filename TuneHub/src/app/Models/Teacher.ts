@@ -1,3 +1,4 @@
+import { InstrumentResponseDTO } from "./Instrument";
 import type Users from "./Users";
 
 export default class Teacher {
@@ -9,4 +10,5 @@ export default class Teacher {
     students?: Users[];
     dateUploaded?: Date;
     instrumentsIds!: number[] | null;
+    instruments?: InstrumentResponseDTO[];
 }
