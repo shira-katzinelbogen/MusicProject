@@ -1,200 +1,146 @@
-<!-- <div class="upload-post-container">
-  <div class="post-card">
-    <form (submit)="onSubmit()">
+<div class="modal-overlay">
+  <div class="auth-modal-content">
+    <!-- Close Button -->
+    <button class="close-button">
+      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <line x1="18" y1="6" x2="6" y2="18"></line>
+        <line x1="6" y1="6" x2="18" y2="18"></line>
+      </svg>
+    </button>
 
-      <div class="post-header">
-        <div class="user-avatar">UM</div>
-        <div class="user-info">
-          <div class="user-name">
-            Current User
-            <span class="verification-badge">✔</span>
+    <div class="auth-container">
+      <!-- Side Panel: Tips & Info -->
+      <div class="side-panel">
+        <div>
+          <br>
+          <h1 class="musicians" style="font-size:30px;">Amplify Your Voice</h1>
+
+          <!-- <h2 class="welcome-text">Amplify Your Voice</h2> -->
+          <p class="intro-text">
+            The community is waiting to hear from you. Your post is the bridge to connecting, learning, and sharing your
+            unique sound with 45K+ musicians worldwide.
+          </p>
+
+          <ul class="features-list">
+            <li>
+              <strong>Showcase Your Work</strong><br>
+              <span>Share your latest tracks, raw demos, or works-in-progress to get constructive feedback from
+                professional peers.</span>
+            </li>
+            <li>
+              <strong>Collaborate & Connect</strong><br>
+              <span>Looking for a producer, vocalist, or session musician? Find the perfect match for your next big
+                project right here.</span>
+            </li>
+            <li>
+              <strong>Gear & Knowledge</strong><br>
+              <span>Ask about the latest plugins, mixing techniques, or hardware. Share your expertise and help others
+                grow.</span>
+            </li>
+            <li>
+              <strong>Behind the Scenes</strong><br>
+              <span>Post studio updates, rehearsal clips, or tour news. Build your personal brand by showing the process
+                behind the music.</span>
+            </li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Form Panel -->
+      <div class="form-panel">
+
+        <div class="form-header">
+          <br> <br> <br>
+        </div>
+
+        <form (ngSubmit)="onSubmit()" class="auth-form">
+          <!-- Title Input -->
+          <div class="input-group">
+            <label for="title">Post Title</label>
+            <input id="title" [(ngModel)]="postData.title" name="title" required minlength="3" maxlength="100"
+              #title="ngModel" placeholder="Give your post a catchy title">
+            <div class="error-msg" *ngIf="title.invalid && (title.dirty || title.touched)">
+              <span *ngIf="title.errors?.['required']">Title is required.</span>
+              <span *ngIf="title.errors?.['minlength']">Min 3 characters.</span>
+            </div>
           </div>
-          <div class="post-meta">
-            <span>Creating a new post</span>
+
+          <!-- Content Input -->
+          <div class="input-group">
+            <label for="content">What's on your mind?</label>
+            <textarea id="content" [(ngModel)]="postData.content" name="content" required minlength="10"
+              maxlength="5000" #content="ngModel" placeholder="Share your story, lyrics, or updates..."></textarea>
+            <div class="error-msg" *ngIf="content.invalid && (content.dirty || content.touched)">
+              <span *ngIf="content.errors?.['required']">Content is required.</span>
+              <span *ngIf="content.errors?.['minlength']">Min 10 characters.</span>
+            </div>
           </div>
-        </div>
-        <div class="more-options">...</div>
-      </div>
 
-      <hr>
+          <!-- Media Section -->
+          <div class="media-section">
+            <label class="section-label">Add Media</label>
+            <div class="media-grid">
 
-      <div class="post-text">
-        <label for="title">Post Title:</label>
-        <input id="title" [(ngModel)]="postData.title" name="title" required placeholder="Enter a relevant title">
-      </div>
+              <!-- Image Upload -->
+              <div class="upload-box" (click)="images.click()">
+                <input #images type="file" (change)="onFileChange($event, 'images')" multiple accept="image/*" hidden>
+                @if (imagePreviews.length > 0) {
+                <div class="preview-mini-grid">
+                  @for (url of imagePreviews.slice(0,1); track url) {
+                  <img [src]="url" class="mini-preview-img">
+                  }
+                  <span class="count-badge" *ngIf="imagePreviews.length > 1">+{{imagePreviews.length - 1}}</span>
+                </div>
+                } @else {
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
+                  stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <rect x="3" y="3" width="18" height="18" rx="2" ry="2" />
+                  <circle cx="8.5" cy="8.5" r="1.5" />
+                  <polyline points="21 15 16 10 5 21" />
+                </svg>
+                <span>Images</span>
+                }
+              </div>
 
-      <div class="post-text">
-        <label for="content">Content:</label>
-        <textarea id="content" [(ngModel)]="postData.content" name="content" required
-          placeholder="Write your post content here"></textarea>
-      </div>
+              <!-- Audio Upload -->
+              <div class="upload-box" [class.has-file]="audioPreviewUrl" (click)="audio.click()">
+                <input #audio type="file" (change)="onFileChange($event, 'audio')" accept="audio/*" hidden>
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
+                  stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M9 18V5l12-2v13" />
+                  <circle cx="6" cy="18" r="3" />
+                  <circle cx="18" cy="16" r="3" />
+                </svg>
+                <span>{{ audioPreviewUrl ? 'Audio Added' : 'Audio' }}</span>
+              </div>
 
-      <hr>
-
-      <div class="media-inputs">
-        <h3>Add Media:</h3>
-
-        <div class="upload-zone" (click)="images.click()">
-          @if (imagePreviews.length > 0) {
-          <div class="image-previews-container">
-            @for (url of imagePreviews; track url) {
-            <img [src]="url" alt="Image preview" class="preview-image">
-            }
+              <!-- Video Upload -->
+              <div class="upload-box" [class.has-file]="videoPreviewUrl" (click)="video.click()">
+                <input #video type="file" (change)="onFileChange($event, 'video')" accept="video/*" hidden>
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
+                  stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <polygon points="23 7 16 12 23 17 23 7" />
+                  <rect x="1" y="5" width="15" height="14" rx="2" ry="2" />
+                </svg>
+                <span>{{ videoPreviewUrl ? 'Video Added' : 'Video' }}</span>
+              </div>
+            </div>
           </div>
-          } @else {
-          <i class="fas fa-image"></i>
-          <p>Upload Images (Multiple)</p>
-          }
-          <input #images id="images" type="file" (change)="onFileChange($event, 'images')" multiple accept="image/*"
-            hidden>
-        </div>
 
-        <div class="upload-zone" (click)="audio.click()">
-          @if (audioPreviewUrl) {
-          <audio [src]="audioPreviewUrl" controls class="preview-audio"></audio>
-          } @else {
-          <i class="fas fa-music"></i>
-          <p>Upload Audio (Single)</p>
-          }
-          <input #audio id="audio" type="file" (change)="onFileChange($event, 'audio')" accept="audio/*" hidden>
-        </div>
+          <!-- Submit Button -->
+          <button type="submit" [disabled]="title.invalid || content.invalid || isUploading"
+            class="submit-btn publish-btn">
+            {{ isUploading ? 'Uploading...' : 'Publish Post' }}
+            <mat-icon *ngIf="!isUploading">upload</mat-icon>
+          </button>
 
-        <div class="upload-zone" (click)="video.click()">
-          @if (videoPreviewUrl) {
-          <video [src]="videoPreviewUrl" controls class="preview-video"></video>
-          } @else {
-          <i class="fas fa-video"></i>
-          <p>Upload Video (Single)</p>
-          }
-          <input #video id="video" type="file" (change)="onFileChange($event, 'video')" accept="video/*" hidden>
-        </div>
-      </div>
-
-      <hr>
-
-      <div class="post-actions upload-footer">
-        <button type="submit" [disabled]="isUploading" class="publish-btn">
-          {{ isUploading ? 'Uploading...' : 'Publish Post' }}
-        </button>
-
-        <div class="upload-status">
-          @if (isUploading) {
-          <p>Uploading...</p>
-          }
-          @if (uploadSuccess) {
-          Upload successful! ID: {{uploadedPost?.id}}
-          }
-          @if (uploadError) {
-          <p class="error">Upload failed.</p>
-          }
-        </div>
-      </div>
-    </form>
-  </div>
-</div> -->
-
-<div class="upload-post-container">
-  <div class="post-card">
-    <form (ngSubmit)="onSubmit()">
-
-      <div class="post-header">
-        <div class="user-avatar">UM</div>
-        <div class="user-info">
-          <div class="user-name">
-            Current User
-            <span class="verification-badge">✔</span>
+          <div class="status-msg">
+            @if (uploadSuccess) { <span class="success">Post published successfully!</span> }
+            @if (uploadError) { <span class="error-msg">Upload failed, please try again.</span> }
           </div>
-          <div class="post-meta">
-            <span>Creating a new post</span>
-          </div>
-        </div>
-        <div class="more-options">...</div>
+        </form>
       </div>
-
-      <hr>
-
-      <div class="post-text">
-        <label for="title">Post Title:</label>
-        <input id="title" [(ngModel)]="postData.title" name="title" required minlength="3" maxlength="100"
-          #title="ngModel" placeholder="Enter a relevant title">
-        <div class="error" *ngIf="title.invalid && (title.dirty || title.touched)">
-          <div *ngIf="title.errors?.['required']">Title is required.</div>
-          <div *ngIf="title.errors?.['minlength']">Title must be at least 3 characters.</div>
-          <div *ngIf="title.errors?.['maxlength']">Title cannot exceed 100 characters.</div>
-        </div>
-      </div>
-
-      <div class="post-text">
-        <label for="content">Content:</label>
-        <textarea id="content" [(ngModel)]="postData.content" name="content" required minlength="10" maxlength="5000"
-          #content="ngModel" placeholder="Write your post content here"></textarea>
-        <div class="error" *ngIf="content.invalid && (content.dirty || content.touched)">
-          <div *ngIf="content.errors?.['required']">Content is required.</div>
-          <div *ngIf="content.errors?.['minlength']">Content must be at least 10 characters.</div>
-          <div *ngIf="content.errors?.['maxlength']">Content cannot exceed 5000 characters.</div>
-        </div>
-      </div>
-
-      <hr>
-
-      <div class="media-inputs">
-        <h3>Add Media:</h3>
-
-        <div class="upload-zone" (click)="images.click()">
-          @if (imagePreviews.length > 0) {
-          <div class="image-previews-container">
-            @for (url of imagePreviews; track url) {
-            <img [src]="url" alt="Image preview" class="preview-image">
-            }
-          </div>
-          } @else {
-          <i class="fas fa-image"></i>
-          <p>Upload Images (Multiple)</p>
-          }
-          <input #images id="images" type="file" (change)="onFileChange($event, 'images')" multiple accept="image/*"
-            hidden>
-        </div>
-
-        <div class="upload-zone" (click)="audio.click()">
-          @if (audioPreviewUrl) {
-          <audio [src]="audioPreviewUrl" controls class="preview-audio"></audio>
-          } @else {
-          <i class="fas fa-music"></i>
-          <p>Upload Audio (Single)</p>
-          }
-          <input #audio id="audio" type="file" (change)="onFileChange($event, 'audio')" accept="audio/*" hidden>
-        </div>
-
-        <div class="upload-zone" (click)="video.click()">
-          @if (videoPreviewUrl) {
-          <video [src]="videoPreviewUrl" controls class="preview-video"></video>
-          } @else {
-          <i class="fas fa-video"></i>
-          <p>Upload Video (Single)</p>
-          }
-          <input #video id="video" type="file" (change)="onFileChange($event, 'video')" accept="video/*" hidden>
-        </div>
-      </div>
-
-      <hr>
-
-      <div class="post-actions upload-footer">
-        <button type="submit" [disabled]="title.invalid || content.invalid || isUploading" class="publish-btn">
-          {{ isUploading ? 'Uploading...' : 'Publish Post' }}
-        </button>
-
-        <div class="upload-status">
-          @if (isUploading) {
-          <p>Uploading...</p>
-          }
-          @if (uploadSuccess) {
-          Upload successful! ID: {{uploadedPost?.id}}
-          }
-          @if (uploadError) {
-          <p class="error">Upload failed.</p>
-          }
-        </div>
-      </div>
-    </form>
+    </div>
   </div>
 </div>
