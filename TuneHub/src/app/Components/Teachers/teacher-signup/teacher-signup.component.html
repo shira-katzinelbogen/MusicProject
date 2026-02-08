@@ -6,43 +6,53 @@
 
         <div class="form-group">
             <label for="experience">Years of teaching experience:</label>
-            <input type="number" id="experience"
-                   name="experience" min="0"
-                   [(ngModel)]="teacherData.experience"
-                   required>
+            <input type="number" id="experience" name="experience" [(ngModel)]="teacherData.experience" required min="0"
+                #experience="ngModel">
+            <div class="error-message" *ngIf="experience.invalid && (experience.touched || teacherForm.submitted)">
+                <div *ngIf="experience.errors?.['required']">Experience is required</div>
+                <div *ngIf="experience.errors?.['min']">Experience must be 0 or more</div>
+            </div>
+
         </div>
 
         <div class="form-group">
             <label for="price">Price per lesson ($):</label>
-            <input type="number" id="price" name="price"
-                   min="10" step="0.01"
-                   [(ngModel)]="teacherData.pricePerLesson"
-                   required>
+            <input type="number" id="price" name="price" [(ngModel)]="teacherData.pricePerLesson" required min="10"
+                step="0.01" #price="ngModel">
+
+            <div class="error-message" *ngIf="price.invalid && (price.touched || teacherForm.submitted)">
+                <div *ngIf="price.errors?.['required']">Price is required</div>
+                <div *ngIf="price.errors?.['min']">Minimum price is 10</div>
+            </div>
+
         </div>
 
         <div class="form-group">
             <label for="duration">Lesson duration (minutes):</label>
-            <input type="number" id="duration"
-                   name="duration" min="15" max="180"
-                   [(ngModel)]="teacherData.lessonDuration"
-                   required>
+            <input type="number" id="duration" name="duration" [(ngModel)]="teacherData.lessonDuration" required
+                min="0.25" step="0.25" #duration="ngModel">
+
+            <div class="error-message" *ngIf="duration.invalid && (duration.touched || teacherForm.submitted)">
+                <div *ngIf="duration.errors?.['required']">Lesson duration is required</div>
+                <div *ngIf="duration.errors?.['min']">Minimum duration is 0.25 hours</div>
+            </div>
         </div>
 
         <div class="form-group instrument-select-group">
             <label>Instruments I teach:</label>
             <div class="instrument-list">
                 @for(instrument of instrumentsList; track instrument.id){
-                    <button type="button"
-                            class="instrument-tag"
-                            [class.selected]="(teacherData.instrumentsIds || []).includes(instrument.id!)"
-                            (click)="toggleInstrument(instrument.id!)">
-                        {{ instrument.name }}
-                        <span *ngIf="(teacherData.instrumentsIds || []).includes(instrument.id!)"><mat-icon>check</mat-icon></span>
-                    </button>
+                <button type="button" class="instrument-tag"
+                    [class.selected]="(teacherData.instrumentsIds || []).includes(instrument.id!)"
+                    (click)="toggleInstrument(instrument.id!)">
+                    {{ instrument.name }}
+                    <span
+                        *ngIf="(teacherData.instrumentsIds || []).includes(instrument.id!)"><mat-icon>check</mat-icon></span>
+                </button>
                 }
             </div>
             @if((teacherData.instrumentsIds || []).length === 0 && teacherForm.submitted){
-                <p class="error-message">You must select at least one instrument.</p>
+            <p class="error-message">You must select at least one instrument.</p>
             }
         </div>
 
@@ -52,5 +62,5 @@
     </form>
 </div>
 <div *ngIf="showMessageBox" class="message-box">
-  {{ message }}
+    {{ message }}
 </div>

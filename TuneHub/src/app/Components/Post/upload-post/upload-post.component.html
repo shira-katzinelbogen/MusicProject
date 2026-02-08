@@ -95,7 +95,7 @@
 
 <div class="upload-post-container">
   <div class="post-card">
-    <form  (ngSubmit)="onSubmit()">
+    <form (ngSubmit)="onSubmit()">
 
       <div class="post-header">
         <div class="user-avatar">UM</div>
@@ -115,13 +115,24 @@
 
       <div class="post-text">
         <label for="title">Post Title:</label>
-        <input id="title" [(ngModel)]="postData.title" name="title" required placeholder="Enter a relevant title">
+        <input id="title" [(ngModel)]="postData.title" name="title" required minlength="3" maxlength="100"
+          #title="ngModel" placeholder="Enter a relevant title">
+        <div class="error" *ngIf="title.invalid && (title.dirty || title.touched)">
+          <div *ngIf="title.errors?.['required']">Title is required.</div>
+          <div *ngIf="title.errors?.['minlength']">Title must be at least 3 characters.</div>
+          <div *ngIf="title.errors?.['maxlength']">Title cannot exceed 100 characters.</div>
+        </div>
       </div>
 
       <div class="post-text">
         <label for="content">Content:</label>
-        <textarea id="content" [(ngModel)]="postData.content" name="content" required
-          placeholder="Write your post content here"></textarea>
+        <textarea id="content" [(ngModel)]="postData.content" name="content" required minlength="10" maxlength="5000"
+          #content="ngModel" placeholder="Write your post content here"></textarea>
+        <div class="error" *ngIf="content.invalid && (content.dirty || content.touched)">
+          <div *ngIf="content.errors?.['required']">Content is required.</div>
+          <div *ngIf="content.errors?.['minlength']">Content must be at least 10 characters.</div>
+          <div *ngIf="content.errors?.['maxlength']">Content cannot exceed 5000 characters.</div>
+        </div>
       </div>
 
       <hr>
@@ -168,7 +179,7 @@
       <hr>
 
       <div class="post-actions upload-footer">
-        <button type="submit" [disabled]="isUploading" class="publish-btn">
+        <button type="submit" [disabled]="title.invalid || content.invalid || isUploading" class="publish-btn">
           {{ isUploading ? 'Uploading...' : 'Publish Post' }}
         </button>
 
