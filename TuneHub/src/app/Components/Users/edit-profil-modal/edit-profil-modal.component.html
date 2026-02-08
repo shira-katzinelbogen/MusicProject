@@ -19,7 +19,10 @@
             <div class="input-group">
                 <label>Full Name</label>
                 <input type="text" formControlName="name" placeholder="Enter full name" />
-
+                <span class="error-msg"
+                    *ngIf="editForm.get('name')?.touched && editForm.get('name')?.hasError('required')">
+                    Name is required
+                </span>
             </div>
             @if(errorMsg){
             <span class="error-msg">
@@ -30,6 +33,17 @@
             <div class="input-group">
                 <label>Email</label>
                 <input type="email" formControlName="email" placeholder="Enter email" />
+                <p class="error-msg" *ngIf="editForm.get('email')?.touched && editForm.get('email')?.invalid">
+
+                    <span *ngIf="editForm.get('email')?.errors?.['required']">
+                        Email is required
+                    </span>
+
+                    <span *ngIf="editForm.get('email')?.errors?.['email']">
+                        Email format is invalid
+                    </span>
+
+                </p>
             </div>
 
             <div class="input-group">
