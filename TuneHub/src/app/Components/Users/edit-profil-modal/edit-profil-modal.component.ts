@@ -76,7 +76,7 @@ export class EditProfilModalComponent implements OnInit, OnDestroy {
       city: [this.profileData?.city || ''],
       country: [this.profileData?.country || ''],
       description: [this.profileData?.description || ''],
-      imageProfilePath: [this.profileData?.profile?.imageProfilePath || '']
+      imageProfilePath: [this.profileData?.profile?.imageProfilePath || ''],
     });
 
     const url = this.fileUtilsService.getImageUrl(this.profileData!.profile!.imageProfilePath);
@@ -128,11 +128,12 @@ export class EditProfilModalComponent implements OnInit, OnDestroy {
       },
       error: (err) => {
         if (err.status === 409) {
-          this.errorMsg = 'The username is already in use. Please choose a different one.';
+          this.errorMsg = 'This name is already taken. Please choose another name.';
         } else {
-          this.errorMsg = 'An error occurred while updating the profile. Please try again later.';
+          this.errorMsg = 'An error occurred while updating the profile.';
         }
       }
+
     });
   }
 
