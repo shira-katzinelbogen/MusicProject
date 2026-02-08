@@ -55,16 +55,16 @@ export class UploadSheetMusicComponent implements OnInit {
 
   initForm(): void {
     this.uploadForm = this.fb.group({
-      title: ['', Validators.required],
+      title: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(255)]],
       scale: ['', Validators.required],
-      categories: [[], Validators.required],
-      instruments: [[], Validators.required],
+      categories: [[], [Validators.required, Validators.minLength(1)]],
+      instruments: [[], [Validators.required, Validators.minLength(1)]],
       level: ['', Validators.required],
-      composer: [''],
-      lyricist: [''],
-      description: [''],
+      composer: ['', [Validators.required, Validators.maxLength(255)]],
+      lyricist: ['', [Validators.required, Validators.maxLength(255)]],
       file: [null, Validators.required]
     });
+
     this.disableAIFields();
   }
 
