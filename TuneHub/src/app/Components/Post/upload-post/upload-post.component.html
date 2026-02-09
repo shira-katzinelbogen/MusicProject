@@ -138,6 +138,12 @@
           <div class="status-msg">
             @if (uploadSuccess) { <span class="success">Post published successfully!</span> }
             @if (uploadError) { <span class="error-msg">Upload failed, please try again.</span> }
+            @if (noUserError) {
+            <span class="error-msg">
+              Post upload failed, you are not logged in to TuneHub.
+              <a href="javascript:void(0)" (click)="loginwindowService.open()"> Log in here.</a>
+            </span>
+            }
           </div>
         </form>
       </div>

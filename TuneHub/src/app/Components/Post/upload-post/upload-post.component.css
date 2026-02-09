@@ -231,3 +231,19 @@ body, html {
   .auth-container { flex-direction: column; width: 100%; max-width: 500px; }
   .side-panel { display: none; }
 }
+
+/* ADDITIONAL STYLES FOR LOGIN PROMPT */
+.error-msg a {
+  color: #b648ff; 
+  text-decoration: underline; 
+  font-weight: 500;
+  cursor: pointer;
+  transition: color 0.15s ease-in-out; 
+}
+
+.error-msg a:hover {
+  color: #a52df5; 
+  text-decoration: none; 
+}
+
+

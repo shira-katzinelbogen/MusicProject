@@ -5,6 +5,7 @@ import { FormsModule } from '@angular/forms';
 import { PostResponseDTO, PostUploadDTO } from '../../../Models/Post';
 import { Router } from '@angular/router';
 import { MatIcon } from "@angular/material/icon";
+import { LoginwindowService } from '../../../Services/loginwindow.service';
 
 @Component({
   selector: 'app-upload-post',
@@ -28,13 +29,15 @@ export class UploadPostComponent {
   isUploading: boolean = false;
   uploadSuccess: boolean = false;
   uploadError: boolean = false;
+  noUserError: boolean = false;
   uploadedPost: PostResponseDTO | null = null;
 
 
-  constructor(private postService: PostService, private router: Router) { }
+  constructor(private postService: PostService, private router: Router, public loginwindowService: LoginwindowService) { }
 
 
-onSubmit(): void {
+  onSubmit(): void {
+    
     let dtoToSend = {
       title: this.postData.title,
       content: this.postData.content,
@@ -52,14 +55,18 @@ onSubmit(): void {
     ).subscribe({
       next: (response) => {
         this.uploadedPost = response;
-        this.onUploadComplete(response); 
+        this.onUploadComplete(response);
 
+        this.noUserError = false;
         this.uploadSuccess = true;
         this.isUploading = false;
       },
       error: (err) => {
-        console.error('Upload failed', err);
-        this.uploadError = true;
+        if (err.status === 401 || err.status === 403) {
+          this.noUserError = true;
+        } else {
+          this.uploadError = true;
+        }
         this.isUploading = false;
       }
     });
@@ -113,7 +120,7 @@ onSubmit(): void {
     this.uploadedPost = post;
     this.uploadSuccess = true;
 
-    this.router.navigate(['/posts']); 
+    this.router.navigate(['/posts']);
   }
 
 
