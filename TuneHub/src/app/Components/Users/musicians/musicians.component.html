@@ -1,27 +1,27 @@
 <div class="container">
-    <header class="header">
-        <div class="cover-wrapper">
-            <img src="./assets/images/musicians.png" class="cover-image" />
 
-            <div class="overlay-content">
-                <div class="header-inner-content">
+    <div class="cover-wrapper">
+        <img src="./assets/images/musicians.png" class="cover-image" />
 
-                    <div class="title-section">
-                        <h1 class="musicians" style="font-size: 60px;">Find Musicians</h1>
-                        <p style="font-size: 25px;color: #ffffff;">Connect with talented professionals for your next
-                            project</p>
-                    </div>
+        <div class="overlay-content">
+            <div class="header-inner-content">
 
-                    @if (!isMusician) {
-                    <button class="button" (click)="joinMusicianNetwork()" [disabled]="!user">
-                        Join Network
-                        <mat-icon>person</mat-icon>
-                    </button>
-                    }
+                <div class="title-section">
+                    <h1 class="musicians" style="font-size: 60px;">Find Musicians</h1>
+                    <p style="font-size: 25px;color: #ffffff;">Connect with talented professionals for your next
+                        project</p>
                 </div>
+
+                @if (!isMusician) {
+                <button class="button" (click)="joinMusicianNetwork()" [disabled]="!user">
+                    Join Network
+                    <mat-icon>person</mat-icon>
+                </button>
+                }
             </div>
         </div>
-    </header>
+    </div>
+
 
     <div class="container2">
         <div class="stats-wrapper">

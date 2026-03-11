@@ -197,7 +197,7 @@ input:focus, select:focus {
 }
 
 .modal-backdrop{
-    z-index: 555555555555555555555555555555555555555555555555;
+    z-index:5555;
 }
 
 app-upload-sheet-music {
@@ -206,6 +206,8 @@ app-upload-sheet-music {
   left: 0;
   width: 100%;
   height: 100%;
-  z-index: 9555555555555999;
+  z-index: 95599;
   /* pointer-events: auto; */
 }
+
+

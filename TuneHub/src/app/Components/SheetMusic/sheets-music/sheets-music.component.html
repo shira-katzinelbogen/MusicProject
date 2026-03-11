@@ -1,34 +1,31 @@
 <div class="container">
 
   <!-- HEADER -->
-  <header class="headerPages">
-    <div class="cover-wrapper">
-      <img src="./assets/images/sheets_music.webp" class="cover-image" />
+  <div class="cover-wrapper">
+    <img src="./assets/images/sheets_music.webp" class="cover-image" />
 
-      <div class="overlay-content">
-        <div class="header-inner-content">
+    <div class="overlay-content">
+      <div class="header-inner-content">
 
-          <div class="title-section">
-            <h1 class="musicians" style="font-size: 60px;">Sheet Music Library</h1>
-            <p style="font-size: 25px; color: #ffffff;">
-              Discover, learn, and share musical scores from around the world
-            </p>
-          </div>
-
-          <button class="button join-network-btn" (click)="openUploadModal()">
-            <mat-icon>upload</mat-icon>
-            Upload Sheet Music
-          </button>
-
-          @if (uploadSheetMusicService.isOpen) {
-          <app-upload-sheet-music></app-upload-sheet-music>
-          }
-
+        <div class="title-section">
+          <h1 class="musicians" style="font-size: 60px;">Sheet Music Library</h1>
+          <p style="font-size: 25px; color: #ffffff;">
+            Discover, learn, and share musical scores from around the world
+          </p>
         </div>
-      </div>
 
+        <button class="button join-network-btn" (click)="openUploadModal()">
+          <mat-icon>upload</mat-icon>
+          Upload Sheet Music
+        </button>
+
+        @if (uploadSheetMusicService.isOpen) {
+        <app-upload-sheet-music></app-upload-sheet-music>
+        }
+
+      </div>
     </div>
-  </header>
+  </div>
 
 
   <div class="container2">
