@@ -43,12 +43,10 @@ export class ChatBotComponent implements OnInit, AfterViewChecked {
   @ViewChild('messagesContainer') private messagesContainer!: ElementRef;
 
   ngOnInit() {
-    const saved = this.storageService.getItem(this.conversationId);
-    if (saved) {
-      this.messages = JSON.parse(saved);
-    }
+    this.storageService.clear();
+    this.messages = [];
   }
-
+  
   toggleChat() {
     this.isOpen = !this.isOpen;
   }

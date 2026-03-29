@@ -485,3 +485,7 @@
   }
 }
 
+.error-msg {
+  color: #ff8989;
+  font-size: 0.85em;
+}

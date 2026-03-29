@@ -23,4 +23,10 @@ export class StorageService {
       sessionStorage.setItem(key, value);
     }
   }
+
+  clear(): void {
+    if (this.isBrowser) {
+      sessionStorage.clear();
+    }
+  }
 }

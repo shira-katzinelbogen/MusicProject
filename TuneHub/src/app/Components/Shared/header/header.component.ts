@@ -65,9 +65,8 @@ export class HeaderComponent {
   //    this.unreadCount$ = this.notificationService.getUnreadCount();
   // }
 
-  // navigateToNotifications(): void {
-  //    this.router.navigate(['/notifications']);
-  //    router.navigate(['/notifications']);
-  // }
+  navigateToNotifications(): void {
+     this.router.navigate(['/notifications']);
+  }
 }
 
