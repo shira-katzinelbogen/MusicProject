@@ -1,148 +1,88 @@
-<!-- <div class="container">
-    <header class="header">
-        <div class="cover-wrapper">
-            <img src="./assets/images/notifications.png" class="cover-image" alt="Notifications cover" />
-            <div class="overlay-content">
-                <div class="header-inner-content">
-                    <div class="title-section">
-                        <h1 class="musicians" style="font-size: 60px;">Notifications</h1>
-                        <p style="font-size: 25px; color: #ffffff;">Stay updated with your musical journey</p>
-                    </div>
-                    <button class="button" (click)="markAllAsRead()" [disabled]="unreadCount === 0">
-                        <mat-icon>done_all</mat-icon>Mark all as read
-                    </button>
+<div class="container">
+    <div class="cover-wrapper">
+        <img src="./assets/images/notifications.png" class="cover-image" alt="Notifications cover" />
+        <div class="overlay-content">
+            <div class="header-inner-content">
+                <div class="title-section">
+                    <h1 class="musicians" style="font-size: 60px;">Notifications</h1>
+                    <p style="font-size: 25px; color: #ffffff;">Stay updated with your musical journey</p>
                 </div>
+                <button class="button" (click)="markAllAsRead()" [disabled]="stats().unread === 0">
+                    <mat-icon>done_all</mat-icon>Mark all as read
+                </button>
             </div>
         </div>
-    </header>
+    </div>
 
     <div class="stats-card-container">
         <div class="stats-card" dir="ltr">
             <div class="stat-item white-glow">
-                <div class="stat-number">{{ unreadCount }}</div>
+                <div class="stat-number">{{ stats().unread }}</div>
                 <div class="stat-label">Unread</div>
             </div>
             <div class="stat-item purple-glow">
-                <div class="stat-number">{{ thisWeekCount }}</div>
+                <div class="stat-number">{{ stats().thisWeek }}</div>
                 <div class="stat-label">This Week</div>
             </div>
             <div class="stat-item blue-glow">
-                <div class="stat-number">{{ newFollowersCount }}</div>
+                <div class="stat-number">{{ stats().interactions }}</div>
                 <div class="stat-label">New Followers</div>
             </div>
             <div class="stat-item green-glow">
-                <div class="stat-number">{{ interactionsCount }}</div>
+                <div class="stat-number">{{ stats().interactions }}</div>
                 <div class="stat-label">Interactions</div>
             </div>
         </div>
     </div>
 
-    <div class="mb-6 flex justify-center">
-        <div class="inline-flex space-x-3 p-1 rounded-xl bg-gray-800 shadow-inner">
-            <button class="category-btn" [class.button]="unreadOnly" (click)="toggleUnread()">
-                <mat-icon>{{ unreadOnly ? 'visibility_off' : 'visibility' }}</mat-icon>
-                {{ unreadOnly ? 'הצג הכל' : 'רק לא נקראו' }}
+    <nav class="filter-nav">
+        <div class="category-chips">
+            @for (cat of categories; track cat.key) {
+            <button (click)="setCategory(cat.key)" [class.active]="activeCategory() === cat.key" class="chip">
+                <mat-icon>{{ cat.icon }}</mat-icon>
+                {{ cat.label }}
             </button>
-            <div class="categories-center">
-                <div class="categories-box">
-                    <button *ngFor="let category of categories" (click)="setActiveCategory(category.key)"
-                        [class.button]="activeCategory === category.key" class="category-btn">
-                        {{ category.label }}
-                        <span *ngIf="category.unreadCount > 0" class="badge">{{ category.unreadCount }}</span>
+            }
+        </div>
+
+        <button class="toggle-btn" (click)="toggleUnread()" [class.active]="unreadOnly()">
+            <mat-icon>{{ unreadOnly() ? 'visibility_off' : 'visibility' }}</mat-icon>
+            {{ unreadOnly() ? 'Show all' : 'Only unread' }}
+        </button>
+    </nav>
+
+    <main class="notifications-list">
+        @for (note of filteredNotifications(); track note.id) {
+        <article class="notification-item" [class.is-unread]="!note.isRead" (click)="markAsRead(note)">
+
+            <div class="icon-wrapper">
+                <span class="type-icon">{{ getIconForType(note.type) }}</span>
+                @if (!note.isRead) { <span class="unread-dot"></span> }
+            </div>
+
+            <div class="content">
+                <div class="text-group">
+                    <h3>{{ note.title }}</h3>
+                    <p>{{ note.message }}</p>
+                    <time>{{ note.createdAt | timeAgo }}</time>
+                </div>
+
+                <div class="actions">
+                    @if (note.type === 'FOLLOW_REQUESTS') {
+                    <button class="approve-btn">Approve</button>
+                    }
+                    <button class="delete-btn" (click)="deleteNotification(note.id); $event.stopPropagation()">
+                        <mat-icon>delete_outline</mat-icon>
                     </button>
                 </div>
             </div>
+        </article>
+        } @empty {
+        <app-no-results></app-no-results>
+        }
 
-            <div *ngIf="filteredNotifications.length > 0; else noNotifications">
-                <div *ngFor="let notification of filteredNotifications" [class.bg-gray-700]="notification.isRead"
-                    [class.bg-gray-800]="!notification.isRead"
-                    class="flex items-start p-4 mb-4 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 border"
-                    [class.border-indigo-600]="!notification.isRead" [class.border-gray-700]="notification.isRead">
-
-                    <div class="notification" [class.unread]="!notification.isRead" (click)="markAsRead(notification)">
-                        <div class="relative flex-shrink-0 w-10 h-10 rounded-full flex items-center justify-center text-xl mr-4"
-                            [class.bg-indigo-600]="!notification.isRead" [class.bg-gray-600]="notification.isRead">
-                            {{ getIconForType(notification.type) }}
-                            <div *ngIf="!notification.isRead"
-                                class="absolute top-0 right-0 w-3 h-3 bg-red-500 rounded-full border-2 border-gray-800">
-                            </div>
-                        </div>
-
-                        <div class="flex-grow">
-                            <div class="flex justify-between items-start">
-                                <div>
-                                    <p class="font-semibold text-lg" [class.text-white]="!notification.isRead"
-                                        [class.text-gray-300]="notification.isRead">
-                                        {{ notification.isRead ? 'notification readen' : notification.title }}
-                                    </p>
-                                    <p class="text-sm text-gray-400 mt-0.5">{{ notification.message }}</p>
-                                    <p class="text-xs text-gray-500 mt-2">{{ notification.createdAt | timeAgo }}</p>
-                                </div>
-
-                                <div class="flex-shrink-0 ml-4 space-x-2">
-                                    <div class="flex-grow">
-                                        <div class="flex justify-between items-start">
-                                            <div *ngIf="shouldShowActions(notification)" class="flex-shrink-0">
-
-                                                <button *ngIf="!notification.isRead"
-                                                    (click)="markAsRead(notification); $event.stopPropagation()"
-                                                    class="text-xs px-2 py-1 border border-indigo-500 text-indigo-300 rounded">
-                                                    סמן כנקרא
-                                                </button>
-
-                                                <button
-                                                    (click)="deleteNotification(notification.id); $event.stopPropagation()"
-                                                    class="text-gray-500 hover:text-red-500 transition duration-200"
-                                                    aria-label="מחק התראה">
-                                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5"
-                                                        viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                                        stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                                        <polyline points="3 6 5 6 21 6"></polyline>
-                                                        <path
-                                                            d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2">
-                                                        </path>
-                                                    </svg>
-                                                </button>
-                                                <button *ngIf="notification.type === 'ADMIN'" ...>Claim Prize</button>
-                                                <button *ngIf="notification.type === 'COMMENTS'" ...>View
-                                                    Comment</button>
-                                                <button *ngIf="notification.type === 'FOLLOW_REQUESTS'" ...
-                                                    class="approve-btn">Approve</button>
-                                            </div>
-                                        </div>
-                                    </div>
-
-
-                                    <button *ngIf="notification.type === 'ADMIN'"
-                                        class="px-3 py-1 bg-green-600 text-white text-sm font-semibold rounded-lg hover:bg-green-700">
-                                        Claim Prize
-                                    </button>
-                                    <button *ngIf="notification.type === 'COMMENTS'"
-                                        class="px-3 py-1 bg-purple-600 text-white text-sm font-semibold rounded-lg hover:bg-purple-700">
-                                        View Comment
-                                    </button>
-                                    <button *ngIf="notification.type === 'FOLLOW_REQUESTS'"
-                                        (click)="approveFollow(notification.targetId!); $event.stopPropagation()"
-                                        class="approve-btn">
-                                        Approve
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                </div>
-            </div>
-
-            <button *ngIf="hasMore" class="load-more" (click)="loadMore()">Load More</button>
-
-            <ng-template #noNotifications>
-                <div class="text-center p-10 bg-gray-800 rounded-xl mt-10">
-                    <p class="text-xl text-gray-400">There are no notifications to display in this category.</p>
-                    <p class="text-sm text-gray-500 mt-2"> Everything is quiet and beautiful</p>
-                </div>
-            </ng-template>
-
-        </div>
-    </div>
-</div> -->
+        @if (hasMore && filteredNotifications().length > 0) {
+        <button class="load-more" (click)="loadMore()">Load Previous</button>
+        }
+    </main>
+</div>

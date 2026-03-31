@@ -1,4 +1,4 @@
-import { ERole } from "./Users";
+import ERole from "./Users";
 
 export interface UsersProfileDTO {
     id: number;         

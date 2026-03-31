@@ -1,309 +1,184 @@
-import { Component } from '@angular/core';
-// import { OnInit, OnDestroy, ChangeDetectorRef } from '@angular/core';
-// import { NotificationResponseDTO, ENotificationCategory } from '../../../Models/Notification';
-// import { NotificationService } from '../../../Services/notification.service';
-// import { InteractionService } from '../../../Services/interaction.service';
-// import { TimeAgoPipe } from "../../Shared/time-ago-pipe/time-ago-pipe.component";
-// import { CommonModule } from '@angular/common';
-// import { MatIconModule } from "@angular/material/icon";
-// import SockJS from 'sockjs-client';
-// import { Client, IMessage } from '@stomp/stompjs';
-// import { Subscription } from 'rxjs';
+import { Component, OnInit, OnDestroy, signal, computed } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { MatIconModule } from "@angular/material/icon";
+import { Subscription } from 'rxjs';
+import { NotificationService } from '../../../Services/notification.service';
+import { ENotificationCategory } from '../../../Models/Notification';
+import { TimeAgoPipe } from "../../../Pipes/time-ago.pipe";
+import { NoResultsComponent } from "../../Shared/no-results/no-results.component";
 
+/**
+ * @description Advanced Notifications Component utilizing Angular Signals for optimal performance.
+ * Features include real-time synchronization, multi-category filtering, and infinite scroll pagination.
+ */
 @Component({
-    selector: 'app-notifications',
-    templateUrl: './notifications.component.html',
-    styleUrls: ['./notifications.component.css'],
-    //   imports: [TimeAgoPipe, CommonModule, MatIconModule]
+  selector: 'app-notifications',
+  standalone: true,
+  templateUrl: './notifications.component.html',
+  styleUrls: ['./notifications.component.css'],
+  imports: [CommonModule, MatIconModule, TimeAgoPipe, NoResultsComponent]
 })
-export class NotificationsComponent {
+export class NotificationsComponent implements OnInit, OnDestroy {
+  /** @property Contextual user ID - Should ideally be retrieved from an Auth Service */
+  public userId: string = 'user_efrat_123';
 
-    //   private stompClient: Client | null = null;
-    //   private unreadSub!: Subscription;
+  // --- Reactive State Management (Signals) ---
+  
+  /** @property Raw list of all notifications fetched from the server/socket */
+  public notifications = signal<any[]>([]); 
+  
+  /** @property Currently selected filter category */
+  public activeCategory = signal<ENotificationCategory | 'ALL'>('ALL'); 
+  
+  /** @property Toggle state for filtering only unread items */
+  public unreadOnly = signal<boolean>(false); 
+  
+  public currentPage = 1;
+  public hasMore = true;
+  private notificationsSub: Subscription | undefined;
 
-    //   notifications: NotificationResponseDTO[] = [];
-    //   filteredNotifications: NotificationResponseDTO[] = [];
-    //   unreadCount = 0;
+  /** @property UI configuration for category navigation */
+  public readonly categories = [
+    { key: 'ALL', label: 'All', icon: 'apps' },
+    { key: ENotificationCategory.FOLLOW_UPDATES, label: 'Follows', icon: 'person_add' },
+    { key: ENotificationCategory.LIKES_FAVORITES, label: 'Likes & Favorites', icon: 'favorite' },
+    { key: ENotificationCategory.COMMENTS, label: 'Comments', icon: 'forum' },
+    { key: ENotificationCategory.FOLLOW_REQUESTS, label: 'Requests', icon: 'pending' },
+    { key: ENotificationCategory.ADMIN, label: 'System', icon: 'verified_user' }
+  ];
 
-    //   page = 0;
-    //   size = 10;
-    //   hasMore = true;
-    //   unreadOnly = false;
+  constructor(private notificationService: NotificationService) {}
 
-    //   thisWeekCount: number = 0;
-    //   newFollowersCount: number = 0;
-    //   interactionsCount: number = 0;
+  ngOnInit(): void {
+    // Establish real-time connection Socket.io 
+    this.notificationService.connectSocket(this.userId);
 
-    //   activeCategory: ENotificationCategory | 'ALL' = 'ALL';
+    // Sync component state with the service's notification stream
+    this.notificationsSub = this.notificationService.notifications$.subscribe(data => {
+      this.notifications.set(data);
+    });
 
-    //   private interactionTypes = [
-    //     ENotificationCategory.FOLLOW_UPDATES,
-    //     ENotificationCategory.LIKES_FAVORITES,
-    //     ENotificationCategory.COMMENTS,
-    //     ENotificationCategory.FOLLOW_REQUESTS
-    //   ];
+    // Initial fetch of historical data
+    this.fetchData();
+  }
 
-    //   categories: { key: ENotificationCategory | 'ALL'; label: string; unreadCount: number }[] = [
-    //     { key: 'ALL', label: 'All', unreadCount: 0 },
-    //     { key: ENotificationCategory.FOLLOW_UPDATES, label: 'Follow Updates', unreadCount: 0 },
-    //     { key: ENotificationCategory.LIKES_FAVORITES, label: 'Likes & Favorites', unreadCount: 0 },
-    //     { key: ENotificationCategory.COMMENTS, label: 'Comments', unreadCount: 0 },
-    //     { key: ENotificationCategory.APPROVED_FOLLOWS, label: 'Approved Follows', unreadCount: 0 },
-    //     { key: ENotificationCategory.FOLLOW_REQUESTS, label: 'Follow Requests', unreadCount: 0 },
-    //     { key: ENotificationCategory.ADMIN, label: 'Admin Messages', unreadCount: 0 }
-    //   ];
+  /**
+   * @description Computed signal that derives the filtered list based on active category and unread status.
+   * Runs only when dependencies change, ensuring high efficiency.
+   */
+  public filteredNotifications = computed(() => {
+    let list = this.notifications();
+    
+    // Filter by read status
+    if (this.unreadOnly()) {
+      list = list.filter(n => !n.isRead);
+    }
+    
+    // Filter by category type
+    if (this.activeCategory() !== 'ALL') {
+      list = list.filter(n => n.type === this.activeCategory());
+    }
+    
+    return list;
+  });
 
-    //   constructor(
-    //     private _notificationService: NotificationService,
-    //     private _interactionService: InteractionService,
-    //     private cdr: ChangeDetectorRef
-    //   ) { }
+  /**
+   * @description Computed statistics for UI counters and dashboards.
+   */
+  public stats = computed(() => {
+    const all = this.notifications();
+    return {
+      unread: all.filter(n => !n.isRead).length,
+      thisWeek: all.filter(n => this.isWithinDays(n.createdAt, 7)).length,
+      interactions: all.filter(n => n.type !== ENotificationCategory.ADMIN).length
+    };
+  });
 
-    //   ngOnInit(): void {
-    //     this.loadNotifications();
-    //     this.loadUnreadCount();
-    //     this.initWebSocketConnection();
+  // --- Logic & API Interaction ---
 
-    //     this.unreadSub = this._notificationService.unreadCount$.subscribe(count => {
-    //       this.unreadCount = count;
-    //       this.refreshCategoryUnreadCounters();
-    //     });
-    //   }
+  /**
+   * @description Fetches a specific page of notifications from the backend.
+   */
+  public fetchData(): void {
+    this.notificationService.getNotifications(this.userId, this.currentPage).subscribe({
+      next: (res) => {
+        this.notificationService.appendNotifications(res.data || []);
+        this.hasMore = res.hasMore ?? false;
+      },
+      error: (err) => console.error('Failed to retrieve data:', err)
+    });
+  }
 
-    //   ngOnDestroy(): void {
-    //     this.unreadSub?.unsubscribe();
-    //     if (this.stompClient) this.stompClient.deactivate();
-    //   }
+  /** @description Updates the active category filter */
+  public setCategory(key: any): void {
+    this.activeCategory.set(key);
+  }
 
-    //   private initWebSocketConnection(): void {
-    //     const socket = new SockJS('http://localhost:8080/ws-notifications');
+  /** @description Toggles the unread-only view */
+  public toggleUnread(): void {
+    this.unreadOnly.update(val => !val);
+  }
 
-    //     this.stompClient = new Client({
-    //       webSocketFactory: () => socket,
-    //       reconnectDelay: 5000,
-    //     });
+  /** @description Marks a single notification as read and updates local state optimistically */
+  public markAsRead(note: any): void {
+    if (!note.isRead) {
+      this.notificationService.markAsRead(note.id).subscribe({
+        next: () => {
+          this.notifications.update(list => 
+            list.map(n => n.id === note.id ? { ...n, isRead: true } : n)
+          );
+        }
+      });
+    }
+  }
 
-    //     this.stompClient.onConnect = () => {
+  /** @description Marks all visible notifications as read */
+  public markAllAsRead(): void {
+    this.notificationService.markAllAsRead(this.userId).subscribe({
+      next: () => {
+        this.notifications.update(list => list.map(n => ({ ...n, isRead: true })));
+      }
+    });
+  }
 
-    //       // 🔔 Notification received
-    //       this.stompClient?.subscribe('/user/queue/notifications', (msg: IMessage) => {
+  /** @description Removes a notification from the list and the database */
+  public deleteNotification(id: string): void {
+    this.notificationService.deleteNotification(id).subscribe({
+      next: () => {
+        this.notifications.update(list => list.filter(n => n.id !== id));
+      }
+    });
+  }
 
-    //         const notification: NotificationResponseDTO = JSON.parse(msg.body);
-    //         this.notifications.unshift(notification);
+  /** @description Logic for infinite scrolling pagination */
+  public loadMore(): void {
+    if (this.hasMore) {
+      this.currentPage++;
+      this.fetchData();
+    }
+  }
 
-    //         this._notificationService.incrementUnreadCount();
+  /** @description Utility to determine if a date is within the specified range */
+  private isWithinDays(date: string, days: number): boolean {
+    if (!date) return false;
+    const diff = Date.now() - new Date(date).getTime();
+    return diff / (1000 * 60 * 60 * 24) <= days;
+  }
 
-    //         this.applyFilter();
-    //         this.calculateUnread();
-    //         this.calculateThisWeek();
-    //         this.calculateNewFollowers();
-    //         this.calculateInteractions();
-    //       });
+  /** @description Returns specific icons/emojis based on the notification category */
+  public getIconForType(type: string): string {
+    switch (type) {
+      case ENotificationCategory.FOLLOW_REQUESTS: return '👤';
+      case ENotificationCategory.LIKES_FAVORITES: return '❤️';
+      case ENotificationCategory.COMMENTS: return '💬';
+      case ENotificationCategory.ADMIN: return '🚨';
+      default: return '🔔';
+    }
+  }
 
-    //       this.stompClient?.subscribe('/user/queue/notifications/mark-all-read', () => {
-    //         this.notifications = this.notifications.map(n => ({
-    //           ...n,
-    //           isRead: true
-    //         }));
-
-    //         this._notificationService.resetUnreadCount();
-
-    //         this.applyFilter();
-    //         this.calculateUnread();
-    //         this.calculateThisWeek();
-    //         this.calculateNewFollowers();
-    //         this.calculateInteractions();
-
-    //         this.cdr.detectChanges();
-    //       });
-    //     };
-
-    //     this.stompClient.activate();
-    //   }
-
-    //   markAsRead(notification: NotificationResponseDTO) {
-    //     if (!notification.isRead) {
-    //       this._notificationService.markAsRead(notification.id).subscribe({
-    //         next: () => {
-    //           this.notifications = this.notifications.map(n =>
-    //             n.id === notification.id ? { ...n, isRead: true } : n
-    //           );
-
-    //           this._notificationService.decrementUnreadCount();
-
-    //           this.applyFilter();
-    //           this.calculateUnread();
-    //           this.calculateThisWeek();
-    //           this.calculateNewFollowers();
-    //           this.calculateInteractions();
-
-    //           this.cdr.detectChanges();
-    //         },
-    //         error: err => console.error('Failed to mark as read:', err)
-    //       });
-    //     }
-    //   }
-
-
-    //   markAllAsRead(): void {
-    //     this._notificationService.markAllAsRead().subscribe({
-    //       next: () => {
-    //         this.notifications = this.notifications.map(n => ({
-    //           ...n,
-    //           isRead: true
-    //         }));
-
-    //         this._notificationService.resetUnreadCount();
-
-    //         this.applyFilter();
-    //         this.calculateUnread();
-    //         this.calculateThisWeek();
-    //         this.calculateNewFollowers();
-    //         this.calculateInteractions();
-
-    //         this.refreshCategoryUnreadCounters();
-
-    //         this.cdr.detectChanges();
-    //       },
-    //       error: err => console.error('Failed to mark all as read', err)
-    //     });
-    //   }
-
-    //   deleteNotification(id: number) {
-    //     this._notificationService.deleteNotification(id).subscribe(() => {
-    //       this.notifications = this.notifications.filter(n => n.id !== id);
-    //       this.applyFilter();
-
-    //       this.calculateUnread();
-    //       this.calculateThisWeek();
-    //       this.calculateNewFollowers();
-    //       this.calculateInteractions();
-    //     });
-    //   }
-
-    //   approveFollow(followerId: number) {
-    //     this._interactionService.approveFollow(followerId).subscribe();
-    //   }
-
-    //   refreshCategoryUnreadCounters() {
-    //     this._notificationService.getUnreadCountByCategory().subscribe(unreadMap => {
-    //       this.categories.forEach(c => {
-    //         c.unreadCount = unreadMap[c.key as string] ?? 0;
-    //       });
-    //     });
-    //   }
-
-    //   loadNotifications(reset = false) {
-    //     if (reset) {
-    //       this.notifications = [];
-    //       this.hasMore = true;
-    //     }
-
-    //     let request$;
-
-    //     if (this.unreadOnly) {
-    //       request$ = this._notificationService.getUnreadByCategory(
-    //         this.activeCategory === 'ALL' ? undefined : this.activeCategory
-    //       );
-    //     } else {
-    //       request$ = this._notificationService.getAllByCategory(
-    //         this.activeCategory === 'ALL' ? undefined : this.activeCategory
-    //       );
-    //     }
-
-    //     request$.subscribe({
-    //       next: (pageData) => {
-    //         this.notifications.push(...pageData.content);
-    //         if (pageData.last) this.hasMore = false;
-
-    //         this.applyFilter();
-    //         this.calculateUnread();
-    //         this.calculateThisWeek();
-    //         this.calculateNewFollowers();
-    //         this.calculateInteractions();
-    //       },
-    //       error: err => console.error('Failed to load notifications:', err)
-    //     });
-    //   }
-
-    //   private loadUnreadCount(): void {
-    //     this._notificationService.loadUnreadCount();
-    //   }
-
-    //   setActiveCategory(cat: ENotificationCategory | 'ALL') {
-    //     this.activeCategory = cat;
-    //     this.loadNotifications(true);
-    //   }
-
-    //   getIconForType(type: ENotificationCategory): string {
-    //     switch (type) {
-    //       case ENotificationCategory.FOLLOW_REQUESTS: return '👤';
-    //       case ENotificationCategory.APPROVED_FOLLOWS: return '✅';
-    //       case ENotificationCategory.LIKES_FAVORITES: return '👍';
-    //       case ENotificationCategory.ADMIN: return '🚨';
-    //       case ENotificationCategory.COMMENTS: return '💬';
-    //       case ENotificationCategory.FOLLOW_UPDATES: return '🔔';
-    //     }
-    //   }
-
-    //   loadMore() {
-    //     this.page++;
-    //     this.loadNotifications();
-    //   }
-
-    //   toggleUnread() {
-    //     this.unreadOnly = !this.unreadOnly;
-    //     this.loadNotifications(true);
-    //   }
-
-    //   private applyFilter(): void {
-    //     let tempNotifications = this.notifications.slice();
-
-    //     if (this.unreadOnly) {
-    //       tempNotifications = tempNotifications.filter(n => !n.isRead);
-    //     }
-
-    //     this.filteredNotifications = tempNotifications;
-    //   }
-
-    //   shouldShowActions(notification: any): boolean {
-    //     if (!notification.isRead) return true;
-
-    //     const specialTypes = ['ADMIN', 'COMMENTS', 'FOLLOW_REQUESTS'];
-    //     if (specialTypes.includes(notification.type)) return true;
-
-    //     return false;
-    //   }
-
-    //   private calculateUnread() {
-    //     this.unreadCount = this.notifications.filter(n => !n.isRead).length;
-    //   }
-
-    //   private calculateThisWeek() {
-    //     const now = new Date();
-
-    //     this.thisWeekCount = this.notifications.filter(n => {
-    //       const created = new Date(n.createdAt);
-    //       if (isNaN(created.getTime())) return false; 
-
-    //       const diffMs = now.getTime() - created.getTime();
-    //       const diffDays = diffMs / (1000 * 60 * 60 * 24);
-
-    //       return diffDays <= 7; 
-    //     }).length;
-    //   }
-
-
-    //   private calculateNewFollowers() {
-    //     this.newFollowersCount = this.notifications.filter(
-    //       n => n.type === ENotificationCategory.FOLLOW_UPDATES
-    //     ).length;
-    //   }
-
-    //   private calculateInteractions() {
-    //     this.interactionsCount = this.notifications.filter(
-    //       n => this.interactionTypes.includes(n.type)
-    //     ).length;
-    //   }
-
+  /** @description Cleanup subscriptions to prevent memory leaks */
+  ngOnDestroy(): void {
+    this.notificationsSub?.unsubscribe();
+  }
 }
+

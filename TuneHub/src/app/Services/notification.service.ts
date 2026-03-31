@@ -1,103 +1,102 @@
-// import { Injectable } from '@angular/core';
-// import { HttpClient, HttpParams } from '@angular/common/http';
-// import { BehaviorSubject, Observable, tap } from 'rxjs';
-// import { NotificationResponseDTO } from '../Models/Notification';
-// import { Page } from '../Models/page';
-// import { map } from 'rxjs/operators';
+import { Injectable } from '@angular/core';
+import { HttpClient, HttpParams } from '@angular/common/http';
+import { io, Socket } from 'socket.io-client';
+import { BehaviorSubject, Observable } from 'rxjs';
 
+/**
+ * Service for handling real-time notifications.
+ * Configuration is hardcoded for simplicity in the current environment.
+ */
+@Injectable({
+    providedIn: 'root'
+})
+export class NotificationService {
+    // Direct API and Socket endpoints
+    private readonly apiUrl = 'http://localhost:3000/api/notifications';
+    private readonly socketUrl = 'http://localhost:3000';
+    private socket: Socket;
 
-// @Injectable({
-//     providedIn: 'root'
-// })
-// export class NotificationService {
-//     private apiUrl = 'http://localhost:8080/api/notification';
-//     private unreadCountSubject = new BehaviorSubject<number>(0);
-//     unreadCount$ = this.unreadCountSubject.asObservable();
+    private notificationsSubject = new BehaviorSubject<any[]>([]);
+    public notifications$ = this.notificationsSubject.asObservable();
 
-//     constructor(private http: HttpClient) { }
+    constructor(private http: HttpClient) {
+        // Initialize Socket connection directly
+        this.socket = io(this.socketUrl);
+    }
 
-//     loadUnreadCount(): void {
-//         this.getUnreadCount().subscribe(count => this.unreadCountSubject.next(count));
-//     }
+    /**
+     * Establishes real-time connection for a specific user.
+     * @param userId Unique identifier of the user.
+     */
+    public connectSocket(userId: string): void {
+        this.socket.emit('register', userId);
 
-//     incrementUnreadCount() {
-//         this.unreadCountSubject.next(this.unreadCountSubject.value + 1);
-//     }
+        this.socket.on('new_notification', (notification: any) => {
+            this.handleIncomingNotification(notification);
+        });
+    }
 
-//     resetUnreadCount() {
-//         this.unreadCountSubject.next(0);
-//     }
+    /**
+     * Fetches notification history from the database.
+     * @param userId User ID for retrieval.
+     * @param page Pagination page number.
+     */
+    public getNotifications(userId: string, page: number = 1): Observable<any> {
+        const params = new HttpParams()
+            .set('page', page.toString())
+            .set('limit', '20');
 
-//     getNotifications(page: number, size: number, category?: string, unreadOnly?: boolean) {
-//         let params = new HttpParams()
-//             .set("page", page)
-//             .set("size", size);
+        return this.http.get<any>(`${this.apiUrl}/${userId}`, { params });
+    }
 
-//         if (category && category !== 'ALL') params = params.set("category", category);
-//         if (unreadOnly) params = params.set("unreadOnly", true);
+    /**
+   * @description Updates the status of a specific notification to 'read'.
+   * @param notificationId The unique identifier of the notification to be updated.
+   * @returns Observable of the API response.
+   */
+    public markAsRead(notificationId: string): Observable<any> {
+        // Sends a PUT request to the specific notification endpoint
+        return this.http.put(`${this.apiUrl}/mark-read/${notificationId}`, {});
+    }
 
-//         return this.http.get<Page<NotificationResponseDTO>>(this.apiUrl, {
-//             params,
-//             withCredentials: true
-//         });
-//     }
+    /**
+     * Adds fetched data to the observable state.
+     */
+    public appendNotifications(newNotifications: any[]): void {
+        const current = this.notificationsSubject.value;
+        this.notificationsSubject.next([...current, ...newNotifications]);
+    }
 
+    /**
+     * Internal logic for handling new real-time messages.
+     */
+    private handleIncomingNotification(notification: any): void {
+        const current = this.notificationsSubject.value;
+        const index = current.findIndex(n =>
+            n.entityId === notification.entityId &&
+            n.type === notification.type &&
+            !n.isRead
+        );
 
-//     getUnreadCount() {
-//         return this.http.get<number>(`${this.apiUrl}/unread-count`, {
-//             withCredentials: true
-//         });
-//     }
+        if (index > -1) {
+            current[index] = notification;
+            this.notificationsSubject.next([...current]);
+        } else {
+            this.notificationsSubject.next([notification, ...current]);
+        }
+    }
 
+    /**
+   * Update all notifications for a specific user to 'read' status.
+   */
+    public markAllAsRead(userId: string): Observable<any> {
+        return this.http.put(`${this.apiUrl}/mark-all-read/${userId}`, {});
+    }
 
-//     markAsRead(id: number) {
-//         return this.http.post(`${this.apiUrl}/${id}/read`, {}, {
-//             withCredentials: true
-//         });
-//     }
-
-//     markAllAsRead() {
-//         return this.http.post(`${this.apiUrl}/read-all`, {}, {
-//             withCredentials: true
-//         });
-//     }
-
-//     deleteNotification(id: number) {
-//         return this.http.delete(`${this.apiUrl}/${id}`, {
-//             withCredentials: true
-//         });
-//     }
-
-//     decrementUnreadCount() {
-//         const currentCount = this.unreadCountSubject.value;
-//         if (currentCount > 0) {
-//             this.unreadCountSubject.next(currentCount - 1);
-//         }
-//     }
-
-//     getAllByCategory(category?: string) {
-//         let params = new HttpParams()
-
-//         if (category) params = params.set("category", category);
-
-//         return this.http.get<Page<NotificationResponseDTO>>(
-//             `${this.apiUrl}/allNotificationsByCategory`,
-//             { params, withCredentials: true }
-//         );
-//     }
-
-//     getUnreadByCategory(category?: string) {
-//         let params = new HttpParams()
-
-//         if (category) params = params.set("category", category);
-
-//         return this.http.get<Page<NotificationResponseDTO>>(
-//             `${this.apiUrl}/onlyUnreadNotificationsByCategory`,
-//             { params, withCredentials: true }
-//         );
-//     }
-//     getUnreadCountByCategory(): Observable<{ [key: string]: number }> {
-//         return this.http.get<{ [key: string]: number }>(`${this.apiUrl}/unreadByType`, { withCredentials: true });
-//     }
-
-// }
+    /**
+     * Permanently delete a notification record.
+     */
+    public deleteNotification(notificationId: string): Observable<any> {
+        return this.http.delete(`${this.apiUrl}/${notificationId}`);
+    }
+}

@@ -1,5 +1,4 @@
 <div class="container">
-
     <div class="cover-wrapper">
         <img src="./assets/images/posts.jpg" class="cover-image" />
         <div class="overlay-content">
@@ -42,12 +41,12 @@
 
             </div>
 
-            <select class="dropdown"           [(ngModel)]="selectedTimeRange"             (change)="applyAllFilters()">
-                                <option value="All">All times</option>
-                                <option value="Today">Current Day</option>
-                                <option value="Week">Current Week</option>
-                                <option value="Month">Current Month</option>
-                        </select>
+            <select class="dropdown" [(ngModel)]="selectedTimeRange" (change)="applyAllFilters()">
+                 <option value="All">All times</option>
+                 <option value="Today">Current Day</option>
+                 <option value="Week">Current Week</option>
+                 <option value="Month">Current Month</option>
+            </select>
 
             <!--         <select class="dropdown">
                 <option>All</option>
