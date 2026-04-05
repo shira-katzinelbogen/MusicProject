@@ -86,8 +86,8 @@ export class UserProfileComponent implements OnInit {
 
         if (this.profileData.createdAt) {
           this.createdAtDate = profile.createdAt ? new Date(profile.createdAt) : null;
-
         }
+        
         if (this.profileData.editedIn) {
           this.editedInDate = profile.editedIn ? new Date(profile.editedIn) : null;
         }

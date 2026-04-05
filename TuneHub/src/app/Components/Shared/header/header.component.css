@@ -53,11 +53,12 @@ body {
 }
 
 header {
-  color: #ffffff;
-  padding: 18px 45px;
+  padding: 10px 2%;
   display: flex;
   justify-content: space-between;
   align-items: center;
+  gap: 15px;
+  color: #ffffff;
   border-radius: 0 0 45px 45px;
   background-color: rgba(29, 42, 59, 0.937);
   -webkit-backdrop-filter: blur(12px);
@@ -82,9 +83,18 @@ header::after {
 }
 
 .right-icons {
+  flex: 1; 
+  justify-content: center; 
   display: flex;
   align-items: center;
   gap: 20px;
+}
+
+.user-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px; 
+  flex-shrink: 0; 
 }
 
 .icon {
@@ -162,60 +172,6 @@ header::after {
   color: #a969dd;
 }
 
-.notification-icon-container {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 5px;
-  border-radius: 50%;
-  transition: background-color 0.2s;
-}
-
-.notification-icon-container:hover {
-  background-color: #2a2a2a;
-}
-
-.notification-wrapper {
-  position: relative;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-right: -160px;
-  margin-left: 55px;
-  margin-top: 11px;
-  cursor: pointer;
-}
-
-.notification-wrapper mat-icon {
-  font-size: 32px !important;
-  width: 40px !important;
-  height: 40px !important;
-  color: #d1d1d1;
-  transition: 0.2s;
-}
-
-.notification-wrapper mat-icon:hover {
-  color: #d16fff;
-}
-
-.notification-badge {
-  position: absolute;
-  top: -4px;
-  right: -2px;
-  background-color: #8e00e6;
-  color: #ffffff;
-  width: 20px;
-  height: 20px;
-  font-size: 11px;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-weight: bold;
-  border: 1px solid #c300ff;
-  box-shadow: 0 0 6px rgba(0,0,0,0.6);
-  z-index: 10;
-}
 
 /* --- Host Positioning --- */
 :host {
@@ -229,7 +185,7 @@ header::after {
 /* --- Header Main Container --- */
 header {
   color: #ffffff;
-  padding: 15px 4%; 
+  padding: 15px 4%;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -258,7 +214,7 @@ header {
   align-items: center;
   gap: 10px;
   width: 100%;
-  max-width: 460px; 
+  max-width: 460px;
   padding: 10px 18px;
   border-radius: 10px;
   background-color: #2b3a52;
@@ -283,7 +239,7 @@ header {
   }
 
   #musicans {
-    font-size: 0; 
+    font-size: 0;
     padding: 8px;
   }
 
@@ -319,7 +275,7 @@ header {
     max-width: none;
     z-index: 10;
   }
-  
+
   .search-container:focus-within .search-input {
     display: block;
   }

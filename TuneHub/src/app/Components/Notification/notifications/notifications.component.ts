@@ -6,6 +6,7 @@ import { NotificationService } from '../../../Services/notification.service';
 import { ENotificationCategory } from '../../../Models/Notification';
 import { TimeAgoPipe } from "../../../Pipes/time-ago.pipe";
 import { NoResultsComponent } from "../../Shared/no-results/no-results.component";
+import { UserStateService } from "../../../Services/user-state.service"
 
 /**
  * @description Advanced Notifications Component utilizing Angular Signals for optimal performance.
@@ -18,24 +19,31 @@ import { NoResultsComponent } from "../../Shared/no-results/no-results.component
   styleUrls: ['./notifications.component.css'],
   imports: [CommonModule, MatIconModule, TimeAgoPipe, NoResultsComponent]
 })
+
+/**
+* @component NotificationsComponent
+* @description Renders a reactive list of notifications with real-time updates.
+*/
 export class NotificationsComponent implements OnInit, OnDestroy {
-  /** @property Contextual user ID - Should ideally be retrieved from an Auth Service */
-  public userId: string = 'user_efrat_123';
+
+
+  /** @property Explicitly defined as string to match MongoDB/Socket expectations */
+  public userId!: string;
+  private userSub: Subscription | undefined;
+  private notificationsSub: Subscription | undefined;
+
+  public notifications = signal<any[]>([]);
 
   // --- Reactive State Management (Signals) ---
-  
-  /** @property Raw list of all notifications fetched from the server/socket */
-  public notifications = signal<any[]>([]); 
-  
+
   /** @property Currently selected filter category */
-  public activeCategory = signal<ENotificationCategory | 'ALL'>('ALL'); 
-  
+  public activeCategory = signal<ENotificationCategory | 'ALL'>('ALL');
+
   /** @property Toggle state for filtering only unread items */
-  public unreadOnly = signal<boolean>(false); 
-  
+  public unreadOnly = signal<boolean>(false);
+
   public currentPage = 1;
   public hasMore = true;
-  private notificationsSub: Subscription | undefined;
 
   /** @property UI configuration for category navigation */
   public readonly categories = [
@@ -47,19 +55,29 @@ export class NotificationsComponent implements OnInit, OnDestroy {
     { key: ENotificationCategory.ADMIN, label: 'System', icon: 'verified_user' }
   ];
 
-  constructor(private notificationService: NotificationService) {}
+  constructor(
+    private notificationService: NotificationService,
+    private userStateService: UserStateService
+  ) { }
+
 
   ngOnInit(): void {
-    // Establish real-time connection Socket.io 
-    this.notificationService.connectSocket(this.userId);
+    /**
+     * Reactive subscription to User State.
+     * Ensures notifications are re-fetched if the user identity changes.
+     */
+    this.userSub = this.userStateService.currentUser$.subscribe(user => {
+      if (user && user.id) {
+        // Ensure ID is treated as a string for Socket.io rooms
+        this.userId = String(user.id);
 
-    // Sync component state with the service's notification stream
-    this.notificationsSub = this.notificationService.notifications$.subscribe(data => {
-      this.notifications.set(data);
+        this.fetchData();
+
+        this.notificationsSub = this.notificationService.notifications$.subscribe(data => {
+          this.notifications.set(data);
+        });
+      }
     });
-
-    // Initial fetch of historical data
-    this.fetchData();
   }
 
   /**
@@ -68,17 +86,17 @@ export class NotificationsComponent implements OnInit, OnDestroy {
    */
   public filteredNotifications = computed(() => {
     let list = this.notifications();
-    
+
     // Filter by read status
     if (this.unreadOnly()) {
       list = list.filter(n => !n.isRead);
     }
-    
+
     // Filter by category type
     if (this.activeCategory() !== 'ALL') {
       list = list.filter(n => n.type === this.activeCategory());
     }
-    
+
     return list;
   });
 
@@ -97,16 +115,27 @@ export class NotificationsComponent implements OnInit, OnDestroy {
   // --- Logic & API Interaction ---
 
   /**
-   * @description Fetches a specific page of notifications from the backend.
+   * @description Orchestrates the API call to populate the initial list.
    */
   public fetchData(): void {
+    if (!this.userId) return;
+
     this.notificationService.getNotifications(this.userId, this.currentPage).subscribe({
       next: (res) => {
-        this.notificationService.appendNotifications(res.data || []);
+        const processedData = (res.data || []).map((note: any) => ({
+          ...note,
+          createdAt: note.createdAt ? new Date(note.createdAt) : new Date()
+        }));
+        this.notificationService.appendNotifications(processedData);
         this.hasMore = res.hasMore ?? false;
-      },
-      error: (err) => console.error('Failed to retrieve data:', err)
+      }
     });
+  }
+
+  /** @description Cleanup subscriptions to prevent memory leaks */
+  ngOnDestroy(): void {
+    this.userSub?.unsubscribe();
+    this.notificationsSub?.unsubscribe();
   }
 
   /** @description Updates the active category filter */
@@ -124,7 +153,7 @@ export class NotificationsComponent implements OnInit, OnDestroy {
     if (!note.isRead) {
       this.notificationService.markAsRead(note.id).subscribe({
         next: () => {
-          this.notifications.update(list => 
+          this.notifications.update(list =>
             list.map(n => n.id === note.id ? { ...n, isRead: true } : n)
           );
         }
@@ -134,8 +163,9 @@ export class NotificationsComponent implements OnInit, OnDestroy {
 
   /** @description Marks all visible notifications as read */
   public markAllAsRead(): void {
-    this.notificationService.markAllAsRead(this.userId).subscribe({
+    this.notificationService.markAllAsRead(this.userId.toString()).subscribe({
       next: () => {
+        this.notificationService.resetUnreadCount();
         this.notifications.update(list => list.map(n => ({ ...n, isRead: true })));
       }
     });
@@ -176,9 +206,21 @@ export class NotificationsComponent implements OnInit, OnDestroy {
     }
   }
 
-  /** @description Cleanup subscriptions to prevent memory leaks */
-  ngOnDestroy(): void {
-    this.notificationsSub?.unsubscribe();
+
+  
+  public toggleReadStatus(note: any, event: Event): void {
+    event.stopPropagation(); 
+
+    const newStatus = !note.isRead;
+
+    this.notificationService.markAsRead(note.id).subscribe({
+      next: () => {
+        this.notifications.update(list =>
+          list.map(n => n.id === note.id ? { ...n, isRead: newStatus } : n)
+        );
+      },
+      error: (err) => console.error('Failed to update status', err)
+    });
   }
 }
 

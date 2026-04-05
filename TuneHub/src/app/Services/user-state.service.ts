@@ -2,10 +2,11 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable, map } from 'rxjs';
 import { UsersService } from './users.service';
 import { Router } from '@angular/router';
-import {  UsersProfileDTO, EUserType } from '../Models/Users';
+import { UsersProfileDTO, EUserType } from '../Models/Users';
 import { Inject, PLATFORM_ID } from '@angular/core';
 import { isPlatformBrowser } from '@angular/common';
 import { ERole } from '../Models/Role';
+import { NotificationService } from './notification.service';
 
 @Injectable({
   providedIn: 'root'
@@ -16,18 +17,19 @@ export class UserStateService {
   public currentUserSubject: BehaviorSubject<UsersProfileDTO | null> = new BehaviorSubject<UsersProfileDTO | null>(null);
   public currentUser$: Observable<UsersProfileDTO | null> = this.currentUserSubject.asObservable();
   public isAdmin$: Observable<boolean> = this.currentUser$.pipe(
-  map(user =>
-    !!user?.roles?.some(r =>
-      r?.name === ERole.ROLE_ADMIN ||
-      r?.name === ERole.ROLE_SUPER_ADMIN
+    map(user =>
+      !!user?.roles?.some(r =>
+        r?.name === ERole.ROLE_ADMIN ||
+        r?.name === ERole.ROLE_SUPER_ADMIN
+      )
     )
-  )
-);
+  );
 
 
   constructor(
     private _usersService: UsersService,
     private router: Router,
+    private notificationService: NotificationService,
     @Inject(PLATFORM_ID) private platformId: Object
   ) { }
 
@@ -40,6 +42,12 @@ export class UserStateService {
     this._usersService.getCurrentUserProfile().subscribe({
       next: (user: UsersProfileDTO) => {
         this.currentUserSubject.next(user);
+
+        if (user && user.id) {
+          const userIdStr = String(user.id);
+          this.notificationService.connectSocket(userIdStr);
+          this.notificationService.getUnreadCount(userIdStr); 
+        }
       },
       error: (err) => {
         this.currentUserSubject.next(null);
@@ -54,11 +62,11 @@ export class UserStateService {
   hasRole(role: ERole): boolean {
     const user = this.currentUserSubject.getValue();
     if (!user?.roles) return false;
-    
+
     const hasIt = user.roles.some((r: any) => {
       return r?.name === role;
     });
-    
+
     return hasIt;
   }
 
@@ -99,6 +107,7 @@ export class UserStateService {
   }
 
   logout(): void {
+    this.notificationService.disconnect();
     this._usersService.signOut().subscribe({
       next: () => {
         this.clear();

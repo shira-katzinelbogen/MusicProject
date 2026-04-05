@@ -1,0 +1,47 @@
+.notification-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 16px;
+    margin-left: 70px;
+    margin-top: 3px;
+    cursor: pointer;
+    padding: 5px;
+}
+
+.notification-wrapper mat-icon {
+    font-size: 35px;
+    width: 30px;
+    height: 30px;
+    color: #d1d1d1;
+    transition: 0.2s;
+}
+
+.notification-wrapper mat-icon:hover {
+    color: #d16fff;
+}
+
+.notification-badge {
+    background: linear-gradient(135deg, #A03FFB 0%, #5271FF 100%);
+    color: #ffffff;
+    width: 20px;
+    height: 20px;
+    font-size: 11px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    box-shadow: 0 0 6px rgba(0, 0, 0, 0.6);
+    position: absolute;
+    top: -4px;
+    right: -6px;
+    padding: 2px;
+    z-index: 10;
+}
+
+
+:host {
+    display: inline-block;
+}

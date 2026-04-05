@@ -13,10 +13,10 @@
             </div>
         </div>
     </div>
-
+    <!-- 
     <div class="stats-card-container">
         <div class="stats-card" dir="ltr">
-            <div class="stat-item white-glow">
+            <div class="stat-item green-glow">
                 <div class="stat-number">{{ stats().unread }}</div>
                 <div class="stat-label">Unread</div>
             </div>
@@ -35,7 +35,13 @@
         </div>
     </div>
 
+
     <nav class="filter-nav">
+        <button class="toggle-btn" (click)="toggleUnread()" [class.active]="unreadOnly()">
+            <mat-icon>{{ unreadOnly() ? 'visibility_off' : 'visibility' }}</mat-icon>
+            {{ unreadOnly() ? 'Show all' : 'Only unread' }}
+        </button>
+
         <div class="category-chips">
             @for (cat of categories; track cat.key) {
             <button (click)="setCategory(cat.key)" [class.active]="activeCategory() === cat.key" class="chip">
@@ -45,14 +51,12 @@
             }
         </div>
 
-        <button class="toggle-btn" (click)="toggleUnread()" [class.active]="unreadOnly()">
-            <mat-icon>{{ unreadOnly() ? 'visibility_off' : 'visibility' }}</mat-icon>
-            {{ unreadOnly() ? 'Show all' : 'Only unread' }}
-        </button>
+
     </nav>
 
+
     <main class="notifications-list">
-        @for (note of filteredNotifications(); track note.id) {
+        @for (note of filteredNotifications(); track note._id) {
         <article class="notification-item" [class.is-unread]="!note.isRead" (click)="markAsRead(note)">
 
             <div class="icon-wrapper">
@@ -62,9 +66,7 @@
 
             <div class="content">
                 <div class="text-group">
-                    <h3>{{ note.title }}</h3>
-                    <p>{{ note.message }}</p>
-                    <time>{{ note.createdAt | timeAgo }}</time>
+                    <p>{{ note.content }}</p> <span class="date">{{ note.createdAt | timeAgo }}</span>
                 </div>
 
                 <div class="actions">
@@ -85,4 +87,91 @@
         <button class="load-more" (click)="loadMore()">Load Previous</button>
         }
     </main>
+</div> -->
+
+
+
+
+    <section class="stats-card-container">
+        <div class="stats-card" dir="ltr">
+            <div class="stat-item green-glow">
+                <div class="stat-number">{{ stats().unread }}</div>
+                <div class="stat-label">Unread</div>
+            </div>
+            <div class="stat-item purple-glow">
+                <div class="stat-number">{{ stats().thisWeek }}</div>
+                <div class="stat-label">New This Week</div>
+            </div>
+            <div class="stat-item blue-glow">
+                <div class="stat-number">{{ stats().interactions }}</div>
+                <div class="stat-label">Interactions</div>
+            </div>
+        </div>
+    </section>
+
+    <nav class="filter-nav">
+        <div class="category-chips">
+            @for (cat of categories; track cat.key) {
+            <button (click)="setCategory(cat.key)" [class.active]="activeCategory() === cat.key" class="chip">
+                <mat-icon>{{ cat.icon }}</mat-icon> {{ cat.label }}
+            </button>
+            }
+        </div>
+        <button class="toggle-btn" (click)="toggleUnread()" [class.active]="unreadOnly()">
+            <mat-icon>{{ unreadOnly() ? 'visibility_off' : 'visibility' }}</mat-icon>
+            {{ unreadOnly() ? 'Show All' : 'Only Unread' }}
+        </button>
+    </nav><br>
+
+    <main class="notifications-list">
+        @for (note of filteredNotifications(); track note._id) {
+        <article class="notification-item" [class.is-unread]="!note.isRead" (click)="markAsRead(note)">
+
+            <div class="icon-wrapper" [class.bg-gray-darker]="note.isRead">
+                <span class="type-icon">{{ getIconForType(note.type) }}</span>
+                @if (!note.isRead) { <span class="unread-dot"></span> }
+            </div>
+
+            <div class="actions">
+                <button class="icon-button" (click)="toggleReadStatus(note, $event)"
+                    [title]="note.isRead ? 'Mark as unread' : 'Mark as read'">
+                    <mat-icon>{{ note.isRead ? 'mark_chat_unread' : 'mark_chat_read' }}</mat-icon>
+                </button>
+
+                @if (note.type === 'FOLLOW_REQUESTS') {
+                <button class="approve-btn" (click)="$event.stopPropagation()">Approve</button>
+                }
+
+                <button class="delete-btn" (click)="deleteNotification(note.id); $event.stopPropagation()">
+                    <mat-icon>delete_outline</mat-icon>
+                </button>
+            </div>
+            <div class="content">
+                <div class="text-group">
+                    <p [style.font-weight]="!note.isRead ? '700' : '400'">{{ note.content }}</p>
+                    <span class="date">{{ note.createdAt | timeAgo }}</span>
+                </div>
+
+                <div class="actions">
+                    @if (note.type === 'FOLLOW_REQUEST_RECEIVED') {
+                    <button class="approve-btn" (click)="$event.stopPropagation()">Approve</button>
+                    }
+                    <button class="delete-btn" (click)="deleteNotification(note._id); $event.stopPropagation()">
+                        <mat-icon>delete_outline</mat-icon>
+                    </button>
+                </div>
+            </div>
+        </article>
+
+
+        } @empty {
+            
+        <app-no-results></app-no-results>
+        }
+
+        @if (hasMore && filteredNotifications().length > 0) {
+        <button class="load-more" (click)="loadMore()">Load Previous Notifications</button>
+        }
+    </main>
 </div>
+<br>

@@ -11,12 +11,12 @@ import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { CommonModule } from '@angular/common';
 import { GlobalSearchComponent } from "../global-search/global-search.component";
-// import { NotificationService } from '../../../Services/notification.service';
+import { NotificationBellComponent } from "../../Notification/notification-bell/notification-bell.component";
 
 @Component({
   selector: 'app-header',
   standalone: true,
-  imports: [MatIconModule,FormsModule, CommonModule, ProfileMiniAvatarComponent, GlobalSearchComponent],
+  imports: [MatIconModule, FormsModule, CommonModule, ProfileMiniAvatarComponent, GlobalSearchComponent, NotificationBellComponent],
   templateUrl: './header.component.html',
   styleUrl: './header.component.css'
 })
@@ -59,11 +59,6 @@ export class HeaderComponent {
     this.searchTerm = '';
     this.searchStateService.setSearchOpen(false);
   }
-
-
-  // loadUnreadCount(): void {
-  //    this.unreadCount$ = this.notificationService.getUnreadCount();
-  // }
 
   navigateToNotifications(): void {
      this.router.navigate(['/notifications']);
