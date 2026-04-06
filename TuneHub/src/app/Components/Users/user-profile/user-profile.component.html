@@ -82,11 +82,15 @@
                 {{ isStudentOfThisTeacher ? ' Student Assigned' : ' Add Student' }}
               </div>
 
+              <div class="button" style="width: 120px;" *ngIf="profileData.canDelete" (click)="deleteUser()">
+                <mat-icon>delete_forever</mat-icon> Delete User
+              </div>
+
               <!-- Admin actions -->
               <ng-container *ngIf="showAdminActions">
-                <button mat-icon-button [matMenuTriggerFor]="adminMenu">
-                  <mat-icon>more_vert</mat-icon>
-                </button>
+                <div [matMenuTriggerFor]="adminMenu" id="admin-menu-trigger">
+                  <mat-icon style="color: aliceblue;">more_vert</mat-icon>
+                </div>
                 <mat-menu #adminMenu="matMenu">
                   <button mat-menu-item (click)="assignAdminRole()">
                     <mat-icon>admin_panel_settings</mat-icon> Make Admin
@@ -96,10 +100,6 @@
                   </button>
                 </mat-menu>
               </ng-container>
-
-              <button *ngIf="profileData.canDelete" mat-raised-button color="warn" (click)="deleteUser()">
-                <mat-icon>delete_forever</mat-icon> Delete User
-              </button>
             </div>
           </div>
         </div>

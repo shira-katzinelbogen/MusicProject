@@ -7,6 +7,7 @@ import { ENotificationCategory } from '../../../Models/Notification';
 import { TimeAgoPipe } from "../../../Pipes/time-ago.pipe";
 import { NoResultsComponent } from "../../Shared/no-results/no-results.component";
 import { UserStateService } from "../../../Services/user-state.service"
+import { NotificationItemComponent } from "../notification-item/notification-item.component";
 
 /**
  * @description Advanced Notifications Component utilizing Angular Signals for optimal performance.
@@ -17,7 +18,7 @@ import { UserStateService } from "../../../Services/user-state.service"
   standalone: true,
   templateUrl: './notifications.component.html',
   styleUrls: ['./notifications.component.css'],
-  imports: [CommonModule, MatIconModule, TimeAgoPipe, NoResultsComponent]
+  imports: [CommonModule, MatIconModule, NoResultsComponent, NotificationItemComponent]
 })
 
 /**
@@ -25,6 +26,9 @@ import { UserStateService } from "../../../Services/user-state.service"
 * @description Renders a reactive list of notifications with real-time updates.
 */
 export class NotificationsComponent implements OnInit, OnDestroy {
+handleApprove(_t41: any) {
+throw new Error('Method not implemented.');
+}
 
 
   /** @property Explicitly defined as string to match MongoDB/Socket expectations */
@@ -149,17 +153,18 @@ export class NotificationsComponent implements OnInit, OnDestroy {
   }
 
   /** @description Marks a single notification as read and updates local state optimistically */
-  public markAsRead(note: any): void {
-    if (!note.isRead) {
-      this.notificationService.markAsRead(note.id).subscribe({
-        next: () => {
-          this.notifications.update(list =>
-            list.map(n => n.id === note.id ? { ...n, isRead: true } : n)
-          );
-        }
-      });
-    }
+public markAsRead(note: any): void {
+  const id = note._id || note.id; 
+  if (!note.isRead) {
+    this.notificationService.markAsRead(id).subscribe({
+      next: () => {
+        this.notifications.update(list =>
+          list.map(n => (n._id === id || n.id === id) ? { ...n, isRead: true } : n)
+        );
+      }
+    });
   }
+}
 
   /** @description Marks all visible notifications as read */
   public markAllAsRead(): void {
@@ -206,8 +211,6 @@ export class NotificationsComponent implements OnInit, OnDestroy {
     }
   }
 
-
-  
   public toggleReadStatus(note: any, event: Event): void {
     event.stopPropagation(); 
 

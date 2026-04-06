@@ -46,6 +46,7 @@
     height: 100%;
     object-fit: cover;
 }
+
 .profile-info-section {
     z-index: 500000;
     margin-bottom: -100px;
@@ -196,7 +197,11 @@ ul.teacher-info-list {
     border-radius: 50%;
 }
 
-
+#admin-menu-trigger {
+    border-color: #ff000000;
+    background-color: #ff000000;
+    cursor: pointer;
+}
 
 .user-details {
     text-align: left;

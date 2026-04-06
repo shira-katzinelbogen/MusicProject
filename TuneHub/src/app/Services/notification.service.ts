@@ -182,4 +182,8 @@ export class NotificationService {
     public resetUnreadCount(): void {
         this.unreadCountSubject.next(0);
     }
+
+    markAsUnread(id: string): Observable<any> {
+        return this.http.patch(`${this.apiUrl}/${id}/unread`, {});
+    }
 }

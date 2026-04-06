@@ -125,47 +125,11 @@
 
     <main class="notifications-list">
         @for (note of filteredNotifications(); track note._id) {
-        <article class="notification-item" [class.is-unread]="!note.isRead" (click)="markAsRead(note)">
-
-            <div class="icon-wrapper" [class.bg-gray-darker]="note.isRead">
-                <span class="type-icon">{{ getIconForType(note.type) }}</span>
-                @if (!note.isRead) { <span class="unread-dot"></span> }
-            </div>
-
-            <div class="actions">
-                <button class="icon-button" (click)="toggleReadStatus(note, $event)"
-                    [title]="note.isRead ? 'Mark as unread' : 'Mark as read'">
-                    <mat-icon>{{ note.isRead ? 'mark_chat_unread' : 'mark_chat_read' }}</mat-icon>
-                </button>
-
-                @if (note.type === 'FOLLOW_REQUESTS') {
-                <button class="approve-btn" (click)="$event.stopPropagation()">Approve</button>
-                }
-
-                <button class="delete-btn" (click)="deleteNotification(note.id); $event.stopPropagation()">
-                    <mat-icon>delete_outline</mat-icon>
-                </button>
-            </div>
-            <div class="content">
-                <div class="text-group">
-                    <p [style.font-weight]="!note.isRead ? '700' : '400'">{{ note.content }}</p>
-                    <span class="date">{{ note.createdAt | timeAgo }}</span>
-                </div>
-
-                <div class="actions">
-                    @if (note.type === 'FOLLOW_REQUEST_RECEIVED') {
-                    <button class="approve-btn" (click)="$event.stopPropagation()">Approve</button>
-                    }
-                    <button class="delete-btn" (click)="deleteNotification(note._id); $event.stopPropagation()">
-                        <mat-icon>delete_outline</mat-icon>
-                    </button>
-                </div>
-            </div>
-        </article>
-
-
+        <app-notification-item [note]="note" (markAsRead)="markAsRead(note)"
+            (toggleStatus)="toggleReadStatus(note, $event)" (delete)="deleteNotification(note._id || note.id)"
+            (approve)="handleApprove(note)">
+        </app-notification-item>
         } @empty {
-            
         <app-no-results></app-no-results>
         }
 
