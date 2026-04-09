@@ -48,9 +48,12 @@ export class NotificationItemComponent implements OnInit {
 
     if (this.note.postId) {
       this.navigateToPost(this.note.postId);
-    }
-    else if (type === 'FOLLOW_REQUEST_RECEIVED' || type === 'FOLLOW_REQUEST_STATUS_UPDATE') {
+    } else if (type === 'FOLLOW_REQUEST_RECEIVED' || type === 'FOLLOW_REQUEST_STATUS_UPDATE') {
       this.navigationService.goToProfile(this.note.senderId);
+    } else if (type === 'NEW_POST_FROM_FOLLOWING') {
+      this.router.navigate(['/posts'], { queryParams: { highlight: this.note.entityId } });
+    } else if (type === 'NEW_SHEET_MUSIC_FROM_FOLLOWING') {
+      this.router.navigate([`/sheet-music/${this.note.entityId}`]);
     }
   }
 
@@ -65,6 +68,11 @@ export class NotificationItemComponent implements OnInit {
 
     if (type.includes('REQUEST')) {
       return '👤';
+    }
+
+    if (type.includes('FROM_FOLLOWING')) {
+      if (type.includes('POST')) return '📢';
+      return '🎼';
     }
 
     switch (type) {

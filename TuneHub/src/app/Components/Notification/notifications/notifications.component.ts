@@ -99,6 +99,10 @@ export class NotificationsComponent implements OnInit, OnDestroy {
       return 'LIKES_FAVORITES';
     }
 
+    if (type.includes('FROM_FOLLOWING')) {
+      return ENotificationCategory.FOLLOW_UPDATES
+    }
+
     if (type.includes('COMMENT')) {
       return ENotificationCategory.COMMENTS;
     }
