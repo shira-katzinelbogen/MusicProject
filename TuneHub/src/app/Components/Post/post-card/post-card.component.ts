@@ -133,15 +133,15 @@ export class PostCardComponent implements OnChanges, OnInit {
     if (!post.favorite) {
       this._interactionService.addFavorite('POST', post.id!).subscribe({
         next: (res) => {
-          post.hearts = res.count;
+          post.hearts = res?.count !== undefined ? res.count : (post.hearts ?? 0) + 1;
           post.favorite = true;
-          this.cdr.detectChanges();
+          this.cdr.detectChanges()
         }
       });
     } else {
       this._interactionService.removeFavorite('POST', post.id!).subscribe({
         next: (res) => {
-          post.hearts = res.count;
+          post.hearts = res?.count !== undefined ? res.count : Math.max(0, (post.hearts ?? 1) - 1);
           post.favorite = false;
           this.cdr.detectChanges();
         }

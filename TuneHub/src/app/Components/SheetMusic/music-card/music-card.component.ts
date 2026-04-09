@@ -67,15 +67,15 @@ export class MusicCardComponent {
     if (!sheet.favorite) {
       this._interactionService.addFavorite('SHEET_MUSIC', sheet.id!).subscribe({
         next: (res) => {
-          sheet.hearts = res.count;
-          sheet.favorite = true;
-          this.cdr.detectChanges();
+        sheet.hearts = res?.count !== undefined ? res.count : (sheet.hearts ?? 0) + 1;
+        sheet.favorite = true;
+        this.cdr.detectChanges();
         }
       });
     } else {
       this._interactionService.removeFavorite('SHEET_MUSIC', sheet.id!).subscribe({
         next: (res) => {
-          sheet.hearts = res.count;
+          sheet.hearts = res?.count !== undefined ? res.count : Math.max(0, (sheet.hearts ?? 1) - 1);
           sheet.favorite = false;
           this.cdr.detectChanges();
         }
