@@ -4,20 +4,26 @@
         <img [src]="note.userImage" class="profile-avatar">
         } @else {
         <div class="notification-icon music-icon">
-            <span>{{ getIconForType(note.type) }}</span>
+            <span>{{ getIconForType(note) }}</span>
         </div>
         }
         @if (!note.isRead) { <span class="unread-dot-glow"></span> }
     </div>
 
     <div class="notification-content">
-        <h3 class="notification-title">{{ note.title }}</h3>
-        <p class="notification-message">{{ note.message }}</p>
-        <span class="notification-time">{{ note.createdAt | timeAgo }}</span>
+        <!-- <h3 class="notification-title">title: {{ note.title }}</h3> -->
+        <p class="notification-title">{{ note.content }}</p>
+        <!-- <p class="notification-message">type: {{ note.type }}</p>
+        <p class="notification-message">counter: {{ note.counter }}</p>
+         <p class="notification-message">entityId: {{ note.entityId }}</p>
+         <p class="notification-message">isRead: {{ note.isRead }}</p>
+         <p class="notification-message">recipientId: {{ note.recipientId }}</p> -->
+        <span class="notification-message">{{ note.createdAt | timeAgo }}</span>
     </div>
 
     <div class="notification-actions">
-        <button class="mark-as-read-button" (click)="onClickMarkAsRead(); $event.stopPropagation()">
+        <button class="mark-as-read-button" (click)="onToggleClick($event)"
+            [attr.aria-label]="note.isRead ? 'Mark as unread' : 'Mark as read'">
             {{ note.isRead ? 'Mark as unread' : 'Mark as read' }}
         </button>
 
@@ -27,7 +33,8 @@
         </button>
         }
 
-        <button class="delete-icon-btn" (click)="delete.emit()">
+        <button class="delete-icon-btn" (click)="delete.emit(note._id); $event.stopPropagation()"
+            aria-label="Delete notification">
             <mat-icon>close</mat-icon>
         </button>
     </div>

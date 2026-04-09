@@ -90,24 +90,20 @@
 </div> -->
 
 
-
-
-    <section class="stats-card-container">
+    <div class="stats-card-container">
         <div class="stats-card" dir="ltr">
-            <div class="stat-item green-glow">
-                <div class="stat-number">{{ stats().unread }}</div>
-                <div class="stat-label">Unread</div>
-            </div>
-            <div class="stat-item purple-glow">
-                <div class="stat-number">{{ stats().thisWeek }}</div>
-                <div class="stat-label">New This Week</div>
-            </div>
-            <div class="stat-item blue-glow">
-                <div class="stat-number">{{ stats().interactions }}</div>
-                <div class="stat-label">Interactions</div>
-            </div>
+
+            <app-stats-counter [number]="stats().unread" label="Unread" glowClass="purple-glow">
+            </app-stats-counter>
+
+            <app-stats-counter [number]=" stats().thisWeek" label="New This Week" glowClass="blue-glow">
+            </app-stats-counter>
+
+            <app-stats-counter [number]="stats().interactions" label="Interactions" glowClass="green-glow">
+            </app-stats-counter>
         </div>
-    </section>
+    </div>
+
 
     <nav class="filter-nav">
         <div class="category-chips">
@@ -125,8 +121,9 @@
 
     <main class="notifications-list">
         @for (note of filteredNotifications(); track note._id) {
-        <app-notification-item [note]="note" (markAsRead)="markAsRead(note)"
-            (toggleStatus)="toggleReadStatus(note, $event)" (delete)="deleteNotification(note._id || note.id)"
+        <app-notification-item [note]="note" 
+            (toggleStatus)="handleToggleRead(note, $event)" 
+            (delete)="deleteNotification(note._id)"
             (approve)="handleApprove(note)">
         </app-notification-item>
         } @empty {

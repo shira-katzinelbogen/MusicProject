@@ -13,7 +13,6 @@ import { Router } from '@angular/router';
 export class NotificationItemComponent {
   @Input({ required: true }) note: any;
 
-  @Output() markAsRead = new EventEmitter<void>();
   @Output() toggleStatus = new EventEmitter<Event>();
   @Output() delete = new EventEmitter<void>();
   @Output() approve = new EventEmitter<void>();
@@ -28,20 +27,29 @@ export class NotificationItemComponent {
     });
   }
 
-  public getIconForType(type: string): string {
-    switch (type) {
-      case ENotificationCategory.FOLLOW_REQUESTS: return '👤';
-      case ENotificationCategory.LIKES_FAVORITES: return '❤️';
-      case ENotificationCategory.COMMENTS: return '💬';
-      case ENotificationCategory.ADMIN: return '🚨';
-      default: return '🔔';
-    }
+public getIconForType(note: any): string {
+  const type = note.type || '';
+  const content = note.content || '';
+
+  if (content.includes('bookmarked') || type.includes('LIKE')) {
+    return type.includes('LIKE') ? '👍' : '❤️';
   }
 
-  public onClickMarkAsRead(): void {
-    if (!this.note.isRead) {
-      this.markAsRead.emit();
-    }
+  switch (type) {
+    case ENotificationCategory.FOLLOW_REQUESTS: return '👤';
+    case ENotificationCategory.FOLLOW_UPDATES: return 'person_add'; // אפשר גם אימוג'י
+    case ENotificationCategory.COMMENTS: return '💬';
+    case ENotificationCategory.ADMIN: return '🚨';
+    default: return '🔔';
+  }
+}
+  /**
+   * Emits the toggle event to the parent component.
+   * @param {Event} event - The click event object.
+  */
+  public onToggleClick(event: Event): void {
+    // Use the existing toggleStatus EventEmitter
+    this.toggleStatus.emit(event);
   }
 
 }

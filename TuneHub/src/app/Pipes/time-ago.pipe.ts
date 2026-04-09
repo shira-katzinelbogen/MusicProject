@@ -1,49 +1,43 @@
-import { Pipe, PipeTransform } from '@angular/core';
+import { Pipe, PipeTransform, inject } from '@angular/core';
+import { TimeService } from '../Services/time.service';
 
 @Pipe({
   name: 'timeAgo',
-  standalone: true
+  standalone: true,
+  pure: false 
 })
-
 export class TimeAgoPipe implements PipeTransform {
+  private timeService = inject(TimeService);
 
-  transform(value: string | number | Date): string {
+  transform(value: string | number | Date | any): string {
     if (!value) return '';
 
-    let timestamp: number;
-
-    if (typeof value === 'number') {
-      timestamp = value;
-    } else if (typeof value === 'string') {
-      timestamp = parseFloat(value); 
+    const now = this.timeService.currentTime();
+    
+    let date: Date;
+    if (value instanceof Date) {
+      date = value;
     } else {
-      timestamp = value.getTime() / 1000;
+      date = new Date(value);
     }
 
-    const date = new Date(timestamp * 1000);
+    const seconds = Math.floor((now - date.getTime()) / 1000);
 
-    const seconds = Math.floor((Date.now() - date.getTime()) / 1000);
+    if (seconds < 60) return 'just now';
+    
+    const minutes = Math.floor(seconds / 60);
+    if (minutes < 60) return minutes === 1 ? 'a minute ago' : `${minutes} minutes ago`;
 
-    if (seconds < 45) return 'just now';
-    if (seconds < 90) return 'a minute ago';
+    const hours = Math.floor(minutes / 60);
+    if (hours < 24) return hours === 1 ? 'an hour ago' : `${hours} hours ago`;
 
-    const minutes = seconds / 60;
-    if (minutes < 45) return `${Math.floor(minutes)} minutes ago`;
-    if (minutes < 90) return 'an hour ago';
+    const days = Math.floor(hours / 24);
+    if (days < 30) return days === 1 ? 'a day ago' : `${days} days ago`;
 
-    const hours = minutes / 60;
-    if (hours < 24) return `${Math.floor(hours)} hours ago`;
-    if (hours < 42) return 'a day ago';
+    const months = Math.floor(days / 30.44);
+    if (months < 12) return months === 1 ? 'a month ago' : `${months} months ago`;
 
-    const days = hours / 24;
-    if (days < 30) return `${Math.floor(days)} days ago`;
-    if (days < 45) return 'a month ago';
-
-    const months = days / 30.44;
-    if (months < 12) return `${Math.floor(months)} months ago`;
-
-    const years = months / 12;
-    return `${Math.floor(years)} years ago`;
+    const years = Math.floor(months / 12);
+    return years === 1 ? 'a year ago' : `${years} years ago`;
   }
 }
-

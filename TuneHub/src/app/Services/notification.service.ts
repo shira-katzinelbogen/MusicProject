@@ -58,17 +58,29 @@ export class NotificationService {
             this.zone.run(() => {
                 this.handleIncomingNotification(notification);
 
-                const current = this.unreadCountSubject.value;
-                this.unreadCountSubject.next(current + 1);
+                // const current = this.unreadCountSubject.value;
+                // this.unreadCountSubject.next(current + 1);
+            });
+        });
+
+        this.socket.on('unread_count_update', (count: number) => {
+            this.zone.run(() => {
+                console.log('Live count update:', count);
+                this.unreadCountSubject.next(count);
             });
         });
 
         // Event listener for real-time deletion (e.g., unliking content)
         this.socket.on('delete_notification', (id: string) => {
-            const currentList = this.notificationsSubject.value.filter(n =>
-                (n.id || n._id) !== id
-            );
-            this.notificationsSubject.next(currentList);
+            this.zone.run(() => {
+                console.log('Socket received delete request for ID:', id);
+
+                const currentList = this.notificationsSubject.value.filter(n =>
+                    (n._id !== id)
+                );
+
+                this.notificationsSubject.next(currentList);
+            });
         });
     }
 
@@ -86,20 +98,6 @@ export class NotificationService {
         return this.http.get<any>(`${this.apiUrl}/${userId}`, { params });
     }
 
-    /**
-     * @description Updates a notification's status to 'read' on the server.
-     * @param notificationId The ID of the notification to be updated.
-     */
-    public markAsRead(notificationId: string): Observable<any> {
-        return this.http.patch(`${this.apiUrl}/${notificationId}/read`, {}).pipe(
-            tap(() => {
-                const current = this.unreadCountSubject.value;
-                if (current > 0) {
-                    this.unreadCountSubject.next(current - 1);
-                }
-            })
-        );
-    }
 
     /**
        * @description Batch updates all notifications for a specific user as read.
@@ -139,23 +137,19 @@ export class NotificationService {
      * Otherwise, it prepends the new notification to ensure "last-in-first-out" visibility.
      */
     private handleIncomingNotification(notification: any): void {
-        const currentList = [...this.notificationsSubject.value];
+        let currentList = [...this.notificationsSubject.value];
 
-        // Logical check for existing unread notifications relating to the same entity
         const existingIndex = currentList.findIndex(n =>
             n.entityId === notification.entityId &&
-            n.type === notification.type &&
-            !n.isRead
+            n.type === notification.type
         );
 
         if (existingIndex > -1) {
-            // Update existing entry (e.g., incrementing a like counter or updating timestamp)
-            currentList[existingIndex] = notification;
-            this.notificationsSubject.next(currentList);
-        } else {
-            // Add new notification to the top of the list
-            this.notificationsSubject.next([notification, ...currentList]);
+            currentList.splice(existingIndex, 1);
         }
+
+    
+        this.notificationsSubject.next([notification, ...currentList]);
     }
 
     /**
@@ -183,7 +177,20 @@ export class NotificationService {
         this.unreadCountSubject.next(0);
     }
 
-    markAsUnread(id: string): Observable<any> {
-        return this.http.patch(`${this.apiUrl}/${id}/unread`, {});
+
+    /**
+     * Communicates with the backend to toggle the read/unread status.
+     * @param {string} notificationId - The ID of the notification to update.
+     * @returns {Observable<any>} Observable containing the updated notification data.
+    */
+    public toggleReadStatus(notificationId: string): Observable<any> {
+        return this.http.patch(`${this.apiUrl}/${notificationId}/toggle-read`, {});
+    }
+
+    decrementUnreadCount() {
+        const currentCount = this.unreadCountSubject.value;
+        if (currentCount > 0) {
+            this.unreadCountSubject.next(currentCount - 1);
+        }
     }
 }

@@ -1,13 +1,14 @@
-import { Component, OnInit, OnDestroy, signal, computed } from '@angular/core';
+import { Component, OnInit, OnDestroy, signal, computed, inject } from '@angular/core';
+import { toSignal } from '@angular/core/rxjs-interop';
 import { CommonModule } from '@angular/common';
 import { MatIconModule } from "@angular/material/icon";
 import { Subscription } from 'rxjs';
 import { NotificationService } from '../../../Services/notification.service';
 import { ENotificationCategory } from '../../../Models/Notification';
-import { TimeAgoPipe } from "../../../Pipes/time-ago.pipe";
 import { NoResultsComponent } from "../../Shared/no-results/no-results.component";
 import { UserStateService } from "../../../Services/user-state.service"
 import { NotificationItemComponent } from "../notification-item/notification-item.component";
+import { StatsCounterComponent } from "../../Shared/stats-counter/stats-counter.component";
 
 /**
  * @description Advanced Notifications Component utilizing Angular Signals for optimal performance.
@@ -18,7 +19,7 @@ import { NotificationItemComponent } from "../notification-item/notification-ite
   standalone: true,
   templateUrl: './notifications.component.html',
   styleUrls: ['./notifications.component.css'],
-  imports: [CommonModule, MatIconModule, NoResultsComponent, NotificationItemComponent]
+  imports: [CommonModule, MatIconModule, NoResultsComponent, NotificationItemComponent, StatsCounterComponent]
 })
 
 /**
@@ -26,26 +27,22 @@ import { NotificationItemComponent } from "../notification-item/notification-ite
 * @description Renders a reactive list of notifications with real-time updates.
 */
 export class NotificationsComponent implements OnInit, OnDestroy {
-handleApprove(_t41: any) {
-throw new Error('Method not implemented.');
-}
+
+  handleApprove(_t41: any) {
+    throw new Error('Method not implemented.');
+  }
+  private notificationService = inject(NotificationService);
+  private userStateService = inject(UserStateService);
 
 
   /** @property Explicitly defined as string to match MongoDB/Socket expectations */
   public userId!: string;
   private userSub: Subscription | undefined;
-  private notificationsSub: Subscription | undefined;
 
-  public notifications = signal<any[]>([]);
+  public notifications = toSignal(this.notificationService.notifications$, { initialValue: [] });
 
-  // --- Reactive State Management (Signals) ---
-
-  /** @property Currently selected filter category */
   public activeCategory = signal<ENotificationCategory | 'ALL'>('ALL');
-
-  /** @property Toggle state for filtering only unread items */
   public unreadOnly = signal<boolean>(false);
-
   public currentPage = 1;
   public hasMore = true;
 
@@ -59,12 +56,6 @@ throw new Error('Method not implemented.');
     { key: ENotificationCategory.ADMIN, label: 'System', icon: 'verified_user' }
   ];
 
-  constructor(
-    private notificationService: NotificationService,
-    private userStateService: UserStateService
-  ) { }
-
-
   ngOnInit(): void {
     /**
      * Reactive subscription to User State.
@@ -72,17 +63,14 @@ throw new Error('Method not implemented.');
      */
     this.userSub = this.userStateService.currentUser$.subscribe(user => {
       if (user && user.id) {
-        // Ensure ID is treated as a string for Socket.io rooms
         this.userId = String(user.id);
-
+        this.notificationService.connectSocket(this.userId);
+        this.notificationService.getUnreadCount(this.userId); 
         this.fetchData();
-
-        this.notificationsSub = this.notificationService.notifications$.subscribe(data => {
-          this.notifications.set(data);
-        });
       }
     });
   }
+
 
   /**
    * @description Computed signal that derives the filtered list based on active category and unread status.
@@ -97,12 +85,30 @@ throw new Error('Method not implemented.');
     }
 
     // Filter by category type
-    if (this.activeCategory() !== 'ALL') {
-      list = list.filter(n => n.type === this.activeCategory());
+    const activeCat = this.activeCategory();
+    if (activeCat === 'ALL') return list;
+
+    return list.filter(n => this.getCategoryFromNotification(n) === activeCat);
+  });
+
+  private getCategoryFromNotification(note: any): string {
+    const type = note.type || '';
+    const content = note.content || '';
+
+    if (type.includes('LIKE') || content.includes('bookmarked')) {
+      return 'LIKES_FAVORITES';
     }
 
-    return list;
-  });
+    if (type.includes('COMMENT')) {
+      return 'COMMENTS';
+    }
+
+    if (type.includes('FOLLOW')) {
+      return 'FOLLOWS';
+    }
+
+    return 'ADMIN';
+  }
 
   /**
    * @description Computed statistics for UI counters and dashboards.
@@ -116,7 +122,6 @@ throw new Error('Method not implemented.');
     };
   });
 
-  // --- Logic & API Interaction ---
 
   /**
    * @description Orchestrates the API call to populate the initial list.
@@ -139,7 +144,6 @@ throw new Error('Method not implemented.');
   /** @description Cleanup subscriptions to prevent memory leaks */
   ngOnDestroy(): void {
     this.userSub?.unsubscribe();
-    this.notificationsSub?.unsubscribe();
   }
 
   /** @description Updates the active category filter */
@@ -152,38 +156,41 @@ throw new Error('Method not implemented.');
     this.unreadOnly.update(val => !val);
   }
 
-  /** @description Marks a single notification as read and updates local state optimistically */
-public markAsRead(note: any): void {
-  const id = note._id || note.id; 
-  if (!note.isRead) {
-    this.notificationService.markAsRead(id).subscribe({
-      next: () => {
-        this.notifications.update(list =>
-          list.map(n => (n._id === id || n.id === id) ? { ...n, isRead: true } : n)
-        );
-      }
-    });
-  }
-}
 
   /** @description Marks all visible notifications as read */
   public markAllAsRead(): void {
     this.notificationService.markAllAsRead(this.userId.toString()).subscribe({
       next: () => {
+        const currentList = this.notificationService['notificationsSubject'].value;
+        const updatedList = currentList.map(n => ({ ...n, isRead: true }));
+
+        this.notificationService['notificationsSubject'].next(updatedList);
         this.notificationService.resetUnreadCount();
-        this.notifications.update(list => list.map(n => ({ ...n, isRead: true })));
       }
     });
   }
 
   /** @description Removes a notification from the list and the database */
   public deleteNotification(id: string): void {
+    const currentList = this.notificationService['notificationsSubject'].value;
+    const noteToDelete = currentList.find(n => n._id === id || n.id === id);
+
     this.notificationService.deleteNotification(id).subscribe({
       next: () => {
-        this.notifications.update(list => list.filter(n => n.id !== id));
+        this.notificationService['notificationsSubject'].next(
+          currentList.filter(n => n._id !== id && n.id !== id)
+        );
+
+        if (noteToDelete && !noteToDelete.isRead) {
+          const currentCount = this.notificationService['unreadCountSubject'].value;
+          if (currentCount > 0) {
+            this.notificationService['unreadCountSubject'].next(currentCount - 1);
+          }
+        }
       }
     });
   }
+
 
   /** @description Logic for infinite scrolling pagination */
   public loadMore(): void {
@@ -201,28 +208,50 @@ public markAsRead(note: any): void {
   }
 
   /** @description Returns specific icons/emojis based on the notification category */
-  public getIconForType(type: string): string {
-    switch (type) {
+  public getIconForType(note: any): string {
+    if (note.type === 'LIKE_POST') {
+      return note.content?.toLowerCase().includes('favorite') ? '❤️' : '👍';
+    }
+
+    switch (note.type) {
       case ENotificationCategory.FOLLOW_REQUESTS: return '👤';
-      case ENotificationCategory.LIKES_FAVORITES: return '❤️';
       case ENotificationCategory.COMMENTS: return '💬';
       case ENotificationCategory.ADMIN: return '🚨';
       default: return '🔔';
     }
   }
 
-  public toggleReadStatus(note: any, event: Event): void {
-    event.stopPropagation(); 
+  /**
+ * Orchestrates the toggle logic by calling the service and updating the local signal state.
+ * @param {any} note - The notification object to be toggled.
+ * @param {Event} [event] - Optional DOM event to prevent event bubbling.
+ */
+  public handleToggleRead(note: any, event?: Event): void {
+    if (event) event.stopPropagation();
 
-    const newStatus = !note.isRead;
+    const id = note._id;
 
-    this.notificationService.markAsRead(note.id).subscribe({
-      next: () => {
-        this.notifications.update(list =>
-          list.map(n => n.id === note.id ? { ...n, isRead: newStatus } : n)
+    this.notificationService.toggleReadStatus(id).subscribe({
+      next: (updatedNoteFromDB) => {
+        const currentList = this.notificationService['notificationsSubject'].value;
+        const newList = currentList.map(n =>
+          (n._id === id) ? { ...n, isRead: updatedNoteFromDB.isRead } : n
         );
+        this.notificationService['notificationsSubject'].next(newList);
+
+        const currentCount = this.notificationService['unreadCountSubject'].value;
+
+        if (updatedNoteFromDB.isRead) {
+          if (currentCount > 0) {
+            this.notificationService['unreadCountSubject'].next(currentCount - 1);
+          }
+        } else {
+          this.notificationService['unreadCountSubject'].next(currentCount + 1);
+        }
+
+        console.log(`Notification ${id} toggled to: ${updatedNoteFromDB.isRead}`);
       },
-      error: (err) => console.error('Failed to update status', err)
+      error: (err) => console.error('Failed to toggle status:', err)
     });
   }
 }
