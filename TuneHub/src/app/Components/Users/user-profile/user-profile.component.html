@@ -63,16 +63,12 @@
               @if (!isOwnProfile) {
               <div class="profile-actions">
 
-                <button mat-flat-button 
-                [color]="followStatus === 'APPROVED' ? 'warn' : 'primary'" 
-                class="follow-btn-custom"
-                [ngClass]="{
+                <button mat-flat-button [color]="followStatus === 'APPROVED' ? 'warn' : 'primary'"
+                  class="follow-btn-custom" [ngClass]="{
               'approved': this.followStatus === 'APPROVED',
               'pending': this.followStatus === 'PENDING',
               'denied': this.followStatus === 'DENIED'
-            }" 
-            [disabled]="followStatus === 'PENDING' || followStatus === 'DENIED'"
-            (click)="followUser()">
+            }" [disabled]="followStatus === 'PENDING' || followStatus === 'DENIED'" (click)="followUser()">
 
                   <mat-icon>{{ getFollowButtonIcon() }}</mat-icon>
                   {{ getFollowButtonText() }}
@@ -145,6 +141,10 @@
           <app-stats-counter [number]="profileData.totalCommentsWritten" label="Comments Written"
             glowClass="green-glow">
           </app-stats-counter>
+          <app-stats-counter [number]="profileData.followers?.length || 0" label="Followers" glowClass="purple-glow">
+          </app-stats-counter>
+          <app-stats-counter [number]="profileData.following?.length || 0" label="Following" glowClass="blue-glow">
+          </app-stats-counter>
         </div>
       </div>
     </div>
@@ -157,6 +157,32 @@
     }@else{
     <p style="color: gray;">The user has not added a description yet. </p>
 
+    }
+
+    @if(isOwnProfile && profileData.followers!.length > 0){
+    <br>
+    <h2 class="section-title "> <mat-icon style=" color: #B8860B;">man</mat-icon> My Followers </h2>
+        <div class="students-list">
+      <div *ngFor="let f of profileData.followers!" class="student-card">
+        <img [src]="fileUtilsService.getImageUrl(f.imageProfilePath)" (click)="navigationService.goToProfile(f.id) "
+          alt="{{f.name}}" class="student-image">
+        <br>
+        <span class="student-name">{{ f.name }}</span>
+      </div>
+    </div>
+    }
+
+    @if(profileData.following!.length > 0){
+    <br>
+    <h2 class="section-title "> <mat-icon style=" color: #B8860B;">man</mat-icon> Following profiles </h2>
+    <div class="students-list">
+      <div *ngFor="let f of profileData.following!" class="student-card">
+        <img [src]="fileUtilsService.getImageUrl(f.imageProfilePath)" (click)="navigationService.goToProfile(f.id) "
+          alt="{{f.name}}" class="student-image">
+        <br>
+        <span class="student-name">{{ f.name }}</span>
+      </div>
+    </div>
     }
 
     <!-- My TEACHER -->
@@ -230,16 +256,19 @@
         </h3>
 
         <div *ngIf="profileData.teacherDetails">
-          <p *ngIf="profileData.teacherDetails.experience"><mat-icon>trending_up</mat-icon> <strong>Experience:</strong>
+          <p *ngIf="profileData.teacherDetails.experience"><mat-icon>trending_up</mat-icon>
+            <strong>Experience:</strong>
             {{
-            profileData.teacherDetails.experience }} years</p>
+            profileData.teacherDetails.experience }} years
+          </p>
           <p *ngIf="profileData.teacherDetails.lessonDuration"><mat-icon>schedule</mat-icon> <strong>Lesson
               Duration:</strong> {{
             profileData.teacherDetails.lessonDuration }} min</p>
           <p *ngIf="profileData.teacherDetails.pricePerLesson"><mat-icon>paid</mat-icon> <strong>Price Per
               Lesson:</strong> ₪{{
             profileData.teacherDetails.pricePerLesson }}</p>
-          <p *ngIf="profileData.teacherDetails.instruments!.length"><mat-icon>piano</mat-icon> <strong>Teaches:</strong>
+          <p *ngIf="profileData.teacherDetails.instruments!.length"><mat-icon>piano</mat-icon>
+            <strong>Teaches:</strong>
             <span class="instrument-tags">
               <span class="tag" *ngFor="let instrument of profileData.teacherDetails.instruments">
                 {{ instrument.name }}

@@ -104,6 +104,8 @@ export interface UsersProfileCompleteDTO {
     totalHearts: number;
     totalCommentsWritten: number;
     totalCommentsReceived: number;
+    followers?: UsersProfileDTO[]; // Those who follow me
+    following?: UsersProfileDTO[]; // Those I follow
 }
 
 export interface InstrumentResponseDTO {

@@ -4,11 +4,13 @@ import { CommonModule } from '@angular/common';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { MatMenuModule } from '@angular/material/menu';
+import { MatTabsModule } from '@angular/material/tabs';
+import { MatTooltipModule } from '@angular/material/tooltip';
 import { UsersService } from '../../../Services/users.service';
 import { UserStateService } from '../../../Services/user-state.service';
 import { InteractionService } from '../../../Services/interaction.service';
 import { FileUtilsService } from '../../../Services/fileutils.service';
-import Post from '../../../Models/Post';
+import Post from '../../../Models/Post';  
 import SheetMusic from '../../../Models/SheetMusic';
 import { EFollowStatus } from '../../../Models/Follow';
 import { UsersProfileCompleteDTO } from '../../../Models/Users';
@@ -23,7 +25,7 @@ import { ERole } from '../../../Models/Role';
 @Component({
   selector: 'app-user-profile',
   standalone: true,
-  imports: [CommonModule, MatIconModule, MatButtonModule, MatMenuModule,
+  imports: [CommonModule, MatIconModule, MatButtonModule, MatMenuModule,MatTabsModule,MatTooltipModule,
     PostCardComponent, MusicCardComponent, NoResultsComponent, TimeAgoPipe, StatsCounterComponent],
   templateUrl: './user-profile.component.html',
   styleUrls: ['./user-profile.component.css']

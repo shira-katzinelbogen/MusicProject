@@ -84,9 +84,8 @@ body {
     line-height: 1.2;
 }
 
-/* רייטינג */
 .rating-stars {
-    margin-left: auto; /* דוחף ימינה */
+    margin-left: auto; 
     display: flex;
     align-items: center;
     gap: 2px;
@@ -130,7 +129,6 @@ body {
 .post-media audio,
 .post-media video {
     width: 100%;
-    border-radius: 10px;
     object-fit: cover;
 }
 
@@ -138,7 +136,7 @@ body {
 .post-footer {
     display: flex;
     align-items: center;
-    gap: 12px; /* רווח בין הלייק ללב */
+    gap: 600px; 
 }
 
 .stat-item {
@@ -146,20 +144,17 @@ body {
     align-items: center;
     gap: 4px;
     cursor: pointer;
-    padding: 6px 10px; /* מספיק ללחיצה */
+    padding: 6px 6px; 
     border-radius: 6px;
     transition: background 0.2s;
 }
 
-.stat-item:hover {
-    background-color: rgba(255,255,255,0.1);
-}
 
 /* admin buttons */
 .post-actions-wrapper {
     display: flex;
     flex-direction: column;
-    align-items: flex-start; /* שמאל */
+    align-items: flex-start; 
     gap: 4px;
 }
 
@@ -171,7 +166,7 @@ body {
 }
 
 .action-btn {
-    display: inline-flex; /* רק סביב תוכן הכפתור */
+    display: inline-flex; 
     align-items: center;
     gap: 4px;
     padding: 6px 10px;
