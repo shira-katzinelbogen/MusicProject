@@ -35,6 +35,10 @@
       <mat-icon matListItemIcon style="color: rgb(255, 255, 255); margin-left: 2vw;">chat_bubble_outline</mat-icon>
       <span matListItemTitle style="color: rgb(255, 255, 255);">Chat Bot</span>
     </a>
+ <a mat-list-item routerLink="/notifications" routerLinkActive="active" (click)="sidebarService.close()">
+      <mat-icon matListItemIcon style="color: rgb(255, 255, 255); margin-left: 2vw;">notifications</mat-icon>
+      <span matListItemTitle style="color: rgb(255, 255, 255);">Notifications</span>
+    </a>
   </mat-nav-list>
 
   <div>
