@@ -1,4 +1,4 @@
-<article class="notification-card" [class.is-unread]="!note.isRead">
+<article class="notification-card" [class.is-unread]="!note.isRead" (click)="handleNotificationClick()">
     <div class="notification-icon-wrapper">
         @if (note.userImage) {
         <img [src]="note.userImage" class="profile-avatar">
@@ -22,19 +22,34 @@
     </div>
 
     <div class="notification-actions">
-        <button class="mark-as-read-button" (click)="onToggleClick($event)"
-            [attr.aria-label]="note.isRead ? 'Mark as unread' : 'Mark as read'">
-            {{ note.isRead ? 'Mark as unread' : 'Mark as read' }}
-        </button>
-
         @if (note.type === 'LIKES_FAVORITES' || note.type === 'COMMENTS') {
-        <button class="view-button" (click)="navigateToPost(note.postId)">
+        <button class="view-button" (click)="navigateToPost(note.postId); $event.stopPropagation()">
             {{ note.type === 'COMMENTS' ? 'View Comments' : 'View Post' }}
         </button>
         }
 
-        <button class="delete-icon-btn" (click)="delete.emit(note._id); $event.stopPropagation()"
-            aria-label="Delete notification">
+        @if (note.type === 'FOLLOW_REQUEST_RECEIVED') {
+        <div class="action-buttons">
+            @if (followStatus != EFollowStatus.APPROVED) {
+            <button class="btn-approve" (click)="approveAction($event)">
+                <mat-icon>check_circle</mat-icon> Approve
+            </button>
+            }
+
+            @if (followStatus !== EFollowStatus.DENIED) {
+            <button class="btn-reject" (click)="rejectAction($event)">
+                <mat-icon>cancel</mat-icon> Reject
+            </button>
+            }
+        </div>
+        }
+
+        <button class="mark-as-read-button" (click)="onToggleClick($event)"
+            [attr.aria-label]="note.isRead ? 'Mark as unread' : 'Mark as read'">
+            {{ note.isRead ? 'Mark as Unread' : 'Mark as Read' }}
+        </button>
+
+        <button class="delete-icon-btn" (click)="delete.emit(note._id); $event.stopPropagation()">
             <mat-icon>close</mat-icon>
         </button>
     </div>

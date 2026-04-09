@@ -9,6 +9,7 @@ import { NoResultsComponent } from "../../Shared/no-results/no-results.component
 import { UserStateService } from "../../../Services/user-state.service"
 import { NotificationItemComponent } from "../notification-item/notification-item.component";
 import { StatsCounterComponent } from "../../Shared/stats-counter/stats-counter.component";
+import { InteractionService } from '../../../Services/interaction.service';
 
 /**
  * @description Advanced Notifications Component utilizing Angular Signals for optimal performance.
@@ -28,11 +29,10 @@ import { StatsCounterComponent } from "../../Shared/stats-counter/stats-counter.
 */
 export class NotificationsComponent implements OnInit, OnDestroy {
 
-  handleApprove(_t41: any) {
-    throw new Error('Method not implemented.');
-  }
   private notificationService = inject(NotificationService);
   private userStateService = inject(UserStateService);
+  private interactionService = inject(InteractionService);
+
 
 
   /** @property Explicitly defined as string to match MongoDB/Socket expectations */
@@ -65,7 +65,7 @@ export class NotificationsComponent implements OnInit, OnDestroy {
       if (user && user.id) {
         this.userId = String(user.id);
         this.notificationService.connectSocket(this.userId);
-        this.notificationService.getUnreadCount(this.userId); 
+        this.notificationService.getUnreadCount(this.userId);
         this.fetchData();
       }
     });
@@ -100,13 +100,12 @@ export class NotificationsComponent implements OnInit, OnDestroy {
     }
 
     if (type.includes('COMMENT')) {
-      return 'COMMENTS';
+      return ENotificationCategory.COMMENTS;
     }
 
-    if (type.includes('FOLLOW')) {
-      return 'FOLLOWS';
+    if (type.includes('REQUEST')) {
+      return ENotificationCategory.FOLLOW_REQUESTS;
     }
-
     return 'ADMIN';
   }
 
@@ -253,6 +252,48 @@ export class NotificationsComponent implements OnInit, OnDestroy {
       },
       error: (err) => console.error('Failed to toggle status:', err)
     });
+  }
+
+
+  /**
+   * Handles the approval of a follow request by coordinating between 
+   * the Java Interaction Service and the Node.js Notification Service.
+   * @param note The notification object containing senderId and notificationId.
+   */
+  public handleApprove(note: any): void {
+    const senderId = Number(note.senderId); // Sender from Java (number)
+
+    // Tell Java to approve the follow
+    this.interactionService.approveFollow(senderId).subscribe({
+      next: () => {
+        this.updateNotificationInStore(note._id, { localStatus: 'approved' });
+      },
+      error: (err) => console.error('Failed to approve follow in Java:', err)
+    });
+  }
+
+  /**
+   * Handles the rejection of a follow request.
+   * @param note The notification object.
+   */
+  public handleReject(note: any): void {
+    const senderId = Number(note.senderId);
+
+    // Tell Java to reject the request
+    this.interactionService.rejectFollow(senderId).subscribe({
+      next: () => {
+        this.updateNotificationInStore(note._id, { localStatus: 'rejected' });
+      },
+      error: (err) => console.error('Failed to reject follow in Java:', err)
+    });
+  }
+
+  private updateNotificationInStore(id: string, updates: Partial<any>) {
+    const currentList = this.notificationService['notificationsSubject'].value;
+    const newList = currentList.map(n =>
+      (n._id === id) ? { ...n, ...updates } : n
+    );
+    this.notificationService['notificationsSubject'].next(newList);
   }
 }
 

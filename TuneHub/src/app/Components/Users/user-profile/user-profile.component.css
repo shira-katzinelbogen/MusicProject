@@ -796,3 +796,26 @@ header.header {
 .header-inner-content {
     width: 100%;
 }
+
+
+/* follow */
+.follow-btn-custom {
+  color: #ffffff !important;           
+  border: 1px solid #e1bee7 !important;
+  border-radius: 20px !important;
+  font-weight: 500;
+  transition: all 0.3s ease;
+}
+
+.follow-btn-custom.denied,
+.follow-btn-custom.pending {
+  background-color: #424242 !important;
+  color: #ffffff !important;
+  border-color: #eeeeee !important;
+  cursor: default;
+}
+
+.follow-btn-custom:hover:not(.pending) {
+  filter: brightness(0.95);
+  transform: translateY(-1px);
+}

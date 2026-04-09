@@ -148,7 +148,7 @@ export class NotificationService {
             currentList.splice(existingIndex, 1);
         }
 
-    
+
         this.notificationsSubject.next([notification, ...currentList]);
     }
 
@@ -193,4 +193,12 @@ export class NotificationService {
             this.unreadCountSubject.next(currentCount - 1);
         }
     }
+
+    // approveFollowRequest(senderId: string, notificationId: string): Observable<any> {
+    //     return this.http.post(`${this.apiUrl}/approve-follow`, { senderId, notificationId });
+    // }
+
+    // rejectFollowRequest(senderId: string, notificationId: string): Observable<any> {
+    //     return this.http.post(`${this.apiUrl}/reject-follow`, { senderId, notificationId });
+    // }
 }

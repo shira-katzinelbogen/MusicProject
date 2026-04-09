@@ -1,8 +1,11 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { ENotificationCategory } from '../../../Models/Notification';
 import { TimeAgoPipe } from "../../../Pipes/time-ago.pipe";
 import { MatIcon } from "@angular/material/icon";
 import { Router } from '@angular/router';
+import { NavigationService } from '../../../Services/navigation.service';
+import { EFollowStatus } from '../../../Models/Follow';
+import { InteractionService } from '../../../Services/interaction.service';
 
 @Component({
   selector: 'app-notification-item',
@@ -10,14 +13,27 @@ import { Router } from '@angular/router';
   templateUrl: './notification-item.component.html',
   styleUrl: './notification-item.component.css'
 })
-export class NotificationItemComponent {
+export class NotificationItemComponent implements OnInit {
+
+  protected readonly EFollowStatus = EFollowStatus;
+  followStatus: EFollowStatus = EFollowStatus.NONE;
+
+  ngOnInit() {
+    if (this.note.type === 'FOLLOW_REQUEST_RECEIVED') {
+      this.loadFollowStatus();
+    }
+  }
+
   @Input({ required: true }) note: any;
 
   @Output() toggleStatus = new EventEmitter<Event>();
   @Output() delete = new EventEmitter<void>();
-  @Output() approve = new EventEmitter<void>();
 
-  constructor(private router: Router) { }
+  constructor(
+    private router: Router,
+    private navigationService: NavigationService,
+    private interactionService: InteractionService
+  ) { }
 
   navigateToPost(postId: string) {
     if (!postId) return;
@@ -27,29 +43,71 @@ export class NotificationItemComponent {
     });
   }
 
-public getIconForType(note: any): string {
-  const type = note.type || '';
-  const content = note.content || '';
+  handleNotificationClick() {
+    const type = this.note.type;
 
-  if (content.includes('bookmarked') || type.includes('LIKE')) {
-    return type.includes('LIKE') ? '👍' : '❤️';
+    if (this.note.postId) {
+      this.navigateToPost(this.note.postId);
+    }
+    else if (type === 'FOLLOW_REQUEST' || type === 'FOLLOW_UPDATES') {
+      this.navigationService.goToProfile(this.note.senderId);
+    }
   }
 
-  switch (type) {
-    case ENotificationCategory.FOLLOW_REQUESTS: return '👤';
-    case ENotificationCategory.FOLLOW_UPDATES: return 'person_add'; // אפשר גם אימוג'י
-    case ENotificationCategory.COMMENTS: return '💬';
-    case ENotificationCategory.ADMIN: return '🚨';
-    default: return '🔔';
+
+  public getIconForType(note: any): string {
+    const type = note.type || '';
+    const content = note.content || '';
+
+    if (content.includes('bookmarked') || type.includes('LIKE')) {
+      return type.includes('LIKE') ? '👍' : '❤️';
+    }
+
+    if (type.includes('REQUEST')) {
+      return '👤';
+    }
+
+    switch (type) {
+      case ENotificationCategory.FOLLOW_UPDATES: return 'person_add';
+      case ENotificationCategory.COMMENTS: return '💬';
+      case ENotificationCategory.ADMIN: return '🚨';
+      default: return '🔔';
+    }
   }
-}
   /**
    * Emits the toggle event to the parent component.
    * @param {Event} event - The click event object.
   */
   public onToggleClick(event: Event): void {
+    event.stopPropagation();
     // Use the existing toggleStatus EventEmitter
     this.toggleStatus.emit(event);
   }
 
+  loadFollowStatus() {
+    const senderId = Number(this.note.senderId);
+    this.interactionService.getFollowingStatus(senderId).subscribe({
+      next: (status) => {
+        this.followStatus = status;
+      }
+    });
+  }
+
+  approveAction(event: Event) {
+    event.stopPropagation();
+    this.interactionService.approveFollow(Number(this.note.senderId)).subscribe({
+      next: () => {
+        this.followStatus = EFollowStatus.APPROVED;
+      }
+    });
+  }
+
+  rejectAction(event: Event) {
+    event.stopPropagation();
+    this.interactionService.rejectFollow(Number(this.note.senderId)).subscribe({
+      next: () => {
+        this.followStatus = EFollowStatus.DENIED;
+      }
+    });
+  }
 }

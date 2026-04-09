@@ -11,7 +11,7 @@ import { FileUtilsService } from '../../../Services/fileutils.service';
 import Post from '../../../Models/Post';
 import SheetMusic from '../../../Models/SheetMusic';
 import { EFollowStatus } from '../../../Models/Follow';
-import {  UsersProfileCompleteDTO } from '../../../Models/Users';
+import { UsersProfileCompleteDTO } from '../../../Models/Users';
 import { PostCardComponent } from '../../Post/post-card/post-card.component';
 import { MusicCardComponent } from '../../SheetMusic/music-card/music-card.component';
 import { NoResultsComponent } from '../../Shared/no-results/no-results.component';
@@ -87,9 +87,13 @@ export class UserProfileComponent implements OnInit {
         if (this.profileData.createdAt) {
           this.createdAtDate = profile.createdAt ? new Date(profile.createdAt) : null;
         }
-        
+
         if (this.profileData.editedIn) {
           this.editedInDate = profile.editedIn ? new Date(profile.editedIn) : null;
+        }
+
+        if (!this.isOwnProfile && id) {
+          this.checkFollowStatus(id);
         }
 
         const currentUser = this.userStateService.getCurrentUserValue();
@@ -201,16 +205,47 @@ export class UserProfileComponent implements OnInit {
   }
 
 
+  checkFollowStatus(id: number): void {
+    this.interactionService.getFollowStatus(id).subscribe({
+      next: (status: EFollowStatus) => {
+        this.followStatus = status;
+      },
+      error: (err) => console.error('Error fetching follow status', err)
+    });
+  }
+
   followUser(): void {
-    if (!this.profileId || this.isOwnProfile || this.followButtonDisabled) return;
+    if (!this.profileId || this.isOwnProfile) return;
+
     this.interactionService.toggleFollow(this.profileId).subscribe({
       next: (status: EFollowStatus) => {
         this.followStatus = status;
-        this.isStudentOfThisTeacher = status === EFollowStatus.APPROVED;
-        this.followButtonDisabled = status === EFollowStatus.PENDING;
       },
-      error: (err) => console.error(err)
+      error: (err) => console.error('Follow toggle failed', err)
     });
+  }
+
+  getFollowButtonText(): string {
+    switch (this.followStatus) {
+      case EFollowStatus.APPROVED:
+        return 'Unfollow';
+      case EFollowStatus.PENDING:
+        return 'Requested';
+      case EFollowStatus.DENIED:
+        return 'Request denied'; 
+      case EFollowStatus.NONE:
+      default:
+        return 'Follow';
+    }
+  }
+
+  getFollowButtonIcon(): string {
+    switch (this.followStatus) {
+      case EFollowStatus.APPROVED: return 'person_remove';
+      case EFollowStatus.PENDING: return 'hourglass_empty';
+      case EFollowStatus.DENIED: return 'block';
+      default: return 'person_add';
+    }
   }
 
   handleSignOut(): void {

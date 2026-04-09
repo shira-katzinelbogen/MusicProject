@@ -28,6 +28,10 @@ export class InteractionService {
     return this._httpClient.get<EFollowStatus>(`${this.apiUrl}/follow/status/${targetUserId}`, { withCredentials: true });
   }
 
+  getFollowingStatus(targetUserId: number): Observable<EFollowStatus> {
+    return this._httpClient.get<EFollowStatus>(`${this.apiUrl}/following/status/${targetUserId}`, { withCredentials: true });
+  }
+
   addLike(targetType: string, targetId: number): Observable<NotificationSimpleDTO> {
     return this._httpClient.post<NotificationSimpleDTO>(
       `${this.apiUrl}/like/add/${targetType}/${targetId}`, {}, { withCredentials: true }
@@ -47,14 +51,6 @@ export class InteractionService {
     return this._httpClient.delete(`${this.apiUrl}/favorite/remove/${targetType}/${targetId}`, { withCredentials: true });
   }
 
-  approveFollow(followerId: number) {
-    return this._httpClient.post(
-      `${this.apiUrl}/follow/approve/${followerId}`,
-      {},
-      { withCredentials: true }
-    );
-  }
-
   getFavoritesByType(type: FavoriteType, search: string = ''): Observable<Favorite[]> {
     const serverType = type.toUpperCase().replace(' ', '_') as FavoriteType;
     let params = { type: serverType, search: search };
@@ -62,5 +58,37 @@ export class InteractionService {
       params: params,
       withCredentials: true
     });
+  }
+
+
+  /**
+ * Approves a pending follow request in the Java backend.
+ * @param followerId The ID of the user who sent the follow request.
+ * @returns Observable of the operation result.
+ */
+  approveFollow(followerId: number): Observable<any> {
+    return this._httpClient.post(
+      `${this.apiUrl}/follow/approve/${followerId}`,
+      {},
+      { withCredentials: true,
+        responseType: 'text' as 'json'
+       }
+    );
+  }
+
+  /**
+   * Rejects or cancels a pending follow request in the Java backend.
+   * @param followerId The ID of the user whose request is being rejected.
+   * @returns Observable of the operation result.
+   */
+  rejectFollow(followerId: number): Observable<any> {
+    // Assuming the Java endpoint for rejection is /follow/reject/{id}
+    return this._httpClient.post(
+      `${this.apiUrl}/follow/reject/${followerId}`,
+      {},
+      { withCredentials: true,
+        responseType: 'text' as 'json'
+       }
+    );
   }
 }

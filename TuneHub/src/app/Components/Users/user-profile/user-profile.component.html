@@ -60,9 +60,27 @@
             <!-- ACTION BUTTONS -->
             <br> <br>
             <div class="action-buttons">
-              <!-- Own profile actions -->
-              <ng-container *ngIf="isOwnProfile">
+              @if (!isOwnProfile) {
+              <div class="profile-actions">
 
+                <button mat-flat-button 
+                [color]="followStatus === 'APPROVED' ? 'warn' : 'primary'" 
+                class="follow-btn-custom"
+                [ngClass]="{
+              'approved': this.followStatus === 'APPROVED',
+              'pending': this.followStatus === 'PENDING',
+              'denied': this.followStatus === 'DENIED'
+            }" 
+            [disabled]="followStatus === 'PENDING' || followStatus === 'DENIED'"
+            (click)="followUser()">
+
+                  <mat-icon>{{ getFollowButtonIcon() }}</mat-icon>
+                  {{ getFollowButtonText() }}
+                </button>
+              </div>
+              }@else {
+              <!-- Own profile actions -->
+              <ng-container>
                 <!-- edit-btn -->
                 <div class="button" (click)="openEditProfileModal()">
                   <mat-icon>edit</mat-icon> Edit Profile
@@ -74,6 +92,7 @@
                 </div>
               </ng-container>
 
+              }
 
               <!-- Student actions for teachers -->
               <div class="button student" *ngIf="canBeStudent" mat-raised-button color="primary"
