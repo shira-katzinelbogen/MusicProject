@@ -10,7 +10,7 @@
         <line x1="6" y1="6" x2="18" y2="18"></line>
       </svg>
     </button>
-       <br><br>
+    <br><br>
     <div class="auth-container">
 
       <div class="side-panel">
@@ -94,7 +94,14 @@
 
           <button type="submit" [disabled]="loginForm.invalid" class="submit-btn login-btn">Sign In</button>
 
+          <div class="social-login-separator">
+            <span>OR</span>
+          </div>
 
+          <div class="google-btn-container">
+            <asl-google-signin-button type="standard" size="large" [width]="370" text="signin_with">
+            </asl-google-signin-button>
+          </div>
         </form>
         <form *ngIf="currentMode === 'signup'" [formGroup]="signupForm" (ngSubmit)="onSignupSubmit()" class="auth-form">
 
@@ -120,6 +127,7 @@
           </div>
           <div class="input-group">
             <label for="signup-name">Full Name</label>
+          
             <input id="signup-name" type="text" formControlName="fullName" placeholder="John Doe">
             <div *ngIf="signupForm.get('fullName')?.invalid && signupForm.get('fullName')?.touched" class="error-msg">
               <span *ngIf="signupForm.get('fullName')?.errors?.['required']">Name is required.</span>
@@ -154,15 +162,6 @@
                 long.</span>
             </div>
           </div>
-
-          <!-- <div class="input-group password-field">
-            <label for="signup-confirm">Confirm Password</label>
-            <input id="signup-confirm" type="password" formControlName="confirmPassword" placeholder="Repeat password">
-            <div *ngIf="signupForm.errors?.['mismatch'] && signupForm.get('confirmPassword')?.touched"
-              class="error-msg">
-              Password confirmation does not match.
-            </div>
-          </div> -->
 
           <label class="checkbox-container terms-agree">
             <input type="checkbox" formControlName="agreeToTerms">

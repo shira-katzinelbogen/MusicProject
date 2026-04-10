@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { afterNextRender, Component, Inject, OnInit, Optional } from '@angular/core';
 import { Router, RouterModule } from '@angular/router';
 import { LoginwindowService } from '../../../Services/loginwindow.service';
 import { CommonModule } from '@angular/common';
@@ -7,18 +7,23 @@ import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angula
 import { UserStateService } from '../../../Services/user-state.service';
 import { UsersService } from '../../../Services/users.service';
 import { UsersProfileDTO } from '../../../Models/Users';
+import { PLATFORM_ID } from '@angular/core';
+import { isPlatformBrowser } from '@angular/common';
+import { GoogleLoginProvider, GoogleSigninButtonModule, SocialAuthService, SocialAuthServiceConfig } from '@abacritt/angularx-social-login';
+import { MatIcon } from "@angular/material/icon";
 
 type AuthMode = 'login' | 'signup';
 
 @Component({
   selector: 'app-login-window',
   standalone: true,
-  imports: [RouterModule, CommonModule, ReactiveFormsModule],
+  imports: [RouterModule, CommonModule, ReactiveFormsModule, GoogleSigninButtonModule],
   templateUrl: './login-window.component.html',
   styleUrl: './login-window.component.css'
 })
 
 export class LoginWindowComponent implements OnInit {
+
 
   constructor(
     private fb: FormBuilder,
@@ -26,8 +31,19 @@ export class LoginWindowComponent implements OnInit {
     public loginwindowService: LoginwindowService,
     private usersService: UsersService,
     private signupService: SignupService,
-    private router: Router
-  ) { }
+    private router: Router,
+    private authService: SocialAuthService,
+    @Inject(PLATFORM_ID) private platformId: Object,
+  ) {
+    afterNextRender(() => {
+      this.authService.authState.subscribe((user) => {
+        if (user && user.idToken) {
+          console.log('Google User detected:', user);
+          this.sendTokenToServer(user.idToken);
+        }
+      });
+    });
+  }
 
   // Forms
   loginForm!: FormGroup;
@@ -58,12 +74,39 @@ export class LoginWindowComponent implements OnInit {
       fullName: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(50)]],
       email: ['', [Validators.required, Validators.email, Validators.maxLength(100)]],
       password: ['', [Validators.required, Validators.minLength(8)]],
-      // confirmPassword: ['', Validators.required],
       agreeToTerms: [false, Validators.requiredTrue]
-    }, 
-    // { validator: this.passwordMatchValidator }
-  );
+    },
+    );
+
+    this.authService.authState.subscribe((user) => {
+      if (user) {
+        console.log('Google user:', user);
+        this.sendTokenToServer(user.idToken!);
+      }
+    });
+
+    if (isPlatformBrowser(this.platformId) && this.authService) {
+      this.authService.authState.subscribe((user) => {
+        if (user) {
+          console.log('Google user:', user);
+          this.sendTokenToServer(user.idToken!);
+        }
+      });
+    }
   }
+
+
+  sendTokenToServer(token: string) {
+    this.usersService.loginWithGoogle(token).subscribe({
+      next: (userProfile) => {
+        console.log('Successfully logged in through server!', userProfile);
+        this.userStateService.currentUserSubject.next(userProfile);
+        this.goToHomePage();
+      },
+      error: (err) => console.error('Server login failed', err)
+    });
+  }
+
 
   navigateTo(path: string) {
     this.loginwindowService.close();
@@ -73,12 +116,6 @@ export class LoginWindowComponent implements OnInit {
   setMode(mode: AuthMode): void {
     this.currentMode = mode;
   }
-
-  // passwordMatchValidator(form: FormGroup) {
-  //   const password = form.get('password')?.value;
-  //   const confirmPassword = form.get('confirmPassword')?.value;
-  //   return password === confirmPassword ? null : { mismatch: true };
-  // }
 
   onFileSelected(event: any): void {
     if (event.target.files && event.target.files[0]) {

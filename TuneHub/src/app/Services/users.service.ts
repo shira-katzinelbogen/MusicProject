@@ -1,7 +1,7 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs'
-import Users, {  UsersProfileCompleteDTO, UsersProfileDTO, EUserType } from '../Models/Users';
+import Users, { UsersProfileCompleteDTO, UsersProfileDTO, EUserType } from '../Models/Users';
 import Teacher from '../Models/Teacher';
 import Role, { ERole } from '../Models/Role';
 
@@ -11,6 +11,7 @@ import Role, { ERole } from '../Models/Role';
 
 export class UsersService {
     private apiUrl = 'http://localhost:8080/api/users';
+
     public users: Users[] = [];
     public count = 0;
 
@@ -87,7 +88,7 @@ export class UsersService {
 
 
     getUsersByUserType(userType: EUserType): Observable<Users[]> {
-        const url = `${this.apiUrl}/usersByUserType`; 
+        const url = `${this.apiUrl}/usersByUserType`;
 
         const params = new HttpParams().set('userTypes', userType.toString());
         return this._httpClient.get<Users[]>(url, { params: params, withCredentials: true });
@@ -107,7 +108,7 @@ export class UsersService {
 
     signUpAsTeacher(userId: number, teacherData: Teacher): Observable<any> {
         return this._httpClient.post(`${this.apiUrl}/signupTeacher/${userId}`, teacherData, {
-            responseType: 'text' as 'json' 
+            responseType: 'text' as 'json'
             , withCredentials: true
         });
     }
@@ -172,5 +173,13 @@ export class UsersService {
 
     deleteUser(id: number): Observable<any> {
         return this._httpClient.delete(`${this.apiUrl}/delete/${id}`, { withCredentials: true });
+    }
+
+    loginWithGoogle(idToken: string): Observable<UsersProfileDTO> {
+        return this._httpClient.post<UsersProfileDTO>(
+            `http://localhost:8080/api/auth/google-login`,
+            { idToken },
+            { withCredentials: true }
+        );
     }
 }

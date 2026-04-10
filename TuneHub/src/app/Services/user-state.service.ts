@@ -111,7 +111,7 @@ export class UserStateService {
     this._usersService.signOut().subscribe({
       next: () => {
         this.clear();
-        this.router.navigate(['/home']);
+        this.router.navigate(['/home-page']);
       },
       error: (err) => console.error('Sign out failed:', err)
     });

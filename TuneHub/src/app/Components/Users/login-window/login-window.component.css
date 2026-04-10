@@ -489,3 +489,41 @@
   color: #ff8989;
   font-size: 0.85em;
 }
+
+
+
+
+
+
+
+.social-login-separator {
+  display: flex;
+  align-items: center;
+  text-align: center;
+  margin: 20px 0;
+  color: #888;
+}
+
+.social-login-separator::before,
+.social-login-separator::after {
+  content: '';
+  flex: 1;
+  border-bottom: 1px solid #ddd;
+}
+
+.social-login-separator span {
+  padding: 0 10px;
+  font-size: 0.8rem;
+  font-weight: bold;
+}
+
+.google-btn-container {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+}
+
+/* מוודא שהכפתור של גוגל יתפרס על הרוחב של הטופס אם תרצי */
+asl-google-signin-button {
+  width: 100%;
+}
